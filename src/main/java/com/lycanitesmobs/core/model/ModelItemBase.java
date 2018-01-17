@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -180,7 +181,7 @@ public abstract class ModelItemBase {
 			this.currentAnimationPart.applyAnimationFrames(this.animator);
 
 			// Render Part:
-			this.wavefrontObject.renderGroup(part, this.getPartColor(partName, itemStack));
+			this.wavefrontObject.renderGroup(part, this.getPartColor(partName, itemStack), new Vector2f(0, 0));
 			GlStateManager.popMatrix();
 		}
 

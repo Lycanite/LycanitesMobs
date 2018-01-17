@@ -14,6 +14,7 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("jengu", new ModelJengu());
 		AssetManager.addModel("geonach", new ModelGeonach());
 
+		AssetManager.addModel("volcan", new ModelVolcan());
 		AssetManager.addModel("zephyr", new ModelZephyr());
 		AssetManager.addModel("grue", new ModelGrue());
 		AssetManager.addModel("spriggan", new ModelSpriggan());

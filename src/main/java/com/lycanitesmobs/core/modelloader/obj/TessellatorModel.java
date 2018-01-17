@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 import java.io.InputStream;
 import java.util.*;
@@ -81,7 +82,7 @@ public class TessellatorModel extends ObjModel
     }
 
     @Override
-    public void renderGroupImpl(ObjObject obj, Vector4f color) {
+    public void renderGroupImpl(ObjObject obj, Vector4f color, Vector2f textureOffset) {
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder vertexBuffer = tess.getBuffer();
         if(obj.mesh == null) {
@@ -115,7 +116,7 @@ public class TessellatorModel extends ObjModel
                 Vertex v = vertices[indices[i + iv]];
                 vertexBuffer
                         .pos(v.getPos().x, v.getPos().y, v.getPos().z)
-                        .tex(v.getTexCoords().x, 1f - v.getTexCoords().y)
+                        .tex(v.getTexCoords().x + textureOffset.getX(), 1f - v.getTexCoords().y + textureOffset.getY())
                         .color(color.x, color.y, color.z, color.w)
                         .normal(normal.x, normal.y, normal.z)
                         //.normal(v.getFaceNormal().x, v.getFaceNormal().y, v.getFaceNormal().z)

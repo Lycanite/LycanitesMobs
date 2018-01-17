@@ -26,7 +26,7 @@ public class ModelTemplateElemental extends ModelObj {
 
         // Idle:
         if(partName.equals("mouth")) {
-            this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
+            this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F - 0.1F), 0.0F, 0.0F);
         }
         if(partName.contains("armleft")) {
             rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
@@ -50,11 +50,12 @@ public class ModelTemplateElemental extends ModelObj {
         }
 
         // Effects:
-        if(partName.equals("effectouter")) {
+        if(partName.equals("effectouter") || partName.equals("effect01") || partName.equals("effect03")) {
             rotY += loop * 8;
         }
-        if(partName.equals("effectinner"))
+        if(partName.equals("effectinner") || partName.equals("effect02") || partName.equals("effect04")) {
             rotY -= loop * 8;
+        }
 
         // Attack:
         if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {

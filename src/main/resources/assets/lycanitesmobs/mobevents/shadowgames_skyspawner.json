@@ -3,7 +3,7 @@
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCount": 10,
+	"mobCountMin": 10,
 	"ignoreDimensions": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
@@ -31,11 +31,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.grue",
+			"mobId": "elementalmobs.grue",
 			"weight": 8
 		},
 		{
-			"mobId": "shadowmobs.spectre",
+			"mobId": "elementalmobs.spectre",
 			"weight": 4
 		}
 	]

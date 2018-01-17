@@ -1,17 +1,20 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IFusable;
-import com.lycanitesmobs.api.IGroupRock;
+import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,16 +31,16 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock, IFusable {
-	
+public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroupRock, IGroupFire {
+
 	private EntityAIAttackMelee meleeAttackAI;
-	
-	public int geonachBlockBreakRadius = 0;
-    
+
+	public int volcanMeltRadius = 2;
+
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGeonach(World world) {
+    public EntityVolcan(World world) {
         super(world);
         
         // Setup:
@@ -46,15 +49,13 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.experience = 5;
         this.hasAttackSound = true;
         
-        this.geonachBlockBreakRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Rare Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the Celestial Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead. Note that this is only for the extremely rare Geonach.");
+        this.volcanMeltRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Volcan Block Melting Radius", this.volcanMeltRadius, "Controls how far Volcans melt blocks, set to 0 to disable.");
         
         this.setWidth = 0.8F;
         this.setHeight = 1.6F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        this.attackPhaseMax = 3;
-        this.justAttackedTime = (short)(10);
     }
 
     // ========== Init AI ==========
@@ -62,7 +63,6 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
         this.meleeAttackAI = new EntityAIAttackMelee(this).setRate(20).setLongMemory(true);
         this.tasks.addTask(2, meleeAttackAI);
         this.tasks.addTask(3, this.aiSit);
@@ -74,22 +74,25 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
+		this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
+		this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
+		this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntitySnowman.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntitySilverfish.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+		this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
     
     // ========== Stats ==========
 	@Override
 	protected void applyEntityAttributes() {
 		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.28D);
+		baseAttributes.put("maxHealth", 30D);
+		baseAttributes.put("movementSpeed", 0.3D);
 		baseAttributes.put("knockbackResistance", 1.0D);
 		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
+		baseAttributes.put("attackDamage", 1D);
         super.applyEntityAttributes(baseAttributes);
     }
 	
@@ -100,7 +103,8 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.75F).setMaxAmount(2));
         this.drops.add(new MobDrop(new ItemStack(Items.QUARTZ), 0.75F).setMaxAmount(5));
         this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.1F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstonemountain")), 1F).setMaxAmount(1).setSubspecies(3));
+		this.drops.add(new MobDrop(new ItemStack(Items.COAL), 0.5F));
+		this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_ROD), 0.1F));
 	}
 
     // ========== Set Size ==========
@@ -129,45 +133,39 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
-        if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")) {
-	    	// Random Charging:
-	    	if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
-	    		if(this.posY - 1 > this.getAttackTarget().posY)
-	    			this.leap(6.0F, -1.0D, this.getAttackTarget());
-	    		else if(this.posY + 1 < this.getAttackTarget().posY)
-	    			this.leap(6.0F, 1.0D, this.getAttackTarget());
-	    		else
-	    			this.leap(6.0F, 0D, this.getAttackTarget());
-	    		if(this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.geonachBlockBreakRadius > -1 && !this.isTamed()) {
-		    		this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true, this.geonachBlockBreakRadius);
-	    		}
-	    	}
-        }
 
-        // Particles:
-        if(this.getEntityWorld().isRemote)
-            for(int i = 0; i < 2; ++i) {
-                this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
-                        this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
-                        this.posY + this.rand.nextDouble() * (double) this.height,
-                        this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
-                        0.0D, 0.0D, 0.0D,
-                        Blocks.TALLGRASS.getStateId(Blocks.STONE.getDefaultState()));
-            }
-    }
+		// Melt Blocks:
+		if(this.updateTick % 40 == 0 && this.volcanMeltRadius > 0 && !this.isTamed() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing")) {
+			int range = this.volcanMeltRadius;
+			for (int w = -((int) Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++) {
+				for (int d = -((int) Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++) {
+					for (int h = -((int) Math.ceil(this.height) + range); h <= Math.ceil(this.height); h++) {
+						Block block = this.getEntityWorld().getBlockState(this.getPosition().add(w, h, d)).getBlock();
+						if (block == Blocks.OBSIDIAN || block == Blocks.COBBLESTONE) {
+							IBlockState blockState = Blocks.FLOWING_LAVA.getDefaultState().withProperty(BlockLiquid.LEVEL, 5);
+							if (block == Blocks.OBSIDIAN)
+								blockState = Blocks.LAVA.getDefaultState();
+							this.getEntityWorld().setBlockState(this.getPosition().add(w, h, d), blockState);
+						}
+						else if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+							this.getEntityWorld().setBlockToAir(this.getPosition().add(w, h, d));
+						}
+					}
+				}
+			}
+		}
 
-
-    // ==================================================
-    //                      Movement
-    // ==================================================
-    // ========== Movement Speed Modifier ==========
-    @Override
-    public float getAISpeedModifier() {
-        // Silverfish Extermination:
-        if(this.hasAttackTarget() && this.getAttackTarget() instanceof EntitySilverfish)
-            return 4.0F;
-        return super.getAISpeedModifier();
+		// Particles:
+		if(this.getEntityWorld().isRemote) {
+			for(int i = 0; i < 2; ++i) {
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.DRIP_LAVA, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+			}
+			if(this.ticksExisted % 10 == 0)
+				for(int i = 0; i < 2; ++i) {
+					this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+				}
+		}
     }
     
     
@@ -187,13 +185,6 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         	else
         		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(7), 0));
         }
-        
-        // Update Phase:
-        this.nextAttackPhase();
-        if(this.getAttackPhase() == 2)
-        	this.meleeAttackAI.setRate(60);
-        else
-        	this.meleeAttackAI.setRate(10);
 
         // Silverfish Extermination:
         if(target instanceof EntitySilverfish) {
@@ -215,33 +206,17 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return true; }
-    
-    
+
+
     // ==================================================
    	//                    Taking Damage
    	// ==================================================
-    // ========== Damage Modifier ==========
-    @Override
-    public float getDamageModifier(DamageSource damageSrc) {
-    	if(damageSrc.getTrueSource() != null) {
-            // Silverfish Extermination:
-            if(damageSrc.getTrueSource() instanceof EntitySilverfish) {
-                return 0F;
-            }
-
-            // Pickaxe Damage:
-    		Item heldItem = null;
-    		if(damageSrc.getTrueSource() instanceof EntityLivingBase) {
-                EntityLivingBase entityLiving = (EntityLivingBase)damageSrc.getTrueSource();
-	    		if(entityLiving.getHeldItem(EnumHand.MAIN_HAND) != null) {
-	    			heldItem = entityLiving.getHeldItem(EnumHand.MAIN_HAND).getItem();
-	    		}
-    		}
-    		if(ObjectLists.isPickaxe(heldItem))
-                return 4.0F;
-    	}
-    	return 1.0F;
-    }
+	// ========== Damage Modifier ==========
+	public float getDamageModifier(DamageSource damageSrc) {
+		if(damageSrc.isFireDamage())
+			return 0F;
+		else return super.getDamageModifier(damageSrc);
+	}
     
     
     // ==================================================
@@ -258,36 +233,14 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
         if(ObjectManager.getPotionEffect("weight") != null)
             if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
+		if(ObjectManager.getPotionEffect("Penetration") != null)
+			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
         return super.isPotionApplicable(potionEffect);
     }
     
     @Override
     public boolean canBurn() { return false; }
 
-
-	// ==================================================
-	//                      Fusion
-	// ==================================================
-	protected IFusable fusionTarget;
-
 	@Override
-	public IFusable getFusionTarget() {
-		return this.fusionTarget;
-	}
-
-	@Override
-	public void setFusionTarget(IFusable fusionTarget) {
-		this.fusionTarget = fusionTarget;
-	}
-
-	@Override
-	public Class getFusionClass(IFusable fusable) {
-		if(fusable instanceof EntityCinder) {
-			return EntityVolcan.class;
-		}
-		if(fusable instanceof EntityJengu) {
-			return EntitySpriggan.class;
-		}
-		return null;
-	}
+	public boolean waterDamage() { return true; }
 }

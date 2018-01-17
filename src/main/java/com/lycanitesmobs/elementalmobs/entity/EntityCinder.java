@@ -1,10 +1,7 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IGroupFire;
-import com.lycanitesmobs.api.IGroupIce;
-import com.lycanitesmobs.api.IGroupPlant;
-import com.lycanitesmobs.api.IGroupWater;
+import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
@@ -30,7 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class EntityCinder extends EntityCreatureTameable implements IMob, IGroupFire {
+public class EntityCinder extends EntityCreatureTameable implements IMob, IGroupFire, IFusable {
     
     // ==================================================
  	//                    Constructor
@@ -57,12 +54,14 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(3.0F));
         this.tasks.addTask(6, this.aiSit);
         this.tasks.addTask(7, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
@@ -73,6 +72,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
+		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
     
     // ========== Stats ==========
@@ -255,4 +255,28 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     public int getBrightnessForRender() {
         return 15728880;
     }
+
+
+	// ==================================================
+	//                      Fusion
+	// ==================================================
+	protected IFusable fusionTarget;
+
+	@Override
+	public IFusable getFusionTarget() {
+		return this.fusionTarget;
+	}
+
+	@Override
+	public void setFusionTarget(IFusable fusionTarget) {
+		this.fusionTarget = fusionTarget;
+	}
+
+	@Override
+	public Class getFusionClass(IFusable fusable) {
+		if(fusable instanceof EntityGeonach) {
+			return EntityVolcan.class;
+		}
+		return null;
+	}
 }

@@ -3,7 +3,7 @@
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCount": 5,
+	"mobCountMin": 5,
 	"ignoreDimensions": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
@@ -39,7 +39,11 @@
 			"weight": 8
 		},
 		{
-			"mobId": "mountainmobs.tremor",
+			"mobId": "elementalmobs.volcan",
+			"weight": 2
+		},
+		{
+			"mobId": "elementalmobs.tremor",
 			"weight": 2
 		}
 	]

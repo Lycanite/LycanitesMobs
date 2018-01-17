@@ -123,6 +123,14 @@ public class ElementalMobs extends Submod {
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
+
+		newMob = new MobInfo(group, "volcan", EntityVolcan.class, 0x270d03, 0xfba905)
+				.setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2).setDungeonThemes("FIERY, NETHER, NECRO")
+				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("")
+				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
 		newMob = new MobInfo(group, "zephyr", EntityZephyr.class, 0xFFFFDD, 0xAABBFF)
 				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1).setDungeonThemes("WATER, DUNGEON")
 				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));

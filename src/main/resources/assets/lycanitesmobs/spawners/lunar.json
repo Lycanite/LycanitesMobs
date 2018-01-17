@@ -5,7 +5,7 @@
 	"loadDefault": true,
 	"mobCountMin": 8,
 	"ignoreBiomes": true,
-	"ignoreLightLevel": true,
+	"ignoreLightLevel": false,
 	"conditions": [
 		{
 			"type": "world",

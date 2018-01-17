@@ -75,9 +75,9 @@ public class ItemSoulkey extends ItemBase {
                     if (!player.capabilities.isCreativeMode)
                         itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
                     if (itemStack.getCount() <= 0)
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
                 }
-                if(!altarInfo.activate(player, world, pos, this.rank)) {
+                if(!altarInfo.activate(player, world, pos, this.rank + 1)) {
                     String message = I18n.translateToLocal("message.soulkey.badlocation");
                     player.sendMessage(new TextComponentString(message));
                     return EnumActionResult.FAIL;

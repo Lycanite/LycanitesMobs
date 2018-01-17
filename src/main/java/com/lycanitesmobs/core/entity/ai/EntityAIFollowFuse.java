@@ -3,9 +3,11 @@ package com.lycanitesmobs.core.entity.ai;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.info.Subspecies;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class EntityAIFollowFuse extends EntityAIFollow {
@@ -24,6 +26,18 @@ public class EntityAIFollowFuse extends EntityAIFollow {
         this.host = setHost;
         this.strayDistance = 0;
     }
+
+
+	// ==================================================
+	//                  Should Execute
+	// ==================================================
+	@Override
+	public boolean shouldExecute() {
+    	if(this.host instanceof EntityCreatureTameable && ((EntityCreatureTameable)this.host).isTamed()) {
+    		return false;
+		}
+		return super.shouldExecute();
+	}
     
     
     // ==================================================
@@ -100,6 +114,9 @@ public class EntityAIFollowFuse extends EntityAIFollow {
 				fusionCreature.setSubspecies(fusionSubspecies != null ? fusionSubspecies.index : 0, true);
 				fusionCreature.setSizeScale(this.host.sizeScale + fusionPartnerCreature.sizeScale);
 				fusionCreature.setLevel(this.host.getLevel() + fusionPartnerCreature.getLevel());
+
+				// TODO Tamed fusion.
+
 				fusionCreature.firstSpawn = false;
 			}
 

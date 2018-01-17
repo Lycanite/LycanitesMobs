@@ -12,6 +12,7 @@ import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -172,7 +173,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
                     for(int h = 0; h <= Math.ceil(this.height); h++) {
                         Block block = this.getEntityWorld().getBlockState(this.getPosition().add(w, h, d)).getBlock();
                         if(block == Blocks.OBSIDIAN || block == Blocks.COBBLESTONE || block == Blocks.DIRT || block == Blocks.PLANKS || block == Blocks.GRAVEL || block == Blocks.SAND) {
-                            IBlockState blockState = Blocks.LAVA.getStateFromMeta(12);
+							IBlockState blockState = Blocks.FLOWING_LAVA.getDefaultState().withProperty(BlockLiquid.LEVEL, 5);
                             if(block == Blocks.OBSIDIAN)
                                 blockState = Blocks.LAVA.getDefaultState();
                             this.getEntityWorld().setBlockState(this.getPosition().add(w, h, d), blockState);

@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,16 +103,32 @@ public class ModelCustom extends ModelBase {
     //                Get Part Color
     // ==================================================
     /** Returns the coloring to be used for this part and layer. **/
-    public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy) {
+    public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
         if(layer == null || !(entity instanceof EntityCreatureBase))
-            return this.getBasePartColor(partName, entity, trophy);
+            return this.getBasePartColor(partName, entity, trophy, loop);
         return layer.getPartColor(partName, (EntityCreatureBase)entity, trophy);
     }
 
     /** Returns the coloring to be used for this part on the base layer. **/
-    public Vector4f getBasePartColor(String partName, Entity entity, boolean trophy) {
+    public Vector4f getBasePartColor(String partName, Entity entity, boolean trophy, float loop) {
         return new Vector4f(1, 1, 1, 1);
     }
+
+
+	// ==================================================
+	//              Get Part Texture Offset
+	// ==================================================
+	/** Returns the coloring to be used for this part and layer. **/
+	public Vector2f getPartTextureOffset(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
+		if(layer == null || !(entity instanceof EntityCreatureBase))
+			return this.getBaseTextureOffset(partName, entity, trophy, loop);
+		return layer.getTextureOffset(partName, (EntityCreatureBase)entity, trophy, loop);
+	}
+
+	/** Returns the coloring to be used for this part on the base layer. **/
+	public Vector2f getBaseTextureOffset(String partName, Entity entity, boolean trophy, float loop) {
+		return new Vector2f(1, 1);
+	}
     
     
     // ==================================================

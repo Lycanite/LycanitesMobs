@@ -397,7 +397,7 @@ public class ExtendedWorld extends WorldSavedData {
     /** Sends a packet to all clients updating their events for the provided world. **/
     public void updateAllClientsEvents() {
     	BlockPos pos = this.serverWorldEventPlayer != null ? this.serverWorldEventPlayer.origin : new BlockPos(0, 0, 0);
-		int level = this.serverWorldEventPlayer != null ? this.serverWorldEventPlayer.level : 1;
+		int level = this.serverWorldEventPlayer != null ? this.serverWorldEventPlayer.level : 0;
         MessageWorldEvent message = new MessageWorldEvent(this.getWorldEventName(), pos, level);
         LycanitesMobs.packetHandler.sendToDimension(message, this.world.provider.getDimension());
         for(MobEventPlayerServer mobEventPlayerServer : this.serverMobEventPlayers.values()) {

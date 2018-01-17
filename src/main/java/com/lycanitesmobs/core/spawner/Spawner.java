@@ -247,7 +247,7 @@ public class Spawner {
 
 	/** Returns true if this Spawner is considered enabled, this is checked first before major logging and more in depth checks are done in canSpawn(). **/
 	public boolean isEnabled(World world, EntityPlayer player) {
-		if(!this.enabled || SpawnInfo.disableAllSpawning) {
+		if(!this.enabled || SpawnInfo.disableAllSpawning || !world.getGameRules().getBoolean("doMobSpawning")) {
 			return false;
 		}
 

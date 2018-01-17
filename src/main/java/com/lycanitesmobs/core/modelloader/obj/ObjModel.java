@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.modelloader.obj;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,12 +43,12 @@ public abstract class ObjModel extends Model
     }
 
     public void renderGroup(ObjObject group) {
-        this.renderGroup(group, new Vector4f(1, 1, 1, 1));
+        this.renderGroup(group, new Vector4f(1, 1, 1, 1), new Vector2f(0, 0));
     }
 
-    public void renderGroup(ObjObject group, Vector4f color) {
+    public void renderGroup(ObjObject group, Vector4f color, Vector2f textureOffset) {
         //if(fireEvent(new ObjEvent(this, ObjEvent.EventType.PRE_RENDER_GROUP).setData(group, group)))
-            this.renderGroupImpl(group, color);
+            this.renderGroupImpl(group, color, textureOffset);
         //fireEvent(new ObjEvent(this, ObjEvent.EventType.POST_RENDER_GROUP).setData(group, group));
     }
     
@@ -65,7 +66,7 @@ public abstract class ObjModel extends Model
     
     protected abstract void renderGroupsImpl(String groupsName);
     
-    protected abstract void renderGroupImpl(ObjObject objGroup, Vector4f color);
+    protected abstract void renderGroupImpl(ObjObject objGroup, Vector4f color, Vector2f textureOffset);
 
     protected abstract void renderImpl();
     

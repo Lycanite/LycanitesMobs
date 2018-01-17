@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
@@ -63,6 +64,10 @@ public class LayerBase implements LayerRenderer<EntityCreatureBase> {
 
     public Vector4f getPartColor(String partName, EntityCreatureBase entity, boolean trophy) {
         return new Vector4f(1, 1, 1, 1);
+    }
+
+    public Vector2f getTextureOffset(String partName, EntityCreatureBase entity, boolean trophy, float loop) {
+        return new Vector2f(1, 1);
     }
 
     /** Called just before a part is being rendered with this layer. **/

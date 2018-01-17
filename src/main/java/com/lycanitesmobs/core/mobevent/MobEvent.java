@@ -261,8 +261,8 @@ public class MobEvent {
 				entityCreature.setTemporary(MobEventManager.getInstance().defaultMobDuration);
 			}
 
-			if(level > 0) {
-				entityCreature.setSubspecies(level, true);
+			if(level > 1) {
+				entityCreature.setSubspecies(level - 1, true);
 			}
 		}
     }

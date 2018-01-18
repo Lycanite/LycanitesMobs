@@ -19,6 +19,7 @@ import com.lycanitesmobs.infernomobs.worldgen.WorldGeneratorInferno;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -61,6 +63,11 @@ public class InfernoMobs extends Submod {
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
         GameRegistry.registerWorldGenerator(new WorldGeneratorInferno(), 0);
+	}
+
+	@Mod.EventHandler
+	public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		super.registerEntities(event);
 	}
 
 

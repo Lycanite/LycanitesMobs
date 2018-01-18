@@ -17,12 +17,14 @@ import com.lycanitesmobs.elementalmobs.info.AltarInfoCelestialGeonach;
 import com.lycanitesmobs.elementalmobs.info.AltarInfoLunarGrue;
 import com.lycanitesmobs.elementalmobs.item.*;
 import net.minecraft.block.BlockDispenser;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 
 @Mod(modid = ElementalMobs.modid, name = ElementalMobs.name, version = LycanitesMobs.version, dependencies = "required-after:" + LycanitesMobs.modid, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class ElementalMobs extends Submod {
@@ -58,6 +60,11 @@ public class ElementalMobs extends Submod {
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
+	}
+
+	@Mod.EventHandler
+	public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		super.registerEntities(event);
 	}
 
 

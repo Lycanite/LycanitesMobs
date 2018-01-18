@@ -74,10 +74,10 @@ public class EventListener {
         ObjectManager.registerPotions(event);
     }
 
-	// ========== Potions ==========
+	// ========== Entities ==========
 	@SubscribeEvent
 	public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
-		ObjectManager.registerEntities(event);
+		ObjectManager.registerEntities(event, LycanitesMobs.group);
 	}
 
 

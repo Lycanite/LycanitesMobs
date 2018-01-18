@@ -1,4 +1,4 @@
-package com.lycanitesmobs.core.dungeon;
+package com.lycanitesmobs.core.dungeon.definition;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

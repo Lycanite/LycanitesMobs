@@ -5,11 +5,11 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.item.equipment.EquipmentPartManager;
-import com.lycanitesmobs.swampmobs.CommonSubProxy;
-import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 
 public abstract class Submod {
 
@@ -58,6 +58,11 @@ public abstract class Submod {
 
 	/** All entities belonging to this submod are created here. **/
 	public abstract void createEntities();
+
+	/** Registers entities, must be called by submods themselves. **/
+	public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		ObjectManager.registerEntities(event, this.group);
+	}
 
 	/** Registers all models. **/
 	public abstract void registerModels();

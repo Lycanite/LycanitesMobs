@@ -317,9 +317,11 @@ public class ObjectManager {
     }
 
 	// ========== Entities ==========
-	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+	public static void registerEntities(RegistryEvent.Register<EntityEntry> event, GroupInfo group) {
 		for(MobInfo mobInfo : mobs.values()) {
-			LycanitesMobs.printDebug("", "Registering an entity: " + mobInfo.entityClass + " - " + mobInfo.getRegistryName());
+			if(mobInfo.group != group) {
+				continue;
+			}
 			EntityEntry entityEntry = new EntityEntry(mobInfo.entityClass, mobInfo.getRegistryName());
 			entityEntry.setRegistryName(mobInfo.getRegistryName());
 			event.getRegistry().register(entityEntry);

@@ -29,6 +29,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -36,6 +37,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -69,6 +71,11 @@ public class ArcticMobs extends Submod {
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
 		GameRegistry.registerWorldGenerator(new WorldGeneratorArctic(), 0);
+	}
+
+	@Mod.EventHandler
+	public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		super.registerEntities(event);
 	}
 
 

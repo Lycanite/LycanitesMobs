@@ -7,7 +7,10 @@ import com.google.gson.JsonParseException;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
 import com.lycanitesmobs.core.JSONLoader;
-import com.lycanitesmobs.core.spawner.Spawner;
+import com.lycanitesmobs.core.dungeon.definition.DungeonSchematic;
+import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
+import com.lycanitesmobs.core.dungeon.definition.DungeonStructure;
+import com.lycanitesmobs.core.dungeon.definition.DungeonTheme;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -188,6 +191,15 @@ public class DungeonManager extends JSONLoader {
 	}
 
 
+	/** Gets a Theme by name or null if none can be found. **/
+	public DungeonTheme getTheme(String name) {
+		if(!this.themes.containsKey(name)) {
+			return null;
+		}
+		return this.themes.get(name);
+	}
+
+
 	/** Adds a new Dungeon Structure to this Manager. **/
 	public void addStructure(DungeonStructure structure) {
 		if(this.structures.containsKey(structure.name)) {
@@ -209,6 +221,15 @@ public class DungeonManager extends JSONLoader {
 			return;
 		}
 		this.structures.remove(structure.name);
+	}
+
+
+	/** Gets a Structure by name or null if none can be found. **/
+	public DungeonStructure getStructure(String name) {
+		if(!this.structures.containsKey(name)) {
+			return null;
+		}
+		return this.structures.get(name);
 	}
 
 
@@ -236,6 +257,15 @@ public class DungeonManager extends JSONLoader {
 	}
 
 
+	/** Gets a Sector by name or null if none can be found. **/
+	public DungeonSector getSector(String name) {
+		if(!this.sectors.containsKey(name)) {
+			return null;
+		}
+		return this.sectors.get(name);
+	}
+
+
 	/** Adds a new Dungeon Schematic to this Manager. **/
 	public void addSchematic(DungeonSchematic schematic) {
 		if(this.schematics.containsKey(schematic.name)) {
@@ -257,5 +287,14 @@ public class DungeonManager extends JSONLoader {
 			return;
 		}
 		this.schematics.remove(schematic.name);
+	}
+
+
+	/** Gets a Schematic by name or null if none can be found. **/
+	public DungeonSchematic getSchematic(String name) {
+		if(!this.schematics.containsKey(name)) {
+			return null;
+		}
+		return this.schematics.get(name);
 	}
 }

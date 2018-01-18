@@ -1,16 +1,24 @@
 package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.config.ConfigSpawning;
-import com.lycanitesmobs.core.mobevent.*;
+import com.lycanitesmobs.core.dungeon.instance.DungeonInstance;
+import com.lycanitesmobs.core.mobevent.MobEvent;
+import com.lycanitesmobs.core.mobevent.MobEventManager;
+import com.lycanitesmobs.core.mobevent.MobEventPlayerClient;
+import com.lycanitesmobs.core.mobevent.MobEventPlayerServer;
 import com.lycanitesmobs.core.network.MessageMobEvent;
 import com.lycanitesmobs.core.network.MessageWorldEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class ExtendedWorld extends WorldSavedData {
 	public static String EXT_PROP_NAME = "LycanitesMobs";
@@ -39,6 +47,10 @@ public class ExtendedWorld extends WorldSavedData {
     private long worldEventLastStartedTime = 0;
 	private String worldEventName = "";
 	private int worldEventCount = -1;
+
+	// Dungeons:
+	public Map<ChunkPos, DungeonInstance> dungeons = new HashMap<>();
+
 	
 	// ==================================================
     //                   Get for World
@@ -412,6 +424,7 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	@Override
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		// Events:
 		if(nbtTagCompound.hasKey("WorldEventStartTargetTime"))  {
 			this.worldEventStartTargetTime = nbtTagCompound.getInteger("WorldEventStartTargetTime");
 		}
@@ -425,6 +438,18 @@ public class ExtendedWorld extends WorldSavedData {
 			this.worldEventCount = nbtTagCompound.getInteger("WorldEventCount");
 		}
 		// TODO Load all active mob events, not just the world event.
+
+		// Dungeons:
+		if(nbtTagCompound.hasKey("Dungeons"))  {
+			NBTTagList nbtDungeonList = nbtTagCompound.getTagList("Dungeons", 10);
+			for(int i = 0; i < nbtDungeonList.tagCount(); i++) {
+				NBTTagCompound dungeonNBT = nbtDungeonList.getCompoundTagAt(i);
+				DungeonInstance dungeonInstance = new DungeonInstance();
+				dungeonInstance.readFromNBT(dungeonNBT);
+				dungeonInstance.init(this.world);
+				this.dungeons.put(dungeonInstance.originChunk, dungeonInstance);
+			}
+		}
 	}
 	
 	
@@ -433,11 +458,22 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
+    	// Events:
 		nbtTagCompound.setLong("WorldEventStartTargetTime", this.worldEventStartTargetTime);
 		nbtTagCompound.setLong("WorldEventLastStartedTime", this.worldEventLastStartedTime);
     	nbtTagCompound.setString("WorldEventName", this.worldEventName);
     	nbtTagCompound.setInteger("WorldEventCount", this.worldEventCount);
     	// TODO Save all active mob events, not just the world event.
+
+		// Dungeons:
+		NBTTagList nbtDungeonList = new NBTTagList();
+		for(DungeonInstance dungeonInstance : this.dungeons.values()) {
+			NBTTagCompound dungeonNBT = new NBTTagCompound();
+			dungeonInstance.writeToNBT(dungeonNBT);
+			nbtDungeonList.appendTag(dungeonNBT);
+		}
+		nbtTagCompound.setTag("Dungeons", nbtDungeonList);
+
         return nbtTagCompound;
 	}
 	

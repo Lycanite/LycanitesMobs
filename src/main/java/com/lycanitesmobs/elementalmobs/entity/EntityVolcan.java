@@ -30,6 +30,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroupRock, IGroupFire {
 
@@ -134,6 +135,17 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
     public void onLivingUpdate() {
         super.onLivingUpdate();
 
+		// Burning Aura Attack:
+		if(!this.getEntityWorld().isRemote && ++this.updateTick % 40 == 0) {
+			List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
+			for(Object entityObj : aoeTargets) {
+				EntityLivingBase target = (EntityLivingBase)entityObj;
+				if(target != this && !(target instanceof IGroupFire) && this.canAttackClass(entityObj.getClass()) && this.canAttackEntity(target) && this.getEntitySenses().canSee(target)) {
+					target.setFire(2);
+				}
+			}
+		}
+
 		// Melt Blocks:
 		if(this.updateTick % 40 == 0 && this.volcanMeltRadius > 0 && !this.isTamed() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing")) {
 			int range = this.volcanMeltRadius;
@@ -141,7 +153,7 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
 				for (int d = -((int) Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++) {
 					for (int h = -((int) Math.ceil(this.height) + range); h <= Math.ceil(this.height); h++) {
 						Block block = this.getEntityWorld().getBlockState(this.getPosition().add(w, h, d)).getBlock();
-						if (block == Blocks.OBSIDIAN || block == Blocks.COBBLESTONE) {
+						if (block == Blocks.OBSIDIAN || block == Blocks.COBBLESTONE || block == Blocks.GRAVEL) {
 							IBlockState blockState = Blocks.FLOWING_LAVA.getDefaultState().withProperty(BlockLiquid.LEVEL, 5);
 							if (block == Blocks.OBSIDIAN)
 								blockState = Blocks.LAVA.getDefaultState();
@@ -223,9 +235,9 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("cactus") || type.equals("inWall")) return false;
-    	    return super.isDamageTypeApplicable(type);
+    	    return super.isDamageTypeApplicable(type, source, damage);
     }
 
     @Override

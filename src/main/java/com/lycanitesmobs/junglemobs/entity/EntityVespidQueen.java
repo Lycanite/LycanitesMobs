@@ -455,8 +455,8 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     }
     
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("inWall")) return false;
-    	return super.isDamageTypeApplicable(type);
+    	return super.isDamageTypeApplicable(type, source, damage);
     }
 }

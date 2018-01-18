@@ -2,6 +2,8 @@ package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
+import com.lycanitesmobs.core.renderer.LayerGlow;
+import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import com.lycanitesmobs.elementalmobs.entity.EntitySpectre;
 import net.minecraft.entity.Entity;
@@ -33,6 +35,16 @@ public class ModelSpectre extends ModelTemplateElemental {
 
 
 	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerGlow(renderer));
+	}
+
+
+	// ==================================================
 	//                Can Render Part
 	// ==================================================
 	/** Returns true if the part can be rendered on the base layer. **/
@@ -45,6 +57,17 @@ public class ModelSpectre extends ModelTemplateElemental {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+		if("effect02".equals(partName) || "effect03".equals(partName)) {
+			if(entity instanceof EntitySpectre) {
+				return ((EntitySpectre)entity).canPull();
+			}
+			return false;
+		}
+		return super.canRenderPart(partName, entity, layer, trophy);
 	}
 
 

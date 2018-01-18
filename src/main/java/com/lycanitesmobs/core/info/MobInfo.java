@@ -300,8 +300,8 @@ public class MobInfo {
 	 * @return
 	 */
 	public static MobInfo getFromId(String mobId) {
-		mobId = mobId.replace(":", "\\.");
-		String[] mobIdParts = mobId.toLowerCase().split("\\.");
+		mobId = mobId.replace(".", ":");
+		String[] mobIdParts = mobId.toLowerCase().split(":");
 		return getFromName(mobIdParts[mobIdParts.length - 1]);
 	}
 	
@@ -493,6 +493,10 @@ public class MobInfo {
     }
 
 	public String getRegistryName() {
+		return this.group.filename + ":" + this.name;
+	}
+
+	public String getLocalisationName() {
 		return this.group.filename + "." + this.name;
 	}
 
@@ -507,11 +511,11 @@ public class MobInfo {
     }
 	
 	public String getTitle() {
-		return I18n.translateToLocal("entity." + this.getRegistryName() + ".name");
+		return I18n.translateToLocal("entity." + this.getLocalisationName() + ".name");
 	}
 	
 	public String getDescription() {
-		return I18n.translateToLocal("entity." + this.getRegistryName() + ".description");
+		return I18n.translateToLocal("entity." + this.getLocalisationName() + ".description");
 	}
 	
 	

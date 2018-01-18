@@ -50,10 +50,10 @@ public class ModelTemplateElemental extends ModelObj {
         }
 
         // Effects:
-        if(partName.equals("effectouter") || partName.equals("effect01") || partName.equals("effect03")) {
+        if(partName.equals("effectouter")) {
             rotY += loop * 8;
         }
-        if(partName.equals("effectinner") || partName.equals("effect02") || partName.equals("effect04")) {
+        if(partName.equals("effectinner")) {
             rotY -= loop * 8;
         }
 

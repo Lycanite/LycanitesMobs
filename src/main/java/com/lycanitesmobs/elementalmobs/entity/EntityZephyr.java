@@ -170,10 +170,10 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
     
     // ========== Damage ==========
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if("lightning".equalsIgnoreCase(type))
     		return false;
-    	return super.isDamageTypeApplicable(type);
+    	return super.isDamageTypeApplicable(type, source, damage);
     }
     
     @Override

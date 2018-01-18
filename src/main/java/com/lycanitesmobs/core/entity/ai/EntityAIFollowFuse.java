@@ -7,6 +7,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.info.Subspecies;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -33,9 +34,9 @@ public class EntityAIFollowFuse extends EntityAIFollow {
 	// ==================================================
 	@Override
 	public boolean shouldExecute() {
-    	if(this.host instanceof EntityCreatureTameable && ((EntityCreatureTameable)this.host).isTamed()) {
+    	/*if(this.host instanceof EntityCreatureTameable && ((EntityCreatureTameable)this.host).isTamed()) {
     		return false;
-		}
+		}*/
 		return super.shouldExecute();
 	}
     
@@ -94,39 +95,7 @@ public class EntityAIFollowFuse extends EntityAIFollow {
 			if(fusionClass == null) {
 				return;
 			}
-
-			Entity fusionEntity = null;
-			try {
-				fusionEntity = (Entity)fusionClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{this.host.getEntityWorld()});
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-			if(fusionEntity == null) {
-				return;
-			}
-
-			// Creature Base:
-			if(fusionEntity instanceof EntityCreatureBase && followTarget instanceof EntityCreatureBase) {
-				EntityCreatureBase fusionCreature = (EntityCreatureBase)fusionEntity;
-				EntityCreatureBase fusionPartnerCreature = (EntityCreatureBase)followTarget;
-				Subspecies fusionSubspecies = fusionCreature.mobInfo.getChildSubspecies(this.host, this.host.getSubspeciesIndex(), fusionPartnerCreature.getSubspecies());
-				fusionCreature.setSubspecies(fusionSubspecies != null ? fusionSubspecies.index : 0, true);
-				fusionCreature.setSizeScale(this.host.sizeScale + fusionPartnerCreature.sizeScale);
-				fusionCreature.setLevel(this.host.getLevel() + fusionPartnerCreature.getLevel());
-
-				// TODO Tamed fusion.
-
-				fusionCreature.firstSpawn = false;
-			}
-
-			// Fusion Entity:
-			fusionEntity.setLocationAndAngles(this.host.posX, this.host.posY, this.host.posZ, this.host.rotationYaw, this.host.rotationPitch);
-			this.host.getEntityWorld().spawnEntity(fusionEntity);
-
-			// Remove Parts:
-			this.host.setDead();
-			followTarget.setDead();
+			this.host.transform(fusionClass, followTarget, true);
 		}
 	}
 }

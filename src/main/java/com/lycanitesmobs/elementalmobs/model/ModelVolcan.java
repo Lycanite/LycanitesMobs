@@ -1,6 +1,8 @@
 package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
+import com.lycanitesmobs.core.renderer.LayerGlow;
+import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -30,12 +32,23 @@ public class ModelVolcan extends ModelTemplateElemental {
 
 
 	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerGlow(renderer));
+	}
+
+
+	// ==================================================
 	//                 Animate Part
 	// ==================================================
 	@Override
 	public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
 		super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
 
+		// Hands:
 		if(partName.contains("hand")) {
 			float angleX = 0;
 			float angleY = -90f;
@@ -45,6 +58,14 @@ public class ModelVolcan extends ModelTemplateElemental {
 				angleZ = -angleZ;
 			}
 			this.angle(loop * 10F, angleX, angleY, angleZ);
+		}
+
+		// Effects:
+		if(partName.equals("effect01") || partName.equals("effect03")) {
+			this.rotate(0, loop * 8, 0);
+		}
+		if(partName.equals("effect02") || partName.equals("effect04")) {
+			this.rotate(0, loop * -8, 0);
 		}
 	}
 }

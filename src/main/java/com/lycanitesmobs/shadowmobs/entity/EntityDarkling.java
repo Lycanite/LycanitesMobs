@@ -25,6 +25,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -298,10 +299,10 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
   	//                     Immunities
   	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("inWall"))
             return false;
-        return super.isDamageTypeApplicable(type);
+        return super.isDamageTypeApplicable(type, source, damage);
     }
 
     @Override

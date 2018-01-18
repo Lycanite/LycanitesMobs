@@ -67,7 +67,7 @@ public class LayerBase implements LayerRenderer<EntityCreatureBase> {
     }
 
     public Vector2f getTextureOffset(String partName, EntityCreatureBase entity, boolean trophy, float loop) {
-        return new Vector2f(1, 1);
+        return new Vector2f(0, 0);
     }
 
     /** Called just before a part is being rendered with this layer. **/

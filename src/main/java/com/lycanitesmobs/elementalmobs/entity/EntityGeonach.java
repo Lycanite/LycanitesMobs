@@ -33,6 +33,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	private EntityAIAttackMelee meleeAttackAI;
 	
 	public int geonachBlockBreakRadius = 0;
+	public float fireDamageAbsorbed = 0;
     
     // ==================================================
  	//                    Constructor
@@ -129,21 +130,29 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
-        if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")) {
-	    	// Random Charging:
-	    	if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
-	    		if(this.posY - 1 > this.getAttackTarget().posY)
-	    			this.leap(6.0F, -1.0D, this.getAttackTarget());
-	    		else if(this.posY + 1 < this.getAttackTarget().posY)
-	    			this.leap(6.0F, 1.0D, this.getAttackTarget());
-	    		else
-	    			this.leap(6.0F, 0D, this.getAttackTarget());
-	    		if(this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.geonachBlockBreakRadius > -1 && !this.isTamed()) {
-		    		this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true, this.geonachBlockBreakRadius);
-	    		}
-	    	}
-        }
+
+        if(!this.getEntityWorld().isRemote) {
+			if (this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")){
+				// Random Charging:
+				if (this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
+					if (this.posY - 1 > this.getAttackTarget().posY)
+						this.leap(6.0F, -1.0D, this.getAttackTarget());
+					else if (this.posY + 1 < this.getAttackTarget().posY)
+						this.leap(6.0F, 1.0D, this.getAttackTarget());
+					else
+						this.leap(6.0F, 0D, this.getAttackTarget());
+					if (this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.geonachBlockBreakRadius > -1 && !this.isTamed()) {
+						this.destroyArea((int) this.posX, (int) this.posY, (int) this.posZ, 10, true, this.geonachBlockBreakRadius);
+					}
+				}
+			}
+			if(this.updateTick % 40 == 0 && this.isInLava()) {
+				this.transform(EntityVolcan.class, null, false);
+			}
+			if(this.fireDamageAbsorbed >= 10) {
+				this.transform(EntityVolcan.class, null, false);
+			}
+		}
 
         // Particles:
         if(this.getEntityWorld().isRemote)
@@ -248,9 +257,14 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
-    	if(type.equals("cactus") || type.equals("inWall")) return false;
-    	    return super.isDamageTypeApplicable(type);
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
+    	if(type.equals("cactus") || type.equals("inWall"))
+    		return false;
+    	if(source.isFireDamage()) {
+    		this.fireDamageAbsorbed += damage;
+    		return false;
+		}
+		return super.isDamageTypeApplicable(type, source, damage);
     }
 
     @Override
@@ -262,7 +276,10 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     }
     
     @Override
-    public boolean canBurn() { return false; }
+    public boolean canBurn() {
+    	// Geonach can now burn in order to heat up and transform into Volcans.
+    	return true;
+    }
 
 
 	// ==================================================

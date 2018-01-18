@@ -116,7 +116,7 @@ public class TessellatorModel extends ObjModel
                 Vertex v = vertices[indices[i + iv]];
                 vertexBuffer
                         .pos(v.getPos().x, v.getPos().y, v.getPos().z)
-                        .tex(v.getTexCoords().x + textureOffset.getX(), 1f - v.getTexCoords().y + textureOffset.getY())
+                        .tex(v.getTexCoords().x + (textureOffset.getX() * 0.01f), 1f - (v.getTexCoords().y + textureOffset.getY()))
                         .color(color.x, color.y, color.z, color.w)
                         .normal(normal.x, normal.y, normal.z)
                         //.normal(v.getFaceNormal().x, v.getFaceNormal().y, v.getFaceNormal().z)

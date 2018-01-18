@@ -127,7 +127,7 @@ public class ModelCustom extends ModelBase {
 
 	/** Returns the coloring to be used for this part on the base layer. **/
 	public Vector2f getBaseTextureOffset(String partName, Entity entity, boolean trophy, float loop) {
-		return new Vector2f(1, 1);
+		return new Vector2f(0, 0);
 	}
     
     

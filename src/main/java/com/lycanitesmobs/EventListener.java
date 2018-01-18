@@ -43,6 +43,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 
 public class EventListener {
 
@@ -72,6 +73,12 @@ public class EventListener {
     public void registerPotions(RegistryEvent.Register<Potion> event) {
         ObjectManager.registerPotions(event);
     }
+
+	// ========== Potions ==========
+	@SubscribeEvent
+	public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		ObjectManager.registerEntities(event);
+	}
 
 
     // ==================================================
@@ -334,7 +341,7 @@ public class EventListener {
 
 				// Copy Mount Immunities to Rider:
 				EntityCreatureRideable creatureRideable = (EntityCreatureRideable)event.getEntityLiving().getRidingEntity();
-				if(!creatureRideable.isDamageTypeApplicable(event.getSource().damageType)) {
+				if(!creatureRideable.isDamageTypeApplicable(event.getSource().damageType, event.getSource(), event.getAmount())) {
 					event.setAmount(0);
 					event.setCanceled(true);
 					return;

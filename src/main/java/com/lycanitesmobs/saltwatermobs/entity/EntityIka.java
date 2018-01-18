@@ -169,9 +169,9 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("inWall")) return false;
-        return super.isDamageTypeApplicable(type);
+        return super.isDamageTypeApplicable(type, source, damage);
     }
 
     @Override

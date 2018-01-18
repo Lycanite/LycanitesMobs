@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -156,9 +157,9 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("inWall")) return false;
-    	return super.isDamageTypeApplicable(type);
+    	return super.isDamageTypeApplicable(type, source, damage);
     }
     
     @Override

@@ -1,15 +1,17 @@
 package com.lycanitesmobs.elementalmobs.model;
 
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelObjOld;
+import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
+import com.lycanitesmobs.core.renderer.LayerEyes;
+import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Vector2f;
+
 @SideOnly(Side.CLIENT)
-public class ModelCinder extends ModelObjOld {
+public class ModelCinder extends ModelTemplateElemental {
 	
 	// ==================================================
   	//                    Constructors
@@ -19,75 +21,34 @@ public class ModelCinder extends ModelObjOld {
     }
     
     public ModelCinder(float shadowSize) {
-    	// Load Model:
-    	this.initModel("cinder", ElementalMobs.instance.group, "entity/cinder");
-    	
 
+		// Load Model:
+		this.initModel("cinder", ElementalMobs.instance.group, "entity/cinder");
 
-    	
-    	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.6F, 0.2F);
-    	setPartCenter("body", 0F, 1.6F, 0.2F);
-    	setPartCenter("leftarm", 0.45F, 1.4F, 0F);
-    	setPartCenter("rightarm", -0.45F, 1.4F, 0F);
-    	
-    	setPartCenter("outereffect", 0F, 0.6F, 0F);
-    	setPartCenter("innereffect", 0F, 0.6F, 0F);
-
-        // Trophy:
-        this.trophyScale = 1.2F;
-        this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
+		// Trophy:
+		this.trophyScale = 1.2F;
+		this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
-    
-    
-    // ==================================================
-   	//                 Animate Part
-   	// ==================================================
-    float maxLeg = 0F;
-    @Override
-    public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
-    	super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
-    	float pi = (float)Math.PI;
-    	float posX = 0F;
-    	float posY = 0F;
-    	float posZ = 0F;
-    	float angleX = 0F;
-    	float angleY = 0F;
-    	float angleZ = 0F;
-    	float rotation = 0F;
-    	float rotX = 0F;
-    	float rotY = 0F;
-    	float rotZ = 0F;
-    	
-    	// Idle:
-    	if(partName.equals("leftarm")) {
-	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-    	if(partName.equals("rightarm")) {
-	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-		float bob = -MathHelper.sin(loop * 0.1F) * 0.3F;
-		posY += bob;
-    	
-    	// Effects:
-    	if(partName.equals("outereffect"))
-    		rotY += loop * 16;
-    	if(partName.equals("innereffect"))
-    		rotY -= loop * 16;
-				
-		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("leftarm"))
-	    		rotate(0.0F, -25.0F, 0.0F);
-	    	if(partName.equals("rightarm"))
-	    		rotate(0.0F, 25.0F, 0.0F);
+
+
+	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerEyes(renderer));
+	}
+
+
+	// ==================================================
+	//              Get Part Texture Offset
+	// ==================================================
+	@Override
+	public Vector2f getBaseTextureOffset(String partName, Entity entity, boolean trophy, float loop) {
+    	if(partName.contains("effect")) {
+    		return super.getBaseTextureOffset(partName, entity, trophy, loop);
 		}
-		
-    	// Apply Animations:
-    	rotate(rotation, angleX, angleY, angleZ);
-    	rotate(rotX, rotY, rotZ);
-    	translate(posX, posY, posZ);
-    }
+		return new Vector2f(loop, 0);
+	}
 }

@@ -159,7 +159,7 @@ public class EntityFear extends EntityCreatureBase {
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	return false;
     }
     

@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -131,9 +132,9 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("cactus")) return false;
-    	return super.isDamageTypeApplicable(type);
+    	return super.isDamageTypeApplicable(type, source, damage);
     }
     
     @Override

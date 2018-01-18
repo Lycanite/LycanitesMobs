@@ -177,19 +177,14 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
    	//                     Immunities
    	// ==================================================
 	// ========== Damage ==========
-	@Override
-	public boolean isEntityInvulnerable(DamageSource source) {
+    @Override
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
 		if(source.isExplosion()) {
-			this.heal(2);
+			this.heal(damage);
 			return true;
 		}
-		return super.isEntityInvulnerable(source);
-	}
-
-    @Override
-    public boolean isDamageTypeApplicable(String type) {
     	if(type.equals("cactus") || type.equals("inWall")) return false;
-    	    return super.isDamageTypeApplicable(type);
+    	    return super.isDamageTypeApplicable(type, source, damage);
     }
 
     @Override

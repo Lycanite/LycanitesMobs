@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class EntityCinder extends EntityCreatureTameable implements IMob, IGroupFire, IFusable {
+
+	public float inWallDamageAbsorbed = 0;
     
     // ==================================================
  	//                    Constructor
@@ -103,13 +105,21 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+        // Suffocation Transform:
+		if(!this.getEntityWorld().isRemote) {
+			if(this.inWallDamageAbsorbed >= 10) {
+				this.transform(EntityVolcan.class, null, false);
+			}
+		}
         
         // Particles:
-        if(this.getEntityWorld().isRemote)
-	        for(int i = 0; i < 2; ++i) {
-	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	            this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	        }
+        if(this.getEntityWorld().isRemote) {
+			for (int i = 0; i < 2; ++i) {
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0.0D, 0.0D, 0.0D);
+			}
+		}
     }
     
     
@@ -206,6 +216,15 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
    	//                     Immunities
    	// ==================================================
+	@Override
+	public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
+		if(type.equals("inWall")) {
+			this.inWallDamageAbsorbed += damage;
+			return false;
+		}
+		return super.isDamageTypeApplicable(type, source, damage);
+	}
+
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(ObjectManager.getPotionEffect("Penetration") != null)

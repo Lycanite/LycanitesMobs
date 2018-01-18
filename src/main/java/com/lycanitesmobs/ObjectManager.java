@@ -31,6 +31,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -310,10 +311,20 @@ public class ObjectManager {
         }
     }
 
-    // ========== Items ==========
+    // ========== Potions ==========
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
         event.getRegistry().registerAll(potionEffects.values().toArray(new Potion[potionEffects.size()]));
     }
+
+	// ========== Entities ==========
+	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+		for(MobInfo mobInfo : mobs.values()) {
+			LycanitesMobs.printDebug("", "Registering an entity: " + mobInfo.entityClass + " - " + mobInfo.getRegistryName());
+			EntityEntry entityEntry = new EntityEntry(mobInfo.entityClass, mobInfo.getRegistryName());
+			entityEntry.setRegistryName(mobInfo.getRegistryName());
+			event.getRegistry().register(entityEntry);
+		}
+	}
 
 
     // ==================================================

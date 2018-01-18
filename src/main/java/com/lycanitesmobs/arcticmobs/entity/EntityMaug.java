@@ -22,6 +22,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -272,9 +273,9 @@ public class EntityMaug extends EntityCreatureRideable implements IGroupPredator
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("ooze")) return false;
-        return super.isDamageTypeApplicable(type);
+        return super.isDamageTypeApplicable(type, source, damage);
     }
 
     @Override

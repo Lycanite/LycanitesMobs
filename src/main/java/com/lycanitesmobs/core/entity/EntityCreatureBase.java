@@ -1325,6 +1325,113 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
 
 
+	// ==================================================
+	//                    Transform
+	// ==================================================
+	/**
+	 * Transforms this entity into a new entity instantiated from the given class.
+	 * transformClass The entity class to transform into.
+	 * partner If not null, various stats, etc will be shared from this partner.
+	 * destroyPartner If true and a partner is set, the partner will be removed.
+	 * return The transformed entity instance. Null on failure (usually when an invalid class is provided).
+	 */
+	public EntityLivingBase transform(Class transformClass, Entity partner, boolean destroyPartner) {
+		EntityLivingBase transformedEntity = null;
+		try {
+			transformedEntity = (EntityLivingBase)transformClass.getConstructor(new Class[]{World.class}).newInstance(this.getEntityWorld());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(transformedEntity == null) {
+			return null;
+		}
+
+		// Creature Base:
+		if(transformedEntity instanceof EntityCreatureBase) {
+			EntityCreatureBase transformedCreature = (EntityCreatureBase) transformedEntity;
+			transformedCreature.firstSpawn = false;
+
+			// Temporary:
+			if (this.isTemporary) {
+				transformedCreature.setTemporary(this.temporaryDuration);
+			}
+
+			// Minion:
+			if(this.isMinion()) {
+				transformedCreature.setMinion(true);
+			}
+
+			// Master Target:
+			if (this.hasMaster()) {
+				transformedCreature.setMasterTarget(this.getMasterTarget());
+			}
+
+			// With Partner:
+			if (partner != null && partner instanceof EntityCreatureBase) {
+				EntityCreatureBase partnerCreature = (EntityCreatureBase) partner;
+				Subspecies fusionSubspecies = transformedCreature.mobInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partnerCreature.getSubspecies());
+				transformedCreature.setSubspecies(fusionSubspecies != null ? fusionSubspecies.index : 0, true);
+				transformedCreature.setSizeScale(this.sizeScale + partnerCreature.sizeScale);
+				transformedCreature.setLevel(this.getLevel() + partnerCreature.getLevel());
+
+				// Tamed:
+				if (transformedCreature instanceof EntityCreatureTameable) {
+					EntityCreatureTameable fusionTameable = (EntityCreatureTameable) transformedCreature;
+					if (this.getOwner() != null && this.getOwner() instanceof EntityPlayer) {
+						fusionTameable.setPlayerOwner((EntityPlayer) this.getOwner());
+					}
+
+					// Tamed Partner:
+					else if (partnerCreature.getOwner() != null && partnerCreature.getOwner() instanceof EntityPlayer) {
+						fusionTameable.setPlayerOwner((EntityPlayer) partnerCreature.getOwner());
+
+						// Temporary:
+						if (partnerCreature.isTemporary) {
+							transformedCreature.setTemporary(partnerCreature.temporaryDuration);
+						}
+
+						// Minion:
+						transformedCreature.setMinion(partnerCreature.isMinion());
+
+						// Master Target:
+						if (partnerCreature.hasMaster()) {
+							transformedCreature.setMasterTarget(partnerCreature.getMasterTarget());
+						}
+					}
+				}
+			}
+
+			// Without Partner:
+			else {
+				transformedCreature.setSubspecies(this.getSubspeciesIndex(), true);
+				transformedCreature.setSizeScale(this.sizeScale);
+				transformedCreature.setLevel(this.getLevel());
+
+				// Tamed:
+				if (transformedCreature instanceof EntityCreatureTameable) {
+					EntityCreatureTameable fusionTameable = (EntityCreatureTameable) transformedCreature;
+					if (this.getOwner() != null && this.getOwner() instanceof EntityPlayer) {
+						fusionTameable.setPlayerOwner((EntityPlayer) this.getOwner());
+					}
+				}
+			}
+		}
+
+		// Transformed Entity:
+		transformedEntity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+		this.getEntityWorld().spawnEntity(transformedEntity);
+
+		// Remove Parts:
+		this.setDead();
+		if(partner != null && destroyPartner) {
+			partner.setDead();
+		}
+
+		return transformedEntity;
+	}
+
+
     // ==================================================
   	//                     Updates
   	// ==================================================
@@ -2431,7 +2538,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean attackEntityFrom(DamageSource damageSrc, float damage) {
     	if(this.getEntityWorld().isRemote) return false;
         if(this.isEntityInvulnerable(damageSrc)) return false;
-        if(!this.isDamageTypeApplicable(damageSrc.getDamageType())) return false;
+        if(!this.isDamageTypeApplicable(damageSrc.getDamageType(), damageSrc, damage)) return false;
         if(!this.isDamageEntityApplicable(damageSrc.getTrueSource())) return false;
         damage *= this.getDamageModifier(damageSrc);
         if(damageSrc.getTrueSource() instanceof EntityPlayer)
@@ -3359,7 +3466,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
 
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
-    public boolean isDamageTypeApplicable(String type) {
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(("inWall".equals(type) || "cactus".equals(type)) && (this.getSubspeciesIndex() >= 3 || this.isBoss()))
             return false;
         return true;

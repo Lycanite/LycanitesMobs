@@ -13,7 +13,10 @@ public class DungeonLayout {
 	public DungeonInstance dungeonInstance;
 
 	/** A list of generated Sector Instances. **/
-	public Map<ChunkPos, SectorInstance> sectors = new HashMap<>();
+	public List<SectorInstance> sectors = new ArrayList<>();
+
+	/** A map that stores all sectors in each ChunkPos. Used for finding nearby sectors when collision detecting and when world generating. **/
+	public Map<ChunkPos, List<SectorInstance>> sectorChunkMap = new HashMap<>();
 
 	/** The starting connector to use, this should have no parent Sector Instance assigned. **/
 	public SectorConnector originConnector;
@@ -37,6 +40,8 @@ public class DungeonLayout {
 	public void generate(Random random) {
 		LycanitesMobs.printDebug("Dungeon", "Starting Dungeon Instance Generation...");
 		this.sectors.clear();
+		this.sectorChunkMap.clear();
+		this.openConnectors.clear();
 
 		// Start:
 		SectorInstance entranceSector = this.start(random);
@@ -82,9 +87,11 @@ public class DungeonLayout {
 	 * @return The generated entrance sector.
 	 */
 	public SectorInstance start(Random random) {
-		this.originConnector = new SectorConnector(this.dungeonInstance.originPos, null);
+		this.originConnector = new SectorConnector(this.dungeonInstance.originPos, null, 90 * random.nextInt(4));
 		DungeonSector entranceDungeonSector = this.dungeonInstance.schematic.getRandomSector("entrance", random);
-		SectorInstance entranceSector = new SectorInstance(this, entranceDungeonSector, this.originConnector, random);
+		SectorInstance entranceSector = new SectorInstance(this, entranceDungeonSector, random);
+		entranceSector.init(this.originConnector, random);
+		this.sectors.add(entranceSector);
 
 		return entranceSector;
 	}
@@ -102,8 +109,8 @@ public class DungeonLayout {
 		SectorInstance lastSector = startSector;
 		for(int i = 0; i < length; i++) {
 			DungeonSector dungeonSector = this.dungeonInstance.schematic.getRandomSector("entrance", random);
-			SectorInstance sector = new SectorInstance(this, dungeonSector, lastSector.getRandomConnector(random), random);
-			// TODO Get all connectors, shuffle and use the first valid connector.
+			SectorInstance sectorInstance = new SectorInstance(this, dungeonSector, random);
+			sectorInstance.init(lastSector.getRandomConnector(random, sectorInstance), random);
 		}
 
 		return generatedSectors.get(generatedSectors.size() - 1);
@@ -122,5 +129,21 @@ public class DungeonLayout {
 		// TODO Create Stem Generation.
 
 		return generatedSectors;
+	}
+
+
+	/**
+	 * Adds a Sector Instance to this Dungeon Layout for reference. Also adds all open Sector Connectors that it has.
+	 * @param sectorInstance The Sector Instance to add.
+	 */
+	public void addSectorInstance(SectorInstance sectorInstance) {
+		this.sectors.add(sectorInstance);
+		for(ChunkPos chunkPos : sectorInstance.getChunkPositions()) {
+			if(!this.sectorChunkMap.containsKey(chunkPos)) {
+				this.sectorChunkMap.put(chunkPos, new ArrayList<>());
+			}
+			this.sectorChunkMap.get(chunkPos).add(sectorInstance);
+		}
+		this.openConnectors.addAll(sectorInstance.getOpenConnectors(null));
 	}
 }

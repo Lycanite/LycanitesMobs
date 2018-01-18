@@ -63,6 +63,30 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/geonach/tame", "stream": false}]
     },
+    "entity.volcan.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/volcan/say", "stream": false}]
+    },
+    "entity.volcan.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/volcan/hurt", "stream": false}]
+    },
+    "entity.volcan.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/volcan/death", "stream": false}]
+    },
+    "entity.volcan.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/volcan/attack", "stream": false}]
+    },
+    "entity.volcan.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/volcan/beg", "stream": false}]
+    },
+    "entity.volcan.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/volcan/tame", "stream": false}]
+    },
 	"entity.zephyr.say": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/zephyr/say", "stream": false}]

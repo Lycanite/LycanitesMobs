@@ -447,7 +447,7 @@ public class ExtendedWorld extends WorldSavedData {
 				DungeonInstance dungeonInstance = new DungeonInstance();
 				dungeonInstance.readFromNBT(dungeonNBT);
 				dungeonInstance.init(this.world);
-				this.dungeons.put(dungeonInstance.originChunk, dungeonInstance);
+				this.dungeons.put(new ChunkPos(dungeonInstance.originPos), dungeonInstance);
 			}
 		}
 	}

@@ -23,9 +23,6 @@ public class DungeonInstance {
 	/** The origin block position of this dungeon where it begins building from. **/
 	public BlockPos originPos;
 
-	/** The origin chunk position of this dungeon where it begins building from. **/
-	public ChunkPos originChunk;
-
 	/** The world that the dungeon should build in. **/
 	public World world;
 
@@ -46,7 +43,6 @@ public class DungeonInstance {
 	 */
 	public void setOrigin(BlockPos blockPos, ChunkPos chunkPos) {
 		this.originPos = blockPos;
-		this.originChunk = chunkPos;
 	}
 
 
@@ -56,7 +52,7 @@ public class DungeonInstance {
 	 */
 	public void init(World world) {
 		this.world = world;
-		if(this.complete || this.world == null || this.originPos == null || this.originChunk == null) {
+		if(this.complete || this.world == null || this.originPos == null) {
 			return;
 		}
 
@@ -106,8 +102,6 @@ public class DungeonInstance {
 		}
 		int[] originPos = nbtTagCompound.getIntArray("OriginPos");
 		this.originPos = new BlockPos(originPos[0], originPos[1], originPos[2]);
-		int[] originChunk = nbtTagCompound.getIntArray("OriginChunk");
-		this.originChunk = new ChunkPos(originChunk[0], originChunk[1]);
 	}
 
 	/**
@@ -120,7 +114,6 @@ public class DungeonInstance {
 		nbtTagCompound.setLong("Seed", this.seed);
 		nbtTagCompound.setBoolean("Complete", this.complete);
 		nbtTagCompound.setIntArray("OriginPos", new int[] {this.originPos.getX(), this.originPos.getY(), this.originPos.getZ()});
-		nbtTagCompound.setIntArray("OriginChunk", new int[] {this.originChunk.x, this.originChunk.z});
 		return nbtTagCompound;
 	}
 }

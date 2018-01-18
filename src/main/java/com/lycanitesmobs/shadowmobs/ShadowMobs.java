@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -62,7 +63,7 @@ public class ShadowMobs extends Submod {
 		super.postInit(event);
 	}
 
-	@Mod.EventHandler
+	@SubscribeEvent
 	public void registerEntities(RegistryEvent.Register<EntityEntry> event) {
 		super.registerEntities(event);
 	}

@@ -18,6 +18,9 @@ public class DungeonSector {
     /** The type of sector that this is. Can be: room (default), corridor, stairs or entrance. **/
     public String type = "room";
 
+	/** The weight to use for this sector when selecting randomly. **/
+	public int weight = 8;
+
 	/** If true, this sector will use a new theme selected from the dungeon. **/
 	public boolean changeTheme = false;
 
@@ -29,9 +32,6 @@ public class DungeonSector {
 
 	/** Sets a padding around this sector to count towards collision. This is automatically increased by negative segment layers as needed. **/
 	public Vec3i padding = new Vec3i(0, 0, 0);
-
-	/** The weight to use for this sector when selecting randomly. **/
-	public int weight = 8;
 
     /** A list of Structures used by this sector. **/
     public List<String> structures = new ArrayList<>();

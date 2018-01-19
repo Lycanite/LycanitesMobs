@@ -11,10 +11,15 @@ import com.lycanitesmobs.core.dungeon.definition.DungeonSchematic;
 import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
 import com.lycanitesmobs.core.dungeon.definition.DungeonStructure;
 import com.lycanitesmobs.core.dungeon.definition.DungeonTheme;
+import com.lycanitesmobs.core.dungeon.instance.DungeonInstance;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DungeonManager extends JSONLoader {
@@ -26,6 +31,8 @@ public class DungeonManager extends JSONLoader {
 	public Map<String, DungeonStructure> structures = new HashMap<>();
 	public Map<String, DungeonSector> sectors = new HashMap<>();
 	public Map<String, DungeonSchematic> schematics = new HashMap<>();
+
+	public Map<Integer, List<DungeonInstance>> dungeonInstances = new HashMap<>();
 
 
 	/** Returns the main DungeonManager INSTANCE or creates it and returns it. **/
@@ -40,7 +47,7 @@ public class DungeonManager extends JSONLoader {
 	/** Loads all JSON Dungeons. **/
 	public void loadAllFromJSON() {
 		// Themes:
-		Map<String, JsonObject> themeJSONs = this.loadAllFromJSON("themes");
+		Map<String, JsonObject> themeJSONs = this.loadDungeonsFromJSON("themes");
 		LycanitesMobs.printDebug("", "Loading " + themeJSONs.size() + " JSON Dungeon Themes...");
 		for(String jsonName : themeJSONs.keySet()) {
 			try {
@@ -63,7 +70,7 @@ public class DungeonManager extends JSONLoader {
 
 
 		// Structures:
-		Map<String, JsonObject> structureJSONs = this.loadAllFromJSON("structures");
+		Map<String, JsonObject> structureJSONs = this.loadDungeonsFromJSON("structures");
 		LycanitesMobs.printDebug("", "Loading " + structureJSONs.size() + " JSON Dungeon Structures...");
 		for(String jsonName : structureJSONs.keySet()) {
 			try {
@@ -86,7 +93,7 @@ public class DungeonManager extends JSONLoader {
 
 
 		// Sectors:
-		Map<String, JsonObject> sectorJSONs = this.loadAllFromJSON("sectors");
+		Map<String, JsonObject> sectorJSONs = this.loadDungeonsFromJSON("sectors");
 		LycanitesMobs.printDebug("", "Loading " + sectorJSONs.size() + " JSON Dungeon Sectors...");
 		for(String jsonName : sectorJSONs.keySet()) {
 			try {
@@ -109,7 +116,7 @@ public class DungeonManager extends JSONLoader {
 
 
 		// Schematics:
-		Map<String, JsonObject> schematicJSONs = this.loadAllFromJSON("schematics");
+		Map<String, JsonObject> schematicJSONs = this.loadDungeonsFromJSON("schematics");
 		LycanitesMobs.printDebug("", "Loading " + schematicJSONs.size() + " JSON Dungeon Schematics...");
 		for(String jsonName : schematicJSONs.keySet()) {
 			try {
@@ -133,7 +140,7 @@ public class DungeonManager extends JSONLoader {
 
 
 	/** Loads all JSON Dungeons. **/
-	public Map<String, JsonObject> loadAllFromJSON(String type) {
+	public Map<String, JsonObject> loadDungeonsFromJSON(String type) {
 		LycanitesMobs.printDebug("Dungeon", "Loading JSON Dungeons!");
 		Gson gson = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 		Map<String, JsonObject> spawnerJSONs = new HashMap<>();
@@ -296,5 +303,44 @@ public class DungeonManager extends JSONLoader {
 			return null;
 		}
 		return this.schematics.get(name);
+	}
+
+
+	/**
+	 * Adds a Dungeon Instance to this manager where it can be found for generation, etc.
+	 * @param dungeonInstance The Dungeon Instance to add.
+	 * @param world The World that the dungeon belongs to.
+	 */
+	public void addDungeonInstance(DungeonInstance dungeonInstance, World world) {
+		int dimensionId = world.provider.getDimension();
+		if(!this.dungeonInstances.containsKey(dimensionId)) {
+			this.dungeonInstances.put(dimensionId, new ArrayList<>());
+		}
+		if(!this.dungeonInstances.get(dimensionId).contains(dungeonInstance)) {
+			this.dungeonInstances.get(dimensionId).add(dungeonInstance);
+		}
+	}
+
+
+	/**
+	 * Returns all Dungeon Instances loaded for the provided world within range of the chunk position.
+	 * @param world The world to search in.
+	 * @param chunkPos The chunk position to search around.
+	 * @param range The range from the chunk position.
+	 * @return A list of Dungeon Instances found.
+	 */
+	public List<DungeonInstance> getNearbyDungeonInstances(World world, ChunkPos chunkPos, int range) {
+		List<DungeonInstance> nearbyDungeons = new ArrayList<>();
+		if(!this.dungeonInstances.containsKey(world.provider.getDimension())) {
+			return nearbyDungeons;
+		}
+
+		for(DungeonInstance dungeonInstance : this.dungeonInstances.get(world.provider.getDimension())) {
+			if(dungeonInstance.isChunkPosWithin(chunkPos, range)) {
+				nearbyDungeons.add(dungeonInstance);
+			}
+		}
+
+		return nearbyDungeons;
 	}
 }

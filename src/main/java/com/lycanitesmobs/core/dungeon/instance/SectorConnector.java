@@ -3,6 +3,9 @@ package com.lycanitesmobs.core.dungeon.instance;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SectorConnector {
 	/** Sector Connectors link together one sector to another, each sector type has one or more connectors as well as a parent connector. */
 
@@ -33,13 +36,23 @@ public class SectorConnector {
 	}
 
 
+	/**
+	 * Returns true if this connector can be connected to.
+	 * @param dungeonLayout The dungeon layout using this connector.
+	 * @param sectorInstance If set, the specific sector instance to connect to, if null then collision checks are ignored.
+	 * @return
+	 */
 	public boolean canConnect(DungeonLayout dungeonLayout, SectorInstance sectorInstance) {
 		if(sectorInstance == null) {
 			return !this.closed;
 		}
 
-
-		ChunkPos chunkPos = new ChunkPos(this.position);
+		// Connect To Sector Instance:
+		for(SectorInstance nearbySector : sectorInstance.getNearbySectors()) {
+			if(sectorInstance.collidesWith(nearbySector)) {
+				return false;
+			}
+		}
 
 		return true;
 	}

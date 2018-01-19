@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.dungeon.definition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -29,5 +30,17 @@ public class ThemeBlock {
 
 		if(json.has("weight"))
 			this.weight = json.get("weight").getAsInt();
+	}
+
+
+	/**
+	 * Returns a block state for this theme block entry.
+	 * @return A new block state.
+	 */
+	public IBlockState getBlockState() {
+		if(this.metadata <= 0) {
+			return this.block.getDefaultState();
+		}
+		return this.block.getStateFromMeta(this.metadata);
 	}
 }

@@ -75,10 +75,6 @@ public class GroupInfo {
 
     /** The list of biome types that mobs in this group cannot spawn in. **/
     public BiomeDictionary.Type[] biomeTypesDenied;
-	
-	// ========== Vanilla Controls ==========
-	/** If true, this group will edit the vanilla mob spawns a little bit. **/
-	public boolean controlVanillaSpawns = true;
 
 	// ========== Dungeon Themes ==========
     /** Dungeon themes for this mob, used by Doomlike Dungeons. **/
@@ -119,12 +115,7 @@ public class GroupInfo {
     	ConfigSpawning config = ConfigSpawning.getConfig(this, "spawning");
         config.setCategoryComment("Group Settings", "Here you can set the spawning settings for all mobs in this group that use the GROUP tag.");
         
-        // Vanilla Controls:
-		config = ConfigSpawning.getConfig(this, "general");
-		config.setCategoryComment("Vanilla Spawning", "Here you may control settings that affect vanilla Minecraft.");
-		this.controlVanillaSpawns = config.getBool("Vanilla Spawning", "Edit Vanilla Spawning", true, "If true, some vanilla spawns in this group's biomes will be removed, note that vanilla mobs should still be easy to find, only they will be more biome specific.");
-		
-		// Dungeon Themes:
+        // Dungeon Themes:
 		this.dungeonThemes = config.getString("Group Settings", this.getCfgName("Themes"), this.dungeonThemes, "Here you can set the Dungeon Theme of this mob group. These are used by Doomlike Dungeons and might be used by other things later. Multiple entries should be comma seperated.");
     }
     

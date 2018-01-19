@@ -1,6 +1,7 @@
 {
 	"name": "basiclootcorridor",
-	"type": "room",
+	"type": "corridor",
+	"weight": 4,
 	"loadDefault": true,
 	"changeTheme": false,
 	"sizeMin": [8, 7, 8],

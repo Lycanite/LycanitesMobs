@@ -235,6 +235,25 @@ public class DungeonSchematic {
 
 
 	/**
+	 * Returns the next type of sector that should connect to the parent sector type.
+	 * @param random The instance of Random to use.
+	 * @return The type of sector to use next.
+	 */
+	public String getNextConnectingSector(String parentType, Random random) {
+		if("room".equalsIgnoreCase(parentType)) {
+			return random.nextDouble() <= this.roomToRoomChance ? "room" : "corridor";
+		}
+		if("corridor".equalsIgnoreCase(parentType)) {
+			return random.nextDouble() <= this.corridorToCorridorChance ? "corridor" : "room";
+		}
+		if("entrance".equalsIgnoreCase(parentType)) {
+			return random.nextBoolean() ? "corridor" : "room";
+		}
+		return "room";
+	}
+
+
+	/**
 	 * Returns a random Dungeon Theme to generate.
 	 * @param random The random instance to use.
 	 * @return A random Dungeon Theme to generate.

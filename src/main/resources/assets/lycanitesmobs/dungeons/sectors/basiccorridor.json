@@ -1,7 +1,7 @@
 {
-	"name": "basiclootcorridor",
+	"name": "basiccorridor",
 	"type": "corridor",
-	"weight": 2,
+	"weight": 8,
 	"loadDefault": true,
 	"changeTheme": false,
 	"sizeMin": [8, 7, 8],
@@ -33,7 +33,7 @@
 				["0000000"],
 				["000L000"],
 				["0000000"],
-				["000C000"]
+				["0000000"]
 			]
 		}
 	],

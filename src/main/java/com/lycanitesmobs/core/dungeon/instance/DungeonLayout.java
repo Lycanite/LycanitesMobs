@@ -51,7 +51,8 @@ public class DungeonLayout {
 		int yLevel = this.dungeonInstance.originPos.getY();
 		SectorInstance exitSector = entranceSector;
 		int level = 1;
-		while(yLevel > 0) {
+		boolean onLastLevel = false;
+		while(!onLastLevel && level <= 10) {
 			int sectorCount = this.dungeonInstance.schematic.getRandomSectorCount(random);
 			LycanitesMobs.printDebug("Dungeon", "Starting Level " + level + " - Sector Count: " + sectorCount);
 
@@ -59,11 +60,8 @@ public class DungeonLayout {
 			int snakeCount = Math.round((float)sectorCount * 0.2f);
 			exitSector = this.snake(random, exitSector, snakeCount);
 			LycanitesMobs.printDebug("Dungeon", "Snake Sectors: " + snakeCount + " - From Sector: " + exitSector);
-			if(exitSector.parentConnector == null) {
-				yLevel = 0;
-			}
-			else {
-				yLevel = exitSector.parentConnector.position.getY();
+			if(exitSector.getBoundsMin().getY() <= 0) {
+				onLastLevel = true;
 			}
 
 			// Stem:
@@ -91,7 +89,7 @@ public class DungeonLayout {
 		DungeonSector entranceDungeonSector = this.dungeonInstance.schematic.getRandomSector("entrance", random);
 		SectorInstance entranceSector = new SectorInstance(this, entranceDungeonSector, random);
 		entranceSector.init(this.originConnector, random);
-		this.sectors.add(entranceSector);
+		this.addSectorInstance(entranceSector);
 
 		return entranceSector;
 	}
@@ -108,9 +106,14 @@ public class DungeonLayout {
 		List<SectorInstance> generatedSectors = new ArrayList<>();
 		SectorInstance lastSector = startSector;
 		for(int i = 0; i < length; i++) {
-			DungeonSector dungeonSector = this.dungeonInstance.schematic.getRandomSector("entrance", random);
+			String nextType = this.dungeonInstance.schematic.getNextConnectingSector(lastSector.dungeonSector.type, random);
+			if(i == length - 1) {
+				nextType = "stairs";
+			}
+			DungeonSector dungeonSector = this.dungeonInstance.schematic.getRandomSector(nextType, random);
 			SectorInstance sectorInstance = new SectorInstance(this, dungeonSector, random);
 			sectorInstance.init(lastSector.getRandomConnector(random, sectorInstance), random);
+			this.addSectorInstance(sectorInstance);
 		}
 
 		return generatedSectors.get(generatedSectors.size() - 1);
@@ -126,7 +129,21 @@ public class DungeonLayout {
 	 */
 	public List<SectorInstance> stem(Random random, SectorConnector[] connectors, int length) {
 		List<SectorInstance> generatedSectors = new ArrayList<>();
-		// TODO Create Stem Generation.
+		for(SectorConnector connector : this.openConnectors.toArray(new SectorConnector[this.openConnectors.size()])) {
+			this.openConnectors.remove(connector);
+			connector.closed = true;
+
+			// Get New Sector:
+			String nextType = this.dungeonInstance.schematic.getNextConnectingSector(connector.parentSector.dungeonSector.type, random);
+			DungeonSector dungeonSector = this.dungeonInstance.schematic.getRandomSector(nextType, random);
+			SectorInstance sectorInstance = new SectorInstance(this, dungeonSector, random);
+
+			// Try To Connect New Sector:
+			if(connector.canConnect(this, sectorInstance)) {
+				sectorInstance.init(connector, random);
+				this.addSectorInstance(sectorInstance);
+			}
+		}
 
 		return generatedSectors;
 	}
@@ -138,12 +155,42 @@ public class DungeonLayout {
 	 */
 	public void addSectorInstance(SectorInstance sectorInstance) {
 		this.sectors.add(sectorInstance);
+
+		// Update Dungeon Bounds:
+		ChunkPos minChunkPos = new ChunkPos(sectorInstance.getBoundsMin());
+		if(this.dungeonInstance.chunkMin == null) {
+			this.dungeonInstance.chunkMin = minChunkPos;
+		}
+		else {
+			if (minChunkPos.x < this.dungeonInstance.chunkMin.x) {
+				this.dungeonInstance.chunkMin = new ChunkPos(minChunkPos.x, this.dungeonInstance.chunkMin.z);
+			}
+			if (minChunkPos.z < this.dungeonInstance.chunkMin.z) {
+				this.dungeonInstance.chunkMin = new ChunkPos(this.dungeonInstance.chunkMin.x, minChunkPos.z);
+			}
+		}
+		ChunkPos maxChunkPos = new ChunkPos(sectorInstance.getBoundsMax());
+		if(this.dungeonInstance.chunkMax == null) {
+			this.dungeonInstance.chunkMax = maxChunkPos;
+		}
+		else {
+			if (maxChunkPos.x < this.dungeonInstance.chunkMax.x) {
+				this.dungeonInstance.chunkMax = new ChunkPos(maxChunkPos.x, this.dungeonInstance.chunkMax.z);
+			}
+			if (maxChunkPos.z < this.dungeonInstance.chunkMax.z) {
+				this.dungeonInstance.chunkMax = new ChunkPos(this.dungeonInstance.chunkMax.x, maxChunkPos.z);
+			}
+		}
+
+		// Add To Chunk Map:
 		for(ChunkPos chunkPos : sectorInstance.getChunkPositions()) {
 			if(!this.sectorChunkMap.containsKey(chunkPos)) {
 				this.sectorChunkMap.put(chunkPos, new ArrayList<>());
 			}
 			this.sectorChunkMap.get(chunkPos).add(sectorInstance);
 		}
+
+		// Add Connectors:
 		this.openConnectors.addAll(sectorInstance.getOpenConnectors(null));
 	}
 }

@@ -17,6 +17,9 @@ public class DungeonStructure {
     /** The type of structure that this is. Can be: decoration (default), feature, altar or arena. **/
     public String type = "decoration";
 
+	/** The weight to use for this structure when selecting randomly. **/
+	public int weight = 8;
+
 	/** The resource location path to the nbt data for this structure. **/
 	public String nbt = "";
 

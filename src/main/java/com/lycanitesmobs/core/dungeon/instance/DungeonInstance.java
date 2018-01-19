@@ -23,6 +23,12 @@ public class DungeonInstance {
 	/** The origin block position of this dungeon where it begins building from. **/
 	public BlockPos originPos;
 
+	/** The minimum xz chunk that sectors that this layout is in. **/
+	public ChunkPos chunkMin;
+
+	/** The maximum xz chunk that sectors that this layout is in. **/
+	public ChunkPos chunkMax;
+
 	/** The world that the dungeon should build in. **/
 	public World world;
 
@@ -39,9 +45,8 @@ public class DungeonInstance {
 	/**
 	 * Sets the origin position. This must be set before init. Reading from NBT sets this from the NBT data.
 	 * @param blockPos The exact block position that this dungeon builds from.
-	 * @param chunkPos The chunk position that this dungeon's origin block position is in.
 	 */
-	public void setOrigin(BlockPos blockPos, ChunkPos chunkPos) {
+	public void setOrigin(BlockPos blockPos) {
 		this.originPos = blockPos;
 	}
 
@@ -85,6 +90,37 @@ public class DungeonInstance {
 		if(this.layout == null) {
 			this.layout = new DungeonLayout(this);
 			this.layout.generate(this.random);
+		}
+	}
+
+
+	/**
+	 * Returns true if the chunk position is within this dungeon's area.
+	 * @param chunkPos The chunk position to check.
+	 * @param padding Increases the dungeon area, useful for finding chunks within range of this layout as well.
+	 * @return True if the chunk is within this dungeon's area.
+	 */
+	public boolean isChunkPosWithin(ChunkPos chunkPos, int padding) {
+		if(chunkPos.x < this.chunkMin.x - padding && chunkPos.x > this.chunkMax.x + padding)
+			return false;
+
+		if(chunkPos.z < this.chunkMin.z - padding && chunkPos.z > this.chunkMax.z + padding)
+			return false;
+
+		return true;
+	}
+
+
+	/**
+	 * Builds blocks from every sector within the provided chunk position.
+	 * @param chunkPos The chunk position to build in.
+	 */
+	public void buildChunk(ChunkPos chunkPos) {
+		if(this.layout == null || !this.layout.sectorChunkMap.containsKey(chunkPos)) {
+			return;
+		}
+		for(SectorInstance sectorInstance : this.layout.sectorChunkMap.get(chunkPos)) {
+			sectorInstance.buildChunk(chunkPos);
 		}
 	}
 

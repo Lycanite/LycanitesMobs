@@ -1,0 +1,44 @@
+{
+	"name": "demonictemple",
+	"loadDefault": true,
+	"sectorCountMin": 30,
+	"sectorCountMax": 50,
+	"corridorToCorridorChance": 0.1,
+	"roomToRoomChance": 0.1,
+	"conditions": [],
+	"themes": ["demonic"],
+	"entrances": ["basicentrance"],
+	"rooms": ["basicroom"],
+	"corridors": ["basiccorridor", "basiclootcorridor", "basicmobcorridor"],
+	"stairs": ["basicstairs"],
+	"mobSpawns": [
+		{
+			"mobId": "elementalmobs.wraith",
+			"weight": 8
+		},
+		{
+			"mobId": "demonmobs.belph",
+			"weight": 8
+		},
+		{
+			"mobId": "demonmobs.behemoth",
+			"weight": 2
+		},
+		{
+			"mobId": "demonmobs.pinky",
+			"weight": 4
+		},
+		{
+			"mobId": "demonmobs.trite",
+			"weight": 8
+		},
+		{
+			"mobId": "demonmobs.astaroth",
+			"weight": 1
+		},
+		{
+			"mobId": "demonmobs.cacodemon",
+			"weight": 1
+		}
+	]
+}

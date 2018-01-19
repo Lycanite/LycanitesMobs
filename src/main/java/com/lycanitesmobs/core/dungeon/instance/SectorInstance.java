@@ -36,6 +36,9 @@ public class SectorInstance {
 	/** The theme this Sector Instance is using. **/
 	public DungeonTheme theme;
 
+	/** If true, this sector has been built into the world. **/
+	public boolean built = false;
+
 
 	/**
 	 * Constructor
@@ -100,6 +103,7 @@ public class SectorInstance {
 
 	/**
 	 * Returns a list of open connectors where they are not set to closed and have no child Sector Instance connected.
+	 * @param sectorInstance The sector to get the open connectors for. If null, collision checks are skipped.
 	 * @return A lit of open connectors.
 	 */
 	public List<SectorConnector> getOpenConnectors(SectorInstance sectorInstance) {
@@ -127,6 +131,56 @@ public class SectorInstance {
 			}
 		}
 		return chunkPosList;
+	}
+
+
+	/**
+	 * Returns a list of other sectors near this sector instance.
+	 * @return A list of nearby sector instances.
+	 */
+	public List<SectorInstance> getNearbySectors() {
+		List<SectorInstance> nearbySectors = new ArrayList<>();
+		for(ChunkPos chunkPos : this.getChunkPositions()) {
+			for(SectorInstance nearbySector : this.layout.sectorChunkMap.get(chunkPos)) {
+				if(!nearbySectors.contains(nearbySector)) {
+					nearbySectors.add(nearbySector);
+				}
+			}
+		}
+		return nearbySectors;
+	}
+
+
+	/**
+	 * Returns true if this sector instance collides with the provided sector instance.
+	 * @param sectorInstance The sector instance to check for collision with.
+	 * @return True on collision.
+	 */
+	public boolean collidesWith(SectorInstance sectorInstance) {
+		BlockPos boundsMin = this.getBoundsMin();
+		BlockPos boundsMax = this.getBoundsMax();
+		BlockPos targetMin = sectorInstance.getBoundsMin();
+		BlockPos targetMax = sectorInstance.getBoundsMax();
+
+		boolean withinX = boundsMin.getX() > targetMin.getX() && boundsMin.getX() < targetMax.getX();
+		if(!withinX)
+			withinX = boundsMax.getX() > targetMin.getX() && boundsMax.getX() < targetMax.getX();
+		if(!withinX)
+			return false;
+
+		boolean withinY = boundsMin.getY() > targetMin.getY() && boundsMin.getY() < targetMax.getY();
+		if(!withinY)
+			withinY = boundsMax.getY() > targetMin.getY() && boundsMax.getY() < targetMax.getY();
+		if(!withinY)
+			return false;
+
+		boolean withinZ = boundsMin.getZ() > targetMin.getZ() && boundsMin.getZ() < targetMax.getZ();
+		if(!withinZ)
+			withinZ = boundsMax.getZ() > targetMin.getZ() && boundsMax.getZ() < targetMax.getZ();
+		if(!withinZ)
+			return false;
+
+		return false;
 	}
 
 
@@ -164,7 +218,7 @@ public class SectorInstance {
 					-(int)Math.ceil((double)this.collisionSize.getZ() / 2)
 			);
 		}
-		return bounds;
+		return this.parentConnector.position.add(bounds);
 	}
 
 
@@ -202,6 +256,15 @@ public class SectorInstance {
 					(int)Math.ceil((double)this.collisionSize.getZ() / 2)
 			);
 		}
-		return bounds;
+		return this.parentConnector.position.add(bounds);
+	}
+
+
+	/**
+	 * Builds blocks from this sector within the provided chunk position.
+	 * @param chunkPos The chunk position to build in.
+	 */
+	public void buildChunk(ChunkPos chunkPos) {
+		// TODO Build a sector!
 	}
 }

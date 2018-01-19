@@ -9,6 +9,7 @@ import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.command.CommandMain;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.entity.EntityHitArea;
 import com.lycanitesmobs.core.entity.EntityPortal;
@@ -24,6 +25,7 @@ import com.lycanitesmobs.core.spawner.SpawnerEventListener;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
+import com.lycanitesmobs.core.worldgen.WorldGeneratorDungeon;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -42,13 +44,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, useMetadata = false, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String versionNumber = "1.17.7.0";
+	public static final String versionNumber = "1.17.7.1";
 	public static final String versionMC = "1.12.2";
 	public static final String version = versionNumber + " - MC " + versionMC;
 	public static final String website = "http://lycanitesmobs.com";
@@ -276,6 +279,11 @@ public class LycanitesMobs {
 		
 		// ========== Load JSON Mob Events ==========
         MobEventManager.getInstance().loadAllFromJSON(group);
+
+
+        // ========== Load JSON Dungeons ==========
+		DungeonManager.getInstance().loadAllFromJSON();
+		GameRegistry.registerWorldGenerator(new WorldGeneratorDungeon(), 10);
 
 
         // ========== Seasonal Item Lists ==========

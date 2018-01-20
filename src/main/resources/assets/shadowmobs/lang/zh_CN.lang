@@ -3,14 +3,6 @@ shadowmobs.name=阴影生物
 shadowmobs.description=从这个世界里最黑暗隐秘的角落诞生的鬼魅生物。
 #
 # Entites
-entity.shadowmobs.grue.name=蛴螬
-entity.shadowmobs.grue.description=当一片漆黑之时，你在掏火把或者掉到岩浆里时你要小心被蛴螬吃掉！蛴螬会瞬移到它们猎物的背后并吸干猎物的血！
-achievement.grue.kill=躲避黑暗！
-achievement.grue.kill.desc=杀死一只蛴螬。
-achievement.grue.learn=阴影元素
-achievement.grue.learn.desc=将蛴螬添加到你的生物图鉴中。
-achievement.grue.summon=通灵
-achievement.grue.summon.desc=驯服蛴螬。
 entity.shadowmobs.phantom.name=幻影
 entity.shadowmobs.phantom.description=渴望灵魂的愤怒之灵！幻影会被死亡的气息吸引同时也常常把睡着的人当成死人！它们的大范围攻击会引起恐惧！
 achievement.phantom.kill=收割收割者！

@@ -2,7 +2,10 @@ package com.lycanitesmobs.core.dungeon.definition;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;

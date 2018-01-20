@@ -60,7 +60,7 @@ public class DungeonLayout {
 			int snakeCount = Math.round((float)sectorCount * 0.2f);
 			exitSector = this.snake(random, exitSector, snakeCount);
 			LycanitesMobs.printDebug("Dungeon", "Snake Sectors: " + snakeCount + " - From Sector: " + exitSector);
-			if(exitSector.getBoundsMin().getY() <= 0) {
+			if(exitSector.getCollisionBoundsMin().getY() <= 0) {
 				onLastLevel = true;
 			}
 
@@ -157,7 +157,7 @@ public class DungeonLayout {
 		this.sectors.add(sectorInstance);
 
 		// Update Dungeon Bounds:
-		ChunkPos minChunkPos = new ChunkPos(sectorInstance.getBoundsMin());
+		ChunkPos minChunkPos = new ChunkPos(sectorInstance.getCollisionBoundsMin());
 		if(this.dungeonInstance.chunkMin == null) {
 			this.dungeonInstance.chunkMin = minChunkPos;
 		}
@@ -169,7 +169,7 @@ public class DungeonLayout {
 				this.dungeonInstance.chunkMin = new ChunkPos(this.dungeonInstance.chunkMin.x, minChunkPos.z);
 			}
 		}
-		ChunkPos maxChunkPos = new ChunkPos(sectorInstance.getBoundsMax());
+		ChunkPos maxChunkPos = new ChunkPos(sectorInstance.getCollisionBoundsMax());
 		if(this.dungeonInstance.chunkMax == null) {
 			this.dungeonInstance.chunkMax = maxChunkPos;
 		}

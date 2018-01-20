@@ -113,10 +113,15 @@ public class EntityBelph extends EntityCreatureTameable implements IMob, IGroupD
         super.onLivingUpdate();
 
         // Sync Hellfire Energy:
-        if (!this.getEntityWorld().isRemote)
+        if (!this.getEntityWorld().isRemote) {
             this.dataManager.set(HELLFIRE_ENERGY, this.hellfireEnergy);
-        else
-            this.hellfireEnergy = this.dataManager.get(HELLFIRE_ENERGY);
+        }
+        else {
+            try {
+                this.hellfireEnergy = this.dataManager.get(HELLFIRE_ENERGY);
+            }
+            catch(Exception e) {}
+        }
 
         // Hellfire Update:
         if(this.getEntityWorld().isRemote && this.hellfireEnergy > 0)

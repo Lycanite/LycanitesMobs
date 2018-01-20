@@ -113,14 +113,16 @@ public class DungeonInstance {
 
 	/**
 	 * Builds blocks from every sector within the provided chunk position.
-	 * @param chunkPos The chunk position to build in.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
 	 */
-	public void buildChunk(ChunkPos chunkPos) {
+	public void buildChunk(World world, ChunkPos chunkPos) {
 		if(this.layout == null || !this.layout.sectorChunkMap.containsKey(chunkPos)) {
 			return;
 		}
 		for(SectorInstance sectorInstance : this.layout.sectorChunkMap.get(chunkPos)) {
-			sectorInstance.buildChunk(chunkPos);
+			// The world random is used when building as it can be volatile unlike layouts which must be done by seed in order.
+			sectorInstance.build(world, chunkPos, world.rand);
 		}
 	}
 

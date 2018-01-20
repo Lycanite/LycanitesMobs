@@ -4,8 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
+import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.spawner.MobSpawn;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -56,6 +58,12 @@ public class DungeonSchematic {
 	/** A list of MobSpawns to use. Optional. **/
 	public List<MobSpawn> mobSpawns = new ArrayList<>();
 
+	/** The loot table to use in addition to the specific loot added to this dungeon. If blank, only the specific loot is used. Default: "minecraft:chests/simple_dungeon". **/
+	public String lootTable = "minecraft:chests/simple_dungeon";
+
+	/** A list of item drops to add to loot chests. **/
+	public List<MobDrop> loot = new ArrayList<>();
+
 
     /** Loads this Dungeon Theme from the provided JSON data. **/
 	public void loadFromJSON(JsonObject json) {
@@ -75,6 +83,9 @@ public class DungeonSchematic {
 
 		if(json.has("roomToRoomChance"))
 			this.roomToRoomChance = json.get("roomToRoomChance").getAsDouble();
+
+		if(json.has("lootTable"))
+			this.lootTable = json.get("lootTable").getAsString();
 
 		// Conditions:
 		if(json.has("conditions")) {
@@ -141,6 +152,17 @@ public class DungeonSchematic {
 				MobSpawn mobSpawn = MobSpawn.createFromJSON(mobSpawnJson);
 				if(mobSpawn != null) {
 					this.mobSpawns.add(mobSpawn);
+				}
+			}
+		}
+
+		// Loot:
+		if(json.has("loot")) {
+			JsonArray lootEntries = json.getAsJsonArray("loot");
+			for(JsonElement mobDropJson : lootEntries) {
+				MobDrop mobDrop = MobDrop.createFromJSON(mobDropJson.getAsJsonObject());
+				if(mobDrop != null) {
+					this.loot.add(mobDrop);
 				}
 			}
 		}
@@ -276,5 +298,65 @@ public class DungeonSchematic {
 		}
 
 		return themes.get(random.nextInt(themes.size()));
+	}
+
+
+	/**
+	 * Gets a weighted random mob to spawn.
+	 * @param random The instance of random to use.
+	 * @return The MobSpawn of the mob to spawn or null if no mob can be spawned.
+	 **/
+	public MobSpawn getRandomMobSpawn(Random random) {
+		// Get Weights:
+		int totalWeights = 0;
+		for(MobSpawn mobSpawn : this.mobSpawns) {
+			totalWeights += mobSpawn.getWeight();
+		}
+		if(totalWeights <= 0) {
+			return null;
+		}
+
+		// Pick Random Spawn Using Weights:
+		int randomWeight = 1;
+		if(totalWeights > 1) {
+			randomWeight = random.nextInt(totalWeights - 1) + 1;
+		}
+		int searchWeight = 0;
+		MobSpawn chosenMobSpawn = null;
+		for(MobSpawn mobSpawn : this.mobSpawns) {
+			chosenMobSpawn = mobSpawn;
+			if(mobSpawn.getWeight() + searchWeight > randomWeight) {
+				break;
+			}
+			searchWeight += mobSpawn.getWeight();
+		}
+		return chosenMobSpawn;
+	}
+
+
+	/**
+	 * Returns a list of random item stacks to put into a loot chest.
+	 * @param random The instance of random to use.
+	 * @return A list of item stacks.
+	 */
+	public List<ItemStack> getRandomLoot(Random random) {
+		List<ItemStack> loot = new ArrayList<>();
+		for(MobDrop mobDrop : this.loot) {
+			if(mobDrop.chance <= 0) {
+				continue;
+			}
+			boolean addLoot = mobDrop.chance >= 1;
+			if(!addLoot) {
+				addLoot = mobDrop.chance <= random.nextDouble();
+			}
+			if(addLoot) {
+				int quantity = mobDrop.getQuantity(random, 0);
+				if(quantity > 0) {
+					loot.add(new ItemStack(mobDrop.itemStack.getItem(), mobDrop.itemStack.getMetadata(), quantity));
+				}
+			}
+		}
+
+		return loot;
 	}
 }

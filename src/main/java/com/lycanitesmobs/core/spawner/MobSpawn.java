@@ -109,6 +109,7 @@ public class MobSpawn {
 	/** Constructors **/
 	public MobSpawn(MobInfo mobInfo) {
 		this.mobInfo = mobInfo;
+		this.entityClass = mobInfo.entityClass;
 	}
 
 	public MobSpawn(Class entityClass) {

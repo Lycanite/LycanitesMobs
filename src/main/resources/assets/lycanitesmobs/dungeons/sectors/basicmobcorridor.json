@@ -4,8 +4,8 @@
 	"weight": 4,
 	"loadDefault": true,
 	"changeTheme": false,
-	"sizeMin": [8, 7, 8],
-	"sizeMax": [16, 7, 16],
+	"sizeMin": [4, 5, 16],
+	"sizeMax": [6, 5, 32],
 	"floor": [
 		{
 			"layer": 0,

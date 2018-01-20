@@ -53,7 +53,7 @@ public class WorldGeneratorDungeon implements IWorldGenerator {
 		// Build Dungeons:
 		nearbyDungeons = DungeonManager.getInstance().getNearbyDungeonInstances(world, chunkPos, 0);
 		for(DungeonInstance dungeonInstance : nearbyDungeons) {
-			dungeonInstance.buildChunk(chunkPos);
+			dungeonInstance.buildChunk(world, chunkPos);
 		}
     }
 }

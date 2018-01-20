@@ -132,6 +132,11 @@ public class DungeonTheme {
 	 * @return A block state for placing.
 	 */
 	public IBlockState getBlockState(char patternChar, Random random, List<ThemeBlock> blockList) {
+		// Nothing:
+		if(patternChar == '0') {
+			return Blocks.AIR.getDefaultState();
+		}
+
 		// Light:
 		if(patternChar == 'L') {
 			blockList = this.lightBlocks;
@@ -144,7 +149,7 @@ public class DungeonTheme {
 
 		// Spawner:
 		else if(patternChar == 'S') {
-			return Blocks.MOB_SPAWNER.getDefaultState();
+			return Blocks.MOB_SPAWNER.getStateFromMeta(1);
 		}
 
 		// List Check:
@@ -157,7 +162,7 @@ public class DungeonTheme {
 
 		// Specific:
 		if(NumberUtils.isCreatable("" + patternChar)) {
-			int blockIndex = NumberUtils.toInt("" + patternChar, 0);
+			int blockIndex = NumberUtils.toInt("" + patternChar, 1) - 1;
 			if(blockIndex >= blockList.size())
 				blockIndex = 0;
 			return blockList.get(blockIndex).getBlockState();

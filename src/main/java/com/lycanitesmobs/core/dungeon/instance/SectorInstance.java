@@ -1,12 +1,22 @@
 package com.lycanitesmobs.core.dungeon.instance;
 
-import com.lycanitesmobs.core.dungeon.definition.DungeonSchematic;
 import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
 import com.lycanitesmobs.core.dungeon.definition.DungeonTheme;
+import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.spawner.MobSpawn;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
-import org.apache.commons.lang3.math.NumberUtils;
+import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +95,19 @@ public class SectorInstance {
 
 
 	/**
+	 * Adds a new child Sector Connector to this Sector Instance.
+	 * @param blockPos The position of the connector.
+	 * @param rotation The rotation of the sector.
+	 * @return The newly created Sector Connector.
+	 */
+	public SectorConnector addConnector(BlockPos blockPos, int rotation) {
+		SectorConnector connector = new SectorConnector(blockPos, this, rotation);
+		this.connectors.add(connector);
+		return connector;
+	}
+
+
+	/**
 	 * Returns a random child connector for a Sector Instance to connect to.
 	 * @param random The instance of Random to use.
 	 * @return A random connector.
@@ -122,8 +145,8 @@ public class SectorInstance {
 	 * @return A list of ChunkPos.
 	 */
 	public List<ChunkPos> getChunkPositions() {
-		ChunkPos minChunkPos = new ChunkPos(this.getBoundsMin());
-		ChunkPos maxChunkPos = new ChunkPos(this.getBoundsMax());
+		ChunkPos minChunkPos = new ChunkPos(this.getCollisionBoundsMin());
+		ChunkPos maxChunkPos = new ChunkPos(this.getCollisionBoundsMax());
 		List<ChunkPos> chunkPosList = new ArrayList<>();
 		for(int x = minChunkPos.x; x <= maxChunkPos.x; x++) {
 			for(int z = minChunkPos.z; z <= maxChunkPos.z; z++) {
@@ -157,10 +180,10 @@ public class SectorInstance {
 	 * @return True on collision.
 	 */
 	public boolean collidesWith(SectorInstance sectorInstance) {
-		BlockPos boundsMin = this.getBoundsMin();
-		BlockPos boundsMax = this.getBoundsMax();
-		BlockPos targetMin = sectorInstance.getBoundsMin();
-		BlockPos targetMax = sectorInstance.getBoundsMax();
+		BlockPos boundsMin = this.getCollisionBoundsMin();
+		BlockPos boundsMax = this.getCollisionBoundsMax();
+		BlockPos targetMin = sectorInstance.getCollisionBoundsMin();
+		BlockPos targetMax = sectorInstance.getCollisionBoundsMax();
 
 		boolean withinX = boundsMin.getX() > targetMin.getX() && boundsMin.getX() < targetMax.getX();
 		if(!withinX)
@@ -185,14 +208,15 @@ public class SectorInstance {
 
 
 	/**
-	 * Returns the minimum xyz position that this Sector Instance occupies.
+	 * Returns the minimum xyz position that this Sector Instance from the provided bounds size.
+	 * @param boundsSize The xyz size to use when calculating bounds.
 	 * @return The minimum bounds position (corner).
 	 */
-	public BlockPos getBoundsMin() {
+	public BlockPos getBoundsMin(Vec3i boundsSize) {
 		BlockPos bounds = new BlockPos(this.parentConnector.position);
 		if(this.parentConnector.rotation == 0) {
 			bounds.add(
-					-(int)Math.ceil((double)this.collisionSize.getX() / 2),
+					-(int)Math.ceil((double)boundsSize.getX() / 2),
 					0,
 					0
 			);
@@ -201,24 +225,72 @@ public class SectorInstance {
 			bounds.add(
 					0,
 					0,
-					-(int)Math.ceil((double)this.collisionSize.getZ() / 2)
+					-(int)Math.ceil((double)boundsSize.getZ() / 2)
 			);
 		}
 		else if(this.parentConnector.rotation == 180) {
 			bounds.add(
-					-(int)Math.ceil((double)this.collisionSize.getX() / 2),
+					-(int)Math.ceil((double)boundsSize.getX() / 2),
 					0,
-					-this.collisionSize.getZ()
+					-boundsSize.getZ()
 			);
 		}
 		else if(this.parentConnector.rotation == 270) {
 			bounds.add(
-					-this.collisionSize.getX(),
+					-boundsSize.getX(),
 					0,
-					-(int)Math.ceil((double)this.collisionSize.getZ() / 2)
+					-(int)Math.ceil((double)boundsSize.getZ() / 2)
 			);
 		}
 		return this.parentConnector.position.add(bounds);
+	}
+
+
+	/**
+	 * Returns the maximum xyz position that this Sector Instance from the provided bounds size.
+	 * @param boundsSize The xyz size to use when calculating bounds.
+	 * @return The maximum bounds position (corner).
+	 */
+	public BlockPos getBoundsMax(Vec3i boundsSize) {
+		BlockPos bounds = new BlockPos(this.parentConnector.position);
+		if(this.parentConnector.rotation == 0) {
+			bounds.add(
+					(int)Math.ceil((double)boundsSize.getX() / 2),
+					boundsSize.getY(),
+					boundsSize.getZ()
+			);
+		}
+		else if(this.parentConnector.rotation == 90) {
+			bounds.add(
+					boundsSize.getX(),
+					boundsSize.getY(),
+					(int)Math.ceil((double)boundsSize.getZ() / 2)
+			);
+		}
+		else if(this.parentConnector.rotation == 180) {
+			bounds.add(
+					(int)Math.ceil((double)boundsSize.getX() / 2),
+					boundsSize.getY(),
+					0
+			);
+		}
+		else if(this.parentConnector.rotation == 270) {
+			bounds.add(
+					0,
+					boundsSize.getY(),
+					(int)Math.ceil((double)boundsSize.getZ() / 2)
+			);
+		}
+		return this.parentConnector.position.add(bounds);
+	}
+
+
+	/**
+	 * Returns the minimum xyz position that this Sector Instance occupies.
+	 * @return The minimum bounds position (corner).
+	 */
+	public BlockPos getCollisionBoundsMin() {
+		return this.getBoundsMin(this.collisionSize);
 	}
 
 
@@ -226,45 +298,359 @@ public class SectorInstance {
 	 * Returns the maximum xyz position that this Sector Instance occupies.
 	 * @return The maximum bounds position (corner).
 	 */
-	public BlockPos getBoundsMax() {
-		BlockPos bounds = new BlockPos(this.parentConnector.position);
-		if(this.parentConnector.rotation == 0) {
-			bounds.add(
-					(int)Math.ceil((double)this.collisionSize.getX() / 2),
-					this.collisionSize.getY(),
-					this.collisionSize.getZ()
-			);
-		}
-		else if(this.parentConnector.rotation == 90) {
-			bounds.add(
-					this.collisionSize.getX(),
-					this.collisionSize.getY(),
-					(int)Math.ceil((double)this.collisionSize.getZ() / 2)
-			);
-		}
-		else if(this.parentConnector.rotation == 180) {
-			bounds.add(
-					(int)Math.ceil((double)this.collisionSize.getX() / 2),
-					this.collisionSize.getY(),
-					0
-			);
-		}
-		else if(this.parentConnector.rotation == 270) {
-			bounds.add(
-					0,
-					this.collisionSize.getY(),
-					(int)Math.ceil((double)this.collisionSize.getZ() / 2)
-			);
-		}
-		return this.parentConnector.position.add(bounds);
+	public BlockPos getCollisionBoundsMax() {
+		return this.getBoundsMax(this.collisionSize);
 	}
 
 
 	/**
-	 * Builds blocks from this sector within the provided chunk position.
-	 * @param chunkPos The chunk position to build in.
+	 * Returns the minimum xyz position that this Sector Instance builds from.
+	 * @return The minimum bounds position (corner).
 	 */
-	public void buildChunk(ChunkPos chunkPos) {
-		// TODO Build a sector!
+	public BlockPos getRoomBoundsMin() {
+		return this.getBoundsMin(this.collisionSize);
+	}
+
+
+	/**
+	 * Returns the maximum xyz position that this Sector Instance builds to.
+	 * @return The maximum bounds position (corner).
+	 */
+	public BlockPos getRoomBoundsMax() {
+		return this.getBoundsMax(this.collisionSize);
+	}
+
+
+	/**
+	 * Builds this sector. Wont build at y level 0 or below or beyond world height.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random, used for characters that are random.
+	 */
+	public void build(World world, ChunkPos chunkPos, Random random) {
+		this.clearArea(world, chunkPos);
+		this.buildFloor(world, chunkPos, random);
+		this.buildWalls(world, chunkPos, random);
+		this.buildCeiling(world, chunkPos, random);
+		this.buildEntrances(world, chunkPos, random);
+		if("stairs".equalsIgnoreCase(this.dungeonSector.type)) {
+			this.buildStairs(world, chunkPos, random);
+		}
+	}
+
+
+	/**
+	 * Sets the area of this sector to air for building in from within the chunk position.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 */
+	public void clearArea(World world, ChunkPos chunkPos) {
+		// Get Start and Stop Positions:
+		BlockPos startPos = this.getRoomBoundsMin();
+		BlockPos stopPos = this.getRoomBoundsMax();
+
+		int startBaseX = Math.min(startPos.getX(), stopPos.getX());
+		int startX = Math.max(startBaseX, chunkPos.getXStart());
+		int stopBaseX = Math.max(startPos.getX(), stopPos.getX());
+		int stopX = Math.min(stopBaseX, chunkPos.getXEnd());
+
+		int startY = Math.max(1, Math.min(startPos.getY(), stopPos.getY()));
+		int stopY = Math.min(world.getHeight() - 1, Math.min(startPos.getY(), stopPos.getY()));
+
+		int startBaseZ = Math.min(startPos.getZ(), stopPos.getZ());
+		int startZ = Math.max(startBaseZ, chunkPos.getZStart());
+		int stopBaseZ = Math.max(startPos.getZ(), stopPos.getZ());
+		int stopZ = Math.min(stopBaseZ, chunkPos.getZEnd());
+
+		for(int x = startX; x <= stopX; x++) {
+			for(int y = startY; y <= stopY; y++) {
+				for(int z = startZ; z <= stopZ; z++) {
+					world.setBlockToAir(new BlockPos(x, y, z));
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Builds the floor of this sector from within the chunk position.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random, used for characters that are random.
+	 */
+	public void buildFloor(World world, ChunkPos chunkPos, Random random) {
+		// Get Start and Stop Positions:
+		BlockPos startPos = this.getRoomBoundsMin();
+		BlockPos stopPos = this.getRoomBoundsMax();
+
+		int startBaseX = Math.min(startPos.getX(), stopPos.getX());
+		int startX = Math.max(startBaseX, chunkPos.getXStart());
+		int stopBaseX = Math.max(startPos.getX(), stopPos.getX());
+		int stopX = Math.min(stopBaseX, chunkPos.getXEnd());
+
+		int startY = Math.min(startPos.getY(), stopPos.getY());
+
+		int startBaseZ = Math.min(startPos.getZ(), stopPos.getZ());
+		int startZ = Math.max(startBaseZ, chunkPos.getZStart());
+		int stopBaseZ = Math.max(startPos.getZ(), stopPos.getZ());
+		int stopZ = Math.min(stopBaseZ, chunkPos.getZEnd());
+
+		for(int layerIndex : this.dungeonSector.floor.layers.keySet()) {
+			int y = startY + layerIndex;
+			if(y <= 0 || y >= world.getHeight()) {
+				continue;
+			}
+			List<List<Character>> layer = this.dungeonSector.floor.layers.get(layerIndex);
+			for(int x = startX; x <= stopX; x++) {
+				List<Character> row = layer.get(x - startBaseX % layer.size());
+				for(int z = startZ; z <= stopZ; z++) {
+					char buildChar = row.get(z - startBaseZ % row.size());
+					BlockPos buildPos = new BlockPos(x, y, z);
+					IBlockState blockState = this.theme.getFloor(buildChar, random);
+					this.placeBlock(world, buildPos, blockState, random);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Builds the walls of this sector from within the chunk position.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random, used for characters that are random.
+	 */
+	public void buildWalls(World world, ChunkPos chunkPos, Random random) {
+		// Get Start and Stop Positions:
+		BlockPos startPos = this.getRoomBoundsMin();
+		BlockPos stopPos = this.getRoomBoundsMax();
+
+		int startBaseX = Math.min(startPos.getX(), stopPos.getX());
+		int startX = Math.max(startBaseX, chunkPos.getXStart());
+		int stopBaseX = Math.max(startPos.getX(), stopPos.getX());
+		int stopX = Math.min(stopBaseX, chunkPos.getXEnd());
+
+		int startY = Math.min(startPos.getY(), stopPos.getY());
+		int stopY = Math.max(startPos.getY(), stopPos.getY());
+
+		int startBaseZ = Math.min(startPos.getZ(), stopPos.getZ());
+		int startZ = Math.max(startBaseZ, chunkPos.getZStart());
+		int stopBaseZ = Math.max(startPos.getZ(), stopPos.getZ());
+		int stopZ = Math.min(stopBaseZ, chunkPos.getZEnd());
+
+		for(int layerIndex : this.dungeonSector.wall.layers.keySet()) {
+			List<List<Character>> layer = this.dungeonSector.wall.layers.get(layerIndex);
+			for(int y = startY; y <= stopY; y++) {
+				if(y <= 0 || y >= world.getHeight()) {
+					continue;
+				}
+				List<Character> row = layer.get(y - startY % layer.size());
+
+				// Build X:
+				for(int x = startX; x <= stopX; x++) {
+					char buildChar = row.get(x - startBaseX % row.size());
+					IBlockState blockState = this.theme.getWall(buildChar, random);
+					this.placeBlock(world, new BlockPos(x, y, startZ + layerIndex), blockState, random);
+					this.placeBlock(world, new BlockPos(x, y, stopZ - layerIndex), blockState, random);
+				}
+
+				// Build Z:
+				for(int z = startZ; z <= stopZ; z++) {
+					char buildChar = row.get(z - startBaseZ % row.size());
+					IBlockState blockState = this.theme.getWall(buildChar, random);
+					this.placeBlock(world, new BlockPos(startX + layerIndex, y, z), blockState, random);
+					this.placeBlock(world, new BlockPos(stopX - layerIndex, y, z), blockState, random);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Builds the ceiling of this sector from within the chunk position.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random, used for characters that are random.
+	 */
+	public void buildCeiling(World world, ChunkPos chunkPos, Random random) {
+		// Get Start and Stop Positions:
+		BlockPos startPos = this.getRoomBoundsMin();
+		BlockPos stopPos = this.getRoomBoundsMax();
+
+		int startBaseX = Math.min(startPos.getX(), stopPos.getX());
+		int startX = Math.max(startBaseX, chunkPos.getXStart());
+		int stopBaseX = Math.max(startPos.getX(), stopPos.getX());
+		int stopX = Math.min(stopBaseX, chunkPos.getXEnd());
+
+		int startY = Math.min(startPos.getY(), stopPos.getY());
+
+		int startBaseZ = Math.min(startPos.getZ(), stopPos.getZ());
+		int startZ = Math.max(startBaseZ, chunkPos.getZStart());
+		int stopBaseZ = Math.max(startPos.getZ(), stopPos.getZ());
+		int stopZ = Math.min(stopBaseZ, chunkPos.getZEnd());
+
+		for(int layerIndex : this.dungeonSector.ceiling.layers.keySet()) {
+			int y = startY + layerIndex;
+			if(y <= 0 || y >= world.getHeight()) {
+				continue;
+			}
+			List<List<Character>> layer = this.dungeonSector.ceiling.layers.get(layerIndex);
+			for(int x = startX; x <= stopX; x++) {
+				List<Character> row = layer.get(x - startBaseX % layer.size());
+				for(int z = startZ; z <= stopZ; z++) {
+					char buildChar = row.get(z - startBaseZ % row.size());
+					BlockPos buildPos = new BlockPos(x, y, z);
+					IBlockState blockState = this.theme.getCeiling(buildChar, random);
+					this.placeBlock(world, buildPos, blockState, random);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Builds the entrances of this sector from within the chunk position.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random, used for characters that are random.
+	 */
+	public void buildEntrances(World world, ChunkPos chunkPos, Random random) {
+		// Get Start and Stop Positions:
+		BlockPos startPos = this.getRoomBoundsMin();
+		BlockPos stopPos = this.getRoomBoundsMax();
+
+		int entranceRadius = 1;
+		int centerX = startPos.getX() + Math.round((float)this.roomSize.getX() / 2);
+		int centerZ = startPos.getZ() + Math.round((float)this.roomSize.getZ() / 2);
+
+		int startBaseX = Math.min(startPos.getX(), stopPos.getX());
+		int startX = Math.max(startBaseX, chunkPos.getXStart());
+		int startEntranceX = Math.max(centerX - entranceRadius, chunkPos.getXStart());
+		int stopBaseX = Math.max(startPos.getX(), stopPos.getX());
+		int stopX = Math.min(stopBaseX, chunkPos.getXEnd());
+		int stopEntranceX = Math.min(centerX + entranceRadius, chunkPos.getXEnd());
+
+		int startY = Math.min(startPos.getY(), stopPos.getY());
+		int stopY = Math.max(startY + (entranceRadius * 2), Math.max(startPos.getY(), stopPos.getY()));
+
+		int startBaseZ = Math.min(startPos.getZ(), stopPos.getZ());
+		int startZ = Math.max(startBaseZ, chunkPos.getZStart());
+		int startEntranceZ = Math.max(centerZ - entranceRadius, chunkPos.getZStart());
+		int stopBaseZ = Math.max(startPos.getZ(), stopPos.getZ());
+		int stopZ = Math.min(stopBaseZ, chunkPos.getZEnd());
+		int stopEntranceZ = Math.min(centerZ + entranceRadius, chunkPos.getZEnd());
+
+		for(int layerIndex : this.dungeonSector.wall.layers.keySet()) {
+			List<List<Character>> layer = this.dungeonSector.wall.layers.get(layerIndex);
+			for(int y = startY; y <= stopY; y++) {
+				if(y <= 0 || y >= world.getHeight()) {
+					continue;
+				}
+				List<Character> row = layer.get(y - startY % layer.size());
+
+				// Build X:
+				if("room".equalsIgnoreCase(this.dungeonSector.type) || this.parentConnector.rotation == 0 || this.parentConnector.rotation == 180) {
+					for (int x = startEntranceX; x <= stopEntranceX; x++) {
+						world.setBlockToAir(new BlockPos(x, y, startZ));
+						world.setBlockToAir(new BlockPos(x, y, stopZ));
+					}
+				}
+
+				// Build Z:
+				if("room".equalsIgnoreCase(this.dungeonSector.type) || this.parentConnector.rotation == 90 || this.parentConnector.rotation == 270) {
+					for (int z = startEntranceZ; z <= stopEntranceZ; z++) {
+						world.setBlockToAir(new BlockPos(startX, y, z));
+						world.setBlockToAir(new BlockPos(stopX, y, z));
+					}
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Builds a set of stairs leading down to a lower room to start the next level.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random, used for characters that are random.
+	 */
+	public void buildStairs(World world, ChunkPos chunkPos, Random random) {
+		// Get Start and Stop Positions:
+		BlockPos startPos = this.getRoomBoundsMin();
+		BlockPos stopPos = this.getRoomBoundsMax();
+
+		int centerX = startPos.getX() + Math.round((float)this.roomSize.getX() / 2);
+		int centerZ = startPos.getZ() + Math.round((float)this.roomSize.getZ() / 2);
+
+		int startBaseX = centerX - 1;
+		int startX = Math.max(startBaseX, chunkPos.getXStart());
+		int stopBaseX = centerX + 1;
+		int stopX = Math.min(stopBaseX, chunkPos.getXEnd());
+
+		int startY = Math.min(world.getHeight() -1, Math.min(startPos.getY(), stopPos.getY()));
+		int stopY = Math.max(1, startPos.getY() - (this.roomSize.getY() * 2));
+
+		int startBaseZ = centerZ - 1;
+		int startZ = Math.max(startBaseZ, chunkPos.getZStart());
+		int stopBaseZ = centerZ + 1;
+		int stopZ = Math.min(stopBaseZ, chunkPos.getZEnd());
+
+		for(int y = startY; y >= stopY; y--) {
+			for(int x = startX; x <= stopX; x++) {
+				for(int z = startZ; z <= stopZ; z++) {
+					BlockPos buildPos = new BlockPos(x, y, z);
+					IBlockState blockState = Blocks.AIR.getDefaultState();
+					if(x == centerX && z == centerZ) {
+						blockState = this.theme.getFloor('1', random);
+					}
+					// TODO Build Spiral Staircase
+					this.placeBlock(world, buildPos, blockState, random);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Places a block state in the world from this sector.
+	 * @param world The world to place a block in.
+	 * @param blockPos The position to place the block at.
+	 * @param blockState The block state to place.
+	 * @param random The instance of random, used for random mob spawns or loot on applicable blocks, etc.
+	 */
+	public void placeBlock(World world, BlockPos blockPos, IBlockState blockState, Random random) {
+		if(blockState.getBlock() == Blocks.AIR) {
+			return;
+		}
+
+		world.setBlockState(blockPos, blockState);
+
+		// Spawner:
+		if(blockState.getBlock() == Blocks.MOB_SPAWNER) {
+			TileEntity tileEntity = world.getTileEntity(blockPos);
+			if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
+				TileEntityMobSpawner spawner = (TileEntityMobSpawner)tileEntity;
+				MobSpawn mobSpawn = this.layout.dungeonInstance.schematic.getRandomMobSpawn(random);
+				if(mobSpawn != null) {
+					ResourceLocation entityId = EntityList.getKey(mobSpawn.entityClass);
+					if (entityId != null) {
+						spawner.getSpawnerBaseLogic().setEntityId(entityId);
+					}
+				}
+			}
+			return;
+		}
+
+		// Chest:
+		if(blockState.getBlock() == Blocks.CHEST) {
+			TileEntity tileEntity = world.getTileEntity(blockPos);
+			if(tileEntity != null && tileEntity instanceof TileEntityChest) {
+				TileEntityChest chest = (TileEntityChest)tileEntity;
+				if(!"".equals(this.layout.dungeonInstance.schematic.lootTable)) {
+					chest.setLootTable(new ResourceLocation(this.layout.dungeonInstance.schematic.lootTable), random.nextLong());
+				}
+				// TODO Add specific items to loot chests.
+			}
+		}
 	}
 }

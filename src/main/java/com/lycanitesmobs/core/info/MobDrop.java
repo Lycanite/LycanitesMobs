@@ -16,7 +16,7 @@ public class MobDrop {
 	// ========== Item ==========
 	public ItemStack itemStack = null;
 	public ItemStack burningItemStack = null;
-	public Map<Integer, ItemStack> effectsItem = new HashMap<Integer, ItemStack>();
+	public Map<Integer, ItemStack> effectsItem = new HashMap<>();
 	
 	public int minAmount = 1;
 	public int maxAmount = 1;

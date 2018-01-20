@@ -575,7 +575,6 @@ public class Spawner {
         return viableMobSpawns;
     }
 
-
 	/**
 	 * Gets a weighted random mob to spawn.
 	 * @param world The World to spawn in.

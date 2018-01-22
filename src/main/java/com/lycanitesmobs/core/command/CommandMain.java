@@ -5,6 +5,7 @@ import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.info.Beastiary;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.MobInfo;
@@ -144,6 +145,23 @@ public class CommandMain implements ICommand {
 			if("reload".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.spawners.reload");
 				SpawnerManager.getInstance().reload();
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+		}
+
+		// Dungeon:
+		if("dungeon".equalsIgnoreCase(args[0]) || "dungeons".equalsIgnoreCase(args[0])) {
+			reply = I18n.translateToLocal("lyc.command.dungeon.invalid");
+			if (args.length < 2) {
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Reload:
+			if("reload".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.dungeon.reload");
+				DungeonManager.getInstance().reload();
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}

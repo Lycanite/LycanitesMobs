@@ -1,5 +1,5 @@
 {
-	"name": "basiccorridor",
+	"name": "basicdarkcorridor",
 	"type": "corridor",
 	"weight": 8,
 	"loadDefault": true,
@@ -24,18 +24,6 @@
 				"1122211",
 				"1122211",
 				"1111111"
-			]
-		},
-		{
-			"layer": 1,
-			"tileHorizontal": false,
-			"tileVertical": false,
-			"pattern": [
-				"0000000",
-				"0000000",
-				"000L000",
-				"0000000",
-				"0000000"
 			]
 		}
 	],

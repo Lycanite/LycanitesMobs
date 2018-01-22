@@ -1,5 +1,7 @@
 package com.lycanitesmobs.core.dungeon.instance;
 
+import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.dungeon.definition.DungeonSchematic;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +21,9 @@ public class DungeonInstance {
 
 	/** If true, this dungeon has been fully built and does not need to generate its layout, etc. This is where all chunks this dungeon is in have been loaded. **/
 	public boolean complete = false;
+
+	/** Stores how many chunks have been buils. When this matches the number of chunks that are used by this dungeon, this dungeon is marked as complete. **/
+	public int chunksBuilt = 0;
 
 	/** The origin block position of this dungeon where it begins building from. **/
 	public BlockPos originPos;
@@ -57,7 +62,11 @@ public class DungeonInstance {
 	 */
 	public void init(World world) {
 		this.world = world;
-		if(this.complete || this.world == null || this.originPos == null) {
+		if(this.complete) {
+			return;
+		}
+		if(this.world == null || this.originPos == null) {
+			LycanitesMobs.printWarning("Dungeon", "Tried to initialise a dungeon with a missing world or origin. " + this);
 			return;
 		}
 
@@ -82,14 +91,21 @@ public class DungeonInstance {
 
 		// Get Seed:
 		if(this.seed == 0) {
-			world.rand.nextLong();
+			this.seed = world.rand.nextLong();
 		}
 		this.random = new Random(this.seed);
 
 		// Generate Layout:
+		LycanitesMobs.printDebug("Dungeon", "Starting Dungeon Instance Generation For " + this);
 		if(this.layout == null) {
 			this.layout = new DungeonLayout(this);
 			this.layout.generate(this.random);
+		}
+
+		// Mark For Save:
+		ExtendedWorld extendedWorld = ExtendedWorld.getForWorld(world);
+		if(extendedWorld != null) {
+			extendedWorld.markDirty();
 		}
 	}
 
@@ -101,11 +117,13 @@ public class DungeonInstance {
 	 * @return True if the chunk is within this dungeon's area.
 	 */
 	public boolean isChunkPosWithin(ChunkPos chunkPos, int padding) {
-		if(chunkPos.x < this.chunkMin.x - padding && chunkPos.x > this.chunkMax.x + padding)
+		if(chunkPos.x < this.chunkMin.x - padding || chunkPos.x > this.chunkMax.x + padding) {
 			return false;
+		}
 
-		if(chunkPos.z < this.chunkMin.z - padding && chunkPos.z > this.chunkMax.z + padding)
+		if(chunkPos.z < this.chunkMin.z - padding || chunkPos.z > this.chunkMax.z + padding) {
 			return false;
+		}
 
 		return true;
 	}
@@ -117,12 +135,17 @@ public class DungeonInstance {
 	 * @param chunkPos The chunk position to build within.
 	 */
 	public void buildChunk(World world, ChunkPos chunkPos) {
-		if(this.layout == null || !this.layout.sectorChunkMap.containsKey(chunkPos)) {
+		if(this.complete || this.layout == null || !this.layout.sectorChunkMap.containsKey(chunkPos)) {
 			return;
 		}
 		for(SectorInstance sectorInstance : this.layout.sectorChunkMap.get(chunkPos)) {
 			// The world random is used when building as it can be volatile unlike layouts which must be done by seed in order.
 			sectorInstance.build(world, chunkPos, world.rand);
+		}
+
+		// Update Chunks Built:
+		if(++this.chunksBuilt >= this.layout.sectorChunkMap.size()) {
+			this.complete = true;
 		}
 	}
 
@@ -135,11 +158,18 @@ public class DungeonInstance {
 		this.schematic = DungeonManager.getInstance().getSchematic(nbtTagCompound.getString("Schematic"));
 		this.seed = nbtTagCompound.getLong("Seed");
 		this.complete = nbtTagCompound.getBoolean("Complete");
+		this.chunksBuilt = nbtTagCompound.getInteger("ChunksBuilt");
 		if(this.schematic == null) {
 			this.complete = true;
 		}
 		int[] originPos = nbtTagCompound.getIntArray("OriginPos");
 		this.originPos = new BlockPos(originPos[0], originPos[1], originPos[2]);
+		int[] chunkMin = nbtTagCompound.getIntArray("ChunkMin");
+		this.chunkMin = new ChunkPos(chunkMin[0], chunkMin[1]);
+		int[] chunkMax = nbtTagCompound.getIntArray("ChunkMax");
+		this.chunkMax = new ChunkPos(chunkMax[0], chunkMax[1]);
+
+		LycanitesMobs.printDebug("Dungeon", "Loaded Dungeon Instance from NBT: " + this);
 	}
 
 	/**
@@ -151,7 +181,25 @@ public class DungeonInstance {
 		nbtTagCompound.setString("Schematic", this.schematic.name);
 		nbtTagCompound.setLong("Seed", this.seed);
 		nbtTagCompound.setBoolean("Complete", this.complete);
+		nbtTagCompound.setInteger("ChunksBuilt", this.chunksBuilt);
 		nbtTagCompound.setIntArray("OriginPos", new int[] {this.originPos.getX(), this.originPos.getY(), this.originPos.getZ()});
+		nbtTagCompound.setIntArray("ChunkMin", new int[] {this.chunkMin.z, this.chunkMin.z});
+		nbtTagCompound.setIntArray("ChunkMax", new int[] {this.chunkMax.z, this.chunkMax.z});
+
+		LycanitesMobs.printDebug("Dungeon", "Saved Dungeon Instance to NBT: " + this);
 		return nbtTagCompound;
+	}
+
+
+	/**
+	 * Returns a descriptive string of this Dungeon Instance.
+	 * @return A formatted string.
+	 */
+	@Override
+	public String toString() {
+		String schematic = "";
+		if(this.schematic != null)
+			schematic = " - Schematic: " + this.schematic.name;
+		return "Dungeon Instance" + schematic + " - Origin: " + this.originPos + " - Complete: " + complete + " - Seed: " + this.seed;
 	}
 }

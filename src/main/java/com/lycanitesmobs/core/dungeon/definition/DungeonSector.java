@@ -78,17 +78,17 @@ public class DungeonSector {
 
 		if(json.has("floor")) {
 			this.floor = new SectorSegment();
-			this.floor.loadFromJSON(json.get("floor").getAsJsonObject());
+			this.floor.loadFromJSON(json.get("floor"));
 		}
 
 		if(json.has("wall")) {
 			this.wall = new SectorSegment();
-			this.wall.loadFromJSON(json.get("wall").getAsJsonObject());
+			this.wall.loadFromJSON(json.get("wall"));
 		}
 
 		if(json.has("ceiling")) {
 			this.ceiling = new SectorSegment();
-			this.ceiling.loadFromJSON(json.get("ceiling").getAsJsonObject());
+			this.ceiling.loadFromJSON(json.get("ceiling"));
 		}
 	}
 

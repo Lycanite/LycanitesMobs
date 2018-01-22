@@ -16,9 +16,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class ExtendedWorld extends WorldSavedData {
 	public static String EXT_PROP_NAME = "LycanitesMobs";
@@ -49,7 +47,7 @@ public class ExtendedWorld extends WorldSavedData {
 	private int worldEventCount = -1;
 
 	// Dungeons:
-	public Map<ChunkPos, DungeonInstance> dungeons = new HashMap<>();
+	public List<DungeonInstance> dungeons = new ArrayList<>();
 
 	
 	// ==================================================
@@ -202,8 +200,8 @@ public class ExtendedWorld extends WorldSavedData {
     // ==================================================
     /** Gets a random time until the next random event will start. **/
     public int getRandomEventDelay(Random random) {
-        int max = Math.max(20, MobEventManager.getInstance().maxTicksUntilEvent);
-        int min = Math.max(20, MobEventManager.getInstance().minTicksUntilEvent);
+		int min = Math.max(200, MobEventManager.getInstance().minTicksUntilEvent);
+        int max = Math.max(200, MobEventManager.getInstance().maxTicksUntilEvent);
         if(max <= min)
             return min;
 
@@ -417,6 +415,38 @@ public class ExtendedWorld extends WorldSavedData {
             LycanitesMobs.packetHandler.sendToDimension(messageMobEvent, this.world.provider.getDimension());
         }
     }
+
+
+	// ==================================================
+	//                     Dungeons
+	// ==================================================
+	/**
+	 * Adds a new Dungeon Instance to this world where it can be found for generation, etc.
+	 * @param dungeonInstance The Dungeon Instance to add.
+	 */
+	public void addDungeonInstance(DungeonInstance dungeonInstance) {
+		if(!this.dungeons.contains(dungeonInstance)) {
+			this.dungeons.add(dungeonInstance);
+			this.markDirty();
+		}
+	}
+
+
+	/**
+	 * Returns all Dungeon Instances loaded for the provided world within range of the chunk position.
+	 * @param chunkPos The chunk position to search around.
+	 * @param range The range from the chunk position.
+	 * @return A list of Dungeon Instances found.
+	 */
+	public List<DungeonInstance> getNearbyDungeonInstances(ChunkPos chunkPos, int range) {
+		List<DungeonInstance> nearbyDungeons = new ArrayList<>();
+		for(DungeonInstance dungeonInstance : this.dungeons) {
+			if(dungeonInstance.isChunkPosWithin(chunkPos, range)) {
+				nearbyDungeons.add(dungeonInstance);
+			}
+		}
+		return nearbyDungeons;
+	}
 	
 	
 	// ==================================================
@@ -443,11 +473,15 @@ public class ExtendedWorld extends WorldSavedData {
 		if(nbtTagCompound.hasKey("Dungeons"))  {
 			NBTTagList nbtDungeonList = nbtTagCompound.getTagList("Dungeons", 10);
 			for(int i = 0; i < nbtDungeonList.tagCount(); i++) {
-				NBTTagCompound dungeonNBT = nbtDungeonList.getCompoundTagAt(i);
-				DungeonInstance dungeonInstance = new DungeonInstance();
-				dungeonInstance.readFromNBT(dungeonNBT);
-				dungeonInstance.init(this.world);
-				this.dungeons.put(new ChunkPos(dungeonInstance.originPos), dungeonInstance);
+				try {
+					NBTTagCompound dungeonNBT = nbtDungeonList.getCompoundTagAt(i);
+					DungeonInstance dungeonInstance = new DungeonInstance();
+					dungeonInstance.readFromNBT(dungeonNBT);
+					this.dungeons.add(dungeonInstance);
+				}
+				catch(Exception e) {
+					LycanitesMobs.printWarning("Dungeon", "An exception occurred when loading a dungeon from NBT.");
+				}
 			}
 		}
 	}
@@ -467,7 +501,7 @@ public class ExtendedWorld extends WorldSavedData {
 
 		// Dungeons:
 		NBTTagList nbtDungeonList = new NBTTagList();
-		for(DungeonInstance dungeonInstance : this.dungeons.values()) {
+		for(DungeonInstance dungeonInstance : this.dungeons) {
 			NBTTagCompound dungeonNBT = new NBTTagCompound();
 			dungeonInstance.writeToNBT(dungeonNBT);
 			nbtDungeonList.appendTag(dungeonNBT);

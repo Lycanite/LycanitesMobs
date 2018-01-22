@@ -80,6 +80,12 @@ public class MobSpawn {
 	/** A list of item drops to add to a mob spawned by this MobSpawn. **/
 	protected List<MobDrop> mobDrops = new ArrayList<>();
 
+	/** For dungeon spawning, if 0 or above this is the minimum level of the dungeon (how far down/up) for this mob to show up in. Default -1. **/
+	public int dungeonLevelMin = -1;
+
+	/** For dungeon spawning, if above the min, this is the maximum level of the dungeon (how far down/up) for this mob to show up in. Default -1. **/
+	public int dungeonLevelMax = -1;
+
 
 	/** Loads this Spawn Condition from the provided JSON data. **/
 	public static MobSpawn createFromJSON(JsonObject json) {
@@ -175,6 +181,12 @@ public class MobSpawn {
 				}
 			}
 		}
+
+		if(json.has("dungeonLevelMin"))
+			this.dungeonLevelMin = json.get("dungeonLevelMin").getAsInt();
+
+		if(json.has("dungeonLevelMax"))
+			this.dungeonLevelMax = json.get("dungeonLevelMax").getAsInt();
 	}
 
 

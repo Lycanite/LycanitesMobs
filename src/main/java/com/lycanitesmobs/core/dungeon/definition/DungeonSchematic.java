@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.dungeon.definition;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.spawner.MobSpawn;
@@ -111,8 +112,9 @@ public class DungeonSchematic {
 		if(json.has("entrances")) {
 			for(JsonElement jsonElement : json.get("entrances").getAsJsonArray()) {
 				String jsonString = jsonElement.getAsString().toLowerCase();
-				if(!this.entrances.contains(jsonString))
+				if(!this.entrances.contains(jsonString)) {
 					this.entrances.add(jsonString);
+				}
 			}
 		}
 
@@ -217,9 +219,9 @@ public class DungeonSchematic {
 		if("entrance".equalsIgnoreCase(type))
 			sectorList = this.entrances;
 		else if("corridor".equalsIgnoreCase(type))
-			sectorList = this.entrances;
+			sectorList = this.corridors;
 		else if("stairs".equalsIgnoreCase(type))
-			sectorList = this.entrances;
+			sectorList = this.stairs;
 		else
 			sectorList = this.rooms;
 
@@ -231,12 +233,13 @@ public class DungeonSchematic {
 			if(sector == null) {
 				continue;
 			}
-			if(sector.weight > 0 && sector.type.equalsIgnoreCase(type)) {
+			if(sector.weight > 0) {
 				sectors.add(sector);
 				totalWeights += sector.weight;
 			}
 		}
 		if(sectors.isEmpty()) {
+			LycanitesMobs.printWarning("Dungeon", "Unable to find any " + type + " sectors for the dungeon: " + this.name);
 			return null;
 		}
 		if(sectors.size() == 1) {
@@ -290,6 +293,7 @@ public class DungeonSchematic {
 		}
 
 		if(themes.isEmpty()) {
+			LycanitesMobs.printWarning("Dungeon", "No Dungeon Themes Found For " + this.name);
 			return null;
 		}
 
@@ -303,14 +307,25 @@ public class DungeonSchematic {
 
 	/**
 	 * Gets a weighted random mob to spawn.
+	 * @param dungeonLevel The dungeon level to spawn at.
 	 * @param random The instance of random to use.
 	 * @return The MobSpawn of the mob to spawn or null if no mob can be spawned.
 	 **/
-	public MobSpawn getRandomMobSpawn(Random random) {
+	public MobSpawn getRandomMobSpawn(int dungeonLevel, Random random) {
 		// Get Weights:
 		int totalWeights = 0;
+		List<MobSpawn> mobSpawns = new ArrayList<>();
 		for(MobSpawn mobSpawn : this.mobSpawns) {
-			totalWeights += mobSpawn.getWeight();
+			if(mobSpawn.dungeonLevelMin >= 0 && dungeonLevel < mobSpawn.dungeonLevelMin) {
+				continue;
+			}
+			if(mobSpawn.dungeonLevelMax >= 0 && mobSpawn.dungeonLevelMax > mobSpawn.dungeonLevelMin && dungeonLevel > mobSpawn.dungeonLevelMax) {
+				continue;
+			}
+			if(mobSpawn.getWeight() > 0) {
+				mobSpawns.add(mobSpawn);
+				totalWeights += mobSpawn.getWeight();
+			}
 		}
 		if(totalWeights <= 0) {
 			return null;

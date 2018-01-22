@@ -652,6 +652,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return false;
 		}
 
+		LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
+		if(!this.checkSpawnGroupLimit(world, pos, SpawnInfo.spawnLimitRange))
+			return false;
+
     	return true;
     }
 
@@ -677,9 +681,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return false;
     	LycanitesMobs.printDebug("MobSpawns", "Checking for underground.");
         if(!this.spawnsUnderground && this.isBlockUnderground(pos.getX(), pos.getY() + 1, pos.getZ()))
-        	return false;
-    	LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
-        if(!this.checkSpawnGroupLimit(world, pos, SpawnInfo.spawnLimitRange))
         	return false;
         LycanitesMobs.printDebug("MobSpawns", "Checking for nearby bosses.");
 		if(!this.checkSpawnBoss(world, pos))
@@ -844,8 +845,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
                                 if (nbt.hasKey("SpawnData")) {
                                     NBTTagCompound spawnData = nbt.getCompoundTag("SpawnData");
                                     if (spawnData.hasKey("id")) {
-                                        String mobSpawnerMobName = spawnData.getString("id");
-                                        if (mobSpawnerMobName.equalsIgnoreCase(this.getName()))
+                                        String mobSpawnEntityId = spawnData.getString("id");
+                                        if (mobSpawnEntityId.equalsIgnoreCase(this.mobInfo.getRegistryName()))
                                             return true;
                                     }
                                 }

@@ -1,11 +1,11 @@
 {
-	"name": "basicroom",
-	"type": "room",
+	"name": "basicstairs",
+	"type": "stairs",
 	"weight": 8,
 	"loadDefault": true,
 	"changeTheme": false,
-	"sizeMin": [16, 9, 16],
-	"sizeMax": [32, 9, 32],
+	"sizeMin": [8, 9, 8],
+	"sizeMax": [8, 9, 8],
 	"floor": [
 		{
 			"layer": 0,
@@ -39,7 +39,7 @@
 				"000L000L000L000",
 				"000000000000000",
 				"000000000000000",
-				"000000000000000"
+				"000S000C000S000"
 			]
 		}
 	],

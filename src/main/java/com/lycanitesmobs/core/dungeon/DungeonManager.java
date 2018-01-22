@@ -32,8 +32,6 @@ public class DungeonManager extends JSONLoader {
 	public Map<String, DungeonSector> sectors = new HashMap<>();
 	public Map<String, DungeonSchematic> schematics = new HashMap<>();
 
-	public Map<Integer, List<DungeonInstance>> dungeonInstances = new HashMap<>();
-
 
 	/** Returns the main DungeonManager INSTANCE or creates it and returns it. **/
 	public static DungeonManager getInstance() {
@@ -168,7 +166,10 @@ public class DungeonManager extends JSONLoader {
 	/** Reloads all JSON Dungeons. **/
 	public void reload() {
 		LycanitesMobs.printDebug("Dungeon", "Destroying JSON Dungeons!");
-		// TODO Reload dungeons.
+		this.themes.clear();
+		this.structures.clear();
+		this.sectors.clear();
+		this.schematics.clear();
 
 		this.loadAllFromJSON();
 	}
@@ -201,6 +202,7 @@ public class DungeonManager extends JSONLoader {
 	/** Gets a Theme by name or null if none can be found. **/
 	public DungeonTheme getTheme(String name) {
 		if(!this.themes.containsKey(name)) {
+			LycanitesMobs.printWarning("Dungeon", "Unable to find a theme called " + name);
 			return null;
 		}
 		return this.themes.get(name);
@@ -267,6 +269,7 @@ public class DungeonManager extends JSONLoader {
 	/** Gets a Sector by name or null if none can be found. **/
 	public DungeonSector getSector(String name) {
 		if(!this.sectors.containsKey(name)) {
+			LycanitesMobs.printWarning("Dungeon", "Unable to find a Dungeon Sector by the name: " + name);
 			return null;
 		}
 		return this.sectors.get(name);
@@ -303,44 +306,5 @@ public class DungeonManager extends JSONLoader {
 			return null;
 		}
 		return this.schematics.get(name);
-	}
-
-
-	/**
-	 * Adds a Dungeon Instance to this manager where it can be found for generation, etc.
-	 * @param dungeonInstance The Dungeon Instance to add.
-	 * @param world The World that the dungeon belongs to.
-	 */
-	public void addDungeonInstance(DungeonInstance dungeonInstance, World world) {
-		int dimensionId = world.provider.getDimension();
-		if(!this.dungeonInstances.containsKey(dimensionId)) {
-			this.dungeonInstances.put(dimensionId, new ArrayList<>());
-		}
-		if(!this.dungeonInstances.get(dimensionId).contains(dungeonInstance)) {
-			this.dungeonInstances.get(dimensionId).add(dungeonInstance);
-		}
-	}
-
-
-	/**
-	 * Returns all Dungeon Instances loaded for the provided world within range of the chunk position.
-	 * @param world The world to search in.
-	 * @param chunkPos The chunk position to search around.
-	 * @param range The range from the chunk position.
-	 * @return A list of Dungeon Instances found.
-	 */
-	public List<DungeonInstance> getNearbyDungeonInstances(World world, ChunkPos chunkPos, int range) {
-		List<DungeonInstance> nearbyDungeons = new ArrayList<>();
-		if(!this.dungeonInstances.containsKey(world.provider.getDimension())) {
-			return nearbyDungeons;
-		}
-
-		for(DungeonInstance dungeonInstance : this.dungeonInstances.get(world.provider.getDimension())) {
-			if(dungeonInstance.isChunkPosWithin(chunkPos, range)) {
-				nearbyDungeons.add(dungeonInstance);
-			}
-		}
-
-		return nearbyDungeons;
 	}
 }

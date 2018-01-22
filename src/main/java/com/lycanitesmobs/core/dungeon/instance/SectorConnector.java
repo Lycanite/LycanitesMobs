@@ -1,10 +1,15 @@
 package com.lycanitesmobs.core.dungeon.instance;
 
+import com.lycanitesmobs.LycanitesMobs;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class SectorConnector {
 	/** Sector Connectors link together one sector to another, each sector type has one or more connectors as well as a parent connector. */
@@ -24,15 +29,22 @@ public class SectorConnector {
 	/** Set to true when this connector is connected to a child sector or cannot be connected to anything (usually due to collisions). **/
 	public boolean closed = false;
 
+	/** The dungeon level that this connector is on. **/
+	public int level = 0;
+
 
 	/**
 	 * Constructor
 	 * @param position The block position of this connector.
 	 * @param parentSector The sector that this connector belongs to. If null, collision checks are skipped.
+	 * @param level The level that this connector is on.
+	 * @param rotation The rotation of this sector (applied to child sectors).
 	 */
-	public SectorConnector(BlockPos position, SectorInstance parentSector, int rotation) {
+	public SectorConnector(BlockPos position, SectorInstance parentSector, int level, int rotation) {
 		this.position = position;
 		this.parentSector = parentSector;
+		this.level = level;
+		this.rotation = rotation;
 	}
 
 
@@ -43,17 +55,130 @@ public class SectorConnector {
 	 * @return
 	 */
 	public boolean canConnect(DungeonLayout dungeonLayout, SectorInstance sectorInstance) {
+		if(this.closed) {
+			return false;
+		}
 		if(sectorInstance == null) {
-			return !this.closed;
+			return true;
+		}
+
+		// Temp Set Connector:
+		boolean tempConnector = false;
+		if(sectorInstance.parentConnector == null) {
+			sectorInstance.parentConnector = this;
+			tempConnector = true;
 		}
 
 		// Connect To Sector Instance:
 		for(SectorInstance nearbySector : sectorInstance.getNearbySectors()) {
 			if(sectorInstance.collidesWith(nearbySector)) {
+				if(tempConnector) {
+					sectorInstance.parentConnector = null;
+				}
 				return false;
 			}
 		}
 
+		if(tempConnector) {
+			sectorInstance.parentConnector = null;
+		}
 		return true;
+	}
+
+
+	/**
+	 * Builds an entrance at this connectors location within the chunk position.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random to use.
+	 */
+	public void buildEntrance(World world, ChunkPos chunkPos, Random random) {
+		SectorInstance sectorInstance = this.parentSector;
+		if(sectorInstance == null) {
+			sectorInstance = this.childSector;
+		}
+		if(sectorInstance == null) {
+			return;
+		}
+
+		// Get Position and Size:
+		Vec3i size = sectorInstance.roomSize;
+		if(this.childSector != null && sectorInstance != this.childSector) {
+			size = new Vec3i(Math.min(size.getX(), this.childSector.roomSize.getX()), Math.min(size.getY(), this.childSector.roomSize.getY()), Math.min(size.getZ(), this.childSector.roomSize.getZ()));
+		}
+		if(this.rotation == 90 || this.rotation == 270) {
+			size = new Vec3i(size.getZ(), size.getY(), size.getX());
+		}
+		int entranceHeight = 2;
+		int entranceRadius = 1;
+		int startX = this.position.getX();
+		int stopX = this.position.getX();
+		int startY = Math.max(1, this.position.getY() + 1);
+		int stopY = Math.min(world.getHeight() - 1, this.position.getY() + 1 + entranceHeight);
+		int startZ = this.position.getZ();
+		int stopZ = this.position.getZ();
+
+		// Calculate Rotation:
+		if(this.rotation == 0 || this.rotation == 180) {
+			startX -= entranceRadius;
+			stopX += entranceRadius;
+			if(size.getX() % 2 != 0) {
+				startX -= 1;
+			}
+		}
+		else {
+			startZ -= entranceRadius;
+			stopZ += entranceRadius;
+			if(size.getZ() % 2 != 0) {
+				startZ -= 1;
+			}
+		}
+
+		// Build Entrance:
+		for(int x = startX; x <= stopX; x++) {
+			for(int y = startY; y <= stopY; y++) {
+				for(int z = startZ; z <= stopZ; z++) {
+					sectorInstance.placeBlock(world, chunkPos, new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), random);
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Builds a test marker showing where this connector is and its rotation.
+	 * @param world The world to build in.
+	 * @param chunkPos The chunk position to build within.
+	 * @param random The instance of random to use.
+	 */
+	public void buildTest(World world, ChunkPos chunkPos, Random random) {
+		SectorInstance sectorInstance = this.parentSector;
+		if(sectorInstance == null) {
+			sectorInstance = this.childSector;
+		}
+		if(sectorInstance == null) {
+			return;
+		}
+
+		// Build Center Block Marker:
+		sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, 0), Blocks.GOLD_BLOCK.getDefaultState(), random);
+
+		// Build Rotation Block Markers:
+		if(this.rotation == 0) {
+			for(int z = 1; z <= 3; z++)
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, z), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+		}
+		else if(this.rotation == 90) {
+			for(int x = 1; x <= 3; x++)
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(x, 1, 0), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+		}
+		else if(this.rotation == 180) {
+			for(int z = -1; z >= -3; z--)
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, z), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+		}
+		else {
+			for(int x = -1; x >= -3; x--)
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(x, 1, 0), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+		}
 	}
 }

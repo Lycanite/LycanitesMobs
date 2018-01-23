@@ -20,7 +20,7 @@ import java.util.*;
 
 public class ExtendedWorld extends WorldSavedData {
 	public static String EXT_PROP_NAME = "LycanitesMobs";
-	public static Map<World, ExtendedWorld> loadedExtWorlds = new HashMap<World, ExtendedWorld>();
+	public static Map<World, ExtendedWorld> loadedExtWorlds = new HashMap<>();
 
     /** The world INSTANCE to work with. **/
 	public World world;
@@ -47,7 +47,7 @@ public class ExtendedWorld extends WorldSavedData {
 	private int worldEventCount = -1;
 
 	// Dungeons:
-	public List<DungeonInstance> dungeons = new ArrayList<>();
+	public Map<UUID, DungeonInstance> dungeons = new HashMap<>();
 
 	
 	// ==================================================
@@ -421,14 +421,14 @@ public class ExtendedWorld extends WorldSavedData {
 	//                     Dungeons
 	// ==================================================
 	/**
-	 * Adds a new Dungeon Instance to this world where it can be found for generation, etc.
+	 * Adds a new Dungeon Instance to this world where it can be found for generation, etc. Gives a new UUID.
 	 * @param dungeonInstance The Dungeon Instance to add.
+	 * @param uuid The UUID to give to the new Dungeon Instance.
 	 */
-	public void addDungeonInstance(DungeonInstance dungeonInstance) {
-		if(!this.dungeons.contains(dungeonInstance)) {
-			this.dungeons.add(dungeonInstance);
-			this.markDirty();
-		}
+	public void addDungeonInstance(DungeonInstance dungeonInstance, UUID uuid) {
+		dungeonInstance.uuid = uuid;
+		this.dungeons.put(dungeonInstance.uuid, dungeonInstance);
+		this.markDirty();
 	}
 
 
@@ -440,7 +440,10 @@ public class ExtendedWorld extends WorldSavedData {
 	 */
 	public List<DungeonInstance> getNearbyDungeonInstances(ChunkPos chunkPos, int range) {
 		List<DungeonInstance> nearbyDungeons = new ArrayList<>();
-		for(DungeonInstance dungeonInstance : this.dungeons) {
+		for(DungeonInstance dungeonInstance : this.dungeons.values()) {
+			if(dungeonInstance.world == null) {
+				dungeonInstance.init(this.world);
+			}
 			if(dungeonInstance.isChunkPosWithin(chunkPos, range)) {
 				nearbyDungeons.add(dungeonInstance);
 			}
@@ -477,7 +480,9 @@ public class ExtendedWorld extends WorldSavedData {
 					NBTTagCompound dungeonNBT = nbtDungeonList.getCompoundTagAt(i);
 					DungeonInstance dungeonInstance = new DungeonInstance();
 					dungeonInstance.readFromNBT(dungeonNBT);
-					this.dungeons.add(dungeonInstance);
+					if(dungeonInstance.uuid != null && !this.dungeons.containsKey(dungeonInstance.uuid)) {
+						this.dungeons.put(dungeonInstance.uuid, dungeonInstance);
+					}
 				}
 				catch(Exception e) {
 					LycanitesMobs.printWarning("Dungeon", "An exception occurred when loading a dungeon from NBT.");
@@ -501,10 +506,12 @@ public class ExtendedWorld extends WorldSavedData {
 
 		// Dungeons:
 		NBTTagList nbtDungeonList = new NBTTagList();
-		for(DungeonInstance dungeonInstance : this.dungeons) {
+		for(DungeonInstance dungeonInstance : this.dungeons.values()) {
 			NBTTagCompound dungeonNBT = new NBTTagCompound();
-			dungeonInstance.writeToNBT(dungeonNBT);
-			nbtDungeonList.appendTag(dungeonNBT);
+			dungeonNBT = dungeonInstance.writeToNBT(dungeonNBT);
+			if(dungeonNBT != null) {
+				nbtDungeonList.appendTag(dungeonNBT);
+			}
 		}
 		nbtTagCompound.setTag("Dungeons", nbtDungeonList);
 

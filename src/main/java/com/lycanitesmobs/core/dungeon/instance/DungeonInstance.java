@@ -12,9 +12,13 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class DungeonInstance {
 	/** A Dungeon Instance is a dungeon that is active in the world. **/
+
+	/** A unique identifier for this Dungeon Instance. **/
+	public UUID uuid;
 
 	/** The Schematic this instance builds from. Can be null when a Schematic has been removed or renamed in which case the dungeon is immediately set as complete. **/
 	public DungeonSchematic schematic;
@@ -155,6 +159,7 @@ public class DungeonInstance {
 	 * @param nbtTagCompound The NBT Data to read from.
 	 */
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		this.uuid = nbtTagCompound.getUniqueId("Id");
 		this.schematic = DungeonManager.getInstance().getSchematic(nbtTagCompound.getString("Schematic"));
 		this.seed = nbtTagCompound.getLong("Seed");
 		this.complete = nbtTagCompound.getBoolean("Complete");
@@ -175,9 +180,13 @@ public class DungeonInstance {
 	/**
 	 * Writes this dungeon to NBT. Should only be called after the this instance has been initialised.
 	 * @param nbtTagCompound The NBTData to write to.
-	 * @return The written to NBTData. For chaining.
+	 * @return The written to NBTData. Null if this Dungeon Instance cannot be saved.
 	 */
 	public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
+		if(this.uuid == null)
+			return null;
+
+		nbtTagCompound.setUniqueId("Id", this.uuid);
 		nbtTagCompound.setString("Schematic", this.schematic.name);
 		nbtTagCompound.setLong("Seed", this.seed);
 		nbtTagCompound.setBoolean("Complete", this.complete);
@@ -200,6 +209,6 @@ public class DungeonInstance {
 		String schematic = "";
 		if(this.schematic != null)
 			schematic = " - Schematic: " + this.schematic.name;
-		return "Dungeon Instance" + schematic + " - Origin: " + this.originPos + " - Complete: " + complete + " - Seed: " + this.seed;
+		return "Dungeon Instance" + schematic + " - Origin: " + this.originPos + " - Complete: " + complete + " - Seed: " + this.seed + " - ID: " + this.uuid;
 	}
 }

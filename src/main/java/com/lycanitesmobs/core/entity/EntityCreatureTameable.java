@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity;
 
+import com.google.common.base.Optional;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
@@ -38,15 +39,17 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 
     // Owner:
     public UUID ownerUUID;
+    public Entity ownerTarget;
 	
 	// AI:
 	public EntityAISit aiSit;
 
     // Datawatcher:
-    protected static final DataParameter<Byte> TAMED = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<String> OWNER = EntityDataManager.<String>createKey(EntityCreatureBase.class, DataSerializers.STRING);
-    protected static final DataParameter<Float> HUNGER = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
-    protected static final DataParameter<Float> STAMINA = EntityDataManager.<Float>createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Byte> TAMED = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Optional<UUID>> OWNER = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    protected static final DataParameter<Float> HUNGER = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Float> STAMINA = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+
     /** Used for the TAMED WATCHER_ID, this holds a series of booleans that describe the tamed status as well as instructed behaviour. **/
 	public static enum TAMED_ID {
 		IS_TAMED((byte)1), MOVE_SIT((byte)2), MOVE_FOLLOW((byte)4),
@@ -69,7 +72,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(TAMED, (byte)0);
-        this.dataManager.register(OWNER, "");
+        this.dataManager.register(OWNER, Optional.absent());
         this.dataManager.register(HUNGER, new Float(this.getCreatureHungerMax()));
         this.dataManager.register(STAMINA, new Float(this.getStaminaMax()));
     }
@@ -500,23 +503,25 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             }
     	return this.isTamed();
     }
-    
-    public void setPlayerOwner(EntityPlayer player) {
+
+	/**
+	 * Sets the owner of this entity via a Player Entity.
+	 * @param player
+	 */
+	public void setPlayerOwner(EntityPlayer player) {
         this.setPlayerOwner();
         this.setOwnerId(player.getUniqueID());
-        this.setOwner(player.getName());
     }
 
-    public void setPlayerOwner(UUID playerUUID, String playerName) {
+    public void setPlayerOwner(UUID playerUUID) {
         this.setPlayerOwner();
         this.setOwnerId(playerUUID);
-        this.setOwner(playerName);
     }
 
     public void setPlayerOwner() {
         this.setTamed(true);
         this.clearMovement();
-        this.setAttackTarget((EntityLivingBase) null);
+        this.setAttackTarget(null);
         this.setSitting(false);
         this.setFollowing(true);
         this.setPassive(false);
@@ -541,33 +546,59 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     //                       Owner
     // ==================================================
-    public String getOwnerName() {
-        try {
-            return this.getStringFromDataManager(OWNER);
-        }
-        catch(Exception e) {
-            return "";
-        }
-    }
-    
-    public void setOwner(String owner) {
-        this.dataManager.set(OWNER, owner);
-    }
+	@Override
+	public Entity getOwner() {
+		if(this.ownerTarget != null) {
+			return this.ownerTarget;
+		}
+		if(this.getOwnerId() == null) {
+			return super.getOwner();
+		}
+		this.ownerTarget = this.getEntityWorld().getPlayerEntityByUUID(this.getOwnerId());
+		return this.ownerTarget;
+	}
 
-    public UUID getOwnerId() {
+	/**
+	 * Gets the unique id of the entity that owns this entity.
+	 * @return The owner entity UUID.
+	 */
+	public UUID getOwnerId() {
+		if(this.getEntityWorld().isRemote) {
+			try {
+				this.ownerUUID = this.getUUIDFromDataManager(OWNER).orNull();
+			} catch (Exception ignored) {}
+		}
+
         return this.ownerUUID;
     }
 
-    public void setOwnerId(UUID ownerUUID) {
+	/**
+	 * Sets the owner of this entity via the unique id of the owner entity. Also updates the tamed status of this entity.
+	 * @param ownerUUID The owner entity UUID.
+	 */
+	public void setOwnerId(UUID ownerUUID) {
         this.ownerUUID = ownerUUID;
+        this.setTamed(ownerUUID != null);
+        this.ownerTarget = null; // Clear cached owner target.
+		this.dataManager.set(OWNER, this.ownerUUID != null ? Optional.of(this.ownerUUID) : Optional.absent());
     }
-    
-    @Override
-    public Entity getOwner() {
-        if(this.getOwnerId() == null)
-            return null;
-        return this.getEntityWorld().getPlayerEntityByUUID(this.getOwnerId());
-    }
+	/**
+	 * Gets the name of the entity that owns this entity or an empty string if none.
+	 * @return The owner display name.
+	 */
+	public String getOwnerName() {
+		Entity owner = this.getOwner();
+		if(owner != null) {
+			if(owner instanceof EntityPlayer) {
+				return ((EntityPlayer)owner).getDisplayNameString();
+			}
+			else {
+				return owner.getName();
+			}
+		}
+
+		return "";
+	}
     
     
     // ==================================================
@@ -773,11 +804,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
  	public EntityCreatureAgeable createChild(EntityCreatureAgeable baby) {
     	EntityCreatureAgeable spawnedBaby = super.createChild(baby);
-    	String ownerName = this.getOwnerName();
-    	if(ownerName != null && ownerName.trim().length() > 0 && spawnedBaby != null && spawnedBaby instanceof EntityCreatureTameable) {
+    	UUID ownerId = this.getOwnerId();
+    	if(ownerId != null && spawnedBaby != null && spawnedBaby instanceof EntityCreatureTameable) {
     		EntityCreatureTameable tamedBaby = (EntityCreatureTameable)spawnedBaby;
-    		tamedBaby.setOwner(ownerName);
-    		tamedBaby.setTamed(true);
+    		tamedBaby.setOwnerId(ownerId);
     	}
     	return spawnedBaby;
  	}
@@ -864,27 +894,25 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
         super.readEntityFromNBT(nbtTagCompound);
-        if(nbtTagCompound.hasKey("Owner")) {
-	        String owner = nbtTagCompound.getString("Owner");
-	        if(owner.length() > 0) {
-	            this.setOwner(owner);
-	            this.setTamed(true);
-	        }
-        }
-        else {
-        	this.setOwner("");
-            this.setTamed(false);
-        }
 
-        if(nbtTagCompound.hasKey("OwnerUUID")) {
-            String uuidString = nbtTagCompound.getString("OwnerUUID");
-            if(!"".equals(uuidString))
-                this.setOwnerId(UUID.fromString(uuidString));
-            else
-                this.setOwnerId(null);
+        // Old String Based UUID NBT:
+		if(nbtTagCompound.hasKey("OwnerUUID")) {
+			String uuidString = nbtTagCompound.getString("OwnerUUID");
+			if(!"".equals(uuidString))
+				this.setOwnerId(UUID.fromString(uuidString));
+			else
+				this.setOwnerId(null);
+		}
+		else {
+			this.ownerUUID = null;
+		}
+
+		// New UUID NBT:
+        if(nbtTagCompound.hasKey("OwnerId")) {
+            this.setOwnerId(nbtTagCompound.getUniqueId("OwnerId"));
         }
         else {
-            this.ownerUUID = null;
+			this.setOwnerId(null);
         }
         
         if(nbtTagCompound.hasKey("Sitting")) {
@@ -938,17 +966,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     public void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
         super.writeEntityToNBT(nbtTagCompound);
-        if(this.getOwnerName() == null) {
-        	nbtTagCompound.setString("Owner", "");
-        }
-        else {
-        	nbtTagCompound.setString("Owner", this.getOwnerName());
-        }
-        if(this.getOwnerId() == null) {
-            nbtTagCompound.setString("OwnerUUID", "");
-        }
-        else {
-            nbtTagCompound.setString("OwnerUUID", this.getOwnerId().toString());
+        if(this.getOwnerId() != null) {
+            nbtTagCompound.setUniqueId("OwnerId", this.getOwnerId());
         }
         nbtTagCompound.setBoolean("Sitting", this.isSitting());
         nbtTagCompound.setBoolean("Following", this.isFollowing());

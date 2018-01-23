@@ -13,13 +13,12 @@
 	"stairs": ["basicstairs"],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.wraith",
-			"weight": 8,
-			"dungeonLevelMin": "1"
+			"mobId": "demonmobs.belph",
+			"weight": 14
 		},
 		{
-			"mobId": "demonmobs.belph",
-			"weight": 14,
+			"mobId": "elementalmobs.wraith",
+			"weight": 8,
 			"dungeonLevelMin": "0"
 		},
 		{

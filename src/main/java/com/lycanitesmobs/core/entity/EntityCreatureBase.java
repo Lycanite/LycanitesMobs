@@ -257,14 +257,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected static final DataParameter<Float> SIZE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
     protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
 
-    public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_CHEST = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_LEGS = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_FEET = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_BAG = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_SADDLE = EntityDataManager.<ItemStack>createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_CHEST = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_LEGS = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_FEET = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_BAG = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+    public static final DataParameter<ItemStack> EQUIPMENT_SADDLE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
 
-    protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.<Optional<BlockPos>>createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
+    protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
 
     /** Used for the TARGET watcher bitmap, bitmaps save on many packets and make network performance better! **/
 	public enum TARGET_ID {
@@ -563,6 +563,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return null;
         }
     }
+
+	public Optional<UUID> getUUIDFromDataManager(DataParameter<Optional<UUID>> key) {
+		try {
+			return this.getDataManager().get(key);
+		}
+		catch (Exception e) {
+			return null;
+		}
+	}
 
     public ItemStack getItemStackFromDataManager(DataParameter<ItemStack> key) {
         try {
@@ -1754,7 +1763,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Arena:
         if(!this.getEntityWorld().isRemote) {
-            this.dataManager.set(ARENA, this.getArenaCenter() != null ? Optional.<BlockPos>of(this.getArenaCenter()) : Optional.<BlockPos>absent());
+            this.dataManager.set(ARENA, this.getArenaCenter() != null ? Optional.of(this.getArenaCenter()) : Optional.absent());
         }
     }
 

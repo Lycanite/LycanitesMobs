@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.worldgen;
 
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.dungeon.instance.DungeonInstance;
 import net.minecraft.util.math.BlockPos;
@@ -14,14 +15,17 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class WorldGeneratorDungeon implements IWorldGenerator {
+	public boolean enabled = false;
 
     // ==================================================
     //                    Constructors
     // ==================================================
     public WorldGeneratorDungeon() {
-        // TODO Load generation config settings if needed.
+		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
+		this.enabled = config.getBool("Dungeons", "Dungeons Enabled", this.enabled, "If false, all Lycanites Mobs Dungeons are disabled, set to true to enable the Dungeon System. (The JSON files are still loaded but don't do anything.)");
     }
 
 
@@ -30,6 +34,10 @@ public class WorldGeneratorDungeon implements IWorldGenerator {
     // ==================================================
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+    	if(!this.enabled) {
+    		return;
+		}
+
 		ExtendedWorld extendedWorld = ExtendedWorld.getForWorld(world);
 		if(extendedWorld == null) {
 			return;
@@ -52,9 +60,10 @@ public class WorldGeneratorDungeon implements IWorldGenerator {
 						}
 						LycanitesMobs.printDebug("Dungeon", "Creating A New Dungeon At Chunk: X" + (chunkX + (dungeonSizeMax * x)) + " Z" + (chunkZ + (dungeonSizeMax * z)));
 						DungeonInstance dungeonInstance = new DungeonInstance();
-						BlockPos dungeonPos = new ChunkPos(chunkX + (dungeonSizeMax * x), chunkZ + (dungeonSizeMax * z)).getBlock(7, world.getSeaLevel(), 7);
+						int yPos = world.getSeaLevel();
+						BlockPos dungeonPos = new ChunkPos(chunkX + (dungeonSizeMax * x), chunkZ + (dungeonSizeMax * z)).getBlock(7, yPos, 7);
 						dungeonInstance.setOrigin(dungeonPos);
-						extendedWorld.addDungeonInstance(dungeonInstance);
+						extendedWorld.addDungeonInstance(dungeonInstance, new UUID(world.rand.nextLong(), world.rand.nextLong()));
 						dungeonInstance.init(world);
 					}
 				}
@@ -64,9 +73,6 @@ public class WorldGeneratorDungeon implements IWorldGenerator {
 			// Build Dungeons:
 			nearbyDungeons = extendedWorld.getNearbyDungeonInstances(chunkPos, 0);
 			for(DungeonInstance dungeonInstance : nearbyDungeons) {
-				if(dungeonInstance.world == null) {
-					dungeonInstance.init(world);
-				}
 				dungeonInstance.buildChunk(world, chunkPos);
 			}
 		}

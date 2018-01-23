@@ -1,7 +1,7 @@
 {
 	"name": "basicroom",
 	"type": "room",
-	"weight": 8,
+	"weight": 2,
 	"loadDefault": true,
 	"changeTheme": false,
 	"sizeMin": [16, 9, 16],
@@ -10,8 +10,8 @@
 		{
 			"layer": 0,
 			"pattern": [
-				"112211",
-				"221122"
+				"1122",
+				"2211"
 			]
 		}
 	],
@@ -47,8 +47,8 @@
 		{
 			"layer": 0,
 			"pattern": [
-				"112211",
-				"221122"
+				"1122",
+				"2211"
 			]
 		}
 	]

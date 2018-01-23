@@ -27,7 +27,7 @@ import java.util.Map;
 public class InventoryCreature implements IInventory {
 
     // Basic Armor Values: (Copied values from EntityHorse)
-    public static final Map<String, Integer> armorValues = new HashMap<String, Integer>();
+    public static final Map<String, Integer> armorValues = new HashMap<>();
     static {
         armorValues.put("Leather", 3);
         armorValues.put("Iron", 5);
@@ -37,7 +37,7 @@ public class InventoryCreature implements IInventory {
     }
 
     // Equipment Types:
-    public static final List<String> equipmentTypes = new ArrayList<String>();
+    public static final List<String> equipmentTypes = new ArrayList<>();
     static {
         equipmentTypes.add("head");
         equipmentTypes.add("chest");
@@ -51,14 +51,12 @@ public class InventoryCreature implements IInventory {
 	public EntityCreatureBase creature;
 	public String inventoryName = "Creature Inventory";
 	protected NonNullList<ItemStack> inventoryContents;
-    //protected ItemStack[] items; Changed from array to list.
-    //protected Map<String, ItemStack> equipment = new HashMap<String, ItemStack>();
     protected boolean basicArmor = true;
     protected int nextEquipmentSlot = 0;
 
     // Equipment Slots:
-    public Map<String, Integer> equipmentTypeToSlot = new HashMap<String, Integer>();
-    public Map<Integer, String> equipmentSlotToType = new HashMap<Integer, String>();
+    public Map<String, Integer> equipmentTypeToSlot = new HashMap<>();
+    public Map<Integer, String> equipmentSlotToType = new HashMap<>();
 
     // ==================================================
     //                    Data Parameters

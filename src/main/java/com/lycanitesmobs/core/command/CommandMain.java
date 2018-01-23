@@ -165,6 +165,26 @@ public class CommandMain implements ICommand {
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}
+
+			// Enable:
+			if("enable".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.dungeon.enable");
+				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
+				config.setBool("Dungeons", "Dungeons Enabled", true);
+				LycanitesMobs.dungeonGenerator.enabled = true;
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Disable:
+			if("disable".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.dungeon.disable");
+				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
+				config.setBool("Dungeons", "Dungeons Enabled", false);
+				LycanitesMobs.dungeonGenerator.enabled = false;
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
 		}
 
 		// Beastiary:

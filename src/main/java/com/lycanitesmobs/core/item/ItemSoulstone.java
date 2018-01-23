@@ -64,13 +64,7 @@ public class ItemSoulstone extends ItemBase {
 			return false;
 		}
 
-		if(!player.getEntityWorld().isRemote) {
-			if (!player.capabilities.isCreativeMode)
-                itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
-			if (itemStack.getCount() <= 0)
-				player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-		}
-
+		// Particle Effect:
     	if(player.getEntityWorld().isRemote) {
     		for(int i = 0; i < 32; ++i) {
     			entity.getEntityWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
@@ -80,11 +74,13 @@ public class ItemSoulstone extends ItemBase {
         				0.0D, 0.0D, 0.0D);
     		}
     	}
-    	
+
+    	// Store Pet:
     	if(!player.getEntityWorld().isRemote) {
 			String petType = "pet";
-			if(entity instanceof EntityCreatureRideable)
+			if(entity instanceof EntityCreatureRideable) {
 				petType = "mount";
+			}
 
     		String message = I18n.translateToLocal("message.soulstone." + petType + ".added");
     		message = message.replace("%creature%", mobInfo.getTitle());
@@ -97,7 +93,14 @@ public class ItemSoulstone extends ItemBase {
 			playerExt.sendPetEntriesToPlayer(petType);
 			petEntry.assignEntity(entity);
 			entityTameable.setPetEntry(petEntry);
-    	}
+
+			// Consume Soulstone:
+			if (!player.capabilities.isCreativeMode)
+				itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
+			if (itemStack.getCount() <= 0)
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+		}
+
     	return true;
     }
 }

@@ -1,14 +1,12 @@
 package com.lycanitesmobs.core.dungeon.instance;
 
-import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class SectorConnector {
@@ -23,8 +21,8 @@ public class SectorConnector {
 	/** The Sector Instance that is connected to this connector. Can be null if the connection is empty. **/
 	public SectorInstance childSector;
 
-	/** The rotation of this connector. Where 0 is +Z as forwards. Only works with exact intervals of 90. **/
-	public int rotation = 0;
+	/** The facing direction of this connector. **/
+	public EnumFacing facing = EnumFacing.SOUTH;
 
 	/** Set to true when this connector is connected to a child sector or cannot be connected to anything (usually due to collisions). **/
 	public boolean closed = false;
@@ -38,13 +36,13 @@ public class SectorConnector {
 	 * @param position The block position of this connector.
 	 * @param parentSector The sector that this connector belongs to. If null, collision checks are skipped.
 	 * @param level The level that this connector is on.
-	 * @param rotation The rotation of this sector (applied to child sectors).
+	 * @param facing The facing of this sector (applied to child sectors).
 	 */
-	public SectorConnector(BlockPos position, SectorInstance parentSector, int level, int rotation) {
+	public SectorConnector(BlockPos position, SectorInstance parentSector, int level, EnumFacing facing) {
 		this.position = position;
 		this.parentSector = parentSector;
 		this.level = level;
-		this.rotation = rotation;
+		this.facing = facing;
 	}
 
 
@@ -102,15 +100,14 @@ public class SectorConnector {
 		}
 
 		// Get Position and Size:
-		Vec3i size = sectorInstance.roomSize;
+		Vec3i size = sectorInstance.getRoomSize();
 		if(this.childSector != null && sectorInstance != this.childSector) {
-			size = new Vec3i(Math.min(size.getX(), this.childSector.roomSize.getX()), Math.min(size.getY(), this.childSector.roomSize.getY()), Math.min(size.getZ(), this.childSector.roomSize.getZ()));
-		}
-		if(this.rotation == 90 || this.rotation == 270) {
-			size = new Vec3i(size.getZ(), size.getY(), size.getX());
+			Vec3i childSize = this.childSector.getRoomSize();
+			size = new Vec3i(Math.min(size.getX(), childSize.getX()), Math.min(size.getY(), childSize.getY()), Math.min(size.getZ(), childSize.getZ()));
 		}
 		int entranceHeight = 2;
 		int entranceRadius = 1;
+		int entranceClearance = 1;
 		int startX = this.position.getX();
 		int stopX = this.position.getX();
 		int startY = Math.max(1, this.position.getY() + 1);
@@ -119,12 +116,14 @@ public class SectorConnector {
 		int stopZ = this.position.getZ();
 
 		// Calculate Rotation:
-		if(this.rotation == 0 || this.rotation == 180) {
+		if(this.facing == EnumFacing.SOUTH || this.facing == EnumFacing.NORTH) {
 			startX -= entranceRadius;
 			stopX += entranceRadius;
 			if(size.getX() % 2 != 0) {
 				startX -= 1;
 			}
+			startZ -= entranceClearance;
+			stopZ += entranceClearance;
 		}
 		else {
 			startZ -= entranceRadius;
@@ -132,13 +131,15 @@ public class SectorConnector {
 			if(size.getZ() % 2 != 0) {
 				startZ -= 1;
 			}
+			startX -= entranceClearance;
+			stopX += entranceClearance;
 		}
 
 		// Build Entrance:
 		for(int x = startX; x <= stopX; x++) {
 			for(int y = startY; y <= stopY; y++) {
 				for(int z = startZ; z <= stopZ; z++) {
-					sectorInstance.placeBlock(world, chunkPos, new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), random);
+					sectorInstance.placeBlock(world, chunkPos, new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), this.facing, random);
 				}
 			}
 		}
@@ -146,7 +147,7 @@ public class SectorConnector {
 
 
 	/**
-	 * Builds a test marker showing where this connector is and its rotation.
+	 * Builds a test marker showing where this connector is and its facing.
 	 * @param world The world to build in.
 	 * @param chunkPos The chunk position to build within.
 	 * @param random The instance of random to use.
@@ -161,24 +162,24 @@ public class SectorConnector {
 		}
 
 		// Build Center Block Marker:
-		sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, 0), Blocks.GOLD_BLOCK.getDefaultState(), random);
+		sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, 0), Blocks.GOLD_BLOCK.getDefaultState(), EnumFacing.SOUTH, random);
 
 		// Build Rotation Block Markers:
-		if(this.rotation == 0) {
+		if(this.facing == EnumFacing.SOUTH) {
 			for(int z = 1; z <= 3; z++)
-				sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, z), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, z), Blocks.REDSTONE_BLOCK.getDefaultState(), EnumFacing.SOUTH, random);
 		}
-		else if(this.rotation == 90) {
+		else if(this.facing == EnumFacing.EAST) {
 			for(int x = 1; x <= 3; x++)
-				sectorInstance.placeBlock(world, chunkPos, this.position.add(x, 1, 0), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(x, 1, 0), Blocks.REDSTONE_BLOCK.getDefaultState(), EnumFacing.SOUTH, random);
 		}
-		else if(this.rotation == 180) {
+		else if(this.facing == EnumFacing.NORTH) {
 			for(int z = -1; z >= -3; z--)
-				sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, z), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(0, 1, z), Blocks.REDSTONE_BLOCK.getDefaultState(), EnumFacing.SOUTH, random);
 		}
 		else {
 			for(int x = -1; x >= -3; x--)
-				sectorInstance.placeBlock(world, chunkPos, this.position.add(x, 1, 0), Blocks.REDSTONE_BLOCK.getDefaultState(), random);
+				sectorInstance.placeBlock(world, chunkPos, this.position.add(x, 1, 0), Blocks.REDSTONE_BLOCK.getDefaultState(), EnumFacing.SOUTH, random);
 		}
 	}
 }

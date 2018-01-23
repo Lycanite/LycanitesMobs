@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.dungeon.instance;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.ChunkPos;
 
 import java.util.*;
@@ -59,7 +60,7 @@ public class DungeonLayout {
 			int snakeCount = Math.round((float)sectorCount * 0.2f);
 			exitSector = this.snake(random, exitSector, snakeCount);
 			LycanitesMobs.printDebug("Dungeon", "Snake Sectors: " + snakeCount + " - From Sector: " + exitSector);
-			if(exitSector.getCollisionBoundsMin().getY() - (exitSector.roomSize.getY() * 2) <= 1) {
+			if(exitSector.getOccupiedBoundsMin().getY() - (exitSector.roomSize.getY() * 2) <= 1) {
 				onLastLevel = true;
 			}
 
@@ -90,7 +91,7 @@ public class DungeonLayout {
 	 * @return The generated entrance sector.
 	 */
 	public SectorInstance start(Random random) {
-		this.originConnector = new SectorConnector(this.dungeonInstance.originPos, null, -1, 90 * random.nextInt(4));
+		this.originConnector = new SectorConnector(this.dungeonInstance.originPos, null, -1, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
 		DungeonSector entranceDungeonSector = this.dungeonInstance.schematic.getRandomSector("entrance", random);
 		SectorInstance entranceSector = new SectorInstance(this, entranceDungeonSector, random);
 		entranceSector.init(this.originConnector, random);
@@ -179,7 +180,7 @@ public class DungeonLayout {
 		this.sectors.add(sectorInstance);
 
 		// Update Dungeon Bounds:
-		ChunkPos minChunkPos = new ChunkPos(sectorInstance.getCollisionBoundsMin());
+		ChunkPos minChunkPos = new ChunkPos(sectorInstance.getOccupiedBoundsMin());
 		if(this.dungeonInstance.chunkMin == null) {
 			this.dungeonInstance.chunkMin = minChunkPos;
 		}
@@ -191,7 +192,7 @@ public class DungeonLayout {
 				this.dungeonInstance.chunkMin = new ChunkPos(this.dungeonInstance.chunkMin.x, minChunkPos.z);
 			}
 		}
-		ChunkPos maxChunkPos = new ChunkPos(sectorInstance.getCollisionBoundsMax());
+		ChunkPos maxChunkPos = new ChunkPos(sectorInstance.getOccupiedBoundsMax());
 		if(this.dungeonInstance.chunkMax == null) {
 			this.dungeonInstance.chunkMax = maxChunkPos;
 		}

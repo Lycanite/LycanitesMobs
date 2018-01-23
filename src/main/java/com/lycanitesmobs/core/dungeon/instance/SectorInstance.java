@@ -5,12 +5,15 @@ import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
 import com.lycanitesmobs.core.dungeon.definition.DungeonTheme;
 import com.lycanitesmobs.core.dungeon.definition.SectorLayer;
 import com.lycanitesmobs.core.spawner.MobSpawn;
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockTorch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -37,17 +40,17 @@ public class SectorInstance {
 	/** A list of connectors that this sector provides to connect to other sectors with. **/
 	public List<SectorConnector> connectors = new ArrayList<>();
 
-	/** The room size of this Sector Instance, this includes the inside and inner floor, walls and ceiling. **/
-	public Vec3i roomSize;
+	/** The room size of this Sector Instance, this includes the inside and inner floor, walls and ceiling. Used for building and sector to sector collision. **/
+	protected Vec3i roomSize;
 
-	/** The collision size of this Sector Instance, includes the room size plus additional space taken up by negative Sector Segement Layers. **/
-	public Vec3i collisionSize;
+	/** The occupied size of this Sector Instance, includes the room size plus additional space taken up by sector layers, structures, padding, etc. **/
+	protected Vec3i occupiedSize;
 
 	/** The theme this Sector Instance is using. **/
 	public DungeonTheme theme;
 
-	/** If true, this sector has been built into the world. **/
-	public boolean built = false;
+	/** How many chunks this sector has been built into. When this equals the total chunks this sector occupies it is considered fully built. **/
+	public int chunksBuild = 0;
 
 
 	/**
@@ -62,7 +65,7 @@ public class SectorInstance {
 
 		// Size:
 		this.roomSize = this.dungeonSector.getRandomSize(random);
-		this.collisionSize = new Vec3i(
+		this.occupiedSize = new Vec3i(
 				this.roomSize.getX() + this.dungeonSector.padding.getX(),
 				this.roomSize.getY() + this.dungeonSector.padding.getY(),
 				this.roomSize.getZ() + this.dungeonSector.padding.getZ()
@@ -80,6 +83,7 @@ public class SectorInstance {
 	 */
 	public void init(SectorConnector parentConnector, Random random) {
 		this.parentConnector = parentConnector;
+		this.parentConnector.childSector = this;
 		if(this.parentConnector == null) {
 			LycanitesMobs.printWarning("Dungeon", "Tried to initialise a Dungeon Sector without a Parent Connector!");
 			return;
@@ -97,64 +101,64 @@ public class SectorInstance {
 			this.theme = this.parentConnector.parentSector.theme;
 		}
 
-		// Connectors:
-		BlockPos boundsMin = this.getCollisionBoundsMin();
-		BlockPos boundsMax = this.getCollisionBoundsMax();
-		Vec3i size = this.roomSize;
-		if(this.parentConnector.rotation == 90 || this.parentConnector.rotation == 270) {
-			size = new Vec3i(size.getZ(), size.getY(), size.getX());
-		}
+		// Create Child Connectors:
+		BlockPos boundsMin = this.getRoomBoundsMin();
+		BlockPos boundsMax = this.getRoomBoundsMax();
+		Vec3i size = this.getRoomSize();
 		int centerX = boundsMin.getX() + Math.round((float)size.getX() / 2);
 		int centerZ = boundsMin.getZ() + Math.round((float)size.getZ() / 2);
 		if("corridor".equalsIgnoreCase(this.dungeonSector.type) || "room".equalsIgnoreCase(this.dungeonSector.type) || "entrance".equalsIgnoreCase(this.dungeonSector.type)) {
+			// TODO Randomize Connectors Horizontally
+
 			// Front Exit:
-			BlockPos blockPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMax.getZ());
-			if(this.parentConnector.rotation == 90) {
-				blockPos = new BlockPos(boundsMax.getX(), this.parentConnector.position.getY(), centerZ);
+			BlockPos blockPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMax.getZ() + 1);
+			if(this.parentConnector.facing == EnumFacing.EAST) {
+				blockPos = new BlockPos(boundsMax.getX() + 1, this.parentConnector.position.getY(), centerZ);
 			}
-			else if(this.parentConnector.rotation == 180) {
-				blockPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMin.getZ());
+			else if(this.parentConnector.facing == EnumFacing.NORTH) {
+				blockPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMin.getZ() - 1);
 			}
-			else if(this.parentConnector.rotation == 270) {
-				blockPos = new BlockPos(boundsMin.getX(), this.parentConnector.position.getY(), centerZ);
+			else if(this.parentConnector.facing == EnumFacing.WEST) {
+				blockPos = new BlockPos(boundsMin.getX() - 1, this.parentConnector.position.getY(), centerZ);
 			}
-			this.addConnector(blockPos, this.parentConnector.level, this.parentConnector.rotation);
+			this.addConnector(blockPos, this.parentConnector.level, this.parentConnector.facing);
 
 			// Side Exits:
 			if("room".equalsIgnoreCase(this.dungeonSector.type)) {
-				BlockPos leftPos = new BlockPos(boundsMin.getX(), this.parentConnector.position.getY(), centerZ);
-				int leftRotation = 270;
-				BlockPos rightPos = new BlockPos(boundsMax.getX(), this.parentConnector.position.getY(), centerZ);
-				int rightRotation = 90;
-				if(this.parentConnector.rotation == 90 || this.parentConnector.rotation == 270) {
-					leftPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMax.getZ());
-					leftRotation = 0;
-					rightPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMin.getZ());
-					rightRotation = 180;
+				BlockPos leftPos = new BlockPos(boundsMin.getX() - 1, this.parentConnector.position.getY(), centerZ);
+				EnumFacing leftFacing = EnumFacing.WEST;
+				BlockPos rightPos = new BlockPos(boundsMax.getX() + 1, this.parentConnector.position.getY(), centerZ);
+				EnumFacing rightFacing = EnumFacing.EAST;
+				if(this.parentConnector.facing == EnumFacing.EAST || this.parentConnector.facing == EnumFacing.WEST) {
+					leftPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMax.getZ() + 1);
+					leftFacing = EnumFacing.SOUTH;
+					rightPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMin.getZ() - 1);
+					rightFacing = EnumFacing.NORTH;
 				}
-				this.addConnector(leftPos, this.parentConnector.level, leftRotation);
-				this.addConnector(rightPos, this.parentConnector.level, rightRotation);
+				this.addConnector(leftPos, this.parentConnector.level, leftFacing);
+				this.addConnector(rightPos, this.parentConnector.level, rightFacing);
 			}
 		}
 		else if("stairs".equalsIgnoreCase(this.dungeonSector.type)) {
+
 			// Lower Exit:
 			int y = this.parentConnector.position.getY() - (size.getY() * 2);
 			if(y > 0) {
-				BlockPos blockPos = new BlockPos(centerX, y, boundsMax.getZ());
-				if (this.parentConnector.rotation == 90) {
-					blockPos = new BlockPos(boundsMax.getX(), y, centerZ);
+				BlockPos blockPos = new BlockPos(centerX, y, boundsMax.getZ() + 1);
+				if (this.parentConnector.facing == EnumFacing.EAST) {
+					blockPos = new BlockPos(boundsMax.getX() + 1, y, centerZ);
 				}
-				else if (this.parentConnector.rotation == 180) {
-					blockPos = new BlockPos(centerX, y, boundsMin.getZ());
+				else if (this.parentConnector.facing == EnumFacing.NORTH) {
+					blockPos = new BlockPos(centerX, y, boundsMin.getZ() - 1);
 				}
-				else if (this.parentConnector.rotation == 270) {
-					blockPos = new BlockPos(boundsMin.getX(), y, centerZ);
+				else if (this.parentConnector.facing == EnumFacing.WEST) {
+					blockPos = new BlockPos(boundsMin.getX() - 1, y, centerZ);
 				}
-				this.addConnector(blockPos, this.parentConnector.level + 1, this.parentConnector.rotation);
+				this.addConnector(blockPos, this.parentConnector.level + 1, this.parentConnector.facing);
 			}
 		}
 
-		//LycanitesMobs.printDebug("Dungeon", "Initialised Sector Instance - Bounds: " + this.getCollisionBoundsMin() + " to " + this.getCollisionBoundsMax());
+		//LycanitesMobs.printDebug("Dungeon", "Initialised Sector Instance - Bounds: " + this.getOccupiedBoundsMin() + " to " + this.getOccupiedBoundsMax());
 	}
 
 
@@ -162,11 +166,11 @@ public class SectorInstance {
 	 * Adds a new child Sector Connector to this Sector Instance.
 	 * @param blockPos The position of the connector.
 	 * @param level The level that the connector is on.
-	 * @param rotation The rotation of the sector.
+	 * @param facing The facing of the sector.
 	 * @return The newly created Sector Connector.
 	 */
-	public SectorConnector addConnector(BlockPos blockPos, int level, int rotation) {
-		SectorConnector connector = new SectorConnector(blockPos, this, level, rotation);
+	public SectorConnector addConnector(BlockPos blockPos, int level, EnumFacing facing) {
+		SectorConnector connector = new SectorConnector(blockPos, this, level, facing);
 		this.connectors.add(connector);
 		return connector;
 	}
@@ -210,8 +214,8 @@ public class SectorInstance {
 	 * @return A list of ChunkPos.
 	 */
 	public List<ChunkPos> getChunkPositions() {
-		ChunkPos minChunkPos = new ChunkPos(this.getCollisionBoundsMin());
-		ChunkPos maxChunkPos = new ChunkPos(this.getCollisionBoundsMax());
+		ChunkPos minChunkPos = new ChunkPos(this.getOccupiedBoundsMin());
+		ChunkPos maxChunkPos = new ChunkPos(this.getOccupiedBoundsMax());
 		List<ChunkPos> chunkPosList = new ArrayList<>();
 		for(int x = minChunkPos.x; x <= maxChunkPos.x; x++) {
 			for(int z = minChunkPos.z; z <= maxChunkPos.z; z++) {
@@ -256,10 +260,10 @@ public class SectorInstance {
 			return false;
 		}
 
-		BlockPos boundsMin = this.getCollisionBoundsMin();
-		BlockPos boundsMax = this.getCollisionBoundsMax();
-		BlockPos targetMin = sectorInstance.getCollisionBoundsMin();
-		BlockPos targetMax = sectorInstance.getCollisionBoundsMax();
+		BlockPos boundsMin = this.getOccupiedBoundsMin();
+		BlockPos boundsMax = this.getOccupiedBoundsMax();
+		BlockPos targetMin = sectorInstance.getOccupiedBoundsMin();
+		BlockPos targetMax = sectorInstance.getOccupiedBoundsMax();
 
 		boolean withinX = boundsMin.getX() > targetMin.getX() && boundsMin.getX() < targetMax.getX();
 		if(!withinX)
@@ -284,38 +288,58 @@ public class SectorInstance {
 
 
 	/**
+	 * Returns the room size of this sector. X and Z are swapped when facing EAST or WEST. This is how large the room to be built is excluding extra blocks added for layers or structures, etc. Use for building and sector collision testing.
+	 * @return A vector of the room size.
+	 */
+	public Vec3i getRoomSize() {
+		if(this.parentConnector.facing == EnumFacing.EAST || this.parentConnector.facing == EnumFacing.WEST) {
+			return new Vec3i(this.roomSize.getZ(), this.roomSize.getY(), this.roomSize.getX());
+		}
+		return this.roomSize;
+	}
+
+
+	/**
+	 * Returns the collision size of this sector. X and Z are swapped when facing EAST or WEST. This is how large this sector is including extra blocks added for layers or structures, etc. Use for detected what chunks this sector needs to generate in, etc.
+	 * @return A vector of the collision size.
+	 */
+	public Vec3i getOccupiedSize() {
+		if(this.parentConnector.facing == EnumFacing.EAST || this.parentConnector.facing == EnumFacing.WEST) {
+			return new Vec3i(this.occupiedSize.getZ(), this.occupiedSize.getY(), this.occupiedSize.getX());
+		}
+		return this.occupiedSize;
+	}
+
+
+	/**
 	 * Returns the minimum xyz position that this Sector Instance from the provided bounds size.
 	 * @param boundsSize The xyz size to use when calculating bounds.
 	 * @return The minimum bounds position (corner).
 	 */
 	public BlockPos getBoundsMin(Vec3i boundsSize) {
-		if(this.parentConnector.rotation == 90 || this.parentConnector.rotation == 270) {
-			boundsSize = new Vec3i(boundsSize.getZ(), boundsSize.getY(), boundsSize.getX());
-		}
-
 		BlockPos bounds = new BlockPos(this.parentConnector.position);
-		if(this.parentConnector.rotation == 0) {
+		if(this.parentConnector.facing == EnumFacing.SOUTH) {
 			bounds = bounds.add(
 					-(int)Math.ceil((double)boundsSize.getX() / 2),
 					0,
 					0
 			);
 		}
-		else if(this.parentConnector.rotation == 90) {
+		else if(this.parentConnector.facing == EnumFacing.EAST) {
 			bounds = bounds.add(
 					0,
 					0,
 					-(int)Math.ceil((double)boundsSize.getZ() / 2)
 			);
 		}
-		else if(this.parentConnector.rotation == 180) {
+		else if(this.parentConnector.facing == EnumFacing.NORTH) {
 			bounds = bounds.add(
 					-(int)Math.ceil((double)boundsSize.getX() / 2),
 					0,
 					-boundsSize.getZ()
 			);
 		}
-		else if(this.parentConnector.rotation == 270) {
+		else if(this.parentConnector.facing == EnumFacing.WEST) {
 			bounds = bounds.add(
 					-boundsSize.getX(),
 					0,
@@ -333,33 +357,29 @@ public class SectorInstance {
 	 * @return The maximum bounds position (corner).
 	 */
 	public BlockPos getBoundsMax(Vec3i boundsSize) {
-		if(this.parentConnector.rotation == 90 || this.parentConnector.rotation == 270) {
-			boundsSize = new Vec3i(boundsSize.getZ(), boundsSize.getY(), boundsSize.getX());
-		}
-
 		BlockPos bounds = new BlockPos(this.parentConnector.position);
-		if(this.parentConnector.rotation == 0) {
+		if(this.parentConnector.facing == EnumFacing.SOUTH) {
 			bounds = bounds.add(
 					(int)Math.floor((double)boundsSize.getX() / 2),
 					boundsSize.getY(),
 					boundsSize.getZ()
 			);
 		}
-		else if(this.parentConnector.rotation == 90) {
+		else if(this.parentConnector.facing == EnumFacing.EAST) {
 			bounds = bounds.add(
 					boundsSize.getX(),
 					boundsSize.getY(),
 					(int)Math.floor((double)boundsSize.getZ() / 2)
 			);
 		}
-		else if(this.parentConnector.rotation == 180) {
+		else if(this.parentConnector.facing == EnumFacing.NORTH) {
 			bounds = bounds.add(
 					(int)Math.floor((double)boundsSize.getX() / 2),
 					boundsSize.getY(),
 					0
 			);
 		}
-		else if(this.parentConnector.rotation == 270) {
+		else if(this.parentConnector.facing == EnumFacing.WEST) {
 			bounds = bounds.add(
 					0,
 					boundsSize.getY(),
@@ -374,8 +394,8 @@ public class SectorInstance {
 	 * Returns the minimum xyz position that this Sector Instance occupies.
 	 * @return The minimum bounds position (corner).
 	 */
-	public BlockPos getCollisionBoundsMin() {
-		return this.getBoundsMin(this.collisionSize);
+	public BlockPos getOccupiedBoundsMin() {
+		return this.getBoundsMin(this.getOccupiedSize());
 	}
 
 
@@ -383,8 +403,8 @@ public class SectorInstance {
 	 * Returns the maximum xyz position that this Sector Instance occupies.
 	 * @return The maximum bounds position (corner).
 	 */
-	public BlockPos getCollisionBoundsMax() {
-		return this.getBoundsMax(this.collisionSize);
+	public BlockPos getOccupiedBoundsMax() {
+		return this.getBoundsMax(this.getOccupiedSize());
 	}
 
 
@@ -393,7 +413,7 @@ public class SectorInstance {
 	 * @return The minimum bounds position (corner).
 	 */
 	public BlockPos getRoomBoundsMin() {
-		return this.getBoundsMin(this.collisionSize);
+		return this.getBoundsMin(this.getRoomSize());
 	}
 
 
@@ -402,7 +422,7 @@ public class SectorInstance {
 	 * @return The maximum bounds position (corner).
 	 */
 	public BlockPos getRoomBoundsMax() {
-		return this.getBoundsMax(this.collisionSize);
+		return this.getBoundsMax(this.getRoomSize());
 	}
 
 
@@ -414,7 +434,7 @@ public class SectorInstance {
 	 * @param blockState The block state to place.
 	 * @param random The instance of random, used for random mob spawns or loot on applicable blocks, etc.
 	 */
-	public void placeBlock(World world, ChunkPos chunkPos, BlockPos blockPos, IBlockState blockState, Random random) {
+	public void placeBlock(World world, ChunkPos chunkPos, BlockPos blockPos, IBlockState blockState, EnumFacing facing, Random random) {
 		// Restrict To Chunk Position:
 		if(blockPos.getX() < chunkPos.getXStart() || blockPos.getX() > chunkPos.getXEnd()) {
 			return;
@@ -426,17 +446,27 @@ public class SectorInstance {
 			return;
 		}
 
-		/*Block existingBlock = world.getBlockState(blockPos).getBlock();
-		if(existingBlock == Blocks.GOLD_BLOCK || existingBlock == Blocks.REDSTONE_BLOCK) {
-			return;
-		}*/
 
+		// Block State and Flags:
+		int flags = 3;
+
+		// Torch:
 		if(blockState.getBlock() == Blocks.TORCH) {
-			blockState = Blocks.GLOWSTONE.getDefaultState();
+			blockState = blockState.withProperty(BlockTorch.FACING, facing);
+			flags = 0;
 		}
 
+		// Chest:
+		if(blockState.getBlock() == Blocks.CHEST) {
+			blockState = blockState.withProperty(BlockChest.FACING, facing);
+		}
+
+
 		// Set The Block:
-		world.setBlockState(blockPos, blockState, 3);
+		world.setBlockState(blockPos, blockState, flags);
+
+
+		// Tile Entities:
 
 		// Spawner:
 		if(blockState.getBlock() == Blocks.MOB_SPAWNER) {
@@ -479,14 +509,12 @@ public class SectorInstance {
 		this.buildFloor(world, chunkPos, random, 0);
 		this.buildWalls(world, chunkPos, random);
 		this.buildCeiling(world, chunkPos, random);
-		this.buildEntrances(world, chunkPos, random);
 		if("stairs".equalsIgnoreCase(this.dungeonSector.type)) {
 			this.buildStairs(world, chunkPos, random);
-			this.buildFloor(world, chunkPos, random, -(this.roomSize.getY() * 2));
+			this.buildFloor(world, chunkPos, random, -(this.getRoomSize().getY() * 2));
 		}
-		/*for(SectorConnector connector : this.connectors) {
-			connector.buildTest(world, chunkPos, random);
-		}*/
+		this.buildEntrances(world, chunkPos, random);
+		this.chunksBuild++;
 	}
 
 
@@ -508,13 +536,13 @@ public class SectorInstance {
 		int stopZ = Math.max(startPos.getZ(), stopPos.getZ());
 
 		if("stairs".equalsIgnoreCase(this.dungeonSector.type)) {
-			startY = Math.max(1, startPos.getY() - (this.roomSize.getY() * 2));
+			startY = Math.max(1, startPos.getY() - (this.getRoomSize().getY() * 2));
 		}
 
 		for(int x = startX; x <= stopX; x++) {
 			for(int y = startY; y <= stopY; y++) {
 				for(int z = startZ; z <= stopZ; z++) {
-					this.placeBlock(world, chunkPos, new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), random);
+					this.placeBlock(world, chunkPos, new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), EnumFacing.SOUTH, random);
 				}
 			}
 		}
@@ -552,7 +580,7 @@ public class SectorInstance {
 					BlockPos buildPos = new BlockPos(x, y, z);
 					IBlockState blockState = this.theme.getFloor(buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR)
-						this.placeBlock(world, chunkPos, buildPos, blockState, random);
+						this.placeBlock(world, chunkPos, buildPos, blockState, EnumFacing.UP, random);
 				}
 			}
 		}
@@ -570,10 +598,7 @@ public class SectorInstance {
 		BlockPos startPos = this.getRoomBoundsMin();
 		BlockPos stopPos = this.getRoomBoundsMax();
 
-		Vec3i size = this.roomSize;
-		if(this.parentConnector.rotation == 90 || this.parentConnector.rotation == 270) {
-			size = new Vec3i(size.getZ(), size.getY(), size.getX());
-		}
+		Vec3i size = this.getRoomSize();
 		int startX = Math.min(startPos.getX(), stopPos.getX());
 		int stopX = Math.max(startPos.getX(), stopPos.getX());
 		int startY = Math.min(startPos.getY() + 1, stopPos.getY());
@@ -582,7 +607,7 @@ public class SectorInstance {
 		int stopZ = Math.max(startPos.getZ(), stopPos.getZ());
 
 		if("stairs".equalsIgnoreCase(this.dungeonSector.type)) {
-			startY = Math.max(1, startPos.getY() - (this.roomSize.getY() * 2));
+			startY = Math.max(1, startPos.getY() - (size.getY() * 2));
 		}
 
 		for(int layerIndex : this.dungeonSector.wall.layers.keySet()) {
@@ -611,23 +636,23 @@ public class SectorInstance {
 					paddingZ += Math.round((float)size.getZ() / 2) - horizontalOffset;
 				}
 
-				// Build X:
+				// Build Front/Back:
 				for(int x = startX + paddingX; x <= stopX - paddingX; x++) {
 					char buildChar = row.get((x - (startX + paddingX) + horizontalOffset) % row.size());
 					IBlockState blockState = this.theme.getWall(buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR) {
-						this.placeBlock(world, chunkPos, new BlockPos(x, y, startZ + layerIndex), blockState, random);
-						this.placeBlock(world, chunkPos, new BlockPos(x, y, stopZ - layerIndex), blockState, random);
+						this.placeBlock(world, chunkPos, new BlockPos(x, y, startZ + layerIndex), blockState, EnumFacing.SOUTH, random);
+						this.placeBlock(world, chunkPos, new BlockPos(x, y, stopZ - layerIndex), blockState, EnumFacing.NORTH, random);
 					}
 				}
 
-				// Build Z:
+				// Build Left/Right:
 				for(int z = startZ + paddingZ; z <= stopZ - paddingZ; z++) {
 					char buildChar = row.get((z - (startZ + paddingZ) + horizontalOffset) % row.size());
 					IBlockState blockState = this.theme.getWall(buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR) {
-						this.placeBlock(world, chunkPos, new BlockPos(startX + layerIndex, y, z), blockState, random);
-						this.placeBlock(world, chunkPos, new BlockPos(stopX - layerIndex, y, z), blockState, random);
+						this.placeBlock(world, chunkPos, new BlockPos(startX + layerIndex, y, z), blockState, EnumFacing.EAST, random);
+						this.placeBlock(world, chunkPos, new BlockPos(stopX - layerIndex, y, z), blockState, EnumFacing.WEST, random);
 					}
 				}
 			}
@@ -665,7 +690,7 @@ public class SectorInstance {
 					BlockPos buildPos = new BlockPos(x, y, z);
 					IBlockState blockState = this.theme.getCeiling(buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR)
-						this.placeBlock(world, chunkPos, buildPos, blockState, random);
+						this.placeBlock(world, chunkPos, buildPos, blockState, EnumFacing.DOWN, random);
 				}
 			}
 		}
@@ -694,17 +719,14 @@ public class SectorInstance {
 		BlockPos startPos = this.getRoomBoundsMin();
 		BlockPos stopPos = this.getRoomBoundsMax();
 
-		Vec3i size = this.roomSize;
-		if(this.parentConnector.rotation == 90 || this.parentConnector.rotation == 270) {
-			size = new Vec3i(size.getZ(), size.getY(), size.getX());
-		}
+		Vec3i size = this.getRoomSize();
 		int centerX = startPos.getX() + Math.round((float)size.getX() / 2);
 		int centerZ = startPos.getZ() + Math.round((float)size.getZ() / 2);
 
 		int startX = centerX - 1;
 		int stopX = centerX + 1;
 		int startY = Math.min(startPos.getY(), stopPos.getY());
-		int stopY = Math.max(1, startPos.getY() - (this.roomSize.getY() * 2));
+		int stopY = Math.max(1, startPos.getY() - (size.getY() * 2));
 
 		int startZ = centerZ - 1;
 		int stopZ = centerZ + 1;
@@ -721,36 +743,43 @@ public class SectorInstance {
 
 					// Spiral Stairs:
 					int step = startY - y % 8;
-					int offsetX = startX - x;
-					int offsetZ = startZ - z;
-					if(step % 8 == 0 && offsetX == 0 && offsetZ == 0) {
-						blockState = this.theme.getFloor('1', random);
+					int offsetX = x - startX;
+					int offsetZ = z - startZ;
+					if(step % 4 == 0) {
+						if (offsetX == 0 && offsetZ == 0) {
+							blockState = this.theme.getFloor('1', random);
+						}
+						else if (offsetX == 0 && offsetZ == 1) {
+							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState();
+						}
 					}
-					else if(step % 8 == 1 && offsetX == 0 && offsetZ == 1) {
-						blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState();
+					if(step % 4 == 1) {
+						if (offsetX == 0 && offsetZ == 2) {
+							blockState = this.theme.getFloor('1', random);
+						}
+						else if (offsetX == 1 && offsetZ == 2) {
+							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.COUNTERCLOCKWISE_90);
+						}
 					}
-					else if(step % 8 == 2 && offsetX == 0 && offsetZ == 2) {
-						blockState = this.theme.getFloor('1', random);
+					if(step % 4 == 2) {
+						if (offsetX == 2 && offsetZ == 2) {
+							blockState = this.theme.getFloor('1', random);
+						}
+						else if (offsetX == 2 && offsetZ == 1) {
+							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.CLOCKWISE_180);
+						}
 					}
-					else if(step % 8 == 3 && offsetX == 1 && offsetZ == 2) {
-						blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.CLOCKWISE_90);
+					if(step % 4 == 3) {
+						if (offsetX == 2 && offsetZ == 0) {
+							blockState = this.theme.getFloor('1', random);
+						}
+						else if (offsetX == 1 && offsetZ == 0) {
+							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.CLOCKWISE_90);
+						}
 					}
-					else if(step % 8 == 4 && offsetX == 2 && offsetZ == 2) {
-						blockState = this.theme.getFloor('1', random);
-					}
-					else if(step % 8 == 3 && offsetX == 2 && offsetZ == 1) {
-						blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.CLOCKWISE_180);
-					}
-					else if(step % 8 == 4 && offsetX == 2 && offsetZ == 0) {
-						blockState = this.theme.getFloor('1', random);
-					}
-					else if(step % 8 == 3 && offsetX == 1 && offsetZ == 0) {
-						blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.COUNTERCLOCKWISE_90);
-					}
-
 
 					BlockPos buildPos = new BlockPos(x, y, z);
-					this.placeBlock(world, chunkPos, buildPos, blockState, random);
+					this.placeBlock(world, chunkPos, buildPos, blockState, EnumFacing.UP, random);
 				}
 			}
 		}
@@ -765,9 +794,9 @@ public class SectorInstance {
 	public String toString() {
 		String bounds = "";
 		if(this.parentConnector != null) {
-			bounds = " Bounds: " + this.getCollisionBoundsMin() + " to " + this.getCollisionBoundsMax();
+			bounds = " Bounds: " + this.getOccupiedBoundsMin() + " to " + this.getOccupiedBoundsMax();
 		}
-		String size = " Size: " + this.collisionSize;
+		String size = " Occupies: " + this.getOccupiedSize();
 		return "Sector Instance Type: " + (this.dungeonSector == null ? "Unset" : this.dungeonSector.type) + " Parent Connector Pos: " + (this.parentConnector == null ? "Unset" : this.parentConnector.position) + size + bounds;
 	}
 }

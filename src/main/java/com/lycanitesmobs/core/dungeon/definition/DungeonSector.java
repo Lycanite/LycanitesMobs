@@ -33,8 +33,8 @@ public class DungeonSector {
 	/** Defines the maximum size of this sector. **/
 	public Vec3i sizeMax = new Vec3i(10, 10, 10);
 
-	/** Sets a padding around this sector to count towards collision. This is automatically increased by negative segment layers as needed. **/
-	public Vec3i padding = new Vec3i(0, 0, 0);
+	/** Sets a padding around this sector to count towards block occupation. This is automatically increased by negative segment layers as needed and is at least one for entrance carving. **/
+	public Vec3i padding = new Vec3i(1, 1, 1);
 
     /** A list of Structures used by this sector. **/
     public List<String> structures = new ArrayList<>();

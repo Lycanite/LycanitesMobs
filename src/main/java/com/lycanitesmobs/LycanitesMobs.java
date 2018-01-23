@@ -90,6 +90,9 @@ public class LycanitesMobs {
 	// Extra Config Settings:
 	public static boolean disableNausea = false;
 
+	// Dungeon System:
+	public static WorldGeneratorDungeon dungeonGenerator;
+
 	static {
 		FluidRegistry.enableUniversalBucket();
 	}
@@ -283,7 +286,8 @@ public class LycanitesMobs {
 
         // ========== Load JSON Dungeons ==========
 		DungeonManager.getInstance().loadAllFromJSON();
-		GameRegistry.registerWorldGenerator(new WorldGeneratorDungeon(), 10);
+		dungeonGenerator = new WorldGeneratorDungeon();
+		GameRegistry.registerWorldGenerator(dungeonGenerator, 10);
 
 
         // ========== Seasonal Item Lists ==========

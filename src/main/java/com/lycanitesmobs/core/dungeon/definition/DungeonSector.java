@@ -33,8 +33,8 @@ public class DungeonSector {
 	/** Defines the maximum size of this sector. **/
 	public Vec3i sizeMax = new Vec3i(10, 10, 10);
 
-	/** Sets a padding around this sector to count towards block occupation. This is automatically increased by negative segment layers as needed and is at least one for entrance carving. **/
-	public Vec3i padding = new Vec3i(1, 1, 1);
+	/** Sets a padding around this sector to count towards block occupation. This is will be automatically increased by negative segment layers as needed and is at least one for entrance carving. **/
+	public Vec3i padding = new Vec3i(1, 0, 1);
 
     /** A list of Structures used by this sector. **/
     public List<String> structures = new ArrayList<>();
@@ -64,6 +64,12 @@ public class DungeonSector {
 		this.sizeMax = SpawnerJSONUtilities.getVec3i(json, "sizeMax");
 
 		this.padding = SpawnerJSONUtilities.getVec3i(json, "padding");
+		if(this.padding.getX() <= 0) {
+			this.padding = new Vec3i(1, this.padding.getY(), this.padding.getZ());
+		}
+		if(this.padding.getZ() <= 0) {
+			this.padding = new Vec3i(this.padding.getX(), this.padding.getY(), 1);
+		}
 
 		if(json.has("weight"))
 			this.weight = json.get("weight").getAsInt();

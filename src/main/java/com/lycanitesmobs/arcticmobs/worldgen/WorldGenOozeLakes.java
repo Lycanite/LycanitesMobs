@@ -1,5 +1,6 @@
 package com.lycanitesmobs.arcticmobs.worldgen;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.arcticmobs.ArcticMobs;
 import com.lycanitesmobs.core.IWorldGenBase;

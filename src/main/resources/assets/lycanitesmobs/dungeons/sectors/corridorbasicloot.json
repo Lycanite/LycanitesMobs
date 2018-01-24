@@ -1,16 +1,18 @@
 {
-	"name": "basicmobcorridor",
+	"name": "corridorbasicloot",
 	"type": "corridor",
 	"weight": 2,
 	"loadDefault": true,
 	"changeTheme": false,
-	"sizeMin": [4, 5, 16],
-	"sizeMax": [6, 5, 32],
+	"sizeMin": [6, 5, 16],
+	"sizeMax": [8, 5, 32],
 	"floor": [
 		{
 			"layer": 0,
 			"pattern": [
 				"1122",
+				"1122",
+				"2211",
 				"2211"
 			]
 		}
@@ -20,22 +22,24 @@
 			"layer": 0,
 			"pattern": [
 				"1111111",
-				"1122211",
-				"1122211",
-				"1122211",
+				"2222222",
+				"222L222",
+				"2222222",
 				"1111111"
 			]
 		},
 		{
 			"layer": 1,
 			"tileHorizontal": false,
+			"centerHorizontal": true,
 			"tileVertical": false,
+			"centerVertical": false,
 			"pattern": [
 				"0000000",
 				"0000000",
-				"000L000",
+				"000T000",
 				"0000000",
-				"000S000"
+				"000C000"
 			]
 		}
 	],
@@ -44,6 +48,8 @@
 			"layer": 0,
 			"pattern": [
 				"1122",
+				"1122",
+				"2211",
 				"2211"
 			]
 		}

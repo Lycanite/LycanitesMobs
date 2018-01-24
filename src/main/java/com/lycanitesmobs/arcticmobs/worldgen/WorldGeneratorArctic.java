@@ -1,5 +1,6 @@
 package com.lycanitesmobs.arcticmobs.worldgen;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.IWorldGenBase;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -24,6 +25,6 @@ public class WorldGeneratorArctic implements IWorldGenerator {
     // ==================================================
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-         this.oozeLakes.onWorldGen(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+        this.oozeLakes.onWorldGen(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
     }
 }

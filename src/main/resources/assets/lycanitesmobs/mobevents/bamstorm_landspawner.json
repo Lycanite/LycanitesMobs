@@ -43,10 +43,6 @@
 			"weight": 8
 		},
 		{
-			"mobId": "junglemobs.geken",
-			"weight": 8
-		},
-		{
 			"mobId": "swampmobs.aglebemu",
 			"weight": 8
 		}

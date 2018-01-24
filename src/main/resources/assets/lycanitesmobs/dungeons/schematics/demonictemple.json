@@ -7,10 +7,10 @@
 	"roomToRoomChance": 0.1,
 	"conditions": [],
 	"themes": ["demonic"],
-	"entrances": ["basicentrance"],
-	"rooms": ["basicroom", "basiclootroom", "basicmobroom"],
-	"corridors": ["basiccorridor", "basiclootcorridor", "basicmobcorridor"],
-	"stairs": ["basicstairs"],
+	"entrances": ["entrancebasic"],
+	"rooms": ["roombasic", "roombasicloot", "roombasicmob", "roombasicpit"],
+	"corridors": ["corridorbasic", "corridorbasicdark", "corridorbasicloot", "corridorbasicmob"],
+	"stairs": ["stairsbasic"],
 	"mobSpawns": [
 		{
 			"mobId": "demonmobs.belph",
@@ -45,6 +45,39 @@
 			"mobId": "demonmobs.cacodemon",
 			"weight": 1,
 			"dungeonLevelMin": "3"
+		},
+		{
+			"mobId": "demonmobs.behemoth",
+			"weight": 1,
+			"subspecies": 0,
+			"mobNameTag": "Baron of Hell",
+			"mobSizeScale": 2,
+			"naturalDespawn": false,
+			"mobLevel": 50,
+			"dungeonLevelMin": "1",
+			"dungeonLevelMax": "1",
+			"dungeonBoss": true
+		},
+		{
+			"mobId": "demonmobs.astaroth",
+			"weight": 1,
+			"subspecies": 0,
+			"mobNameTag": "Arachnotron",
+			"mobSizeScale": 2,
+			"naturalDespawn": false,
+			"mobLevel": 50,
+			"dungeonLevelMin": "2",
+			"dungeonLevelMax": "2",
+			"dungeonBoss": true
+		},
+		{
+			"mobId": "demonmobs.cacodemon",
+			"weight": 1,
+			"subspecies": 3,
+			"mobNameTag": "Pain Elemental",
+			"naturalDespawn": false,
+			"dungeonLevelMin": "3",
+			"dungeonBoss": true
 		}
 	]
 }

@@ -135,9 +135,14 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
             }
             this.whirlpoolEnergy = Math.min(this.whirlpoolEnergy, this.whirlpoolEnergyMax);
             if(this.canWhirlpool()) {
-                for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, this.whirlpoolRange)) {
-                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy || entity.isPotionActive(ObjectManager.getPotionEffect("weight")) || !this.canAttackEntity(entity))
+                for (Entity entity : this.getNearbyEntities(Entity.class, null, this.whirlpoolRange)) {
+                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy)
                         continue;
+                    if(entity instanceof EntityLivingBase) {
+                        EntityLivingBase entityLivingBase = (EntityLivingBase)entity;
+                        if(entityLivingBase.isPotionActive(ObjectManager.getPotionEffect("weight")) || !this.canAttackEntity(entityLivingBase))
+                            continue;
+                    }
                     EntityPlayerMP player = null;
                     if (entity instanceof EntityPlayerMP) {
                         player = (EntityPlayerMP) entity;

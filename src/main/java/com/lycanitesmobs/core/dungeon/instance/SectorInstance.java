@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.dungeon.instance;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
 import com.lycanitesmobs.core.dungeon.definition.DungeonTheme;
 import com.lycanitesmobs.core.dungeon.definition.SectorLayer;
@@ -49,8 +48,20 @@ public class SectorInstance {
 	/** The theme this Sector Instance is using. **/
 	public DungeonTheme theme;
 
+	/** The random light block for this sector instance to use. **/
+	public IBlockState lightBlock;
+
+	/** The random torch block for this sector instance to use. **/
+	public IBlockState torchBlock;
+
+	/** The random stairs block for this sector instance to use. **/
+	public IBlockState stairBlock;
+
+	/** The random pit block for this sector instance to use. **/
+	public IBlockState pitBlock;
+
 	/** How many chunks this sector has been built into. When this equals the total chunks this sector occupies it is considered fully built. **/
-	public int chunksBuild = 0;
+	public int chunksBuilt = 0;
 
 
 	/**
@@ -66,9 +77,9 @@ public class SectorInstance {
 		// Size:
 		this.roomSize = this.dungeonSector.getRandomSize(random);
 		this.occupiedSize = new Vec3i(
-				this.roomSize.getX() + this.dungeonSector.padding.getX(),
+				this.roomSize.getX() + Math.max(1, this.dungeonSector.padding.getX()),
 				this.roomSize.getY() + this.dungeonSector.padding.getY(),
-				this.roomSize.getZ() + this.dungeonSector.padding.getZ()
+				this.roomSize.getZ() + Math.max(1, this.dungeonSector.padding.getZ())
 		);
 
 		// Structures:
@@ -84,10 +95,6 @@ public class SectorInstance {
 	public void init(SectorConnector parentConnector, Random random) {
 		this.parentConnector = parentConnector;
 		this.parentConnector.childSector = this;
-		if(this.parentConnector == null) {
-			LycanitesMobs.printWarning("Dungeon", "Tried to initialise a Dungeon Sector without a Parent Connector!");
-			return;
-		}
 		this.parentConnector.closed = true;
 		if(this.layout.openConnectors.contains(this.parentConnector)) {
 			this.layout.openConnectors.remove(this.parentConnector);
@@ -100,6 +107,10 @@ public class SectorInstance {
 		else {
 			this.theme = this.parentConnector.parentSector.theme;
 		}
+		this.lightBlock = this.theme.getLight('B', random);
+		this.torchBlock = this.theme.getTorch('B', random);
+		this.stairBlock = this.theme.getStairs('B', random);
+		this.pitBlock = this.theme.getPit('B', random);
 
 		// Create Child Connectors:
 		BlockPos boundsMin = this.getRoomBoundsMin();
@@ -214,8 +225,8 @@ public class SectorInstance {
 	 * @return A list of ChunkPos.
 	 */
 	public List<ChunkPos> getChunkPositions() {
-		ChunkPos minChunkPos = new ChunkPos(this.getOccupiedBoundsMin());
-		ChunkPos maxChunkPos = new ChunkPos(this.getOccupiedBoundsMax());
+		ChunkPos minChunkPos = new ChunkPos(this.getOccupiedBoundsMin().add(-1, 0, -1));
+		ChunkPos maxChunkPos = new ChunkPos(this.getOccupiedBoundsMax().add(1, 0, 1));
 		List<ChunkPos> chunkPosList = new ArrayList<>();
 		for(int x = minChunkPos.x; x <= maxChunkPos.x; x++) {
 			for(int z = minChunkPos.z; z <= maxChunkPos.z; z++) {
@@ -395,7 +406,7 @@ public class SectorInstance {
 	 * @return The minimum bounds position (corner).
 	 */
 	public BlockPos getOccupiedBoundsMin() {
-		return this.getBoundsMin(this.getOccupiedSize());
+		return this.getBoundsMin(this.getOccupiedSize()).add(-8, 0, -8);
 	}
 
 
@@ -404,7 +415,7 @@ public class SectorInstance {
 	 * @return The maximum bounds position (corner).
 	 */
 	public BlockPos getOccupiedBoundsMax() {
-		return this.getBoundsMax(this.getOccupiedSize());
+		return this.getBoundsMax(this.getOccupiedSize()).add(-8, 0, -8);
 	}
 
 
@@ -436,13 +447,14 @@ public class SectorInstance {
 	 */
 	public void placeBlock(World world, ChunkPos chunkPos, BlockPos blockPos, IBlockState blockState, EnumFacing facing, Random random) {
 		// Restrict To Chunk Position:
-		if(blockPos.getX() < chunkPos.getXStart() || blockPos.getX() > chunkPos.getXEnd()) {
+		int chunkOffset = 8;
+		if(blockPos.getX() < chunkPos.getXStart() + chunkOffset || blockPos.getX() > chunkPos.getXEnd() + chunkOffset) {
 			return;
 		}
 		if(blockPos.getY() <= 0 || blockPos.getY() >= world.getHeight()) {
 			return;
 		}
-		if(blockPos.getZ() < chunkPos.getZStart() || blockPos.getZ() > chunkPos.getZEnd()) {
+		if(blockPos.getZ() < chunkPos.getZStart() + chunkOffset || blockPos.getZ() > chunkPos.getZEnd() + chunkOffset) {
 			return;
 		}
 
@@ -514,7 +526,9 @@ public class SectorInstance {
 			this.buildFloor(world, chunkPos, random, -(this.getRoomSize().getY() * 2));
 		}
 		this.buildEntrances(world, chunkPos, random);
-		this.chunksBuild++;
+		this.chunksBuilt++;
+
+
 	}
 
 
@@ -574,11 +588,11 @@ public class SectorInstance {
 			}
 			SectorLayer layer = this.dungeonSector.floor.layers.get(layerIndex);
 			for(int x = startX; x <= stopX; x++) {
-				List<Character> row = layer.rows.get((x - startX) % layer.rows.size());
+				List<Character> row = layer.getRow(x - startX, stopX - startX);
 				for(int z = startZ; z <= stopZ; z++) {
-					char buildChar = row.get((z - startZ) % row.size());
+					char buildChar = layer.getColumn(x - startX, stopX - startX, z - startZ, stopZ - startZ, row);
 					BlockPos buildPos = new BlockPos(x, y, z);
-					IBlockState blockState = this.theme.getFloor(buildChar, random);
+					IBlockState blockState = this.theme.getFloor(this, buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR)
 						this.placeBlock(world, chunkPos, buildPos, blockState, EnumFacing.UP, random);
 				}
@@ -613,33 +627,18 @@ public class SectorInstance {
 		for(int layerIndex : this.dungeonSector.wall.layers.keySet()) {
 			SectorLayer layer = this.dungeonSector.wall.layers.get(layerIndex);
 			for(int y = startY; y <= stopY; y++) {
-				// Vertical Tiling:
-				if(!layer.tileVertical && (y - startY) >= layer.rows.size()) {
-					break;
-				}
-
 				// Y Limit:
 				if(y <= 0 || y >= world.getHeight()) {
 					continue;
 				}
 
 				// Get Row:
-				List<Character> row = layer.rows.get((y - startY) % layer.rows.size());
-
-				// Horizontal Tiling:
-				int paddingX = layerIndex;
-				int paddingZ = layerIndex;
-				int horizontalOffset = 0;
-				if(!layer.tileHorizontal) {
-					horizontalOffset = Math.round((float)row.size() / 2);
-					paddingX += Math.round((float)size.getX() / 2) - horizontalOffset;
-					paddingZ += Math.round((float)size.getZ() / 2) - horizontalOffset;
-				}
+				List<Character> row = layer.getRow(y - startY, stopY - startY);
 
 				// Build Front/Back:
-				for(int x = startX + paddingX; x <= stopX - paddingX; x++) {
-					char buildChar = row.get((x - (startX + paddingX) + horizontalOffset) % row.size());
-					IBlockState blockState = this.theme.getWall(buildChar, random);
+				for(int x = startX; x <= stopX; x++) {
+					char buildChar = layer.getColumn(y - startY, stopY - startY, x - startX, stopX - startX, row);
+					IBlockState blockState = this.theme.getWall(this, buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR) {
 						this.placeBlock(world, chunkPos, new BlockPos(x, y, startZ + layerIndex), blockState, EnumFacing.SOUTH, random);
 						this.placeBlock(world, chunkPos, new BlockPos(x, y, stopZ - layerIndex), blockState, EnumFacing.NORTH, random);
@@ -647,9 +646,9 @@ public class SectorInstance {
 				}
 
 				// Build Left/Right:
-				for(int z = startZ + paddingZ; z <= stopZ - paddingZ; z++) {
-					char buildChar = row.get((z - (startZ + paddingZ) + horizontalOffset) % row.size());
-					IBlockState blockState = this.theme.getWall(buildChar, random);
+				for(int z = startZ; z <= stopZ; z++) {
+					char buildChar = layer.getColumn(y - startY, stopY - startY, z - startZ, stopZ - startZ, row);
+					IBlockState blockState = this.theme.getWall(this, buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR) {
 						this.placeBlock(world, chunkPos, new BlockPos(startX + layerIndex, y, z), blockState, EnumFacing.EAST, random);
 						this.placeBlock(world, chunkPos, new BlockPos(stopX - layerIndex, y, z), blockState, EnumFacing.WEST, random);
@@ -684,11 +683,11 @@ public class SectorInstance {
 			}
 			SectorLayer layer = this.dungeonSector.ceiling.layers.get(layerIndex);
 			for(int x = startX; x <= stopX; x++) {
-				List<Character> row = layer.rows.get((x - startX) % layer.rows.size());
+				List<Character> row = layer.getRow(x - startX, stopX - startX);
 				for(int z = startZ; z <= stopZ; z++) {
-					char buildChar = row.get((z - startZ) % row.size());
+					char buildChar = layer.getColumn(x - startX, stopX - startX, z - startZ, stopZ - startZ, row);
 					BlockPos buildPos = new BlockPos(x, y, z);
-					IBlockState blockState = this.theme.getCeiling(buildChar, random);
+					IBlockState blockState = this.theme.getCeiling(this, buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR)
 						this.placeBlock(world, chunkPos, buildPos, blockState, EnumFacing.DOWN, random);
 				}
@@ -731,6 +730,9 @@ public class SectorInstance {
 		int startZ = centerZ - 1;
 		int stopZ = centerZ + 1;
 
+		IBlockState floorBlockState = this.theme.getFloor(this, 'B', random);
+		IBlockState stairsBlockState = this.stairBlock;
+
 		for(int y = startY; y >= stopY; y--) {
 			for(int x = startX; x <= stopX; x++) {
 				for(int z = startZ; z <= stopZ; z++) {
@@ -738,7 +740,7 @@ public class SectorInstance {
 
 					// Center:
 					if(x == centerX && z == centerZ) {
-						blockState = this.theme.getFloor('1', random);
+						blockState = this.theme.getWall(this, 'B', random);
 					}
 
 					// Spiral Stairs:
@@ -747,34 +749,34 @@ public class SectorInstance {
 					int offsetZ = z - startZ;
 					if(step % 4 == 0) {
 						if (offsetX == 0 && offsetZ == 0) {
-							blockState = this.theme.getFloor('1', random);
+							blockState = floorBlockState;
 						}
 						else if (offsetX == 0 && offsetZ == 1) {
-							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState();
+							blockState = stairsBlockState;
 						}
 					}
 					if(step % 4 == 1) {
 						if (offsetX == 0 && offsetZ == 2) {
-							blockState = this.theme.getFloor('1', random);
+							blockState = floorBlockState;
 						}
 						else if (offsetX == 1 && offsetZ == 2) {
-							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.COUNTERCLOCKWISE_90);
+							blockState = stairsBlockState.withRotation(Rotation.COUNTERCLOCKWISE_90);
 						}
 					}
 					if(step % 4 == 2) {
 						if (offsetX == 2 && offsetZ == 2) {
-							blockState = this.theme.getFloor('1', random);
+							blockState = floorBlockState;
 						}
 						else if (offsetX == 2 && offsetZ == 1) {
-							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.CLOCKWISE_180);
+							blockState = stairsBlockState.withRotation(Rotation.CLOCKWISE_180);
 						}
 					}
 					if(step % 4 == 3) {
 						if (offsetX == 2 && offsetZ == 0) {
-							blockState = this.theme.getFloor('1', random);
+							blockState = floorBlockState;
 						}
 						else if (offsetX == 1 && offsetZ == 0) {
-							blockState = Blocks.STONE_BRICK_STAIRS.getDefaultState().withRotation(Rotation.CLOCKWISE_90);
+							blockState = stairsBlockState.withRotation(Rotation.CLOCKWISE_90);
 						}
 					}
 

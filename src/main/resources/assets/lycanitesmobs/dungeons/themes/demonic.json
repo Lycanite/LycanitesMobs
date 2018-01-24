@@ -12,6 +12,10 @@
 		{
 			"blockId": "demonmobs:demonstonepolished",
 			"weight": 2
+		},
+		{
+			"blockId": "minecraft:netherrack",
+			"weight": 0
 		}
 	],
 	"wallBlocks": [
@@ -22,6 +26,10 @@
 		{
 			"blockId": "demonmobs:demonstonechiseled",
 			"weight": 2
+		},
+		{
+			"blockId": "demonmobs:demonstonepillar",
+			"weight": 0
 		}
 	],
 	"ceilingBlocks": [
@@ -32,6 +40,41 @@
 		{
 			"blockId": "demonmobs:demonstonepolished",
 			"weight": 2
+		}
+	],
+	"lightBlocks": [
+		{
+			"blockId": "demonmobs:demoncrystal",
+			"weight": 8
+		}
+	],
+	"torchBlocks": [],
+	"stairBlocks": [
+		{
+			"blockId": "demonmobs:demonstone_stairs",
+			"weight": 8
+		},
+		{
+			"blockId": "demonmobs:demonstonebrick_stairs",
+			"weight": 8
+		},
+		{
+			"blockId": "demonmobs:demonstonetile_stairs",
+			"weight": 8
+		}
+	],
+	"pitBlocks": [
+		{
+			"blockId": "demonmobs:doomfire",
+			"weight": 8
+		},
+		{
+			"blockId": "demonmobs:hellfire",
+			"weight": 8
+		},
+		{
+			"blockId": "minecraft:lava",
+			"weight": 8
 		}
 	]
 }

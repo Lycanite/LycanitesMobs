@@ -86,6 +86,9 @@ public class MobSpawn {
 	/** For dungeon spawning, if above the min, this is the maximum level of the dungeon (how far down/up) for this mob to show up in. Default -1. **/
 	public int dungeonLevelMax = -1;
 
+	/** For dungeon spawning, if true, this mob spawn entry is only to be used for boss sectors, if false it is only to be used for spawners. **/
+	protected boolean dungeonBoss = false;
+
 
 	/** Loads this Spawn Condition from the provided JSON data. **/
 	public static MobSpawn createFromJSON(JsonObject json) {
@@ -187,6 +190,9 @@ public class MobSpawn {
 
 		if(json.has("dungeonLevelMax"))
 			this.dungeonLevelMax = json.get("dungeonLevelMax").getAsInt();
+
+		if(json.has("dungeonBoss"))
+			this.dungeonBoss = json.get("dungeonBoss").getAsBoolean();
 	}
 
 

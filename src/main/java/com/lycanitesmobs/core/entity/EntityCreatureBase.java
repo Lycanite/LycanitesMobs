@@ -2553,7 +2553,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         damage *= this.getDamageModifier(damageSrc);
         if(damageSrc.getTrueSource() instanceof EntityPlayer)
             damage = this.getDamageAfterDefense(damage);
-        if(this.isBoss()) {
+        if(this.isBoss() || this.getSubspeciesIndex() >= 3) {
             if (!(damageSrc.getTrueSource() instanceof EntityPlayer))
                 damage *= 0.25F;
         }

@@ -1,0 +1,75 @@
+{
+	"name": "stairsbasic",
+	"type": "stairs",
+	"weight": 8,
+	"loadDefault": true,
+	"changeTheme": false,
+	"sizeMin": [8, 9, 8],
+	"sizeMax": [8, 9, 8],
+	"floor": [
+		{
+			"layer": 0,
+			"pattern": [
+				"11111111",
+				"11111111",
+				"11222211",
+				"11222211",
+				"11222211",
+				"11222211",
+				"11111111",
+				"11111111"
+			]
+		}
+	],
+	"wall": [
+		{
+			"layer": 0,
+			"pattern": [
+				"11111111",
+				"11222211",
+				"112LL211",
+				"11211211",
+				"11211211",
+				"11211211",
+				"112LL211",
+				"11222211",
+				"11111111"
+			]
+		},
+		{
+			"layer": 1,
+			"tileHorizontal": false,
+			"tileVertical": false,
+			"pattern": [
+				"00000000",
+				"00000000",
+				"000TT000",
+				"00000000",
+				"00000000",
+				"00000000",
+				"000TT000",
+				"00000000",
+				"00000000"
+			]
+		}
+	],
+	"ceiling": [
+		{
+			"layer": 0,
+			"tileHorizontal": false,
+			"centerHorizontal": true,
+			"tileVertical": false,
+			"centerVertical": true,
+			"pattern": [
+				"11111111",
+				"11111111",
+				"11222211",
+				"11222211",
+				"11222211",
+				"11222211",
+				"11111111",
+				"11111111"
+			]
+		}
+	]
+}

@@ -1,22 +1,22 @@
 {
-	"name": "bamstorm_skyspawner",
+	"name": "reptileruckus_spawner",
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCountMin": 10,
+	"mobCountMin": 5,
 	"ignoreDimensions": true,
 	"ignoreBiomes": true,
 	"ignoreLightLevel": true,
 	"ignoreGroupLimit": true,
 	"ignoreForgeCanSpawnEvent": true,
 	"forceNoDespawn": true,
-	"eventName": "bamstorm",
+	"eventName": "reptileruckus",
 	"conditions": [],
 	"triggers": [
 		{
 			"type": "tick",
 			"chance": 1,
-			"tickRate": 800
+			"tickRate": 100
 		}
 	],
 	"locations": [
@@ -26,21 +26,25 @@
 			"rangeMax": [48, 64, 48],
 			"sorting": "random",
 			"limit": 32,
-			"solidGround": false
+			"solidGround": true
 		}
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.zephyr",
+			"mobId": "plainsmobs.ventoraptor",
 			"weight": 8
 		},
 		{
-			"mobId": "elementalmobs.tremor",
-			"weight": 1
+			"mobId": "junglemobs.geken",
+			"weight": 8
 		},
 		{
-			"mobId": "desertmobs.manticore",
-			"weight": 8
+			"mobId": "infernomobs.salamander",
+			"weight": 4
+		},
+		{
+			"mobId": "shadowmobs.shade",
+			"weight": 2
 		}
 	]
 }

@@ -72,6 +72,10 @@
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/raptorrampage", "stream": true}]
     },
+    "mobevent.reptileruckus": {
+        "category": "record",
+        "sounds": [{"name": "lycanitesmobs:mobevent/reptileruckus", "stream": true}]
+    },
     "mobevent.roasting": {
         "category": "record",
         "sounds": [{"name": "lycanitesmobs:mobevent/roasting", "stream": true}]

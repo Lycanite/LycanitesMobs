@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -243,7 +244,7 @@ public class SpawnerEventListener {
 
 		// Call Triggers:
 		for(ChunkSpawnTrigger spawnTrigger : this.chunkSpawnTriggers) {
-			if(spawnTrigger.onChunkPopulate(event.getWorld(), event.getChunkX(), event.getChunkZ())) {
+			if(spawnTrigger.onChunkPopulate(event.getWorld(), new ChunkPos(event.getChunkX(), event.getChunkZ()))) {
 				this.chunkSpawnTriggersActive = true;
 			}
 		}

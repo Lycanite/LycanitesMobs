@@ -56,6 +56,9 @@ public class DungeonSchematic {
 	/** A list of stairs sectors to use. Required. **/
 	public List<String> stairs = new ArrayList<>();
 
+	/** A list of stairs sectors to use. Required. **/
+	public List<String> bossRooms = new ArrayList<>();
+
 	/** A list of MobSpawns to use. Optional. **/
 	public List<MobSpawn> mobSpawns = new ArrayList<>();
 
@@ -145,6 +148,18 @@ public class DungeonSchematic {
 			}
 		}
 
+		// Rooms:
+		if(json.has("bossRooms")) {
+			for(JsonElement jsonElement : json.get("bossRooms").getAsJsonArray()) {
+				String jsonString = jsonElement.getAsString().toLowerCase();
+				if(!this.bossRooms.contains(jsonString))
+					this.bossRooms.add(jsonString);
+			}
+		}
+		else {
+			this.bossRooms.addAll(this.rooms);
+		}
+
 		// Mob Spawns:
 		if(json.has("mobSpawns")) {
 			JsonArray jsonArray = json.get("mobSpawns").getAsJsonArray();
@@ -222,6 +237,8 @@ public class DungeonSchematic {
 			sectorList = this.corridors;
 		else if("stairs".equalsIgnoreCase(type))
 			sectorList = this.stairs;
+		else if("bossRoom".equalsIgnoreCase(type))
+			sectorList = this.bossRooms;
 		else
 			sectorList = this.rooms;
 
@@ -308,14 +325,18 @@ public class DungeonSchematic {
 	/**
 	 * Gets a weighted random mob to spawn.
 	 * @param dungeonLevel The dungeon level to spawn at.
+	 * @param boss False for standard mobs, true for bosses.
 	 * @param random The instance of random to use.
 	 * @return The MobSpawn of the mob to spawn or null if no mob can be spawned.
 	 **/
-	public MobSpawn getRandomMobSpawn(int dungeonLevel, Random random) {
+	public MobSpawn getRandomMobSpawn(int dungeonLevel, boolean boss, Random random) {
 		// Get Weights:
 		int totalWeights = 0;
 		List<MobSpawn> mobSpawns = new ArrayList<>();
 		for(MobSpawn mobSpawn : this.mobSpawns) {
+			if(mobSpawn.dungeonBoss != boss) {
+				continue;
+			}
 			if(mobSpawn.dungeonLevelMin >= 0 && dungeonLevel < mobSpawn.dungeonLevelMin) {
 				continue;
 			}

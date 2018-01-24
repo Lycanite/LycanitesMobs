@@ -8,6 +8,7 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
@@ -119,31 +120,39 @@ public class SectorInstance {
 		int centerX = boundsMin.getX() + Math.round((float)size.getX() / 2);
 		int centerZ = boundsMin.getZ() + Math.round((float)size.getZ() / 2);
 		if("corridor".equalsIgnoreCase(this.dungeonSector.type) || "room".equalsIgnoreCase(this.dungeonSector.type) || "entrance".equalsIgnoreCase(this.dungeonSector.type)) {
-			// TODO Randomize Connectors Horizontally
 
 			// Front Exit:
-			BlockPos blockPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMax.getZ() + 1);
-			if(this.parentConnector.facing == EnumFacing.EAST) {
-				blockPos = new BlockPos(boundsMax.getX() + 1, this.parentConnector.position.getY(), centerZ);
+			BlockPos blockPos = this.parentConnector.position;
+			if(this.parentConnector.facing == EnumFacing.SOUTH) {
+				blockPos = new BlockPos(this.getConnectorOffset(random, size.getX(), boundsMin.getX()), this.parentConnector.position.getY(), boundsMax.getZ() + 1);
+			}
+			else if(this.parentConnector.facing == EnumFacing.EAST) {
+				blockPos = new BlockPos(boundsMax.getX() + 1, this.parentConnector.position.getY(), this.getConnectorOffset(random, size.getZ(), boundsMin.getZ()));
 			}
 			else if(this.parentConnector.facing == EnumFacing.NORTH) {
-				blockPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMin.getZ() - 1);
+				blockPos = new BlockPos(this.getConnectorOffset(random, size.getX(), boundsMin.getX()), this.parentConnector.position.getY(), boundsMin.getZ() - 1);
 			}
 			else if(this.parentConnector.facing == EnumFacing.WEST) {
-				blockPos = new BlockPos(boundsMin.getX() - 1, this.parentConnector.position.getY(), centerZ);
+				blockPos = new BlockPos(boundsMin.getX() - 1, this.parentConnector.position.getY(), this.getConnectorOffset(random, size.getZ(), boundsMin.getZ()));
 			}
 			this.addConnector(blockPos, this.parentConnector.level, this.parentConnector.facing);
 
 			// Side Exits:
 			if("room".equalsIgnoreCase(this.dungeonSector.type)) {
-				BlockPos leftPos = new BlockPos(boundsMin.getX() - 1, this.parentConnector.position.getY(), centerZ);
+				BlockPos leftPos = this.parentConnector.position;
 				EnumFacing leftFacing = EnumFacing.WEST;
-				BlockPos rightPos = new BlockPos(boundsMax.getX() + 1, this.parentConnector.position.getY(), centerZ);
+				BlockPos rightPos = this.parentConnector.position;
 				EnumFacing rightFacing = EnumFacing.EAST;
-				if(this.parentConnector.facing == EnumFacing.EAST || this.parentConnector.facing == EnumFacing.WEST) {
-					leftPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMax.getZ() + 1);
+				if(this.parentConnector.facing == EnumFacing.SOUTH || this.parentConnector.facing == EnumFacing.NORTH) {
+					leftPos = new BlockPos(boundsMin.getX() - 1, this.parentConnector.position.getY(), this.getConnectorOffset(random, size.getZ(), boundsMin.getZ()));
+					leftFacing = EnumFacing.WEST;
+					rightPos = new BlockPos(boundsMax.getX() + 1, this.parentConnector.position.getY(), this.getConnectorOffset(random, size.getZ(), boundsMin.getZ()));
+					rightFacing = EnumFacing.EAST;
+				}
+				else if(this.parentConnector.facing == EnumFacing.EAST || this.parentConnector.facing == EnumFacing.WEST) {
+					leftPos = new BlockPos(this.getConnectorOffset(random, size.getX(), boundsMin.getX()), this.parentConnector.position.getY(), boundsMax.getZ() + 1);
 					leftFacing = EnumFacing.SOUTH;
-					rightPos = new BlockPos(centerX, this.parentConnector.position.getY(), boundsMin.getZ() - 1);
+					rightPos = new BlockPos(this.getConnectorOffset(random, size.getX(), boundsMin.getX()), this.parentConnector.position.getY(), boundsMin.getZ() - 1);
 					rightFacing = EnumFacing.NORTH;
 				}
 				this.addConnector(leftPos, this.parentConnector.level, leftFacing);
@@ -170,6 +179,22 @@ public class SectorInstance {
 		}
 
 		//LycanitesMobs.printDebug("Dungeon", "Initialised Sector Instance - Bounds: " + this.getOccupiedBoundsMin() + " to " + this.getOccupiedBoundsMax());
+	}
+
+
+	/**
+	 * Gets a random offset for positioning a sector connector.
+	 * @param random The instance of random to use.
+	 * @param length The length to get a random offset from such as the x/z size of the sector instance.
+	 * @param start The world position to add the offset to.
+	 * @return
+	 */
+	public int getConnectorOffset(Random random, int length, int start) {
+		int entrancePadding = 2;
+		if(length <= entrancePadding * 2) {
+			return start + Math.round((float)length / 2);
+		}
+		return start + entrancePadding + random.nextInt(length - entrancePadding) + 1;
 	}
 
 
@@ -438,6 +463,22 @@ public class SectorInstance {
 
 
 	/**
+	 * Returns the rounded center block position of this sector.
+	 * @return The center block position.
+	 */
+	public BlockPos getCenter() {
+		BlockPos startPos = this.getRoomBoundsMin();
+		BlockPos stopPos = this.getRoomBoundsMax();
+
+		Vec3i size = this.getRoomSize();
+		int centerX = startPos.getX() + Math.round((float)size.getX() / 2);
+		int centerZ = startPos.getZ() + Math.round((float)size.getZ() / 2);
+
+		return new BlockPos(centerX, startPos.getY(), centerZ);
+	}
+
+
+	/**
 	 * Places a block state in the world from this sector.
 	 * @param world The world to place a block in.
 	 * @param chunkPos The chunk position to build within.
@@ -485,7 +526,7 @@ public class SectorInstance {
 			TileEntity tileEntity = world.getTileEntity(blockPos);
 			if(tileEntity != null && tileEntity instanceof TileEntityMobSpawner) {
 				TileEntityMobSpawner spawner = (TileEntityMobSpawner)tileEntity;
-				MobSpawn mobSpawn = this.layout.dungeonInstance.schematic.getRandomMobSpawn(this.parentConnector.level, random);
+				MobSpawn mobSpawn = this.layout.dungeonInstance.schematic.getRandomMobSpawn(this.parentConnector.level, false, random);
 				if(mobSpawn != null) {
 					ResourceLocation entityId = EntityList.getKey(mobSpawn.entityClass);
 					if (entityId != null) {
@@ -527,8 +568,12 @@ public class SectorInstance {
 		}
 		this.buildEntrances(world, chunkPos, random);
 		this.chunksBuilt++;
-
-
+		if("bossRoom".equalsIgnoreCase(this.dungeonSector.type)) {
+			MobSpawn mobSpawn = this.layout.dungeonInstance.schematic.getRandomMobSpawn(this.parentConnector.level, true, random);
+			if(mobSpawn != null) {
+				this.spawnMob(world, chunkPos, this.getCenter().add(0, 1, 0), mobSpawn, random);
+			}
+		}
 	}
 
 
@@ -785,6 +830,34 @@ public class SectorInstance {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Spawns a mob in this sector.
+	 * @param world The world to spawn a mob in.
+	 * @param chunkPos The chunk position to spawn within.
+	 * @param blockPos The position to spawn the mob at.
+	 * @param mobSpawn The Mob Spawn entry to use.
+	 * @param random The instance of random, used for mob vacations where applicable.
+	 */
+	public void spawnMob(World world, ChunkPos chunkPos, BlockPos blockPos, MobSpawn mobSpawn, Random random) {
+		// Restrict To Chunk Position:
+		int chunkOffset = 8;
+		if(blockPos.getX() < chunkPos.getXStart() + chunkOffset || blockPos.getX() > chunkPos.getXEnd() + chunkOffset) {
+			return;
+		}
+		if(blockPos.getY() <= 0 || blockPos.getY() >= world.getHeight()) {
+			return;
+		}
+		if(blockPos.getZ() < chunkPos.getZStart() + chunkOffset || blockPos.getZ() > chunkPos.getZEnd() + chunkOffset) {
+			return;
+		}
+
+		// Spawn Mob:
+		EntityLiving entityLiving = mobSpawn.createEntity(world);
+		entityLiving.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+		mobSpawn.onSpawned(entityLiving, null);
 	}
 
 

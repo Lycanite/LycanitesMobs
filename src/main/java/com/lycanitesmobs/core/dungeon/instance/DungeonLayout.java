@@ -118,6 +118,9 @@ public class DungeonLayout {
 		SectorInstance lastSector = startSector;
 		for(int i = 0; i < length; i++) {
 			String nextType = this.dungeonInstance.schematic.getNextConnectingSector(lastSector.dungeonSector.type, random);
+			if(i == length - 2) {
+				nextType = "bossRoom";
+			}
 			if(i == length - 1) {
 				nextType = "stairs";
 			}

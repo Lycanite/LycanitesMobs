@@ -432,12 +432,12 @@ public class Spawner {
 				LycanitesMobs.printDebug("JSONSpawner", "No Mob Spawn Chosen");
 				continue;
 			}
-			LycanitesMobs.printDebug("JSONSpawner", "Spawn Mob: " + mobSpawn.mobInfo.name);
+			LycanitesMobs.printDebug("JSONSpawner", "Spawn Mob: " + mobSpawn);
 
 			// Create Entity:
 			EntityLiving entityLiving = mobSpawn.createEntity(world);
 			if (entityLiving == null) {
-				LycanitesMobs.printWarning("JSONSpawner", "Unable to instantiate an entity. Class: " + mobSpawn.mobInfo.entityClass);
+				LycanitesMobs.printWarning("JSONSpawner", "Unable to instantiate an entity. Class: " + mobSpawn.entityClass);
 				continue;
 			}
 			EntityCreatureBase entityCreature = null;

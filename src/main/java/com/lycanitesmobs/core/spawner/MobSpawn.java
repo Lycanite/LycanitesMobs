@@ -87,7 +87,7 @@ public class MobSpawn {
 	public int dungeonLevelMax = -1;
 
 	/** For dungeon spawning, if true, this mob spawn entry is only to be used for boss sectors, if false it is only to be used for spawners. **/
-	protected boolean dungeonBoss = false;
+	public boolean dungeonBoss = false;
 
 
 	/** Loads this Spawn Condition from the provided JSON data. **/
@@ -383,7 +383,7 @@ public class MobSpawn {
 
 
 	/**
-	 * Called when a mob is spawned from this MobSpawn.
+	 * Called when a mob is spawned from this Mob Spawn.
 	 **/
 	public void onSpawned(EntityLiving entityLiving, EntityPlayer player) {
 		if(!"".equals(this.mobNameTag)) {
@@ -411,8 +411,17 @@ public class MobSpawn {
 				entityCreature.setTemporary(this.temporary);
 			}
 			for(MobDrop mobDrop : this.mobDrops) {
-				entityCreature.drops.add(mobDrop);
+				entityCreature.addSavedItemDrop(mobDrop);
 			}
 		}
+	}
+
+
+	@Override
+	public String toString() {
+		if(this.mobInfo != null) {
+			return this.mobInfo.name;
+		}
+		return this.entityClass.toString();
 	}
 }

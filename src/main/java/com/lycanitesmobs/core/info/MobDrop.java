@@ -3,8 +3,10 @@ package com.lycanitesmobs.core.info;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
@@ -67,6 +69,10 @@ public class MobDrop {
 		this.minAmount = 1;
 		this.maxAmount = 1;
 		this.chance = chance;
+	}
+
+	public MobDrop(NBTTagCompound nbtTagCompound) {
+		this.readFromNBT(nbtTagCompound);
 	}
 
 	public void loadFromJSON(JsonObject json) {
@@ -177,5 +183,33 @@ public class MobDrop {
 		if(drop != null)
 			drop.setCount(quantity);
 		return drop;
+	}
+
+
+	// ==================================================
+	//                    Read From NBT
+	// ==================================================
+	public void readFromNBT(NBTTagCompound nbtTagCompound) {
+		this.itemStack = new ItemStack(nbtTagCompound);
+
+		this.minAmount = nbtTagCompound.getInteger("MinAmount");
+		this.maxAmount = nbtTagCompound.getInteger("MaxAmount");
+		this.chance = nbtTagCompound.getFloat("Chance");
+	}
+
+
+	// ==================================================
+	//                    Write To NBT
+	// ==================================================
+	public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
+		NBTTagCompound itemNBT = new NBTTagCompound();
+		this.itemStack.writeToNBT(itemNBT);
+		nbtTagCompound.setTag("ItemStack", itemNBT);
+
+		nbtTagCompound.setInteger("MinAmount", this.minAmount);
+		nbtTagCompound.setInteger("MaxAmount", this.maxAmount);
+		nbtTagCompound.setFloat("Chance", this.chance);
+
+		return nbtTagCompound;
 	}
 }

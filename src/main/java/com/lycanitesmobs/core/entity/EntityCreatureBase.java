@@ -41,6 +41,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -303,8 +304,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// Items:
     /** The inventory object of the creature, this is used for managing and using the creature's inventory. **/
 	public InventoryCreature inventory;
-    /** A collection of DropRate classes which are used when randomly drop items on death. **/
-    public List<MobDrop> drops = new ArrayList<MobDrop>();
+    /** A collection of drops which are used when randomly drop items on death. **/
+    public List<MobDrop> drops = new ArrayList<>();
+	/** A collection of drops to be stored in NBT data. **/
+	public List<MobDrop> savedDrops = new ArrayList<>();
     
     // Override AI:
     public EntityAITargetAttack aiTargetPlayer = new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class);
@@ -383,11 +386,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.isImmuneToFire = !this.canBurn();
     }
     
-    // ========== Load Item Drops ==========
+    // ========== Item Drops ==========
     /** Loads all default item drops, will be ignored if the Enable Default Drops config setting for this mob is set to false, should be overridden to add drops. **/
     public void loadItemDrops() {}
-    
-    // ========== Load Custom Drops ==========
+
     /** Loads custom item drops from the config. **/
     public void loadCustomDrops() {
         for(MobDrop drop : this.mobInfo.customDrops) {
@@ -395,6 +397,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
             this.drops.add (newDrop);
         }
     }
+
+    /** Adds a saved item drop to this creature instance where it will be read/written from/to NBT Data. **/
+    public void addSavedItemDrop(MobDrop mobDrop) {
+    	this.drops.add(mobDrop);
+    	this.savedDrops.add(mobDrop);
+	}
     
     // ========== Attributes ==========
     /** Creates and sets all the entity attributes with default values. This should be overriden by specific entities and should always run applyEntityAttributes(HashMap<String, Double> baseAttributes). **/
@@ -3778,6 +3786,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
+
+        if(nbtTagCompound.hasKey("Drops")) {
+			NBTTagList nbtDropList = nbtTagCompound.getTagList("Drops", 10);
+			for(int i = 0; i < nbtDropList.tagCount(); i++) {
+				NBTTagCompound dropNBT = nbtDropList.getCompoundTagAt(i);
+				MobDrop drop = new MobDrop(dropNBT);
+				this.addSavedItemDrop(drop);
+			}
+		}
         
         if(nbtTagCompound.hasKey("ExtraBehaviour")) {
         	this.extraMobBehaviour.readFromNBT(nbtTagCompound.getCompoundTag("ExtraBehaviour"));
@@ -3837,6 +3854,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
+		NBTTagList nbtDropList = new NBTTagList();
+        for(MobDrop drop : this.savedDrops) {
+			NBTTagCompound dropNBT = new NBTTagCompound();
+			dropNBT = drop.writeToNBT(dropNBT);
+			nbtDropList.appendTag(dropNBT);
+		}
+		nbtTagCompound.setTag("Drops", nbtDropList);
         
         NBTTagCompound extTagCompound = new NBTTagCompound();
         this.extraMobBehaviour.writeToNBT(extTagCompound);

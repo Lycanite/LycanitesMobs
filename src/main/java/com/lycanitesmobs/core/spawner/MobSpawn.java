@@ -395,11 +395,14 @@ public class MobSpawn {
 
 		if(entityLiving instanceof EntityCreatureBase) {
 			EntityCreatureBase entityCreature = (EntityCreatureBase)entityLiving;
+			boolean firstSpawn = true;
 			if(this.mobSizeScale > -1) {
 				entityCreature.setSizeScale(this.mobSizeScale);
+				firstSpawn = false;
 			}
 			if(this.subspecies > -1) {
 				entityCreature.setSubspecies(this.subspecies, true);
+				firstSpawn = false;
 			}
 			if(this.fixate && player != null) {
 				entityCreature.setFixateTarget(player);
@@ -413,6 +416,7 @@ public class MobSpawn {
 			for(MobDrop mobDrop : this.mobDrops) {
 				entityCreature.addSavedItemDrop(mobDrop);
 			}
+			entityCreature.firstSpawn = firstSpawn;
 		}
 	}
 

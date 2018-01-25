@@ -1,10 +1,13 @@
 package com.lycanitesmobs.core.dungeon.instance;
 
+import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
 import com.lycanitesmobs.core.dungeon.definition.DungeonTheme;
 import com.lycanitesmobs.core.dungeon.definition.SectorLayer;
 import com.lycanitesmobs.core.spawner.MobSpawn;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockTorch;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
@@ -20,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +67,12 @@ public class SectorInstance {
 
 	/** How many chunks this sector has been built into. When this equals the total chunks this sector occupies it is considered fully built. **/
 	public int chunksBuilt = 0;
+
+	/** Set to true when a spawner is placed in this sector, temporarily used to limit the spawners to 1. **/
+	protected int spawnerBuilt = 0;
+
+	/** Set to true when a chest is placed in this sector, temporarily used to limit the chests to 1. **/
+	protected int chestBuilt = 0;
 
 
 	/**
@@ -119,7 +129,7 @@ public class SectorInstance {
 		Vec3i size = this.getRoomSize();
 		int centerX = boundsMin.getX() + Math.round((float)size.getX() / 2);
 		int centerZ = boundsMin.getZ() + Math.round((float)size.getZ() / 2);
-		if("corridor".equalsIgnoreCase(this.dungeonSector.type) || "room".equalsIgnoreCase(this.dungeonSector.type) || "entrance".equalsIgnoreCase(this.dungeonSector.type)) {
+		if("corridor".equalsIgnoreCase(this.dungeonSector.type) || "room".equalsIgnoreCase(this.dungeonSector.type) || "entrance".equalsIgnoreCase(this.dungeonSector.type) || "bossRoom".equalsIgnoreCase(this.dungeonSector.type)) {
 
 			// Front Exit:
 			BlockPos blockPos = this.parentConnector.position;
@@ -191,7 +201,7 @@ public class SectorInstance {
 	 */
 	public int getConnectorOffset(Random random, int length, int start) {
 		int entrancePadding = 2;
-		if(length <= entrancePadding * 2) {
+		if(!"room".equalsIgnoreCase(this.dungeonSector.type) || length <= entrancePadding * 2) {
 			return start + Math.round((float)length / 2);
 		}
 		return start + entrancePadding + random.nextInt(length - entrancePadding) + 1;
@@ -511,7 +521,20 @@ public class SectorInstance {
 
 		// Chest:
 		if(blockState.getBlock() == Blocks.CHEST) {
+			if(++this.chestBuilt >= 3)
+				return;
 			blockState = blockState.withProperty(BlockChest.FACING, facing);
+		}
+
+		// Spawner:
+		if(blockState.getBlock() == Blocks.MOB_SPAWNER) {
+			if(++this.spawnerBuilt >= 3)
+				return;
+		}
+
+		// Don't Update:
+		if(blockState.getBlock() == Blocks.AIR || blockState.getBlock() instanceof BlockFluidBase || blockState instanceof BlockFire || blockState instanceof BlockFireBase) {
+			flags = 0;
 		}
 
 
@@ -541,11 +564,16 @@ public class SectorInstance {
 		if(blockState.getBlock() == Blocks.CHEST) {
 			TileEntity tileEntity = world.getTileEntity(blockPos);
 			if(tileEntity != null && tileEntity instanceof TileEntityChest) {
+
+				// Apply Loot Table:
 				TileEntityChest chest = (TileEntityChest)tileEntity;
-				if(!"".equals(this.layout.dungeonInstance.schematic.lootTable)) {
-					chest.setLootTable(new ResourceLocation(this.layout.dungeonInstance.schematic.lootTable), random.nextLong());
+				ResourceLocation lootTable = this.layout.dungeonInstance.schematic.getRandomLootTable(this.parentConnector.level, random);
+				if(lootTable != null) {
+					chest.setLootTable(lootTable, random.nextLong());
 				}
-				// TODO Add specific items to loot chests.
+
+				// Add Specific Items:
+				// TODO Add a random amount of additional specific items.
 			}
 		}
 	}
@@ -855,9 +883,11 @@ public class SectorInstance {
 		}
 
 		// Spawn Mob:
+		LycanitesMobs.printDebug("Dungeon", "Spawning mob " + mobSpawn + " at: " + blockPos);
 		EntityLiving entityLiving = mobSpawn.createEntity(world);
 		entityLiving.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 		mobSpawn.onSpawned(entityLiving, null);
+		world.spawnEntity(entityLiving);
 	}
 
 

@@ -785,8 +785,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return true;
     	if(!this.mobInfo.spawnInfo.despawnNatural)
     		return false;
-    	if(this.forceNoDespawn)
-    		return false;
         if(this.boss || this.getSubspeciesIndex() >= 3)
             return false;
     	if(this.isPersistant() || this.getLeashed() || (this.hasCustomName() && "".equals(this.spawnEventType)))
@@ -803,8 +801,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * There is also the vanilla variable persistenceRequired which is handled in vanilla code too.
     **/
     public boolean isPersistant() {
-    	return false;
+    	return this.forceNoDespawn;
     }
+
+    @Override
+	public void enablePersistence() {
+		super.enablePersistence();
+		this.forceNoDespawn = true;
+	}
 
     /** A check that is constantly done, if this returns true, this entity will be removed, used normally for peaceful difficulty removal and temporary minions. **/
     public boolean despawnCheck() {

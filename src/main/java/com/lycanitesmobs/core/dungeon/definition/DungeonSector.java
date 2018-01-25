@@ -105,10 +105,15 @@ public class DungeonSector {
 	 * @return A random size to use.
 	 */
 	public Vec3i getRandomSize(Random random) {
-		return new Vec3i(
-				this.sizeMin.getX() + random.nextInt(this.sizeMax.getX() - this.sizeMin.getX() + 1),
-				this.sizeMin.getY() + random.nextInt(this.sizeMax.getY() - this.sizeMin.getY() + 1),
-				this.sizeMin.getZ() + random.nextInt(this.sizeMax.getZ() - this.sizeMin.getZ() + 1)
-		);
+		int x = this.sizeMin.getX();
+		if(this.sizeMax.getX() > x)
+			x += random.nextInt(this.sizeMax.getX() - x + 1);
+		int y = this.sizeMin.getY();
+		if(this.sizeMax.getY() > y)
+			y += random.nextInt(this.sizeMax.getY() - y + 1);
+		int z = this.sizeMin.getZ();
+		if(this.sizeMax.getZ() > z)
+			z += random.nextInt(this.sizeMax.getZ() - z + 1);
+		return new Vec3i(x, y, z);
 	}
 }

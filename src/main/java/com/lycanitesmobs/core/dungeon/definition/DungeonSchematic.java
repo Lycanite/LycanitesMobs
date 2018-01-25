@@ -9,13 +9,11 @@ import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.spawner.MobSpawn;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DungeonSchematic {
     /** Dungeon Schematics define actual dungeons to spawn using a collection of Sectors, Themes, etc. **/
@@ -62,8 +60,8 @@ public class DungeonSchematic {
 	/** A list of MobSpawns to use. Optional. **/
 	public List<MobSpawn> mobSpawns = new ArrayList<>();
 
-	/** The loot table to use in addition to the specific loot added to this dungeon. If blank, only the specific loot is used. Default: "minecraft:chests/simple_dungeon". **/
-	public String lootTable = "minecraft:chests/simple_dungeon";
+	/** The loot tables to random use for each level in addition to the specific loot added to this dungeon. If blank, only the specific loot is used. Ex: "minecraft:chests/simple_dungeon". Default: Empty. **/
+	public Map<Integer, List<String>> lootTables = new HashMap<>();
 
 	/** A list of item drops to add to loot chests. **/
 	public List<MobDrop> loot = new ArrayList<>();
@@ -88,8 +86,21 @@ public class DungeonSchematic {
 		if(json.has("roomToRoomChance"))
 			this.roomToRoomChance = json.get("roomToRoomChance").getAsDouble();
 
-		if(json.has("lootTable"))
-			this.lootTable = json.get("lootTable").getAsString();
+		if(json.has("lootTables")) {
+			JsonArray jsonArray = json.get("lootTables").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject lootTableJson = jsonIterator.next().getAsJsonObject();
+				int level = -1;
+				if(lootTableJson.has("level")) {
+					level = lootTableJson.get("level").getAsInt();
+				}
+				if(!this.lootTables.containsKey(level)) {
+					this.lootTables.put(level, new ArrayList<>());
+				}
+				this.lootTables.get(level).add(lootTableJson.get("id").getAsString());
+			}
+		}
 
 		// Conditions:
 		if(json.has("conditions")) {
@@ -359,7 +370,7 @@ public class DungeonSchematic {
 		}
 		int searchWeight = 0;
 		MobSpawn chosenMobSpawn = null;
-		for(MobSpawn mobSpawn : this.mobSpawns) {
+		for(MobSpawn mobSpawn : mobSpawns) {
 			chosenMobSpawn = mobSpawn;
 			if(mobSpawn.getWeight() + searchWeight > randomWeight) {
 				break;
@@ -367,6 +378,35 @@ public class DungeonSchematic {
 			searchWeight += mobSpawn.getWeight();
 		}
 		return chosenMobSpawn;
+	}
+
+
+	/**
+	 * Returns a random loot table to apply to a chest.
+	 * @param level The dungeon level of the chest to add the loot to.
+	 * @param random The instance of random to use.
+	 * @return A loot table.
+	 */
+	public ResourceLocation getRandomLootTable(int level, Random random) {
+		List<String> possibleLootTables = new ArrayList<>();
+
+		if(this.lootTables.containsKey(-1)) {
+			possibleLootTables.addAll(this.lootTables.get(-1));
+		}
+		for(int i = 0; i <= level; i++) {
+			if (this.lootTables.containsKey(i)) {
+				possibleLootTables.addAll(this.lootTables.get(i));
+			}
+		}
+
+		if(possibleLootTables.isEmpty()) {
+			return null;
+		}
+		if(possibleLootTables.size() == 1) {
+			return new ResourceLocation(possibleLootTables.get(0));
+		}
+
+		return new ResourceLocation(possibleLootTables.get(random.nextInt(possibleLootTables.size())));
 	}
 
 

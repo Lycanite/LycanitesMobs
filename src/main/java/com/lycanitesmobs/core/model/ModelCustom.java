@@ -74,7 +74,7 @@ public class ModelCustom extends ModelBase {
             sizeScale *= ((EntityCreatureBase) entity).getRenderScale();
         }
     	GL11.glScalef(sizeScale, sizeScale, sizeScale);
-    	GL11.glTranslatef(0, -(sizeScale - 1) * 2, 0);
+    	GL11.glTranslatef(0, 0.5f - sizeScale / 2, 0);
     	
     	setAngles((EntityLiving)entity, time, distance, loop, lookY, lookX, scale);
     	animate((EntityLiving)entity, time, distance, loop, lookY, lookX, scale);

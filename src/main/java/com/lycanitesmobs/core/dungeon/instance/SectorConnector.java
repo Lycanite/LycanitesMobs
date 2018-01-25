@@ -122,8 +122,8 @@ public class SectorConnector {
 			if(size.getX() % 2 != 0) {
 				startX -= 1;
 			}
-			startZ -= entranceClearance;
-			stopZ += entranceClearance;
+			startZ -= entranceClearance * 2;
+			stopZ += entranceClearance * 2;
 		}
 		else {
 			startZ -= entranceRadius;
@@ -131,8 +131,8 @@ public class SectorConnector {
 			if(size.getZ() % 2 != 0) {
 				startZ -= 1;
 			}
-			startX -= entranceClearance;
-			stopX += entranceClearance;
+			startX -= entranceClearance * 2;
+			stopX += entranceClearance * 2;
 		}
 
 		// Build Entrance:

@@ -57,8 +57,8 @@ public class DungeonLayout {
 			LycanitesMobs.printDebug("Dungeon", "Starting Level " + level + " - Sector Count: " + sectorCount);
 
 			// Snake:
-			int snakeCount = Math.round((float)sectorCount * 0.2f);
-			exitSector = this.snake(random, exitSector, snakeCount);
+			int snakeCount = Math.round((float)sectorCount * 0.4f);
+			exitSector = this.snake(random, exitSector, Math.max(3, snakeCount));
 			LycanitesMobs.printDebug("Dungeon", "Snake Sectors: " + snakeCount + " - From Sector: " + exitSector);
 			if(exitSector.getOccupiedBoundsMin().getY() - (exitSector.roomSize.getY() * 2) <= 1) {
 				onLastLevel = true;
@@ -121,7 +121,7 @@ public class DungeonLayout {
 			if(i == length - 2) {
 				nextType = "bossRoom";
 			}
-			if(i == length - 1) {
+			else if(i == length - 1) {
 				nextType = "stairs";
 			}
 			DungeonSector dungeonSector = this.dungeonInstance.schematic.getRandomSector(nextType, random);

@@ -11,6 +11,32 @@
 	"rooms": ["roombasic", "roombasicloot", "roombasicmob", "roombasicpit"],
 	"corridors": ["corridorbasic", "corridorbasicdark", "corridorbasicloot", "corridorbasicmob"],
 	"stairs": ["stairsbasic"],
+	"bossRooms": ["roombasicboss"],
+	"lootTables": [
+		{
+			"id": "minecraft:chests/simple_dungeon"
+		},
+		{
+			"id": "minecraft:chests/village_blacksmith",
+			"level": 0
+		},
+		{
+			"id": "minecraft:chests/nether_bridge",
+			"level": 1
+		},
+		{
+			"id": "minecraft:chests/abandoned_mineshaft",
+			"level": 1
+		},
+		{
+			"id": "minecraft:chests/stronghold_corridor",
+			"level": 2
+		},
+		{
+			"id": "minecraft:chests/stronghold_crossing",
+			"level": 2
+		}
+	],
 	"mobSpawns": [
 		{
 			"mobId": "demonmobs.belph",
@@ -52,11 +78,16 @@
 			"subspecies": 0,
 			"mobNameTag": "Baron of Hell",
 			"mobSizeScale": 2,
-			"naturalDespawn": false,
-			"mobLevel": 50,
-			"dungeonLevelMin": "1",
-			"dungeonLevelMax": "1",
-			"dungeonBoss": true
+			"naturalDespawn": "false",
+			"mobLevel": 10,
+			"dungeonLevelMin": "0",
+			"dungeonLevelMax": "0",
+			"dungeonBoss": true,
+			"mobDrops": [
+				{
+					"item": "demonmobs:hellfirescepter"
+				}
+			]
 		},
 		{
 			"mobId": "demonmobs.astaroth",
@@ -64,20 +95,30 @@
 			"subspecies": 0,
 			"mobNameTag": "Arachnotron",
 			"mobSizeScale": 2,
-			"naturalDespawn": false,
-			"mobLevel": 50,
-			"dungeonLevelMin": "2",
-			"dungeonLevelMax": "2",
-			"dungeonBoss": true
+			"naturalDespawn": "false",
+			"mobLevel": 10,
+			"dungeonLevelMin": "1",
+			"dungeonLevelMax": "1",
+			"dungeonBoss": true,
+			"mobDrops": [
+				{
+					"item": "demonmobs:devilstarscepter"
+				}
+			]
 		},
 		{
 			"mobId": "demonmobs.cacodemon",
 			"weight": 1,
 			"subspecies": 3,
 			"mobNameTag": "Pain Elemental",
-			"naturalDespawn": false,
-			"dungeonLevelMin": "3",
-			"dungeonBoss": true
+			"naturalDespawn": "false",
+			"dungeonLevelMin": "2",
+			"dungeonBoss": true,
+			"mobDrops": [
+				{
+					"item": "demonmobs:demoniclightningscepter"
+				}
+			]
 		}
 	]
 }

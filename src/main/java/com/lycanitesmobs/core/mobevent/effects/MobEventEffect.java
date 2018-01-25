@@ -29,6 +29,9 @@ public abstract class MobEventEffect {
 		else if("structure".equalsIgnoreCase(type)) {
 			mobEventEffect = new StructureMobEventEffect();
 		}
+		else if("command".equalsIgnoreCase(type)) {
+			mobEventEffect = new CommandMobEventEffect();
+		}
 
 		mobEventEffect.loadFromJSON(json);
 		return mobEventEffect;

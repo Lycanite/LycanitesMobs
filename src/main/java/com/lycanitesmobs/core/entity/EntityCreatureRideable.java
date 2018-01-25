@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -190,19 +191,19 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
         }
 
         // Swimming / Flying Controls:
-        double flyMotion = 0;
+        double verticalMotion = 0;
         if(this.isInWater() || this.isInLava() || this.isFlying()) {
             if (this.getControllingPassenger() instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                 if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
-                    flyMotion = this.getSpeedMultiplier();
+                    verticalMotion = this.getSpeedMultiplier();
                 }
                 else if(player.rotationPitch > 0 && forward != 0.0F) {
-                    flyMotion = this.getSpeedMultiplier() * -(player.rotationPitch / 90);
+                    verticalMotion = this.getSpeedMultiplier() * -(player.rotationPitch / 90);
                 }
                 else {
-                    flyMotion = 0;
+                    verticalMotion = 0;
                 }
             }
         }
@@ -246,14 +247,19 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             if(!this.useDirectNavigator()) {
                 if(this.isFlying() && !this.isInWater() && !this.isInLava()) {
                     this.moveRelative(strafe, 0, forward, 0.1F);
-                    this.move(MoverType.SELF, this.motionX, flyMotion, this.motionZ);
+                    this.move(MoverType.SELF, this.motionX, verticalMotion, this.motionZ);
                     this.motionX *= 0.8999999761581421D;
                     this.motionY *= 0.8999999761581421D;
                     this.motionZ *= 0.8999999761581421D;
                 }
-                else if(this.isStrongSwimmer() && (this.isInWater() || this.isInLava())) {
+                else if(this.isInWater() || this.isInLava()) {
+					if(!this.isStrongSwimmer()) {
+						verticalMotion *= 0.25f;
+						strafe *= 0.25f;
+						forward *= 0.25f;
+					}
                     this.moveRelative(strafe, 0, forward, 0.1F);
-                    this.move(MoverType.SELF, this.motionX, flyMotion, this.motionZ);
+                    this.move(MoverType.SELF, this.motionX, verticalMotion, this.motionZ);
                     this.motionX *= 0.8999999761581421D;
                     this.motionY *= 0.8999999761581421D;
                     this.motionZ *= 0.8999999761581421D;

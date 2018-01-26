@@ -26,6 +26,9 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 	/** If true, the Block Harvest event will activate this trigger. **/
 	public boolean onHarvest = true;
 
+	/** If true, this Block Place event will activate this trigger. **/
+	public boolean onPlace = false;
+
 	/** A list of Blocks that match this Trigger. **/
 	public List<Block> blocks = new ArrayList<>();
 
@@ -55,6 +58,9 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 		if(json.has("onHarvest"))
 			this.onHarvest = json.get("onHarvest").getAsBoolean();
 
+		if(json.has("onPlace"))
+			this.onPlace = json.get("onPlace").getAsBoolean();
+
 		this.blocks = SpawnerJSONUtilities.getJsonBlocks(json);
 
 		if(json.has("blocksListType"))
@@ -81,6 +87,15 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 	/** Called every time a block is harvested. **/
 	public void onBlockHarvest(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain) {
 		if(!this.onHarvest) {
+			return;
+		}
+		this.onBlockTriggered(world, player, breakPos, blockState, chain);
+	}
+
+
+	/** Called every time a block is placed. **/
+	public void onBlockPlace(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain) {
+		if(!this.onPlace) {
 			return;
 		}
 		this.onBlockTriggered(world, player, breakPos, blockState, chain);

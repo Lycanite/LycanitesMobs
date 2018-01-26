@@ -181,7 +181,7 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
 		if(source.isExplosion()) {
 			this.heal(damage);
-			return true;
+			return false;
 		}
     	if(type.equals("cactus") || type.equals("inWall")) return false;
     	    return super.isDamageTypeApplicable(type, source, damage);

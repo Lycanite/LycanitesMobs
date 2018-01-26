@@ -5,6 +5,7 @@ import com.lycanitesmobs.mountainmobs.entity.EntityBarghest;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.mountainmobs.entity.EntityWildkin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,7 +35,10 @@ public class ItemSoulstoneMountain extends ItemSoulstone {
     		return new ActionResult(EnumActionResult.SUCCESS, itemStack);
 
         EntityCreatureTameable entity;
-        entity = new EntityBarghest(world);
+		if(player.getRNG().nextBoolean())
+        	entity = new EntityBarghest(world);
+		else
+			entity = new EntityWildkin(world);
         if(!player.getEntityWorld().isRemote) {
             entity.setLocationAndAngles(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
             world.spawnEntity(entity);

@@ -229,7 +229,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
-                if(target.posY > this.posY + MobInfo.bossAntiFlight) {
+                if(MobInfo.bossAntiFlight > 0 && target.posY > this.posY + MobInfo.bossAntiFlight + 1) {
                     for(int i = 0; i < 3; i++) {
                         EntityWraith minion = new EntityWraith(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);

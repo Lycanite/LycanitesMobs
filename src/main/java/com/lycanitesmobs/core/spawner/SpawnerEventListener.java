@@ -301,6 +301,30 @@ public class SpawnerEventListener {
 		}
 	}
 
+
+	// ==================================================
+	//                 Block Place Event
+	// ==================================================
+	/** This uses the block place events to update Block Spawn Triggers. **/
+	@SubscribeEvent
+	public void onBlockPlace(BlockEvent.PlaceEvent event) {
+		if(event.getState() == null || event.getWorld() == null || event.getWorld().isRemote || event.isCanceled()) {
+			return;
+		}
+		this.onBlockPlace(event.getWorld(), event.getPos(), event.getState(), event.getPlayer(), 0);
+	}
+
+	public void onBlockPlace(World world, BlockPos blockPos, IBlockState blockState, EntityPlayer player, int chain) {
+		if(player != null && (!testOnCreative && player.capabilities.isCreativeMode)) {
+			return;
+		}
+
+		// Spawn On Block Harvest:
+		for(BlockSpawnTrigger spawnTrigger : this.blockSpawnTriggers) {
+			spawnTrigger.onBlockPlace(world, player, blockPos, blockState, chain);
+		}
+	}
+
 	
 	// ==================================================
 	//                Player Use Bed Event

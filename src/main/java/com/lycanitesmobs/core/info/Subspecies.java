@@ -24,7 +24,7 @@ public class Subspecies {
     public static double uncommonHealthScale = 2;
 
     /** The health scale of rare subspecies. **/
-    public static double rareHealthScale = 5;
+    public static double rareHealthScale = 10;
 
     /** The drop amount scale of uncommon subspecies. **/
     public static int uncommonDropScale = 2;
@@ -66,13 +66,13 @@ public class Subspecies {
         //commonWeights.put("legendary", config.getInt("Mob Variations", "Subspecies Legendary Weight", commonWeights.get("legendary"), "The weight of legendary subspecies (currently there are no legendary subspecies added or planned, this is just a placeholder)."));
 
         uncommonHealthScale = config.getDouble("Mob Variations", "Subspecies Uncommon Health Scale", uncommonHealthScale, "When a creature is set to the uncommon subspecies (Azure, Verdant, etc) its health is multiplied by this value.");
-        rareHealthScale = config.getDouble("Mob Variations", "Subspecies Uncommon Health Scale", rareHealthScale, "When a creature is set to the rare subspecies (Celestial, Lunar, etc) its health is multiplied by this value.");
+        rareHealthScale = config.getDouble("Mob Variations", "Subspecies Rare Health Scale", rareHealthScale, "When a creature is set to the rare subspecies (Celestial, Lunar, etc) its health is multiplied by this value.");
 
         uncommonDropScale = config.getInt("Mob Variations", "Subspecies Uncommon Item Drops Scale", uncommonDropScale, "When a creature with the uncommon subspecies (Azure, Verdant, etc) dies, its item drops amount is multiplied by this value.");
-        rareDropScale = config.getInt("Mob Variations", "Subspecies Uncommon Item Drops Scale", rareDropScale, "When a creature with the rare subspecies (Celestial, Lunar, etc) dies, its item drops amount is multiplied by this value.");
+        rareDropScale = config.getInt("Mob Variations", "Subspecies Rare Item Drops Scale", rareDropScale, "When a creature with the rare subspecies (Celestial, Lunar, etc) dies, its item drops amount is multiplied by this value.");
 
         uncommonExperienceScale = config.getDouble("Mob Variations", "Subspecies Uncommon Experience Scale", uncommonExperienceScale, "When a creature with the uncommon subspecies (Azure, Verdant, etc) dies, its experience amount is multiplied by this value.");
-        rareExperienceScale = config.getDouble("Mob Variations", "Subspecies Uncommon Experience Scale", rareExperienceScale, "When a creature with the rare subspecies (Celestial, Lunar, etc) dies, its experience amount is multiplied by this value.");
+        rareExperienceScale = config.getDouble("Mob Variations", "Subspecies Rare Experience Scale", rareExperienceScale, "When a creature with the rare subspecies (Celestial, Lunar, etc) dies, its experience amount is multiplied by this value.");
 
         rareHealthBars = config.getBool("Mob Variations", "Subspecies Rare Health Bars", rareHealthBars, "If set to true, rare subspecies such as the Lunar Grue or Celestial Geonach will display boss health bars.");
     }

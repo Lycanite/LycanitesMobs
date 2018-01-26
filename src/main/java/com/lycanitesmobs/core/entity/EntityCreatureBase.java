@@ -19,6 +19,7 @@ import com.lycanitesmobs.core.inventory.InventoryCreature;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.core.spawner.SpawnerEventListener;
+import com.sun.javafx.geom.Vec3f;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1066,6 +1067,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		if(MobInfo.levelPerDay > 0 && MobInfo.levelPerDayMax > 0) {
 			int day = (int)Math.floor(this.getEntityWorld().getTotalWorldTime() / 23999D);
 			double levelGain = Math.min(MobInfo.levelPerDay * day, MobInfo.levelPerDayMax);
+			startingLevelMin += (int)Math.floor(levelGain);
+		}
+		if(MobInfo.levelPerLocalDifficulty > 0) {
+			double levelGain = this.getEntityWorld().getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
 			startingLevelMin += (int)Math.floor(levelGain);
 		}
 		return startingLevelMin;
@@ -2458,6 +2463,52 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void rangedAttack(Entity target, float range) {
     	this.setJustAttacked();
     }
+
+	/**
+	 * Fires a projectile from this mob.
+	 * @param projectileClass The class of the projectile. Must extend EntityProjectileBase.
+	 * @param target The target entity to fire at. If null, the projectile is fired from the facing direction instead.
+	 * @param range The range to the target.
+	 * @param angle The angle offset away from the target in degrees.
+	 * @param offset The xyz offset to fire from. Note that the Y offset is relative to 75% of this mob's height.
+	 * @param velocity The velocity of the projectile.
+	 * @param scale The size scale of the projectile.
+	 * @param inaccuracy How inaccurate the projectile aiming is.
+	 * @return The newly created projectile.
+	 */
+	public EntityProjectileBase fireProjectile(Class projectileClass, Entity target, float range, float angle, Vec3f offset, float velocity, float scale, float inaccuracy) {
+		EntityProjectileBase projectile = null;
+		try {
+			projectile = (EntityProjectileBase) projectileClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+		}
+		catch (Exception e) {
+			LycanitesMobs.printWarning("", "Unable to create a projectile from the class: " + projectileClass);
+		}
+		if(projectile == null) {
+			return projectile;
+		}
+
+		projectile.posX += offset.x;
+		projectile.posY -= (this.height / 4) + offset.y;
+		projectile.posZ += offset.z;
+		projectile.setProjectileScale(scale);
+
+		Vec3d facing = this.getFacingPositionDouble(this.posX, this.posY, this.posZ, range, angle);
+		double distanceX = facing.x - this.posX;
+		double distanceY = this.posY;
+		double distanceZ = facing.z - this.posZ;
+		if(target != null) {
+			Vec3d rotatedTarget = this.getFacingPositionDouble(target.posX, this.posY, target.posZ - this.posZ, this.getDistanceToEntity(target), angle);
+			distanceX = rotatedTarget.x - this.posX;
+			distanceY = target.posY + (double) target.getEyeHeight() - 1.100000023841858D - projectile.posY;
+			distanceZ = rotatedTarget.z - this.posZ;
+		}
+		float projectileRange = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);
+
+		projectile.setThrowableHeading(distanceX, distanceY + (projectileRange * 0.2F), distanceZ, velocity, inaccuracy);
+
+		return projectile;
+	}
     
     // ========== Phase ==========
     /** Returns the current attack phase of this mob, used when deciding which attack to use and which animations to use. **/
@@ -2796,7 +2847,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         return pos;
     }
 
-    /** Returns the BlockPos in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
+    /** Returns the XYZ in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
     public Vec3d getFacingPositionDouble(double x, double y, double z, double distance, double angle) {
         angle = Math.toRadians(angle);
         double xAmount = -Math.sin(angle);

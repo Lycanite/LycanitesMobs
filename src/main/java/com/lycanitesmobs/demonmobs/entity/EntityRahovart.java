@@ -227,7 +227,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
                 this.rangedAttack(target, 1F);
-                if(target.posY > this.posY + MobInfo.bossAntiFlight) {
+                if(MobInfo.bossAntiFlight > 0 && target.posY > this.posY + MobInfo.bossAntiFlight + 1) {
                     for(int i = 0; i < 3; i++) {
                         EntityWraith minion = new EntityWraith(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
@@ -310,7 +310,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 for (EntityBelph minion : this.hellfireBelphMinions.toArray(new EntityBelph[this.hellfireBelphMinions.size()])) {
                     minion.hellfireEnergy = 0;
                 }
-                this.hellfireBelphMinions = new ArrayList<EntityBelph>();
+                this.hellfireBelphMinions = new ArrayList<>();
             }
             this.hellfireBarrierCleanup();
 
@@ -374,13 +374,13 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 for (EntityBelph minion : this.hellfireBelphMinions.toArray(new EntityBelph[this.hellfireBelphMinions.size()])) {
                     minion.hellfireEnergy = 0;
                 }
-                this.hellfireBelphMinions = new ArrayList<EntityBelph>();
+                this.hellfireBelphMinions = new ArrayList<>();
             }
             if(!this.hellfireBehemothMinions.isEmpty()) {
                 for (EntityBehemoth minion : this.hellfireBehemothMinions.toArray(new EntityBehemoth[this.hellfireBehemothMinions.size()])) {
                     minion.hellfireEnergy = 0;
                 }
-                this.hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
+                this.hellfireBehemothMinions = new ArrayList<>();
             }
             this.hellfireWallTime = 0;
 

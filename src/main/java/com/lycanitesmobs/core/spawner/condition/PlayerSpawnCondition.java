@@ -6,6 +6,7 @@ import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -15,6 +16,12 @@ public class PlayerSpawnCondition extends SpawnCondition {
 
     /** The username of the player. **/
     public String username = "";
+
+	/** The minimum local area difficulty level. **/
+	public float difficultyMin = -1;
+
+	/** The maximum local area difficulty level. **/
+	public float difficultyMax = -1;
 
     /** The minimum level of the player. **/
     public int levelMin = -1;
@@ -57,6 +64,12 @@ public class PlayerSpawnCondition extends SpawnCondition {
 	public void loadFromJSON(JsonObject json) {
 		if(json.has("username"))
 			this.username = json.get("username").getAsString();
+
+		if(json.has("difficultyMin"))
+			this.difficultyMin = json.get("difficultyMin").getAsFloat();
+
+		if(json.has("difficultyMax"))
+			this.difficultyMax = json.get("difficultyMax").getAsFloat();
 
 		if(json.has("levelMin"))
 			this.levelMin = json.get("levelMin").getAsInt();
@@ -110,6 +123,18 @@ public class PlayerSpawnCondition extends SpawnCondition {
     	// Check Username:
         if(!"".equals(this.username) && !this.username.equalsIgnoreCase(player.getName())) {
         	return false;
+		}
+
+		// Check Local Area Difficulty:
+		if(this.difficultyMin >= 0 || this.difficultyMax >= 0) {
+			DifficultyInstance difficultyInstance = world.getDifficultyForLocation(player.getPosition());
+			float difficulty = difficultyInstance.getAdditionalDifficulty();
+			if (this.difficultyMin >= 0 && difficulty < this.difficultyMin) {
+				return false;
+			}
+			if (this.difficultyMax >= 0 && difficulty > this.difficultyMax) {
+				return false;
+			}
 		}
 
 		// Check Level:

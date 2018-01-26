@@ -12,12 +12,12 @@ import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
-public class LayerEyes extends LayerBase {
+public class LayerOverlay extends LayerBase {
 
     // ==================================================
     //                   Constructor
     // ==================================================
-    public LayerEyes(RenderCreature renderer) {
+    public LayerOverlay(RenderCreature renderer) {
         super(renderer);
     }
 

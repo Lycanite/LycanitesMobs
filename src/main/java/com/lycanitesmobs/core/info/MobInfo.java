@@ -54,6 +54,9 @@ public class MobInfo {
 	/** If true, passive mobs will fight back when hit instead of running away. **/
 	public static boolean animalsFightBack = false;
 
+	/** If true, some elemental mobs will fuse with each other on sight into a stronger different elemental. **/
+	public static boolean elementalFusion = true;
+
     /** If true, mobs will have a chance of becoming a subspecies when spawned. **/
     public static boolean subspeciesSpawn = true;
 
@@ -89,6 +92,9 @@ public class MobInfo {
 
 	/** The maximum level to be able gain from levels per day. **/
 	public static int levelPerDayMax = 100;
+
+	/** How many levels a mob gains multiplied by the local area difficulty level. Staying in an area for a while slowly increases the difficulty of that area ranging from 0.00 to 6.75. So 1.5 means level 10 at full local area difficulty. **/
+	public static double levelPerLocalDifficulty = 1.5;
 	
 	/** A static ArrayList of all summonable creature names. **/
 	public static List<String> summonableCreatures = new ArrayList<>();
@@ -221,6 +227,7 @@ public class MobInfo {
         predatorsAttackAnimals = config.getBool("Mob Interaction", "Predators Attack Animals", predatorsAttackAnimals, "Set to false to prevent predator mobs from attacking animals/farmable mobs.");
 		mobsAttackVillagers = config.getBool("Mob Interaction", "Mobs Attack Villagers", mobsAttackVillagers, "Set to false to prevent mobs that attack players from also attacking villagers.");
 		animalsFightBack = config.getBool("Mob Interaction", "Animals Fight Back", animalsFightBack, "If true, passive mobs will fight back when hit instead of running away.");
+		elementalFusion = config.getBool("Mob Interaction", "Elemental Fusion", elementalFusion, "If true, some elemental mobs will fuse with each other on sight into a stronger different elemental.");
 		disablePickupOffsets = config.getBool("Mob Interaction", "Disable Pickup Offset", disablePickupOffsets, "If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at.");
 
         // Variations:
@@ -235,7 +242,7 @@ public class MobInfo {
         // Difficulty:
         String[] difficultyNames = new String[] {"Easy", "Normal", "Hard"};
         double[] difficultyDefaults = new double[] {0.5D, 1.0D, 1.1D};
-		difficultyMultipliers = new HashMap<String, Double>();
+		difficultyMultipliers = new HashMap<>();
         config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 1.0 by default as 0.5 makes them stupidly slow.");
         int difficultyIndex = 0;
         for(String difficultyName : difficultyNames) {
@@ -276,7 +283,8 @@ public class MobInfo {
 		startingLevelMin = config.getInt("Base Starting Level", "Starting Level Min", startingLevelMin, "The minimum base starting level of every mob. Cannot be less than 1.");
 		startingLevelMax = config.getInt("Base Starting Level", "Starting Level Max", startingLevelMax, "The maximum base starting level of every mob. Ignored when not greater than the min level.");
 		levelPerDay = config.getDouble("Base Starting Level", "Level Gain Per Day", levelPerDay, "Increases the base start level by this amount of every world day that has gone by, use this to slowly level up mobs as the world gets older. Fractions can be used such as 0.05 levels per day. The levels are rounded down so +0.9 would be +0 levels.");
-		levelPerDayMax = config.getInt("Base Starting Level", "Level Gain per Day Max", levelPerDayMax, "The maximum level to be able gain from levels per day.");
+		levelPerDayMax = config.getInt("Base Starting Level", "Level Gain Per Day Max", levelPerDayMax, "The maximum level to be able gain from levels per day.");
+		levelPerLocalDifficulty = config.getDouble("Base Starting Level", "Level Gain Per Local Difficulty", levelPerLocalDifficulty, "How many levels a mob gains multiplied by the local area difficulty level. Staying in an area for a while slowly increases the difficulty of that area ranging from 0.00 to 6.75. So 1.5 means level 10 at full local area difficulty.");
 
 		config.setCategoryComment("Custom Item Drops", "Here you can add a global list of item drops to add to every mob from Lycanites Mobs. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. You can also add an additional comma and then a subspecies ID to restrict that drop to a certain subspecies like so: mod:item,metadata,chance,min,max,subspecies. minecraft:wool,2,0.25,0,3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and commas for everything else in an entry. Semicolons can be used to separate multiple entries.");
 		globalDropsString = config.getString("Default Item Drops", "Global Drops", globalDropsString, "");

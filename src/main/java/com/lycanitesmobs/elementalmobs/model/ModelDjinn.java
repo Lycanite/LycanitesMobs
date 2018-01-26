@@ -11,23 +11,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.vecmath.Vector2f;
 
 @SideOnly(Side.CLIENT)
-public class ModelCinder extends ModelTemplateElemental {
-	
+public class ModelDjinn extends ModelTemplateElemental {
+
 	// ==================================================
   	//                    Constructors
   	// ==================================================
-    public ModelCinder() {
+    public ModelDjinn() {
         this(1.0F);
     }
-    
-    public ModelCinder(float shadowSize) {
+
+    public ModelDjinn(float shadowSize) {
 
 		// Load Model:
-		this.initModel("cinder", ElementalMobs.instance.group, "entity/cinder");
+		this.initModel("djinn", ElementalMobs.instance.group, "entity/djinn");
 
 		// Trophy:
 		this.trophyScale = 1.2F;
 		this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
+		this.trophyMouthOffset = new float[] {0.0F, -0.25F, 0.0F};
     }
 
 
@@ -46,8 +47,8 @@ public class ModelCinder extends ModelTemplateElemental {
 	// ==================================================
 	@Override
 	public Vector2f getBaseTextureOffset(String partName, Entity entity, boolean trophy, float loop) {
-    	if(partName.contains("effect")) {
-    		return super.getBaseTextureOffset(partName, entity, trophy, loop);
+		if(partName.contains("effect")) {
+			return super.getBaseTextureOffset(partName, entity, trophy, loop);
 		}
 		return new Vector2f(loop, 0);
 	}

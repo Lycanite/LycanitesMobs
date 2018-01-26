@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.ai;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.entity.EntityLivingBase;
 
 public class EntityAITargetFuse extends EntityAITarget {
@@ -104,6 +105,10 @@ public class EntityAITargetFuse extends EntityAITarget {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
+    	if(!MobInfo.elementalFusion) {
+    		return false;
+		}
+
         // Check for other fusion target:
         EntityLivingBase fuseTarget = this.getTarget();
         if(fuseTarget != null && !this.isValidTarget(fuseTarget)) {

@@ -8,10 +8,7 @@ import com.lycanitesmobs.core.info.AltarInfo;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.Subspecies;
-import com.lycanitesmobs.elementalmobs.dispenser.DispenserBehaviorAquaPulse;
-import com.lycanitesmobs.elementalmobs.dispenser.DispenserBehaviorEmber;
-import com.lycanitesmobs.elementalmobs.dispenser.DispenserBehaviorFrostbolt;
-import com.lycanitesmobs.elementalmobs.dispenser.DispenserBehaviorLifeDrain;
+import com.lycanitesmobs.elementalmobs.dispenser.*;
 import com.lycanitesmobs.elementalmobs.entity.*;
 import com.lycanitesmobs.elementalmobs.info.AltarInfoCelestialGeonach;
 import com.lycanitesmobs.elementalmobs.info.AltarInfoLunarGrue;
@@ -90,6 +87,8 @@ public class ElementalMobs extends Submod {
 		ObjectManager.addItem("aquapulsecharge", new ItemAquaPulseCharge());
 		ObjectManager.addItem("aquapulsescepter", new ItemScepterAquaPulse(), 2, 1, 1);
 
+		ObjectManager.addItem("whirlwindcharge", new ItemWhirlwindCharge());
+
 		ObjectManager.addItem("lifedraincharge", new ItemLifeDrainCharge());
 		ObjectManager.addItem("lifedrainscepter", new ItemScepterLifeDrain(), 2, 1, 1);
 
@@ -129,6 +128,13 @@ public class ElementalMobs extends Submod {
 				.addSubspecies(new Subspecies("celestial", "rare"));
 		newMob.spawnInfo.setSpawnTypes("")
 				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "djinn", EntityDjinn.class, 0xb6bbc2, 0xf0f1f1)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("MOUNTAIN, PARADISE, MAGICAL")
+				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("")
+				.setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 
@@ -196,6 +202,8 @@ public class ElementalMobs extends Submod {
 		ObjectManager.addProjectile("ember", EntityEmber.class, ObjectManager.getItem("embercharge"), new DispenserBehaviorEmber());
 
 		ObjectManager.addProjectile("aquapulse", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
+
+		ObjectManager.addProjectile("whirlwind", EntityWhirlwind.class, ObjectManager.getItem("whirlwindcharge"), new DispenserBehaviorWhirlwind());
 
 		ObjectManager.addProjectile("lifedrain", EntityLifeDrain.class, ObjectManager.getItem("lifedraincharge"), new DispenserBehaviorLifeDrain());
 		ObjectManager.addProjectile("lifedrainend", EntityLifeDrainEnd.class);

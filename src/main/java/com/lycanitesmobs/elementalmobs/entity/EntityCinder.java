@@ -45,7 +45,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
         this.hasAttackSound = false;
         
         this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
+        this.setHeight = 1.6F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -55,7 +55,6 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
-        this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(3.0F));
         this.tasks.addTask(6, this.aiSit);
@@ -295,6 +294,9 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 	public Class getFusionClass(IFusable fusable) {
 		if(fusable instanceof EntityGeonach) {
 			return EntityVolcan.class;
+		}
+		if(fusable instanceof EntityDjinn) {
+			return EntityZephyr.class;
 		}
 		return null;
 	}

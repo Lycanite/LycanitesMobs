@@ -232,6 +232,9 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         if(fusable instanceof EntityGeonach) {
             return EntitySpriggan.class;
         }
+        if(fusable instanceof EntityDjinn) {
+            return EntityReiver.class;
+        }
         return null;
     }
 }

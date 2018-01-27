@@ -37,7 +37,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         this.hasAttackSound = false;
         
         this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
+        this.setHeight = 1.6F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -48,7 +48,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(100).setRange(14.0F).setMinChaseDistance(5.0F));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -92,10 +92,8 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         super.onLivingUpdate();
         
         // Particles:
-        if(this.getEntityWorld().isRemote)
-	        for(int i = 0; i < 2; ++i) {
-                this.getEntityWorld().spawnParticle(EnumParticleTypes.CLOUD, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-            }
+        //if(this.getEntityWorld().isRemote)
+            //this.getEntityWorld().spawnParticle(EnumParticleTypes.SNOWBALL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
     }
     
     
@@ -113,7 +111,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
     public void rangedAttack(Entity target, float range) {
     	int projectileCount = 10;
     	for(int i = 0; i < projectileCount; i++) {
-    		this.fireProjectile(EntityWhirlwind.class, target, range, (360 / 10) * i, new Vec3f(0, 0, 0), 1.2f, 0.5f, 1);
+    		this.fireProjectile(EntityWhirlwind.class, target, range, (360 / 10) * i, new Vec3f(0, 0, 0), 1.2f, 2f, 1F);
 		}
         super.rangedAttack(target, range);
     }

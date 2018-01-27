@@ -2479,7 +2479,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public EntityProjectileBase fireProjectile(Class projectileClass, Entity target, float range, float angle, Vec3f offset, float velocity, float scale, float inaccuracy) {
 		EntityProjectileBase projectile = null;
 		try {
-			projectile = (EntityProjectileBase) projectileClass.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
+			projectile = (EntityProjectileBase) projectileClass.getConstructor(World.class, EntityLivingBase.class).newInstance(this.getEntityWorld(), this);
 		}
 		catch (Exception e) {
 			LycanitesMobs.printWarning("", "Unable to create a projectile from the class: " + projectileClass);
@@ -2498,14 +2498,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		double distanceY = this.posY;
 		double distanceZ = facing.z - this.posZ;
 		if(target != null) {
-			Vec3d rotatedTarget = this.getFacingPositionDouble(target.posX, this.posY, target.posZ - this.posZ, this.getDistanceToEntity(target), angle);
+			Vec3d rotatedTarget = this.getFacingPositionDouble(target.posX, this.posY, target.posZ, this.getDistanceToEntity(target), angle);
 			distanceX = rotatedTarget.x - this.posX;
-			distanceY = target.posY + (double) target.getEyeHeight() - 1.100000023841858D - projectile.posY;
+			distanceY = target.posY - (target.height * 0.25D) - projectile.posY;
 			distanceZ = rotatedTarget.z - this.posZ;
 		}
-		float projectileRange = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ);
 
-		projectile.setThrowableHeading(distanceX, distanceY + (projectileRange * 0.2F), distanceZ, velocity, inaccuracy);
+		float distanceXZ = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ) * 0.1F;
+		projectile.setThrowableHeading(distanceX, distanceY + distanceXZ, distanceZ, velocity, inaccuracy);
+		this.getEntityWorld().spawnEntity(projectile);
 
 		return projectile;
 	}

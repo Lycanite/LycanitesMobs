@@ -219,8 +219,7 @@ public class EntityProjectileBase extends EntityThrowable {
 
                         // Restore Knockback:
                         if(stopKnockback) {
-                            if(target instanceof EntityLivingBase)
-                                ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(targetKnockbackResistance);
+                            target.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(targetKnockbackResistance);
                         }
  					}
  				}

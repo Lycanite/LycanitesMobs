@@ -34,9 +34,20 @@ public class EntityWhirlwind extends EntityProjectileBase {
     	this.entityName = "whirlwind";
     	this.group = ElementalMobs.instance.group;
     	this.setBaseDamage(2);
-    	this.setProjectileScale(4F);
+    	this.setProjectileScale(2F);
     	this.waterProof = false;
+		this.projectileLife = 100;
     }
+
+
+	// ==================================================
+	//                   Movement
+	// ==================================================
+	// ========== Gravity ==========
+	@Override
+	protected float getGravityVelocity() {
+		return 0.001F;
+	}
     
     
     // ==================================================
@@ -45,7 +56,7 @@ public class EntityWhirlwind extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-		entityLiving.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, this.getEffectDuration(8), 2));
+		entityLiving.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, this.getEffectDuration(4), 2));
         return true;
     }
     

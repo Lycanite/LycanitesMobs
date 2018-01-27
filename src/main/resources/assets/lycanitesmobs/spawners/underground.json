@@ -19,7 +19,7 @@
 			"type": "random",
 			"rangeMin": [16, 0, 16],
 			"rangeMax": [32, 32, 32],
-			"yMax": 64,
+			"yMax": 60,
 			"sorting": "random",
 			"limit": 32,
 			"surface": false,

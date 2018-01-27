@@ -201,7 +201,7 @@ public class PotionEffects {
 		PotionBase rejuvenation = ObjectManager.getPotionEffect("rejuvenation");
 		if(rejuvenation != null) {
 			if(entity.isPotionActive(rejuvenation)) {
-				event.setAmount(event.getAmount() * (2 * entity.getActivePotionEffect(rejuvenation).getAmplifier()));
+				event.setAmount(event.getAmount() * (2 * (1 + entity.getActivePotionEffect(rejuvenation).getAmplifier())));
 			}
 		}
 
@@ -209,7 +209,7 @@ public class PotionEffects {
 		PotionBase decay = ObjectManager.getPotionEffect("decay");
 		if(decay != null) {
 			if(entity.isPotionActive(decay)) {
-				event.setAmount(event.getAmount() / (2 * entity.getActivePotionEffect(decay).getAmplifier()));
+				event.setAmount(event.getAmount() / (2 * (1 + entity.getActivePotionEffect(decay).getAmplifier())));
 			}
 		}
 	}

@@ -206,9 +206,11 @@ public class ModelObj extends ModelCustom {
         // Generate Animation Frames:
         for(ObjObject part : this.wavefrontParts) {
             String partName = part.getName().toLowerCase();
-            if(!this.canRenderPart(partName, entity, layer, renderAsTrophy))
-                continue;
+            //if(!this.canRenderPart(partName, entity, layer, renderAsTrophy))
+                //continue;
             this.currentAnimationPart = this.animationParts.get(partName);
+            if(this.currentAnimationPart == null)
+            	continue;
 
             // Animate:
             this.animatePart(partName, (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
@@ -348,7 +350,7 @@ public class ModelObj extends ModelCustom {
     	float rotZ = 0F;
     	
     	// Looking:
-    	if(partName.toLowerCase().contains("head")) {
+    	if(partName.toLowerCase().equals("head")) {
     		rotX += (Math.toDegrees(lookX / (180F / (float)Math.PI)) * this.lookHeadScaleX);
     		rotY += (Math.toDegrees(lookY / (180F / (float)Math.PI))) * this.lookHeadScaleY;
     	}

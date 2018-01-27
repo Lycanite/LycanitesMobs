@@ -9,6 +9,7 @@ import com.lycanitesmobs.freshwatermobs.renderer.LayerThresher;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.opengl.GL11;
 
 public class ModelThresher extends ModelTemplateAquatic {
 

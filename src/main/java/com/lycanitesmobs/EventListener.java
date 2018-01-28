@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSwordBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityWither;
@@ -26,6 +27,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -421,4 +423,37 @@ public class EventListener {
         event.setFilledBucket(new ItemStack(bucket));
         event.setResult(Result.ALLOW);
     }
+
+
+	// ==================================================
+	//                 Debug Overlay
+	// ==================================================
+	@SubscribeEvent
+	public void onBucketFill(RenderGameOverlayEvent.Text event) {
+		if(!LycanitesMobs.config.getBool("Debug", "Overlay", false)) {
+			return;
+		}
+
+		// Entity:
+		RayTraceResult mouseOver = Minecraft.getMinecraft().objectMouseOver;
+		if(mouseOver != null) {
+			Entity mouseOverEntity = mouseOver.entityHit;
+			if(mouseOverEntity != null) {
+				if(mouseOverEntity instanceof EntityCreatureBase) {
+					EntityCreatureBase mouseOverCreature = (EntityCreatureBase)mouseOverEntity;
+					event.getLeft().add("");
+					event.getLeft().add("Target Creature: " + mouseOverCreature.getName());
+					event.getLeft().add("Subspecies: " + mouseOverCreature.getSubspeciesIndex());
+					event.getLeft().add("Size: " + mouseOverCreature.sizeScale);
+					event.getLeft().add("Level: " + mouseOverCreature.getLevel());
+					event.getLeft().add("Health: " + mouseOverCreature.getHealth() + "/" + mouseOverCreature.getMaxHealth() + " Base: " + mouseOverCreature.getBaseHealth() + " (x" + mouseOverCreature.getHealthMultiplier() + " +" + mouseOverCreature.getHealthBoost() + ")");
+					event.getLeft().add("Defense: " + (mouseOverCreature.defense * mouseOverCreature.getDefenseMultiplier()) + mouseOverCreature.getDefenseBoost() + " (x" + mouseOverCreature.getDefenseMultiplier() + " +" + mouseOverCreature.getDefenseBoost() + ")");
+					event.getLeft().add("Attack: " + mouseOverCreature.getAttackDamage(1) + " (x" + mouseOverCreature.getDamageMultiplier() + " +" + mouseOverCreature.getDamageBoost() + ")");
+					event.getLeft().add("Pierce: " + mouseOverCreature.getPierceValue() + " (x" + mouseOverCreature.getPierceMultiplier() + " +" + mouseOverCreature.getPierceBoost() + ")");
+					event.getLeft().add("Haste: " + "20 Ticks = " + mouseOverCreature.getHaste(20) + " Ticks" + " (x" + mouseOverCreature.getHasteMultiplier() + " +" + mouseOverCreature.getHasteBoost() + ")");
+					event.getLeft().add("Speed: " + "(x" + mouseOverCreature.getSpeedMultiplier() + " +" + mouseOverCreature.getSpeedBoost() + ")");
+				}
+			}
+		}
+	}
 }

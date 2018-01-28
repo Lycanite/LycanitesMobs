@@ -57,6 +57,9 @@ public class DungeonSchematic {
 	/** A list of stairs sectors to use. Required. **/
 	public List<String> bossRooms = new ArrayList<>();
 
+	/** A list of finish sectors to use. Required. **/
+	public List<String> finishes = new ArrayList<>();
+
 	/** A list of MobSpawns to use. Optional. **/
 	public List<MobSpawn> mobSpawns = new ArrayList<>();
 
@@ -159,7 +162,7 @@ public class DungeonSchematic {
 			}
 		}
 
-		// Rooms:
+		// Boss Rooms:
 		if(json.has("bossRooms")) {
 			for(JsonElement jsonElement : json.get("bossRooms").getAsJsonArray()) {
 				String jsonString = jsonElement.getAsString().toLowerCase();
@@ -169,6 +172,16 @@ public class DungeonSchematic {
 		}
 		else {
 			this.bossRooms.addAll(this.rooms);
+		}
+
+		// Finishes:
+		if(json.has("finishes")) {
+			for(JsonElement jsonElement : json.get("finishes").getAsJsonArray()) {
+				String jsonString = jsonElement.getAsString().toLowerCase();
+				if(!this.finishes.contains(jsonString)) {
+					this.finishes.add(jsonString);
+				}
+			}
 		}
 
 		// Mob Spawns:
@@ -250,6 +263,8 @@ public class DungeonSchematic {
 			sectorList = this.stairs;
 		else if("bossRoom".equalsIgnoreCase(type))
 			sectorList = this.bossRooms;
+		else if("finish".equalsIgnoreCase(type))
+			sectorList = this.finishes;
 		else
 			sectorList = this.rooms;
 
@@ -351,7 +366,7 @@ public class DungeonSchematic {
 			if(mobSpawn.dungeonLevelMin >= 0 && dungeonLevel < mobSpawn.dungeonLevelMin) {
 				continue;
 			}
-			if(mobSpawn.dungeonLevelMax >= 0 && mobSpawn.dungeonLevelMax > mobSpawn.dungeonLevelMin && dungeonLevel > mobSpawn.dungeonLevelMax) {
+			if(mobSpawn.dungeonLevelMax >= 0 && dungeonLevel > mobSpawn.dungeonLevelMax) {
 				continue;
 			}
 			if(mobSpawn.getWeight() > 0) {

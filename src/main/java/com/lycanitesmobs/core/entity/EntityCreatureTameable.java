@@ -135,14 +135,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	// ==================================================
     //                      Stats
     // ==================================================
-    /** Applies the subspecies health multiplier for this mob. **/
-    @Override
-    public void applySubspeciesHealthMultiplier() {
-    	if(this.isTamed())
-    		return;
-    	super.applySubspeciesHealthMultiplier();
-    }
-    
     /** Applies the tamed health multiplier for this mob. This should override subspecies. **/
     public void applyTamedHealthMultiplier() {
     	double tamedHealth = this.getBaseHealth();
@@ -151,9 +143,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tamedHealth);
 	    	if(this.getHealth() > tamedHealth)
 	    		this.setHealth((float)tamedHealth);
-    	}
-    	else {
-    		this.applySubspeciesHealthMultiplier();
     	}
     }
     

@@ -1,12 +1,12 @@
 {
-	"name": "demonictemple",
+	"name": "shadowlabyrinth",
 	"loadDefault": true,
-	"sectorCountMin": 10,
-	"sectorCountMax": 20,
-	"corridorToCorridorChance": 0.1,
+	"sectorCountMin": 20,
+	"sectorCountMax": 30,
+	"corridorToCorridorChance": 0.5,
 	"roomToRoomChance": 0.1,
 	"conditions": [],
-	"themes": ["demonic"],
+	"themes": ["shadow"],
 	"entrances": ["entrancebasic"],
 	"rooms": ["roombasic", "roombasicloot", "roombasicmob", "roombasicpit"],
 	"corridors": ["corridorbasic", "corridorbasicdark", "corridorbasicloot", "corridorbasicmob"],
@@ -40,44 +40,44 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "demonmobs.belph",
+			"mobId": "shadowmobs.geist",
 			"weight": 14
 		},
 		{
-			"mobId": "elementalmobs.wraith",
+			"mobId": "elementalmobs.grue",
 			"weight": 8,
 			"dungeonLevelMin": "0"
 		},
 		{
-			"mobId": "demonmobs.behemoth",
+			"mobId": "shadowmobs.shade",
 			"weight": 4,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "demonmobs.pinky",
+			"mobId": "shadowmobs.chupacabra",
 			"weight": 4,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "demonmobs.trite",
+			"mobId": "shadowmobs.darkling",
 			"weight": 14,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "demonmobs.astaroth",
+			"mobId": "shadowmobs.epion",
 			"weight": 1,
 			"dungeonLevelMin": "2"
 		},
 		{
-			"mobId": "demonmobs.cacodemon",
+			"mobId": "shadowmobs.phantom",
 			"weight": 1,
 			"dungeonLevelMin": "2"
 		},
 		{
-			"mobId": "demonmobs.behemoth",
+			"mobId": "shadowmobs.chupacabra",
 			"weight": 1,
-			"subspecies": 0,
-			"mobNameTag": "Baron of Hell",
+			"subspecies": 1,
+			"mobNameTag": "Shadow Hound",
 			"mobSizeScale": 2,
 			"naturalDespawn": "false",
 			"mobLevel": 30,
@@ -86,15 +86,15 @@
 			"dungeonBoss": true,
 			"mobDrops": [
 				{
-					"item": "demonmobs:hellfirescepter"
+					"item": "shadowmobs:bloodleechscepter"
 				}
 			]
 		},
 		{
-			"mobId": "demonmobs.astaroth",
+			"mobId": "shadowmobs.shade",
 			"weight": 1,
-			"subspecies": 0,
-			"mobNameTag": "Arachnotron",
+			"subspecies": 1,
+			"mobNameTag": "Chaos Serpent",
 			"mobSizeScale": 2,
 			"naturalDespawn": "false",
 			"mobLevel": 50,
@@ -103,21 +103,21 @@
 			"dungeonBoss": true,
 			"mobDrops": [
 				{
-					"item": "demonmobs:devilstarscepter"
+					"item": "shadowmobs:spectralscepter"
 				}
 			]
 		},
 		{
-			"mobId": "demonmobs.cacodemon",
+			"mobId": "elementalmobs.grue",
 			"weight": 1,
 			"subspecies": 3,
-			"mobNameTag": "Pain Elemental",
+			"mobNameTag": "Night Shade",
 			"naturalDespawn": "false",
 			"dungeonLevelMin": "2",
 			"dungeonBoss": true,
 			"mobDrops": [
 				{
-					"item": "demonmobs:demoniclightningscepter"
+					"item": "shadowmobs:spectralscepter"
 				}
 			]
 		}

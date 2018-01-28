@@ -60,7 +60,7 @@ public class DungeonLayout {
 			int snakeCount = Math.round((float)sectorCount * 0.4f);
 			exitSector = this.snake(random, exitSector, Math.max(3, snakeCount));
 			LycanitesMobs.printDebug("Dungeon", "Snake Sectors: " + snakeCount + " - From Sector: " + exitSector);
-			if(exitSector.getOccupiedBoundsMin().getY() - (exitSector.roomSize.getY() * 2) <= 1) {
+			if(exitSector.connectors.isEmpty()) {
 				onLastLevel = true;
 			}
 
@@ -94,12 +94,14 @@ public class DungeonLayout {
 		this.originConnector = new SectorConnector(this.dungeonInstance.originPos, null, -1, EnumFacing.HORIZONTALS[random.nextInt(EnumFacing.HORIZONTALS.length)]);
 		DungeonSector entranceDungeonSector = this.dungeonInstance.schematic.getRandomSector("entrance", random);
 		SectorInstance entranceSector = new SectorInstance(this, entranceDungeonSector, random);
-		entranceSector.init(this.originConnector, random);
+		entranceSector.connect(this.originConnector);
+		entranceSector.init(random);
 		this.addSectorInstance(entranceSector);
 
 		DungeonSector dungeonSector = this.dungeonInstance.schematic.getRandomSector("stairs", random);
 		SectorInstance sectorInstance = new SectorInstance(this, dungeonSector, random);
-		sectorInstance.init(entranceSector.getRandomConnector(random, sectorInstance), random);
+		sectorInstance.connect(entranceSector.getRandomConnector(random, sectorInstance));
+		sectorInstance.init(random);
 		this.addSectorInstance(sectorInstance);
 
 		return sectorInstance;
@@ -126,7 +128,17 @@ public class DungeonLayout {
 			}
 			DungeonSector dungeonSector = this.dungeonInstance.schematic.getRandomSector(nextType, random);
 			SectorInstance sectorInstance = new SectorInstance(this, dungeonSector, random);
-			sectorInstance.init(lastSector.getRandomConnector(random, sectorInstance), random);
+			sectorInstance.connect(lastSector.getRandomConnector(random, sectorInstance));
+
+			// Finish Sector:
+			if("stairs".equals(nextType) && sectorInstance.getOccupiedBoundsMin().getY() <= 1) {
+				nextType = "finish";
+				dungeonSector = this.dungeonInstance.schematic.getRandomSector(nextType, random);
+				sectorInstance = new SectorInstance(this, dungeonSector, random);
+				sectorInstance.connect(lastSector.getRandomConnector(random, sectorInstance));
+			}
+
+			sectorInstance.init(random);
 			this.addSectorInstance(sectorInstance);
 			generatedSectors.add(sectorInstance);
 			lastSector = sectorInstance;
@@ -159,7 +171,8 @@ public class DungeonLayout {
 			if(!connector.canConnect(this, sectorInstance)) {
 				continue;
 			}
-			sectorInstance.init(connector, random);
+			sectorInstance.connect(connector);
+			sectorInstance.init(random);
 			this.addSectorInstance(sectorInstance);
 			generatedSectors.add(sectorInstance);
 			if(this.openConnectors.contains(connector)) {

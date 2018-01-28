@@ -1,0 +1,35 @@
+{
+	"name": "skyhigh",
+	"type": "spawner",
+	"enabled": true,
+	"loadDefault": true,
+	"mobCountMin": 8,
+	"ignoreBiomes": false,
+	"ignoreLightLevel": true,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 0.5,
+			"tickRate": 800
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [24, 0, 24],
+			"rangeMax": [32, 64, 32],
+			"yMin": 150,
+			"sorting": "random",
+			"limit": 32,
+			"underground": true,
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "elementalmobs.djinn",
+			"weight": 8
+		}
+	]
+}

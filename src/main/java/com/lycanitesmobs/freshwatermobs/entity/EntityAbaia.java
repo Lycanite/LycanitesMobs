@@ -121,21 +121,6 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
         return this.sizeScale;
     }
 
-    /** Applies the subspecies health multipler for this mob. **/
-    public void applySubspeciesHealthMultiplier() {
-        if(this.isTamed())
-            return;
-
-        // Rare:
-        if(this.getSubspeciesIndex() == 3) {
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * Subspecies.rareHealthScale * 10);
-            this.setHealth((float)(this.getBaseHealth() * Subspecies.rareHealthScale * 10));
-        }
-        else {
-            super.applySubspeciesHealthMultiplier();
-        }
-    }
-
 
     // ==================================================
     //                      Updates

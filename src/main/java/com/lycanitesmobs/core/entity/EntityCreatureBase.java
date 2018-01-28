@@ -257,6 +257,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected static final DataParameter<Boolean> BABY = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Byte> COLOR = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
     protected static final DataParameter<Float> SIZE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+	protected static final DataParameter<Integer> LEVEL = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.VARINT);
     protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
 
     public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
@@ -328,7 +329,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.moveHelper = this.createMoveHelper();
 
         // Level:
-		this.level = this.getStartingLevel();
+		this.setLevel(this.getStartingLevel());
 
         // Path On Fire or In Lava:
         if(!this.canBurn()) {
@@ -457,9 +458,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.dataManager.register(ATTACK_PHASE, (byte) 0);
         this.dataManager.register(ANIMATION, (byte) 0);
         this.dataManager.register(CLIMBING, (byte) 0);
-        this.dataManager.register(STEALTH, (float) 0.0F);
+        this.dataManager.register(STEALTH, 0.0F);
         this.dataManager.register(COLOR, (byte) 0);
         this.dataManager.register(SIZE, (float) 1D);
+		this.dataManager.register(LEVEL, 1);
         this.dataManager.register(SUBSPECIES, (byte) 0);
         this.dataManager.register(ARENA, Optional.<BlockPos>absent());
         InventoryCreature.registerDataParameters(this.dataManager);
@@ -1022,7 +1024,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void getRandomSubspecies() {
     	if(this.subspecies == null && !this.isMinion()) {
     		this.subspecies = this.mobInfo.getRandomSubspecies(this, this.spawnedRare);
-    		this.applySubspeciesHealthMultiplier();
     		if(this.subspecies != null)
     			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + this.subspecies.getTitle());
     		else
@@ -1055,6 +1056,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ==================================================
 	/** Returns the level of this mob, higher levels have higher stats. **/
 	public int getLevel() {
+		if(this.getEntityWorld().isRemote) {
+			return this.getIntFromDataManager(LEVEL);
+		}
 		return this.level;
 	}
 
@@ -1079,11 +1083,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	/** Sets the level of this mob, higher levels have higher stats. **/
 	public void setLevel(int level) {
 		this.level = level;
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
+		this.setHealth((float)this.getBaseHealth());
+		this.dataManager.set(LEVEL, level);
 	}
 
 	/** Increases the level of this mob, higher levels have higher stats. **/
 	public void addLevel(int level) {
-		this.level += level;
+		this.setLevel(this.level + level);
 	}
 
 	/** Returns the base health for this mob. This is not the current max health. **/
@@ -1093,27 +1100,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	return 10D;
     }
 
-    /** Applies the subspecies health multipler for this mob. **/
-    public void applySubspeciesHealthMultiplier() {
-        // Common:
-    	if(this.getSubspeciesIndex() < 1) {
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
-    		this.setHealth((float)(this.getBaseHealth()));
-    	}
-        // Uncommon:
-    	else if(this.getSubspeciesIndex() < 3) {
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * Subspecies.uncommonHealthScale);
-    		this.setHealth((float)(this.getBaseHealth() * Subspecies.uncommonHealthScale));
-    	}
-        // Rare:
-    	else {
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth() * Subspecies.rareHealthScale);
-    		this.setHealth((float)(this.getBaseHealth() * Subspecies.rareHealthScale));
-    	}
-    }
-
     /** Returns the shared multiplier for all stats based on difficulty and mob level. **/
-	public double getDifficultyMultiplier(String stat) {
+	public double getStatMultiplier(String stat) {
         if(this.getEntityWorld() == null || this.getEntityWorld().getDifficulty() == null)
             return MobInfo.difficultyMultipliers.get("NORMAL" + "-" + stat.toUpperCase());
 		EnumDifficulty difficulty = this.getEntityWorld().getDifficulty();
@@ -1123,8 +1111,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		else if(difficulty == EnumDifficulty.NORMAL)
 			difficultyName = "Normal";
 		double difficultyMultiplier = MobInfo.difficultyMultipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
+		double subspeciesMultiplier = 1;
+		if(this.getSubspeciesIndex() > 0 && this.getOwner() == null) {
+			if(Subspecies.statMultipliers.containsKey(this.getSubspecies().type.toUpperCase() + "-" + stat.toUpperCase()))
+			subspeciesMultiplier = Subspecies.statMultipliers.get(this.getSubspecies().type.toUpperCase() + "-" + stat.toUpperCase());
+		}
 		double levelMultiplier = 1 + (((double)this.getLevel() - 1) * MobInfo.levelMultipliers.get(stat.toUpperCase()));
-		return difficultyMultiplier * levelMultiplier;
+		return difficultyMultiplier * subspeciesMultiplier * levelMultiplier;
 	}
 
     /** Returns the Altar multiplier, usually used by Altar 'mini-boss' rare subspecies. **/
@@ -1135,7 +1128,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Health ==========
     /** Returns the health scale of this mob. **/
     public double getHealthMultiplier() {
-        double multiplier = this.mobInfo.multiplierHealth * this.getDifficultyMultiplier("health");
+        double multiplier = this.mobInfo.multiplierHealth * this.getStatMultiplier("health");
         if(this.altarSummoned)
             multiplier *= this.getAltarMultiplier("health");
         if(this.extraMobBehaviour != null)
@@ -1153,7 +1146,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Defense ==========
     /** Returns the defense scale of this mob, see getDamageAfterDefense() for the logic. **/
     public double getDefenseMultiplier() {
-    	double multiplier = this.mobInfo.multiplierDefense * this.getDifficultyMultiplier("defense");
+    	double multiplier = this.mobInfo.multiplierDefense * this.getStatMultiplier("defense");
         if(this.altarSummoned)
             multiplier *= this.getAltarMultiplier("defense");
     	if(this.extraMobBehaviour != null)
@@ -1171,7 +1164,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Speed ==========
     /** Returns the speed scale of this mob. **/
     public double getSpeedMultiplier() {
-    	double multiplier = this.mobInfo.multiplierSpeed * this.getDifficultyMultiplier("speed");
+    	double multiplier = this.mobInfo.multiplierSpeed * this.getStatMultiplier("speed");
         if(this.altarSummoned)
             multiplier *= this.getAltarMultiplier("speed");
     	if(this.extraMobBehaviour != null)
@@ -1189,7 +1182,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Damage ==========
     /**Returns the damage scale of this mob. **/
     public double getDamageMultiplier() {
-    	double multiplier = this.mobInfo.multiplierDamage * this.getDifficultyMultiplier("damage");
+    	double multiplier = this.mobInfo.multiplierDamage * this.getStatMultiplier("damage");
         if(this.altarSummoned)
             multiplier *= this.getAltarMultiplier("damage");
     	if(this.extraMobBehaviour != null)
@@ -1207,7 +1200,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Haste ==========
     /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
     public double getHasteMultiplier() {
-    	double multiplier = this.mobInfo.multiplierHaste * this.getDifficultyMultiplier("haste");
+    	double multiplier = this.mobInfo.multiplierHaste * this.getStatMultiplier("haste");
         if(this.altarSummoned)
             multiplier *= this.getAltarMultiplier("haste");
     	if(this.extraMobBehaviour != null)
@@ -1234,7 +1227,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Effect ==========
     /** Returns the duration scale of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
     public double getEffectMultiplier() {
-    	double multiplier = this.mobInfo.multiplierEffect * this.getDifficultyMultiplier("effect");
+    	double multiplier = this.mobInfo.multiplierEffect * this.getStatMultiplier("effect");
         if(this.altarSummoned)
             multiplier *= this.getAltarMultiplier("effect");
     	if(this.extraMobBehaviour != null)
@@ -1264,7 +1257,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========= Pierce ==========
     /** Returns the armor piercing multipler. **/
     public double getPierceMultiplier() {
-    	double multiplier = this.mobInfo.multiplierPierce * this.getDifficultyMultiplier("pierce");
+    	double multiplier = this.mobInfo.multiplierPierce * this.getStatMultiplier("pierce");
         if(this.altarSummoned)
             multiplier *= this.getAltarMultiplier("pierce");
     	if(this.extraMobBehaviour != null)
@@ -1328,8 +1321,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
         else if(subspeciesIndex >= 3)
             scaledExp = Math.round((float)(this.experience * Subspecies.rareExperienceScale));
         this.experienceValue = Math.round(scaledExp);
-    	if(resetHealth)
-    		this.applySubspeciesHealthMultiplier();
     	if(subspeciesIndex == 3) {
 			this.damageLimit = 40;
 		}
@@ -1596,7 +1587,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                     	helmet.setItemDamage(helmet.getItemDamage() + this.rand.nextInt(2));
                         if(helmet.getItemDamage() >= helmet.getMaxDamage()) {
                             this.renderBrokenItemStack(helmet);
-                            this.setCurrentItemOrArmor(4, (ItemStack)null);
+                            this.setCurrentItemOrArmor(4, ItemStack.EMPTY);
                         }
                     }
                     shouldBurn = false;
@@ -1760,7 +1751,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Subspecies:
         if(!this.getEntityWorld().isRemote) {
-    		this.dataManager.set(SUBSPECIES, Byte.valueOf((byte)this.getSubspeciesIndex()));
+    		this.dataManager.set(SUBSPECIES, (byte)this.getSubspeciesIndex());
         }
         else {
         	if(this.getSubspeciesIndex() != this.getByteFromDataManager(SUBSPECIES))
@@ -1769,7 +1760,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Size:
         if(!this.getEntityWorld().isRemote) {
-    		this.dataManager.set(SIZE, Float.valueOf((float)this.sizeScale));
+    		this.dataManager.set(SIZE, (float)this.sizeScale);
         }
         else {
         	if(this.sizeScale != this.getFloatFromDataManager(SIZE)) {
@@ -2395,11 +2386,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 return false;
         }
         if(targetEntity instanceof EntityCreatureBase) {
-            if(((EntityCreatureBase)targetEntity).getMasterTarget() == this)
+			EntityCreatureBase targetCreature = (EntityCreatureBase)targetEntity;
+            if(targetCreature.getMasterTarget() == this)
                 return false;
             if (!(this instanceof IGroupBoss)) {
-                if (this.getOwner() == null && targetEntity instanceof IGroupBoss && !((EntityCreatureBase)targetEntity).canAttackEntity(this))
-                    return false;
+                if(this.getOwner() == null) {
+					if(targetEntity instanceof IGroupBoss) {
+						return false;
+					}
+					if(targetCreature.getSubspeciesIndex() >= 3) {
+						return false;
+					}
+				}
             }
         }
         if(!this.isStrongSwimmer() && this.isFlying() && targetEntity.isInWater())
@@ -2659,7 +2657,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	    		scaledDefense = 1;
 	    	scaledDefense *= this.getBlockingMultiplier();
     	}
-        damage -= scaledDefense;
+        damage = Math.max(damage - scaledDefense, 1);
         if(this.damageMax > 0)
             damage = Math.min(damage, this.damageMax);
     	return Math.max(damage, minDamage);

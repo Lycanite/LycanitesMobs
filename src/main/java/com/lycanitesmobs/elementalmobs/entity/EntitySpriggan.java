@@ -1,5 +1,6 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupPlant;
@@ -194,7 +195,6 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     	if(this.projectile == null) {
 	    	// Type:
 	    	this.projectile = new EntityLifeDrain(this.getEntityWorld(), this, 25, 20);
-            this.projectile.setBaseDamage(1);
 	    	
 	    	// Launch:
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

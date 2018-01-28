@@ -92,7 +92,7 @@ public class SectorLayer {
 			if(vertical < offset) {
 				return this.rows.get(0);
 			}
-			if(vertical > offset + this.rows.size()) {
+			if(vertical > offset + this.rows.size() - 1) {
 				return this.rows.get(this.rows.size() - 1);
 			}
 		}
@@ -102,7 +102,7 @@ public class SectorLayer {
 
 
 	/**
-	 * Returns a pattern column for the provided horizontal pattern positon and row.
+	 * Returns a pattern column for the provided horizontal pattern position and row.
 	 * @param vertical The current vertical pattern position. (Current build position relative to start position.)
 	 * @param verticalLength The required vertical horizontalLength of the vertical pattern. (Stop build position relative to start position.)
 	 * @param horizontal The current horizontal pattern position. (Current build position relative to start position.)
@@ -135,9 +135,9 @@ public class SectorLayer {
 		// Tiling:
 		if(
 			vertical < verticalOffset ||
-			vertical > verticalOffset + this.rows.size() ||
+			vertical > verticalOffset + this.rows.size() - 1 ||
 			horizontal < horizontalOffset ||
-			horizontal > horizontalOffset + row.size()
+			horizontal > horizontalOffset + row.size() - 1
 		) {
 			if (!this.tileHorizontal) {
 				if (horizontal < horizontalOffset) {
@@ -150,10 +150,10 @@ public class SectorLayer {
 
 			// Spawners and Chests Tiling:
 			if (!this.tileSpawners && column == 'S') {
-				column = '0';
+				return '0';
 			}
 			else if (!this.tileChests && column == 'C') {
-				column = '0';
+				return '0';
 			}
 		}
 

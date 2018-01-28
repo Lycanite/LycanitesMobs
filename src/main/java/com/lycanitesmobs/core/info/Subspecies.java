@@ -20,11 +20,8 @@ public class Subspecies {
     	put("legendary", 1);
     }};
 
-    /** The health scale of uncommon subspecies. **/
-    public static double uncommonHealthScale = 2;
-
-    /** The health scale of rare subspecies. **/
-    public static double rareHealthScale = 10;
+	/** A static map containing all the global multipliers for each stat for each subspecies. **/
+	public static Map<String, Double> statMultipliers = new HashMap<>();
 
     /** The drop amount scale of uncommon subspecies. **/
     public static int uncommonDropScale = 2;
@@ -51,6 +48,9 @@ public class Subspecies {
     /** The name of this subspecies. **/
     public String name;
 
+    /** The type of this subspecies. **/
+    public String type;
+
     /** The weight of this subspecies, used when randomly determining the subspecies of a mob. A base species uses the static baseSpeciesWeight value. **/
     public int weight;
 
@@ -60,13 +60,39 @@ public class Subspecies {
     // ==================================================
     public static void loadGlobalSettings(ConfigBase config) {
         baseSpeciesWeight = config.getInt("Mob Variations", "Subspecies Base Weight", baseSpeciesWeight, "The weight of base subspecies (regular mobs).");
-        //commonWeights.put("common", config.getInt("Mob Variations", "Subspecies Common Weight", commonWeights.get("common"), "The weight of common subspecies (currently there are no common subspecies added or planned, this is just a placeholder)."));
         commonWeights.put("uncommon", config.getInt("Mob Variations", "Subspecies Uncommon Weight", commonWeights.get("uncommon"), "The weight of uncommon subspecies (such as Azure, Verdant, Scarlet, etc)."));
         commonWeights.put("rare", config.getInt("Mob Variations", "Subspecies Rare Weight", commonWeights.get("rare"), "The weight of rare subspecies (such as Lunar or Celestial)."));
-        //commonWeights.put("legendary", config.getInt("Mob Variations", "Subspecies Legendary Weight", commonWeights.get("legendary"), "The weight of legendary subspecies (currently there are no legendary subspecies added or planned, this is just a placeholder)."));
 
-        uncommonHealthScale = config.getDouble("Mob Variations", "Subspecies Uncommon Health Scale", uncommonHealthScale, "When a creature is set to the uncommon subspecies (Azure, Verdant, etc) its health is multiplied by this value.");
-        rareHealthScale = config.getDouble("Mob Variations", "Subspecies Rare Health Scale", rareHealthScale, "When a creature is set to the rare subspecies (Celestial, Lunar, etc) its health is multiplied by this value.");
+        // Stats:
+        String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
+
+        // Difficulty:
+        String[] subspeciesNames = new String[] {"Uncommon", "Rare"};
+		statMultipliers = new HashMap<>();
+        config.setCategoryComment("Subspecies Multipliers", "Here you can scale the stats of every mob on a per subspecies basis.");
+        for(String subspeciesName : subspeciesNames) {
+            for(String statName : statNames) {
+                double defaultValue = 1.0;
+				if("Uncommon".equals(subspeciesName)) {
+					if("Health".equals(statName)) {
+						defaultValue = 2;
+					}
+				}
+                if("Rare".equals(subspeciesName)) {
+					if("Health".equals(statName)) {
+						defaultValue = 10;
+					}
+					else if("Haste".equals(statName)) {
+						defaultValue = 4;
+					}
+					else if("Effect".equals(statName)) {
+						defaultValue = 2;
+					}
+				}
+                statMultipliers.put((subspeciesName + "-" + statName).toUpperCase(), config.getDouble("Subspecies Multipliers", subspeciesName + " " + statName, defaultValue));
+            }
+        }
+
 
         uncommonDropScale = config.getInt("Mob Variations", "Subspecies Uncommon Item Drops Scale", uncommonDropScale, "When a creature with the uncommon subspecies (Azure, Verdant, etc) dies, its item drops amount is multiplied by this value.");
         rareDropScale = config.getInt("Mob Variations", "Subspecies Rare Item Drops Scale", rareDropScale, "When a creature with the rare subspecies (Celestial, Lunar, etc) dies, its item drops amount is multiplied by this value.");
@@ -86,9 +112,10 @@ public class Subspecies {
         this.weight = setWeight;
     }
     
-    public Subspecies(String setName, String commonWeight) {
-        this.name = setName.toLowerCase();
-        this.weight = commonWeights.get(commonWeight);
+    public Subspecies(String name, String type) {
+        this.name = name.toLowerCase();
+        this.type = type;
+        this.weight = commonWeights.get(type);
     }
 
 

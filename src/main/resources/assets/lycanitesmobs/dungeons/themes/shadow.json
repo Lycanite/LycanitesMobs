@@ -1,0 +1,80 @@
+{
+	"name": "shadow",
+	"loadDefault": true,
+	"floorPattern": "random",
+	"wallPattern": "random",
+	"ceilingPattern": "random",
+	"floorBlocks": [
+		{
+			"blockId": "shadowmobs:shadowstonetile",
+			"weight": 8
+		},
+		{
+			"blockId": "shadowmobs:shadowstonepolished",
+			"weight": 2
+		},
+		{
+			"blockId": "minecraft:obsidian",
+			"weight": 0
+		}
+	],
+	"wallBlocks": [
+		{
+			"blockId": "shadowmobs:shadowstonebrick",
+			"weight": 8
+		},
+		{
+			"blockId": "shadowmobs:shadowstonechiseled",
+			"weight": 2
+		},
+		{
+			"blockId": "shadowmobs:shadowstonepillar",
+			"weight": 0
+		}
+	],
+	"ceilingBlocks": [
+		{
+			"blockId": "shadowmobs:shadowstonetile",
+			"weight": 8
+		},
+		{
+			"blockId": "shadowmobs:shadowstonepolished",
+			"weight": 2
+		}
+	],
+	"lightBlocks": [
+		{
+			"blockId": "shadowmobs:shadowcrystal",
+			"weight": 8
+		},
+		{
+			"blockId": "minecraft:obsidian",
+			"weight": 8
+		}
+	],
+	"torchBlocks": [],
+	"stairBlocks": [
+		{
+			"blockId": "shadowmobs:shadowstone_stairs",
+			"weight": 8
+		},
+		{
+			"blockId": "shadowmobs:shadowstonebrick_stairs",
+			"weight": 8
+		},
+		{
+			"blockId": "shadowmobs:shadowstonetile_stairs",
+			"weight": 8
+		}
+	],
+	"pitBlocks": [
+		{
+			"blockId": "shadowmobs:shadowfire",
+			"weight": 8
+		},
+		{
+			"blockId": "arcticmobs:ooze",
+			"weight": 8
+		}
+	]
+}

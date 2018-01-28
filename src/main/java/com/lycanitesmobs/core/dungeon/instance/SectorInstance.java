@@ -68,12 +68,6 @@ public class SectorInstance {
 	/** How many chunks this sector has been built into. When this equals the total chunks this sector occupies it is considered fully built. **/
 	public int chunksBuilt = 0;
 
-	/** Set to true when a spawner is placed in this sector, temporarily used to limit the spawners to 1. **/
-	protected int spawnerBuilt = 0;
-
-	/** Set to true when a chest is placed in this sector, temporarily used to limit the chests to 1. **/
-	protected int chestBuilt = 0;
-
 
 	/**
 	 * Constructor
@@ -99,12 +93,25 @@ public class SectorInstance {
 
 
 	/**
-	 * Initialises this Sector Instance.
+	 * Connects this sector to the provided connector. Should be called before init.
 	 * @param parentConnector The connector that this sector is connecting from.
+	 */
+	public void connect(SectorConnector parentConnector) {
+		this.parentConnector = parentConnector;
+	}
+
+
+	/**
+	 * Initialises this Sector Instance. Must be connected to a parent connector.
 	 * @param random The instance of Random to use.
 	 */
-	public void init(SectorConnector parentConnector, Random random) {
-		this.parentConnector = parentConnector;
+	public void init(Random random) {
+		if(this.parentConnector == null) {
+			LycanitesMobs.printWarning("Dungeon", "Tried to initialise a Sector Instance with a null Parent Connector: " + this);
+			return;
+		}
+
+		// Close Parent Connector:
 		this.parentConnector.childSector = this;
 		this.parentConnector.closed = true;
 		if(this.layout.openConnectors.contains(this.parentConnector)) {
@@ -204,7 +211,7 @@ public class SectorInstance {
 		if(!"room".equalsIgnoreCase(this.dungeonSector.type) || length <= entrancePadding * 2) {
 			return start + Math.round((float)length / 2);
 		}
-		return start + entrancePadding + random.nextInt(length - entrancePadding) + 1;
+		return start + entrancePadding + random.nextInt(length - (entrancePadding * 2)) + 1;
 	}
 
 
@@ -441,7 +448,11 @@ public class SectorInstance {
 	 * @return The minimum bounds position (corner).
 	 */
 	public BlockPos getOccupiedBoundsMin() {
-		return this.getBoundsMin(this.getOccupiedSize()).add(-8, 0, -8);
+		Vec3i occupiedSize = this.getOccupiedSize();
+		if("stairs".equals(this.dungeonSector.type)) {
+			occupiedSize = new Vec3i(occupiedSize.getX(), occupiedSize.getY() - (this.getRoomSize().getY() * 2), occupiedSize.getZ());
+		}
+		return this.getBoundsMin(occupiedSize).add(-8, 0, -8);
 	}
 
 
@@ -517,19 +528,6 @@ public class SectorInstance {
 		if(blockState.getBlock() == Blocks.TORCH) {
 			blockState = blockState.withProperty(BlockTorch.FACING, facing);
 			flags = 0;
-		}
-
-		// Chest:
-		if(blockState.getBlock() == Blocks.CHEST) {
-			if(++this.chestBuilt >= 3)
-				return;
-			blockState = blockState.withProperty(BlockChest.FACING, facing);
-		}
-
-		// Spawner:
-		if(blockState.getBlock() == Blocks.MOB_SPAWNER) {
-			if(++this.spawnerBuilt >= 3)
-				return;
 		}
 
 		// Don't Update:
@@ -706,11 +704,13 @@ public class SectorInstance {
 				}
 
 				// Get Row:
-				List<Character> row = layer.getRow(y - startY, stopY - startY);
+				int progressY = y - startY;
+				int fullY = stopY - startY;
+				List<Character> row = layer.getRow(progressY, fullY);
 
 				// Build Front/Back:
 				for(int x = startX; x <= stopX; x++) {
-					char buildChar = layer.getColumn(y - startY, stopY - startY, x - startX, stopX - startX, row);
+					char buildChar = layer.getColumn(progressY, fullY, x - startX, stopX - startX, row);
 					IBlockState blockState = this.theme.getWall(this, buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR) {
 						this.placeBlock(world, chunkPos, new BlockPos(x, y, startZ + layerIndex), blockState, EnumFacing.SOUTH, random);
@@ -720,7 +720,7 @@ public class SectorInstance {
 
 				// Build Left/Right:
 				for(int z = startZ; z <= stopZ; z++) {
-					char buildChar = layer.getColumn(y - startY, stopY - startY, z - startZ, stopZ - startZ, row);
+					char buildChar = layer.getColumn(progressY, fullY, z - startZ, stopZ - startZ, row);
 					IBlockState blockState = this.theme.getWall(this, buildChar, random);
 					if(blockState.getBlock() != Blocks.AIR) {
 						this.placeBlock(world, chunkPos, new BlockPos(startX + layerIndex, y, z), blockState, EnumFacing.EAST, random);
@@ -883,7 +883,7 @@ public class SectorInstance {
 		}
 
 		// Spawn Mob:
-		LycanitesMobs.printDebug("Dungeon", "Spawning mob " + mobSpawn + " at: " + blockPos);
+		LycanitesMobs.printDebug("Dungeon", "Spawning mob " + mobSpawn + " at: " + blockPos + " level: " + this.parentConnector.level);
 		EntityLiving entityLiving = mobSpawn.createEntity(world);
 		entityLiving.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 		mobSpawn.onSpawned(entityLiving, null);
@@ -898,10 +898,11 @@ public class SectorInstance {
 	@Override
 	public String toString() {
 		String bounds = "";
+		String size = "";
 		if(this.parentConnector != null) {
 			bounds = " Bounds: " + this.getOccupiedBoundsMin() + " to " + this.getOccupiedBoundsMax();
+			size = " Occupies: " + this.getOccupiedSize();
 		}
-		String size = " Occupies: " + this.getOccupiedSize();
 		return "Sector Instance Type: " + (this.dungeonSector == null ? "Unset" : this.dungeonSector.type) + " Parent Connector Pos: " + (this.parentConnector == null ? "Unset" : this.parentConnector.position) + size + bounds;
 	}
 }

@@ -212,6 +212,9 @@ public class EntityEyewig extends EntityCreatureRideable {
   	// ==================================================
     @Override
     public boolean canClimb() { return true; }
+
+	@Override
+	public boolean isStrongSwimmer() { return true; }
     
     
     // ==================================================

@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "1.4",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "EffectInner",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "ArmRight",
+    "parent": "Body",
+    "centerX": "-0.32",
+    "centerY": "1.35",
+    "centerZ": "-0.07"
+  },
+  {
+    "name": "ArmLeft",
+    "parent": "Body",
+    "centerX": "0.32",
+    "centerY": "1.35",
+    "centerZ": "-0.07"
+  },
+  {
+    "name": "EffectOuter",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.48",
+    "centerZ": "-0.0"
+  }
+]

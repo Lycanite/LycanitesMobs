@@ -148,11 +148,15 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 					}
 				}
 			}
-			if(this.updateTick % 40 == 0 && this.isInLava()) {
-				this.transform(EntityVolcan.class, null, false);
-			}
-			if(this.fireDamageAbsorbed >= 10) {
-				this.transform(EntityVolcan.class, null, false);
+
+			// Environmental Transformation:
+			if(!this.isTamed()) {
+				if (this.updateTick % 40 == 0 && this.isInLava()) {
+					this.transform(EntityVolcan.class, null, false);
+				}
+				if (this.fireDamageAbsorbed >= 10) {
+					this.transform(EntityVolcan.class, null, false);
+				}
 			}
 		}
 

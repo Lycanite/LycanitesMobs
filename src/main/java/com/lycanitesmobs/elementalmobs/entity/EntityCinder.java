@@ -217,10 +217,10 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
    	// ==================================================
 	@Override
 	public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
-		if(type.equals("inWall")) {
+		/*if(type.equals("inWall")) {
 			this.inWallDamageAbsorbed += damage;
 			return false;
-		}
+		}*/
 		return super.isDamageTypeApplicable(type, source, damage);
 	}
 

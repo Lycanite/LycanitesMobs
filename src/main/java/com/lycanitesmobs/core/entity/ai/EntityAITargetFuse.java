@@ -96,6 +96,14 @@ public class EntityAITargetFuse extends EntityAITarget {
     	// Fusable Check:
 		if(!(this.host instanceof IFusable) || ((IFusable)this.host).getFusionClass((IFusable)target) == null)
 			return false;
+
+		// Owner Check:
+		if(target instanceof EntityCreatureBase) {
+			if(this.host.getOwner() != ((EntityCreatureBase)target).getOwner()) {
+				return false;
+			}
+		}
+
     	return true;
     }
     

@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -23,6 +24,8 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusable {
+
+	public float fireDamageAbsorbed = 0;
 
     // ==================================================
  	//                    Constructor
@@ -94,6 +97,16 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+		if(!this.getEntityWorld().isRemote) {
+
+			// Environmental Transformation:
+			if(!this.isTamed()) {
+				if (this.fireDamageAbsorbed >= 10) {
+					this.transform(EntityZephyr.class, null, false);
+				}
+			}
+		}
         
         // Particles:
         //if(this.getEntityWorld().isRemote)
@@ -147,6 +160,21 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
     // ==================================================
    	//                     Immunities
    	// ==================================================
+    @Override
+    public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
+        if(type.equals("cactus") || type.equals("inWall"))
+            return false;
+        if(source.isFireDamage()) {
+            this.fireDamageAbsorbed += damage;
+            return false;
+        }
+        if(type.equals("lightningBolt") && !this.isTamed()) {
+        	this.transform(EntityZephyr.class, null, false);
+        	return false;
+		}
+        return super.isDamageTypeApplicable(type, source, damage);
+    }
+
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
         if(potionEffect.getPotion() == MobEffects.LEVITATION)

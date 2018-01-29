@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity;
 
 import com.google.common.base.Optional;
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
 import com.lycanitesmobs.core.info.MobInfo;
@@ -886,6 +887,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 
         // Old String Based UUID NBT:
 		if(nbtTagCompound.hasKey("OwnerUUID")) {
+			LycanitesMobs.printDebug("", "Reading Old Owner UUID: " + nbtTagCompound.getUniqueId("OwnerId"));
 			String uuidString = nbtTagCompound.getString("OwnerUUID");
 			if(!"".equals(uuidString))
 				this.setOwnerId(UUID.fromString(uuidString));
@@ -897,7 +899,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 		}
 
 		// New UUID NBT:
-        if(nbtTagCompound.hasKey("OwnerId")) {
+        if(nbtTagCompound.hasUniqueId("OwnerId")) {
             this.setOwnerId(nbtTagCompound.getUniqueId("OwnerId"));
         }
         else {

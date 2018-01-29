@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "lycanitesmobs:cleansingcrystal"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:slime_ball"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

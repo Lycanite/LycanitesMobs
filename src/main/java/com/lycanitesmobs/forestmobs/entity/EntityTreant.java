@@ -99,7 +99,8 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
         this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.1F).setMaxAmount(3));
         this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.1F).setMaxAmount(3));
         this.drops.add(new MobDrop(new ItemStack(Items.APPLE), 0.2F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD), 0.01F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD), 0.05F).setMaxAmount(1));
+		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("immunizer")), 0.1F).setMaxAmount(2));
 	}
 	
 	

@@ -101,7 +101,9 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.75F).setMaxAmount(2));
         this.drops.add(new MobDrop(new ItemStack(Items.QUARTZ), 0.75F).setMaxAmount(5));
         this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.1F).setMaxAmount(1));
+		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("cleansingcrystal")), 0.01F).setMaxAmount(1));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstonemountain")), 1F).setMaxAmount(1).setSubspecies(3));
+		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("cleansingcrystal")), 0.1F).setMaxAmount(3).setSubspecies(3));
 	}
 
     // ========== Set Size ==========

@@ -148,6 +148,8 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("rejuvenation", config, false, 0x99FFBB, 7, 2, true);
 			ObjectManager.addPotionEffect("decay", config, true, 0x110033, 1, 2, false);
 			ObjectManager.addPotionEffect("insomnia", config, true, 0x002222, 5, 1, false);
+			ObjectManager.addPotionEffect("immunization", config, false, 0x66FFBB, 7, 2, true);
+			ObjectManager.addPotionEffect("cleansed", config, true, 0x66BBFF, 6, 1, true);
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		
@@ -212,7 +214,11 @@ public class LycanitesMobs {
 		// Super Foods:
 		ObjectManager.addItem("battleburrito", new ItemFoodBattleBurrito("battleburrito", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16));
 		ObjectManager.addItem("explorersrisotto", new ItemFoodExplorersRisotto("explorersrisotto", group, 6, 0.7F).setAlwaysEdible().setMaxStackSize(16));
-		
+
+		// Buff Items:
+		ObjectManager.addItem("immunizer", new ItemImmunizer());
+		ObjectManager.addItem("cleansingcrystal", new ItemCleansingCrystal());
+
 		// Seasonal Items:
 		ObjectManager.addItem("halloweentreat", new ItemHalloweenTreat());
         ObjectManager.addItem("wintergift", new ItemWinterGift());

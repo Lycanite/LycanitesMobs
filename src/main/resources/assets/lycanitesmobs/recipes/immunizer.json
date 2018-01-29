@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "lycanitesmobs:immunizer"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

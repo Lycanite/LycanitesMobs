@@ -79,6 +79,7 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
 	public void loadItemDrops() {
         this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 1F).setMaxAmount(3));
         this.drops.add(new MobDrop(new ItemStack(Items.GLOWSTONE_DUST), 1F).setMaxAmount(8));
+		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("cleansingcrystal")), 0.05F).setMaxAmount(1));
 	}
 	
 	

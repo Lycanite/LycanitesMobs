@@ -99,6 +99,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
         this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
         this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
+		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("immunizer")), 0.05F).setMaxAmount(1));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("lifedraincharge")), 0.25F).setMaxAmount(1));
 	}
 

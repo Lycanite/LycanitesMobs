@@ -83,6 +83,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         this.drops.add(new MobDrop(new ItemStack(Items.CHORUS_FRUIT), 0.5F).setMaxAmount(4));
         this.drops.add(new MobDrop(new ItemStack(Items.SNOWBALL), 1F).setMaxAmount(8));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("whirlwindcharge")), 0.25F).setMaxAmount(3));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("cleansingcrystal")), 0.05F).setMaxAmount(1));
 	}
 	
 	

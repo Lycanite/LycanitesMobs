@@ -96,6 +96,51 @@ public class PotionEffects {
 			}
 		}
 
+		// ========== Immunisation ==========
+		if(ObjectManager.getPotionEffect("immunization") != null) {
+			if(entity.isPotionActive(ObjectManager.getPotionEffect("immunization"))) {
+				if(entity.isPotionActive(MobEffects.POISON)) {
+					entity.removePotionEffect(MobEffects.POISON);
+				}
+				if(entity.isPotionActive(MobEffects.HUNGER)) {
+					entity.removePotionEffect(MobEffects.HUNGER);
+				}
+				if(entity.isPotionActive(MobEffects.WEAKNESS)) {
+					entity.removePotionEffect(MobEffects.WEAKNESS);
+				}
+				if(entity.isPotionActive(MobEffects.NAUSEA)) {
+					entity.removePotionEffect(MobEffects.NAUSEA);
+				}
+				if(ObjectManager.getPotionEffect("paralysis") != null) {
+					if(entity.isPotionActive(ObjectManager.getPotionEffect("paralysis"))) {
+						entity.removePotionEffect(ObjectManager.getPotionEffect("paralysis"));
+					}
+				}
+			}
+		}
+
+		// ========== Cleansed ==========
+		if(ObjectManager.getPotionEffect("cleansed") != null) {
+			if(entity.isPotionActive(ObjectManager.getPotionEffect("cleansed"))) {
+				if(entity.isPotionActive(MobEffects.WITHER)) {
+					entity.removePotionEffect(MobEffects.WITHER);
+				}
+				if(entity.isPotionActive(MobEffects.UNLUCK)) {
+					entity.removePotionEffect(MobEffects.UNLUCK);
+				}
+				if(ObjectManager.getPotionEffect("fear") != null) {
+					if(entity.isPotionActive(ObjectManager.getPotionEffect("fear"))) {
+						entity.removePotionEffect(ObjectManager.getPotionEffect("fear"));
+					}
+				}
+				if(ObjectManager.getPotionEffect("insomnia") != null) {
+					if(entity.isPotionActive(ObjectManager.getPotionEffect("insomnia"))) {
+						entity.removePotionEffect(ObjectManager.getPotionEffect("insomnia"));
+					}
+				}
+			}
+		}
+
 		// ========== Disable Nausea ==========
 		if(LycanitesMobs.disableNausea && event.getEntityLiving() instanceof EntityPlayer) {
 			if(entity.isPotionActive(MobEffects.NAUSEA)) {

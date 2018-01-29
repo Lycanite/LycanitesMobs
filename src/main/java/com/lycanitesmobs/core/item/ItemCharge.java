@@ -32,12 +32,12 @@ public class ItemCharge extends ItemBase {
         if(!world.isRemote) {
             EntityProjectileBase projectile = this.getProjectile(itemStack, world, player);
             if(projectile == null)
-                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStack);
+                return new ActionResult<>(EnumActionResult.FAIL, itemStack);
             world.spawnEntity(projectile);
             this.playSound(world, player.getPosition(), projectile.getLaunchSound(), SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }
 
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
     }
 
 

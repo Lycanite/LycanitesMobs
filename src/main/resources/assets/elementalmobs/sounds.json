@@ -63,6 +63,26 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/geonach/tame", "stream": false}]
     },
+    "entity.djinn.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/say", "stream": false}]
+    },
+    "entity.djinn.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/hurt", "stream": false}]
+    },
+    "entity.djinn.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/death", "stream": false}]
+    },
+    "entity.djinn.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/beg", "stream": false}]
+    },
+    "entity.djinn.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/tame", "stream": false}]
+    },
     "entity.volcan.say": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/volcan/say", "stream": false}]
@@ -250,6 +270,10 @@
     "projectile.aquapulse": {
         "category": "ambient",
         "sounds": [{"name": "elementalmobs:projectile/aquapulse", "stream": false}]
+    },
+    "projectile.whirlwind": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/whirlwind", "stream": false}]
     },
     "projectile.lifedrain": {
         "category": "ambient",

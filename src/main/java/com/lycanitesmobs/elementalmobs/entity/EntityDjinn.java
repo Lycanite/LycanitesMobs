@@ -79,6 +79,9 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
 	// ========== Default Drops ==========
 	@Override
 	public void loadItemDrops() {
+        this.drops.add(new MobDrop(new ItemStack(Items.FEATHER), 0.5F).setMaxAmount(4));
+        this.drops.add(new MobDrop(new ItemStack(Items.CHORUS_FRUIT), 0.5F).setMaxAmount(4));
+        this.drops.add(new MobDrop(new ItemStack(Items.SNOWBALL), 1F).setMaxAmount(8));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("whirlwindcharge")), 0.25F).setMaxAmount(3));
 	}
 	

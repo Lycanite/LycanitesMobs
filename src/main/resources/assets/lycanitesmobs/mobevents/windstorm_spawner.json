@@ -37,6 +37,10 @@
 		{
 			"mobId": "plainsmobs.morock",
 			"weight": 1
+		},
+		{
+			"mobId": "elementalmobs.djinn",
+			"weight": 2
 		}
 	]
 }

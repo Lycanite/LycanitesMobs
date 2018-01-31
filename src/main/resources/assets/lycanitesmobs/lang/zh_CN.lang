@@ -98,7 +98,7 @@ tile.equipmentforge_iron.description=This forge can be used to create new Equipm
 #
 # ========== Items ==========
 item.soulgazer.name=灵魂凝视者
-item.soulgazer.description=对着生物使用将其添加到生物图鉴中。打开你的野兽图鉴的方法：点击生存模式物品栏的图标或者按野兽图鉴的热键（在控制设置里修改）。
+item.soulgazer.description=对着生物使用将其添加到生物图鉴中。打开你的生物图鉴的方法：点击生存模式物品栏的图标或者按生物图鉴的快捷键（在控制设置里修改）。
 item.soulstone.name=灵魂石
 item.soulstone.description=用来将驯服的宠物与你的精神连接允许你在任何地方召唤它或者解除它的绑定。绑定的坐骑或宠物都将在死后重生。
 item.soulkey.name=灵魂钥匙
@@ -120,9 +120,13 @@ item.savagesummoningstaff.description=召唤两只生物，每次消耗一半生
 item.sturdysummoningstaff.name=坚挺的召唤之杖
 item.sturdysummoningstaff.description=召唤物持续时间更长但消耗更多的精力。
 item.battleburrito.name=战斗卷饼
-item.battleburrito.description=完美融合了许多美味的肉！效果：力量，抵抗，吸收，生命提高和治疗！
+item.battleburrito.description=一种混合了许多风味的卷饼，将给予食用者力量、抗性提示、伤害吸收、生命提升以及治疗效果！
 item.explorersrisotto.name=探险家烩饭
-item.explorersrisotto.description=一大碟涌出的能量！效果：移动速度，挖掘速度，水下呼吸和跳跃提升！
+item.explorersrisotto.description=一股暗流从其中涌出，将给予食用者速度提升、急迫、水下呼吸以及跳跃提升效果！
+item.immunizer.name=孟婆汤
+item.immunizer.description=饮用后将清除身上的中毒、饥饿、虚弱、反胃以及麻痹效果。
+item.cleansingcrystal.name=圣洁水晶
+item.cleansingcrystal.description=由精神凝结而成的无暇水晶，将给予免疫凋零、运气不佳、恐惧和失眠效果。
 item.halloweentreat.name=万圣节的款待
 item.halloweentreat.description=捣蛋还是款待？！
 item.halloweentreat.good=这是款待！你真幸运！
@@ -133,11 +137,11 @@ item.wintergift.good=你打开了礼物，这是惊喜！
 item.wintergift.bad=噢不！这是让人痛苦的礼物！
 item.wintergiftlarge.name=巨大的圣诞礼物
 item.wintergiftlarge.description=现在是12月25号！是时候打开你的大礼物了！别在乎这箱子发出的尖叫声，也许是别处传来的噪音...
-item.wintergiftlarge.bad=啊啊啊啊啊啊 哈啊啊 哈啊啊 哈啊啊 哈 哈 哈!蹦哈哈哈哈!圣诞快乐!
+item.wintergiftlarge.bad=啊啊啊啊啊啊 哈啊啊 哈啊啊 哈啊啊 哈 哈 哈！蹦哈哈哈哈！圣诞快乐！
 item.horsearmormetal.name=铁制宠物盔甲
 item.horsearmorgold.name=金制宠物盔甲
 item.horsearmordiamond.name=钻制宠物盔甲
-item.equipmentpart.description=This item can be used to create powerful equipment or can be crafted down into a useful resource. COMING SOON! >:D
+item.equipmentpart.description=这个物品可以作为一种强大的装备使用，也可以制造其他物品 >:D
 #
 #
 #
@@ -151,7 +155,7 @@ itemGroup.lycanitesmobs.equipmentparts=恐怖生物|装备
 # Beastiary:
 gui.beastiary.name=生物图鉴
 gui.beastiary.empty=没有生物
-gui.beastiary.soulgazerinfo=你当前没有添加任何生物到你的野兽图鉴里。想发现新的生物你就必须制作灵魂凝视者然后在你找到的任何生物上使用它。
+gui.beastiary.soulgazerinfo=你当前没有添加任何生物到你的生物图鉴里。想发现新的生物你就必须制作灵魂凝视者然后在你找到的任何生物上使用它。
 gui.beastiary.selectacreature=选择一个生物组，然后选择一种生物。
 gui.beastiary.website=查看网站
 #
@@ -267,7 +271,7 @@ lyc.command.mobevent.creative=为创造模式玩家切换生物事件。
 #
 #
 # ========== System ==========
-lyc.version.newer=您目前正在使用的恐怖生物版本是 {current} 但现在发现有新版本 {latest}, 建议您通过更新来获得更好的体验！
+lyc.version.newer=您目前正在使用的恐怖生物版本是 {current} 但现在发现有新版本 {latest}， 建议您通过更新来获得更好的体验！
 #
 #
 # ========== Common ==========
@@ -304,7 +308,7 @@ potion.insomnia=失眠
 # ========== Key Bindings ==========
 key.mount.ability=坐骑能力
 key.mount.inventory=坐骑物品栏
-key.lycanitesmobs.menu=恐怖生物主菜单
+key.lycanitesmobs.menu=恐怖生物菜单
 key.beastiary=生物图鉴
 key.pet.manager=宠物管理
 key.mount.manager=坐骑管理

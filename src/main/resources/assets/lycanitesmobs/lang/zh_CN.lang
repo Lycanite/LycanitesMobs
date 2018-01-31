@@ -1,5 +1,5 @@
 # ========== Events ==========
-# %event% will be replaced with the name of the event, don't translate this!
+# %event% will be replaced with the name of the event, don't translate this! | %event% 将被替换为特定的事件名称，请不要翻译！
 event.started=%event%正在发生！
 event.extended=%event%被延长!
 event.finished=%event%已经结束了！
@@ -201,7 +201,7 @@ gui.pet.release.confirm=你确定你要解除这种宠物的？一但解除这�
 #
 # Mounts:
 gui.mount.controls=按下%control%使用坐骑能力
-#%control% will be replaced with the Mount Ability key, don't translate this!
+#%control% will be replaced with the Mount Ability key, don't translate this! | %control% 将被替换为特定的能力名称，请不要翻译！
 #
 # Equipment Forge:
 gui.equipmentforge.text.name=Equipment Name:

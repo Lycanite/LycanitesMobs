@@ -1083,14 +1083,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	/** Sets the level of this mob, higher levels have higher stats. **/
 	public void setLevel(int level) {
 		this.level = level;
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
-		this.setHealth((float)this.getBaseHealth());
+		this.refreshHealth();
 		this.dataManager.set(LEVEL, level);
 	}
 
 	/** Increases the level of this mob, higher levels have higher stats. **/
 	public void addLevel(int level) {
 		this.setLevel(this.level + level);
+	}
+
+	/**
+	 * Reevaluates this entity's max health based on stats and then resets this entity's health to max
+	 */
+	public void refreshHealth() {
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
+		this.setHealth((float)this.getBaseHealth());
 	}
 
 	/** Returns the base health for this mob. This is not the current max health. **/
@@ -1120,17 +1127,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		return difficultyMultiplier * subspeciesMultiplier * levelMultiplier;
 	}
 
-    /** Returns the Altar multiplier, usually used by Altar 'mini-boss' rare subspecies. **/
-    public double getAltarMultiplier(String stat) {
-        return AltarInfo.rareSubspeciesMutlipliers.get(stat.toUpperCase());
-    }
-
     // ========= Health ==========
     /** Returns the health scale of this mob. **/
     public double getHealthMultiplier() {
         double multiplier = this.mobInfo.multiplierHealth * this.getStatMultiplier("health");
-        if(this.altarSummoned)
-            multiplier *= this.getAltarMultiplier("health");
         if(this.extraMobBehaviour != null)
             multiplier *= this.extraMobBehaviour.multiplierHealth;
         return multiplier;
@@ -1147,8 +1147,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the defense scale of this mob, see getDamageAfterDefense() for the logic. **/
     public double getDefenseMultiplier() {
     	double multiplier = this.mobInfo.multiplierDefense * this.getStatMultiplier("defense");
-        if(this.altarSummoned)
-            multiplier *= this.getAltarMultiplier("defense");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierDefense;
     	return multiplier;
@@ -1165,8 +1163,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the speed scale of this mob. **/
     public double getSpeedMultiplier() {
     	double multiplier = this.mobInfo.multiplierSpeed * this.getStatMultiplier("speed");
-        if(this.altarSummoned)
-            multiplier *= this.getAltarMultiplier("speed");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierSpeed;
     	return multiplier;
@@ -1183,8 +1179,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /**Returns the damage scale of this mob. **/
     public double getDamageMultiplier() {
     	double multiplier = this.mobInfo.multiplierDamage * this.getStatMultiplier("damage");
-        if(this.altarSummoned)
-            multiplier *= this.getAltarMultiplier("damage");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierDamage;
     	return multiplier;
@@ -1201,8 +1195,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
     public double getHasteMultiplier() {
     	double multiplier = this.mobInfo.multiplierHaste * this.getStatMultiplier("haste");
-        if(this.altarSummoned)
-            multiplier *= this.getAltarMultiplier("haste");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierHaste;
     	return multiplier;
@@ -1228,8 +1220,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the duration scale of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
     public double getEffectMultiplier() {
     	double multiplier = this.mobInfo.multiplierEffect * this.getStatMultiplier("effect");
-        if(this.altarSummoned)
-            multiplier *= this.getAltarMultiplier("effect");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierEffect;
     	return multiplier;
@@ -1258,8 +1248,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns the armor piercing multipler. **/
     public double getPierceMultiplier() {
     	double multiplier = this.mobInfo.multiplierPierce * this.getStatMultiplier("pierce");
-        if(this.altarSummoned)
-            multiplier *= this.getAltarMultiplier("pierce");
     	if(this.extraMobBehaviour != null)
     		multiplier *= this.extraMobBehaviour.multiplierPierce;
     	return multiplier;
@@ -1324,6 +1312,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(subspeciesIndex == 3) {
 			this.damageLimit = 40;
 		}
+
+		this.refreshHealth();
         this.refreshBossHealthName();
     }
 
@@ -1889,7 +1879,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
         return this.isStrongSwimmer();
     }
-    
+
+	@Override
+	public boolean isInLava() {
+		AxisAlignedBB boundingBox = this.getEntityBoundingBox().grow(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D);
+		if(this.width / 2 > 2 || this.height > 2) {
+			double radius =  Math.min((double)this.width / 2, 2);
+			double height = Math.min((double)this.height, 2);
+			boundingBox = new AxisAlignedBB(this.posX - radius, this.posY, this.posZ - radius, this.posX + radius, this.posY + height, this.posZ + radius);
+		}
+		return this.world.isMaterialInBB(boundingBox, Material.LAVA);
+	}
+
     // ========== Move with Heading ==========
     /** Moves the entity, redirects to the direct navigator if this mob should use that instead. **/
     @Override
@@ -2493,18 +2494,29 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 		Vec3d facing = this.getFacingPositionDouble(this.posX, this.posY, this.posZ, range, angle);
 		double distanceX = facing.x - this.posX;
-		double distanceY = this.posY;
+		double distanceY = 0;
 		double distanceZ = facing.z - this.posZ;
 		if(target != null) {
-			Vec3d rotatedTarget = this.getFacingPositionDouble(target.posX, this.posY, target.posZ, this.getDistanceToEntity(target), angle);
-			distanceX = rotatedTarget.x - this.posX;
-			distanceY = target.posY - (target.height * 0.25D) - projectile.posY;
-			distanceZ = rotatedTarget.z - this.posZ;
+			double targetX = target.posX - this.posX;
+			double targetZ = target.posZ - this.posZ;
+			double newX = targetX * Math.cos(angle) - targetZ * Math.sin(angle);
+			double newY = targetX * Math.sin(angle) + targetZ * Math.cos(angle);
+			targetX = newX + this.posX;
+			targetZ = newY + this.posZ;
+
+			distanceX = targetX - this.posX;
+			distanceY = target.posY + (target.height * 0.5D) - projectile.posY;
+			distanceZ = targetZ - this.posZ;
 		}
 
 		float distanceXZ = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ) * 0.1F;
 		projectile.setThrowableHeading(distanceX, distanceY + distanceXZ, distanceZ, velocity, inaccuracy);
 		this.getEntityWorld().spawnEntity(projectile);
+
+		if(projectile.getLaunchSound() != null) {
+			this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+			this.getEntityWorld().spawnEntity(projectile);
+		}
 
 		return projectile;
 	}
@@ -2518,8 +2530,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void setAttackPhase(byte setAttackPhase) { attackPhase = setAttackPhase; }
     /** Moves the attack phase to the next step, will loop back to 0 when the max is passed. **/
     public void nextAttackPhase() {
-    	if(++attackPhase > (attackPhaseMax - 1))
-    		attackPhase = 0;
+    	if(++this.attackPhase > (this.attackPhaseMax - 1)) {
+			this.attackPhase = 0;
+		}
     }
     
     // ========== Deal Damage ==========

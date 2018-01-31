@@ -38,9 +38,9 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
     @Override
     public void updateEntitySize(Entity updateEntity) {
-        this.entitySizeX = MathHelper.floor(updateEntity.width + 1.0F);
+        this.entitySizeX = MathHelper.floor(this.getWidth(updateEntity) + 1.0F);
         this.entitySizeY = MathHelper.floor(updateEntity.height + 1.0F);
-        this.entitySizeZ = MathHelper.floor(updateEntity.width + 1.0F);
+        this.entitySizeZ = MathHelper.floor(this.getWidth(updateEntity) + 1.0F);
     }
 
     @Override
@@ -76,6 +76,14 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
         return this.entityCreature != null && this.entityCreature.isFlying() && !this.entityCreature.isInWater();
     }
 
+    /** Returns a width to path with. **/
+    public double getWidth() {
+		return this.getWidth(this.entity);
+    }
+	public double getWidth(Entity entity) {
+		return Math.min(3, (double)entity.width);
+	}
+
 
     // ==================== Start ====================
     /** Returns a PathPoint to the given coordinates. **/
@@ -83,7 +91,7 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
     public PathPoint getPathPointToCoords(double x, double y, double z) {
         // Flying/Strong Swimming:
         if(this.flying() || this.swimming()) {
-            return this.openPoint(MathHelper.floor(x - (double)(this.entity.width / 2.0F)), MathHelper.floor(y + 0.5D), MathHelper.floor(z - (double)(this.entity.width / 2.0F)));
+            return this.openPoint(MathHelper.floor(x - this.getWidth()), MathHelper.floor(y + 0.5D), MathHelper.floor(z - this.getWidth()));
         }
         return this.openPoint(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
     }
@@ -251,7 +259,7 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
         else {
             PathNodeType pathnodetype = this.getPathNodeType(this.entity, x, y, z);
             float f = this.entity.getPathPriority(pathnodetype);
-            double d1 = (double)this.entity.width / 2.0D;
+            double entityRadius = this.getWidth() / 2;
 
             if (f >= 0.0F) {
                 pathpoint = this.openPoint(x, y, z);
@@ -266,10 +274,10 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
                 if (pathpoint == null && p_186332_4_ > 0 && pathnodetype != PathNodeType.FENCE && pathnodetype != PathNodeType.TRAPDOOR) {
                     pathpoint = this.getSafePoint(x, y + 1, z, p_186332_4_ - 1, p_186332_5_, facing);
 
-                    if (pathpoint != null && (pathpoint.nodeType == PathNodeType.OPEN || pathpoint.nodeType == PathNodeType.WALKABLE) && this.entity.width < 1.0F) {
+                    if (pathpoint != null && (pathpoint.nodeType == PathNodeType.OPEN || pathpoint.nodeType == PathNodeType.WALKABLE) && this.getWidth() < 1.0F) {
                         double d2 = (double)(x - facing.getFrontOffsetX()) + 0.5D;
                         double d3 = (double)(z - facing.getFrontOffsetZ()) + 0.5D;
-                        AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - d1, (double)y + 0.001D, d3 - d1, d2 + d1, (double)((float)y + this.entity.height), d3 + d1);
+                        AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - entityRadius, (double)y + 0.001D, d3 - entityRadius, d2 + entityRadius, (double)((float)y + this.entity.height), d3 + entityRadius);
                         AxisAlignedBB axisalignedbb1 = this.blockaccess.getBlockState(blockpos).getBoundingBox(this.blockaccess, blockpos);
                         AxisAlignedBB axisalignedbb2 = axisalignedbb.expand(0.0D, axisalignedbb1.maxY - 0.002D, 0.0D);
 
@@ -280,13 +288,13 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
                 }
 
                 if (pathnodetype == PathNodeType.OPEN) {
-                    AxisAlignedBB axisalignedbb3 = new AxisAlignedBB((double)x - d1 + 0.5D, (double)y + 0.001D, (double)z - d1 + 0.5D, (double)x + d1 + 0.5D, (double)((float)y + this.entity.height), (double)z + d1 + 0.5D);
+                    AxisAlignedBB axisalignedbb3 = new AxisAlignedBB((double)x - entityRadius + 0.5D, (double)y + 0.001D, (double)z - entityRadius + 0.5D, (double)x + entityRadius + 0.5D, (double)((float)y + this.entity.height), (double)z + entityRadius + 0.5D);
 
                     if (this.entity.world.collidesWithAnyBlock(axisalignedbb3)) {
                         return null;
                     }
 
-                    if (this.entity.width >= 1.0F) {
+                    if (this.getWidth() >= 1.0F) {
                         PathNodeType pathnodetype1 = this.getPathNodeType(this.entity, x, y - 1, z);
 
                         if (pathnodetype1 == PathNodeType.BLOCKED) {
@@ -336,7 +344,6 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
         EnumSet<PathNodeType> enumset = EnumSet.noneOf(PathNodeType.class);
         PathNodeType pathnodetype = PathNodeType.BLOCKED;
-        double d0 = (double)entitylivingIn.width / 2.0D;
         BlockPos blockpos = new BlockPos(entitylivingIn);
 
         for (int i = 0; i < xSize; ++i) {

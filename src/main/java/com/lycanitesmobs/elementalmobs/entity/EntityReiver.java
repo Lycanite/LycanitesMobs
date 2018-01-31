@@ -6,6 +6,7 @@ import com.lycanitesmobs.api.IGroupIce;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobDrop;
+import com.sun.javafx.geom.Vec3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -53,7 +54,7 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(60).setRange(12.0F).setMinChaseDistance(6.0F));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(30).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -121,52 +122,7 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
     // ========== Ranged Attack ==========
     @Override
     public void rangedAttack(Entity target, float range) {
-    	// Type:
-    	EntityFrostbolt projectile = new EntityFrostbolt(this.getEntityWorld(), this);
-        projectile.setProjectileScale(0.5f);
-    	
-    	// Y Offset:
-    	projectile.posY -= this.height / 4;
-    	
-    	// Accuracy:
-    	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);
-    	
-    	// Set Velocities:
-        double d0 = target.posX - this.posX + accuracy;
-        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
-        double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-        float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.getEntityWorld().spawnEntity(projectile);
-        super.rangedAttack(target, range);
-
-        // Knockback:
-		EntityPlayerMP player = null;
-		if (target instanceof EntityPlayerMP) {
-			player = (EntityPlayerMP) target;
-			if (player.capabilities.isCreativeMode) {
-				return;
-			}
-		}
-		double xDist = this.posX - target.posX;
-		double zDist = this.posZ - target.posZ;
-		double xzDist = MathHelper.sqrt(xDist * xDist + zDist * zDist);
-		double factor = 0.5D;
-		double motionCap = 10;
-		if (target.motionX < motionCap && target.motionX > -motionCap && target.motionZ < motionCap && target.motionZ > -motionCap) {
-			target.addVelocity(
-					-xDist / xzDist * factor + target.motionX * factor,
-					factor,
-					-zDist / xzDist * factor + target.motionZ * factor
-			);
-		}
-		if (player != null) {
-			player.connection.sendPacket(new SPacketEntityVelocity(target));
-		}
+    	this.fireProjectile(EntityFrostbolt.class, target, range, 0, new Vec3f(0, 0, 0), 1.2f, 2f, 1F);
     }
     
     

@@ -1,7 +1,7 @@
 package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
-import com.lycanitesmobs.core.renderer.LayerOverlay;
+import com.lycanitesmobs.core.renderer.LayerEffect;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.entity.Entity;
@@ -37,7 +37,7 @@ public class ModelCinder extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		renderer.addLayer(new LayerOverlay(renderer));
+		renderer.addLayer(new LayerEffect(renderer, "eyes"));
 	}
 
 

@@ -9,14 +9,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
-public class LayerOverlay extends LayerBase {
+public class LayerEffect extends LayerBase {
 	public String textureSuffix = "effect";
 
     // ==================================================
     //                   Constructor
     // ==================================================
-    public LayerOverlay(RenderCreature renderer) {
+    public LayerEffect(RenderCreature renderer, String textureSuffix) {
         super(renderer);
+        this.textureSuffix = textureSuffix;
     }
 
 

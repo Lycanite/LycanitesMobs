@@ -59,10 +59,19 @@ public class ModelTemplateElemental extends ModelObj {
 
         // Attack:
         if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-            if(partName.equals("armleft") && ((EntityCreatureBase)entity).getAttackPhase() == 2)
-                rotate(0.0F, -25.0F, 0.0F);
-            if(partName.equals("armright") && ((EntityCreatureBase)entity).getAttackPhase() != 2)
-                rotate(0.0F, 25.0F, 0.0F);
+            EntityCreatureBase entityCreatureBase = (EntityCreatureBase)entity;
+            if(entityCreatureBase.attackPhaseMax > 0) {
+				if (partName.equals("armleft") && entityCreatureBase.getAttackPhase() == 2)
+					rotate(0.0F, -25.0F, 0.0F);
+				if (partName.equals("armright") && entityCreatureBase.getAttackPhase() != 2)
+					rotate(0.0F, 25.0F, 0.0F);
+			}
+			else {
+				if (partName.equals("armleft"))
+					rotate(0.0F, -25.0F, 0.0F);
+				if (partName.equals("armright"))
+					rotate(0.0F, 25.0F, 0.0F);
+			}
         }
 
         // Apply Animations:

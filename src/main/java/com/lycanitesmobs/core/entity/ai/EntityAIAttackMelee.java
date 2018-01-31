@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.entity.ai;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -25,10 +24,11 @@ public class EntityAIAttackMelee extends EntityAIBase {
     private double attackRange = 0.5D;
     private float maxChaseDistance = 40.0F;
     private double damage = 1.0D;
-    private int failedPathFindingPenalty;
-    private int failedPathFindingPenaltyMax = 0;
     public boolean enabled = true;
-    
+
+    // Pathing:
+	private int failedPathFindingPenalty;
+	private int failedPathFindingPenaltyMax = 0;
     private int repathTime;
 	
 	// ==================================================

@@ -35,6 +35,10 @@ public class EntityAIAttackRanged extends EntityAIBase {
     private boolean checkSight = true;
     private boolean mountedAttacking = true;
     public boolean enabled = true;
+
+	// Pathing:
+	private int repathTimeMax = 20;
+	private int repathTime;
     
     // ==================================================
   	//                    Constructor
@@ -202,7 +206,8 @@ public class EntityAIAttackRanged extends EntityAIBase {
             else
                 this.host.directNavigator.clearTargetPosition(1.0D);
         }
-        else {
+        else if(--this.repathTime <= 0) {
+        	this.repathTime = this.repathTimeMax;
             BlockPos targetPosition = this.attackTarget.getPosition();
             if(this.host.isFlying())
                 targetPosition = targetPosition.add(0, flyingHeightOffset, 0);

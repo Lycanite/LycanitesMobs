@@ -2,11 +2,8 @@ package com.lycanitesmobs.core.dungeon.definition;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +56,11 @@ public class DungeonSector {
 		if(json.has("changeTheme"))
 			this.changeTheme = json.get("changeTheme").getAsBoolean();
 
-		this.sizeMin = SpawnerJSONUtilities.getVec3i(json, "sizeMin");
+		this.sizeMin = JSONHelper.getVec3i(json, "sizeMin");
 
-		this.sizeMax = SpawnerJSONUtilities.getVec3i(json, "sizeMax");
+		this.sizeMax = JSONHelper.getVec3i(json, "sizeMax");
 
-		this.padding = SpawnerJSONUtilities.getVec3i(json, "padding");
+		this.padding = JSONHelper.getVec3i(json, "padding");
 		if(this.padding.getX() <= 0) {
 			this.padding = new Vec3i(1, this.padding.getY(), this.padding.getZ());
 		}

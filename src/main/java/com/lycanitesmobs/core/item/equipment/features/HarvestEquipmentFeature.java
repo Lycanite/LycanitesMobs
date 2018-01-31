@@ -1,7 +1,7 @@
 package com.lycanitesmobs.core.item.equipment.features;
 
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.translation.I18n;
@@ -30,7 +30,7 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
 		if(json.has("harvestShape"))
 			this.harvestShape = json.get("harvestShape").getAsString();
 
-		this.harvestRange = SpawnerJSONUtilities.getVec3i(json, "harvestRange");
+		this.harvestRange = JSONHelper.getVec3i(json, "harvestRange");
 
 		if(json.has("harvestRangeLevelMultiplier"))
 			this.harvestRangeLevelMultiplier = json.get("harvestRangeLevelMultiplier").getAsDouble();

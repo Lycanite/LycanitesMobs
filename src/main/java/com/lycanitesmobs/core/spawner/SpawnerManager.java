@@ -5,6 +5,7 @@ import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
 import com.lycanitesmobs.core.JSONLoader;
+import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -120,6 +121,12 @@ public class SpawnerManager extends JSONLoader {
 		if(this.globalSpawnConditions.size() > 0) {
 			LycanitesMobs.printDebug("JSONSpawner", "Loaded " + this.globalSpawnConditions.size() + " Global Spawn Conditions.");
 		}
+	}
+
+
+	@Override
+	public void parseJson(GroupInfo groupInfo, String name, JsonObject json) {
+
 	}
 
 

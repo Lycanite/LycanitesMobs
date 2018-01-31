@@ -1,4 +1,4 @@
-package com.lycanitesmobs.core.spawner;
+package com.lycanitesmobs.core.helpers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SpawnerJSONUtilities {
+public class JSONHelper {
 
 	public static Vec3i getVec3i(JsonObject json, String memberName) {
 		if(json.has(memberName)) {
@@ -30,6 +30,16 @@ public class SpawnerJSONUtilities {
 			return new Vec3i(coords[0], coords[1], coords[2]);
 		}
 		return new Vec3i(0, 0, 0);
+	}
+
+	public static List<String> getJsonStrings(JsonArray jsonArray) {
+		List<String> strings = new ArrayList<>();
+		Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+		while (jsonIterator.hasNext()) {
+			String string = jsonIterator.next().getAsString();
+			strings.add(string);
+		}
+		return strings;
 	}
 
 	public static List<Block> getJsonBlocks(JsonObject json) {

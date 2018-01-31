@@ -12,6 +12,7 @@ import com.lycanitesmobs.core.dungeon.definition.DungeonSector;
 import com.lycanitesmobs.core.dungeon.definition.DungeonStructure;
 import com.lycanitesmobs.core.dungeon.definition.DungeonTheme;
 import com.lycanitesmobs.core.dungeon.instance.DungeonInstance;
+import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
@@ -134,6 +135,12 @@ public class DungeonManager extends JSONLoader {
 			}
 		}
 		LycanitesMobs.printDebug("", "Complete! " + this.themes.size() + " JSON Dungeon Schematics Loaded In Total.");
+	}
+
+
+	@Override
+	public void parseJson(GroupInfo groupInfo, String name, JsonObject json) {
+
 	}
 
 

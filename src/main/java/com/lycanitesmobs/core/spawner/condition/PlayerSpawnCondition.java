@@ -1,9 +1,8 @@
 package com.lycanitesmobs.core.spawner.condition;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedPlayer;
-import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.DifficultyInstance;
@@ -102,7 +101,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
 			this.notInWater = json.get("notInWater").getAsBoolean();
 
 		if(json.has("heldItems")) {
-			this.heldItems = SpawnerJSONUtilities.getJsonItems(json.get("heldItems").getAsJsonArray());
+			this.heldItems = JSONHelper.getJsonItems(json.get("heldItems").getAsJsonArray());
 		}
 
 		if(json.has("heldItemsListType"))

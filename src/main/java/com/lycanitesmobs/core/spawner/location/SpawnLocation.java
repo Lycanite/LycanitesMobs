@@ -3,7 +3,7 @@ package com.lycanitesmobs.core.spawner.location;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.CoordSorterFurthest;
 import com.lycanitesmobs.core.spawner.CoordSorterNearest;
-import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
@@ -58,9 +58,9 @@ public class SpawnLocation {
 
     /** Loads this Spawn Location from the provided JSON data. **/
     public void loadFromJSON(JsonObject json) {
-		this.rangeMin = SpawnerJSONUtilities.getVec3i(json, "rangeMin");
+		this.rangeMin = JSONHelper.getVec3i(json, "rangeMin");
 
-		this.rangeMax = SpawnerJSONUtilities.getVec3i(json, "rangeMax");
+		this.rangeMax = JSONHelper.getVec3i(json, "rangeMax");
 
 		if(json.has("yMin"))
 			this.yMin = json.get("yMin").getAsInt();

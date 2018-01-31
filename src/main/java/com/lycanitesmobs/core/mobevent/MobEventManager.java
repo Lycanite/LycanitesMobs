@@ -137,6 +137,12 @@ public class MobEventManager extends JSONLoader {
 	}
 
 
+	@Override
+	public void parseJson(GroupInfo groupInfo, String name, JsonObject json) {
+
+	}
+
+
 	/** Reloads all JSON Mob Events. **/
 	public void reload() {
 		LycanitesMobs.printDebug("MobEvents", "Destroying JSON Mob Events!");

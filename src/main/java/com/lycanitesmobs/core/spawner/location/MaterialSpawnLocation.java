@@ -1,7 +1,7 @@
 package com.lycanitesmobs.core.spawner.location;
 
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +17,7 @@ public class MaterialSpawnLocation extends BlockSpawnLocation {
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
-		this.materials = SpawnerJSONUtilities.getJsonMaterials(json);
+		this.materials = JSONHelper.getJsonMaterials(json);
 
 		super.loadFromJSON(json);
 	}

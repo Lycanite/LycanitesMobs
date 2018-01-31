@@ -2,7 +2,7 @@ package com.lycanitesmobs.core.spawner.trigger;
 
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.Spawner;
-import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -61,12 +61,12 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 		if(json.has("onPlace"))
 			this.onPlace = json.get("onPlace").getAsBoolean();
 
-		this.blocks = SpawnerJSONUtilities.getJsonBlocks(json);
+		this.blocks = JSONHelper.getJsonBlocks(json);
 
 		if(json.has("blocksListType"))
 			this.blocksListType = json.get("blocksListType").getAsString();
 
-		this.blockMaterials = SpawnerJSONUtilities.getJsonMaterials(json);
+		this.blockMaterials = JSONHelper.getJsonMaterials(json);
 
 		if(json.has("blockMaterialsListType"))
 			this.blockMaterialsListType = json.get("blockMaterialsListType").getAsString();

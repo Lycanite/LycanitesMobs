@@ -1,7 +1,7 @@
 package com.lycanitesmobs.core.spawner.location;
 
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.spawner.SpawnerJSONUtilities;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +30,7 @@ public class BlockSpawnLocation extends SpawnLocation {
 	@Override
 	public void loadFromJSON(JsonObject json) {
 		if(json.has("blocks")) {
-			this.blocks = SpawnerJSONUtilities.getJsonBlocks(json);
+			this.blocks = JSONHelper.getJsonBlocks(json);
 		}
 
 		if(json.has("listType"))

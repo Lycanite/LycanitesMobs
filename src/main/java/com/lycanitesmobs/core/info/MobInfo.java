@@ -135,7 +135,7 @@ public class MobInfo {
 	public SpawnInfo spawnInfo;
 
     /** Subspecies **/
-    public Map<Integer, Subspecies> subspecies = new HashMap<Integer, Subspecies>();
+    public Map<Integer, Subspecies> subspecies = new HashMap<>();
 
     /** Subspecies Amount, used when automatically adding subspecies as well as when cycling through subspecies. **/
     public int subspeciesAmount = 0;
@@ -150,7 +150,7 @@ public class MobInfo {
 	public boolean defaultDrops = true;
 	
 	/** A list of all the custom item drops this mob should drop, readily parsed from the config. To be safe, this list should be copied into the entity INSTANCE. **/
-	public List<MobDrop> customDrops = new ArrayList<MobDrop>();
+	public List<MobDrop> customDrops = new ArrayList<>();
 
     /** If true, this is a boss mob. Bosses are updated more frequently and have a larger tracking range by default. **/
     public boolean boss = false;

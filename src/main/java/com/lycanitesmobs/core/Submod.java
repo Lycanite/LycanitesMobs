@@ -2,6 +2,7 @@ package com.lycanitesmobs.core;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.SpawnInfo;
@@ -24,6 +25,12 @@ public abstract class Submod {
 		this.createBlocks();
 		this.createItems();
 		this.createEntities();
+		try {
+			CreatureManager.getInstance().loadAllFromJSON(this.group);
+		}
+		catch(Exception e) {
+			LycanitesMobs.printWarning("", "No Creatures loaded for: " + this.group.name);
+		}
 		try {
 			EquipmentPartManager.getInstance().loadAllFromJSON(this.group);
 		}

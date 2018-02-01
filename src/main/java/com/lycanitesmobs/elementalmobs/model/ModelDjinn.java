@@ -2,14 +2,12 @@ package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
-import com.lycanitesmobs.core.renderer.LayerOverlay;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import com.lycanitesmobs.elementalmobs.renderer.LayerDjinn;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector2f;
 

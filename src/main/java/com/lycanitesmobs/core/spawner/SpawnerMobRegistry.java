@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.spawner;
 
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.MobInfo;
 
 import java.util.Collection;
@@ -30,11 +31,13 @@ public class SpawnerMobRegistry {
 		return null;
 	}
 
+
 	/**
 	 * Generates a new global SpawnInfo and adds it to the provided SpawnerMobRegistry which is created if it doesn't exist.
 	 * @param mobInfo The MobInfo of the mob to create a MobSpawn from.
 	 * @param spawnerName The name of the Spawner to map the MobSpawn to.
 	 **/
+	@Deprecated
 	public static void createSpawn(MobInfo mobInfo, String spawnerName) {
 		if(mobInfo == null) {
 			LycanitesMobs.printWarning("", "Tried to create a global MobSpawn to " + spawnerName + " from a null MobInfo!");
@@ -50,6 +53,30 @@ public class SpawnerMobRegistry {
 		}
 		if(!SPAWNER_MOB_REGISTRIES.get(spawnerName).addMobSpawn(mobSpawn)) {
 			LycanitesMobs.printWarning("", "Tried to create a duplicate global MobSpawn for " + mobInfo.name + " in Spawner: " + spawnerName + "!");
+		}
+	}
+
+
+	/**
+	 * Generates a new global SpawnInfo and adds it to the provided SpawnerMobRegistry which is created if it doesn't exist.
+	 * @param creatureInfo The Creature Info of the mob to create a Mob Spawn from.
+	 * @param spawnerName The name of the Spawner to map the MobSpawn to.
+	 **/
+	public static void createSpawn(CreatureInfo creatureInfo, String spawnerName) {
+		if(creatureInfo == null) {
+			LycanitesMobs.printWarning("", "Tried to create a global Mob Spawn to " + spawnerName + " from a null Creature Info!");
+		}
+		if(spawnerName == null) {
+			LycanitesMobs.printWarning("", "Tried to create a global Mob Spawn for " + creatureInfo.name + " with a null Spawner Name!");
+		}
+
+		MobSpawn mobSpawn = new MobSpawn(creatureInfo);
+
+		if(!SPAWNER_MOB_REGISTRIES.containsKey(spawnerName)) {
+			SPAWNER_MOB_REGISTRIES.put(spawnerName, new SpawnerMobRegistry());
+		}
+		if(!SPAWNER_MOB_REGISTRIES.get(spawnerName).addMobSpawn(mobSpawn)) {
+			LycanitesMobs.printWarning("", "Tried to create a duplicate global MobSpawn for " + creatureInfo.name + " in Spawner: " + spawnerName + "!");
 		}
 	}
 

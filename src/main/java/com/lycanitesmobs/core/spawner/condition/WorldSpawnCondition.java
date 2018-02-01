@@ -41,7 +41,7 @@ public class WorldSpawnCondition extends SpawnCondition {
 	/** The maximum difficulty level. **/
 	public short difficultyMax = -1;
 
-	/** The reburied moon phase. 0 is a full moon. **/
+	/** The required moon phase. 0 is a full moon. **/
 	public int moonPhase = -1;
 
 

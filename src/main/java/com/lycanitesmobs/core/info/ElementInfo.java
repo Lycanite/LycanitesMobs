@@ -2,6 +2,11 @@ package com.lycanitesmobs.core.info;
 
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.helpers.JSONHelper;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +61,38 @@ public class ElementInfo {
 				if(ElementManager.getInstance().elements.containsKey(componentName)) {
 					this.components.add(ElementManager.getInstance().elements.get(componentName));
 				}
+			}
+		}
+	}
+
+
+	/**
+	 * Applies buffs to the target entity based on this element.
+	 * @param targetEntity The entity to buffs.
+	 * @param duration The duration of the buffs.
+	 * @param amplifier The amplifier of the buffs.
+	 */
+	public void buffEntity(EntityLivingBase targetEntity, int duration, int amplifier) {
+		for(String buff : this.buffs) {
+			Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(buff));
+			if(potion != null) {
+				targetEntity.addPotionEffect(new PotionEffect(potion, duration, amplifier));
+			}
+		}
+	}
+
+
+	/**
+	 * Applies debuffs to the target entity based on this element.
+	 * @param targetEntity The entity to debuffs.
+	 * @param duration The duration of the debuffs.
+	 * @param amplifier The amplifier of the debuffs.
+	 */
+	public void debuffEntity(EntityLivingBase targetEntity, int duration, int amplifier) {
+		for(String debuff : this.debuffs) {
+			Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(debuff));
+			if(potion != null) {
+				targetEntity.addPotionEffect(new PotionEffect(potion, duration, amplifier));
 			}
 		}
 	}

@@ -634,7 +634,6 @@ public class MobInfo {
     public MobInfo addSubspecies(Subspecies newSubspecies) {
         this.subspeciesAmount++;
         if(newSubspecies != null) {
-            newSubspecies.mobInfo = this;
             newSubspecies.index = this.subspeciesAmount;
         }
         this.subspecies.put(this.subspeciesAmount, newSubspecies);

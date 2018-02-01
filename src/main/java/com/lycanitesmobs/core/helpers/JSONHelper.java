@@ -3,17 +3,22 @@ package com.lycanitesmobs.core.helpers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class JSONHelper {
 
@@ -144,5 +149,100 @@ public class JSONHelper {
 			}
 		}
 		return materials;
+	}
+
+	public static List<Biome> getJsonBiomes(JsonArray jsonArray) {
+		List<Biome> biomeList = new ArrayList<>();
+		Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+		while (jsonIterator.hasNext()) {
+			String biomeEntry = jsonIterator.next().getAsString();
+
+			// Determine Function:
+			boolean additive = true;
+			if (biomeEntry.charAt(0) == '-' || biomeEntry.charAt(0) == '+') {
+				if (biomeEntry.charAt(0) == '-')
+					additive = false;
+				biomeEntry = biomeEntry.substring(1);
+			}
+
+
+			Biome[] selectedBiomes = null;
+			if ("ALL".equals(biomeEntry)) {
+				for (BiomeDictionary.Type biomeType : getAllBiomeTypes()) {
+					if (selectedBiomes == null) {
+						Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
+						selectedBiomes = selectedBiomesSet.toArray(new Biome[selectedBiomesSet.size()]);
+					}
+					else {
+						Set<Biome> typeBiomesSet = BiomeDictionary.getBiomes(biomeType);
+						Biome[] typeBiomes = typeBiomesSet.toArray(new Biome[typeBiomesSet.size()]);
+						if (typeBiomes != null)
+							selectedBiomes = ArrayUtils.addAll(selectedBiomes, typeBiomes);
+					}
+				}
+			}
+			else if (!"NONE".equals(biomeEntry)) {
+				BiomeDictionary.Type biomeType;
+				try {
+					biomeType = BiomeDictionary.Type.getType(biomeEntry);
+				} catch (Exception e) {
+					biomeType = null;
+					LycanitesMobs.printWarning("", "[Spawning] Unknown biome type " + biomeEntry + " this will be ignored and treated as NONE.");
+				}
+				if (biomeType != null) {
+					Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
+					selectedBiomes = selectedBiomesSet.toArray(new Biome[selectedBiomesSet.size()]);
+				}
+			}
+
+			if (selectedBiomes != null) {
+				for (Biome biome : selectedBiomes)
+					if (additive && !biomeList.contains(biome)) {
+						biomeList.add(biome);
+					}
+					else if (!additive && biomeList.contains(biome)) {
+						biomeList.remove(biome);
+					}
+			}
+		}
+
+		return biomeList;
+	}
+
+	/* Can no longer access a list of all biomes types without reflection. This is the alternative for now. */
+	public static BiomeDictionary.Type[] getAllBiomeTypes() {
+		return new BiomeDictionary.Type[] {
+				BiomeDictionary.Type.HOT,
+				BiomeDictionary.Type.COLD,
+				BiomeDictionary.Type.SPARSE,
+				BiomeDictionary.Type.DENSE,
+				BiomeDictionary.Type.WET,
+				BiomeDictionary.Type.DRY,
+				BiomeDictionary.Type.SAVANNA,
+				BiomeDictionary.Type.CONIFEROUS,
+				BiomeDictionary.Type.JUNGLE,
+				BiomeDictionary.Type.SPOOKY,
+				BiomeDictionary.Type.DEAD,
+				BiomeDictionary.Type.LUSH,
+				BiomeDictionary.Type.NETHER,
+				BiomeDictionary.Type.END,
+				BiomeDictionary.Type.MUSHROOM,
+				BiomeDictionary.Type.MAGICAL,
+				BiomeDictionary.Type.RARE,
+				BiomeDictionary.Type.OCEAN,
+				BiomeDictionary.Type.RIVER,
+				BiomeDictionary.Type.WATER,
+				BiomeDictionary.Type.MESA,
+				BiomeDictionary.Type.FOREST,
+				BiomeDictionary.Type.PLAINS,
+				BiomeDictionary.Type.MOUNTAIN,
+				BiomeDictionary.Type.HILLS,
+				BiomeDictionary.Type.SWAMP,
+				BiomeDictionary.Type.SANDY,
+				BiomeDictionary.Type.SNOWY,
+				BiomeDictionary.Type.WASTELAND,
+				BiomeDictionary.Type.BEACH,
+				BiomeDictionary.Type.VOID
+		};
 	}
 }

@@ -65,7 +65,7 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
 			}
 		}
 
-        return this.sortSpawnPositions(spawnPositions, triggerPos);
+        return this.sortSpawnPositions(spawnPositions, world, triggerPos);
     }
 
 	/** Gets a random spawn position.

@@ -39,9 +39,6 @@ public class Subspecies {
     public static boolean rareHealthBars = false;
 
     // ========== Subspecies General ==========
-    /** The Mob Info of the mob this Subspecies belongs to. Set by MobInfo when this is added to it. **/
-    public MobInfo mobInfo;
-
     /** The index of this subspecies in MobInfo. Set by MobInfo when added. Should never be 0 as that is used by the default and will result in this subspecies being ignored. **/
     public int index;
 

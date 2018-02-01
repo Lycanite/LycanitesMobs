@@ -111,9 +111,9 @@ public class LycanitesMobs {
 		config.setCategoryComment("Debug", "Set debug options to true to show extra debugging information in the console.");
 		config.setCategoryComment("Extras", "Other extra config settings, some of the aren't necessarily specific to Lycanites Mobs.");
 		VersionChecker.enabled = config.getBool("Extras", "Version Checker", VersionChecker.enabled, "Set to false to disable the version checker.");
-		disableNausea = config.getBool("Extras", "Disable Nausea Debuff", disableNausea, "Set to true to disable the nausea debuff on players.");
 		DonationFamiliars.instance.enabled = config.getBool("Extras", "Donation Familiars", DonationFamiliars.instance.enabled, "Donation Familiars help support the development of this mod but if needed, set this to false to disable them.");
 
+		// ========== Admin Entity Removal Tool ==========
         config.setCategoryComment("Admin", "Special tools for server admins.");
         ExtendedEntity.FORCE_REMOVE_ENTITY_IDS = config.getStringList("Admin", "Force Remove Entity Names", new String[0], "Here you can add a list of entity IDs for entity that you want to be forcefully removed.");
         if(ExtendedEntity.FORCE_REMOVE_ENTITY_IDS != null && ExtendedEntity.FORCE_REMOVE_ENTITY_IDS.length > 0) {
@@ -123,12 +123,13 @@ public class LycanitesMobs {
         }
         ExtendedEntity.FORCE_REMOVE_ENTITY_TICKS = config.getInt("Admin", "Force Remove Entity Ticks", 40, "How many ticks it takes for an entity to be forcefully removed (1 second = 20 ticks). This only applies to EntityLiving, other entities are instantly removed.");
 
-        // Register Rendering Factories:
+        // ========== Register Rendering Factories ==========
         proxy.registerRenders(this.group);
 
-        // Change Health Limit:
+        // ========== Change Health Limit ==========
 		LMReflectionHelper.setPrivateFinalValue(RangedAttribute.class, (RangedAttribute)SharedMonsterAttributes.MAX_HEALTH, 100000, "maximumValue", "field_111118_b");
 
+		// ========== Initialize Packet Handler ==========
 		this.packetHandler.init();
 		
 		
@@ -152,10 +153,17 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("cleansed", config, true, 0x66BBFF, 6, 1, true);
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
-		
-		
-		// ========== Mob Info Global Settings ==========
-		MobInfo.loadGlobalSettings();
+		disableNausea = config.getBool("Potion Effects", "Disable Nausea Debuff", disableNausea, "Set to true to disable the vanilla nausea debuff on players.");
+
+
+		// ========== Elements ==========
+		ElementManager.getInstance().loadConfig();
+		ElementManager.getInstance().loadAllFromJSON(group);
+
+
+		// ========== Creatures ==========
+		CreatureManager.getInstance().loadConfig();
+		MobInfo.loadGlobalSettings(); // Old MobInfo system to be replaced.
 
 
 		// ========== Spawners ==========

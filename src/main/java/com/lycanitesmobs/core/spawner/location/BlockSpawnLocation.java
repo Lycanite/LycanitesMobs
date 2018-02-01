@@ -96,7 +96,7 @@ public class BlockSpawnLocation extends SpawnLocation {
 			}
         }
 
-        return this.sortSpawnPositions(spawnPositions, triggerPos);
+        return this.sortSpawnPositions(spawnPositions, world, triggerPos);
     }
 
 	/** Returns if the provided block position is valid. **/

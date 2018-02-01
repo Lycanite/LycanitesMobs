@@ -184,7 +184,7 @@ public class ConfigSpawning extends ConfigBase {
 		String biomeEntries = this.getString(category, key, defaultValue, comment);
 		biomeEntries = biomeEntries.replace(" ", "");
         
-        List<Biome> biomeList = new ArrayList<Biome>();
+        List<Biome> biomeList = new ArrayList<>();
         for(String biomeEntry : biomeEntries.split(",")) {
         	if("".equals(biomeEntry))
         		continue;

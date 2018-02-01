@@ -29,8 +29,8 @@ public class SpawnLocation {
 	/** The maximum allowed y height. **/
 	public int yMax = -1;
 
-    /** Determines the order that the returned positions should be in. Can be random, near or far (from the trigger position). **/
-    public String sorting = "random";
+    /** Determines the order that the returned positions should be in. Can be: difficulty, random, near or far (from the trigger position). **/
+    public String sorting = "difficulty";
 
 
 	/** Loads this Spawn Condition from the provided JSON data. **/
@@ -84,7 +84,7 @@ public class SpawnLocation {
         );
         spawnPositions.add(triggerPos.add(offset));
 
-        return this.sortSpawnPositions(spawnPositions, triggerPos);
+        return this.sortSpawnPositions(spawnPositions, world, triggerPos);
     }
 
 
@@ -102,14 +102,26 @@ public class SpawnLocation {
 
 
 	/** Sorts a list of spawning positions. **/
-	public List<BlockPos> sortSpawnPositions(List<BlockPos> spawnPositions, BlockPos triggerPos) {
-		if("random".equalsIgnoreCase(this.sorting)) {
+	public List<BlockPos> sortSpawnPositions(List<BlockPos> spawnPositions, World world, BlockPos triggerPos) {
+		String sorting = this.sorting;
+
+		if("difficulty".equalsIgnoreCase(this.sorting)) {
+			sorting = "random";
+			if(world.getDifficulty().getDifficultyId() <= 1) {
+				sorting = "far";
+			}
+			else if(world.getDifficulty().getDifficultyId() >= 3) {
+				sorting = "near";
+			}
+		}
+
+		if("random".equalsIgnoreCase(sorting)) {
 			Collections.shuffle(spawnPositions);
 		}
-		else if("near".equalsIgnoreCase(this.sorting)) {
+		else if("near".equalsIgnoreCase(sorting)) {
 			Collections.sort(spawnPositions, new CoordSorterNearest(triggerPos));
 		}
-		else if("far".equalsIgnoreCase(this.sorting)) {
+		else if("far".equalsIgnoreCase(sorting)) {
 			Collections.sort(spawnPositions, new CoordSorterFurthest(triggerPos));
 		}
 		return spawnPositions;

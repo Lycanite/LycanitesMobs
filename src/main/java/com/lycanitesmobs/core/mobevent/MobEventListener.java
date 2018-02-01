@@ -1,8 +1,10 @@
 package com.lycanitesmobs.core.mobevent;
 
+import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.JSONLoader;
+import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.mobevent.trigger.AltarMobEventTrigger;
 import com.lycanitesmobs.core.mobevent.trigger.MobEventTrigger;
 import com.lycanitesmobs.core.mobevent.trigger.RandomMobEventTrigger;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MobEventListener extends JSONLoader {
+public class MobEventListener {
 	// Global:
     protected static MobEventListener INSTANCE;
 

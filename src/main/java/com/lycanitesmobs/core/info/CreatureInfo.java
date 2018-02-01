@@ -1,13 +1,13 @@
 package com.lycanitesmobs.core.info;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.helpers.JSONHelper;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /** Contains various information about a creature from default spawn information to stats, etc. **/
 public class CreatureInfo {
@@ -27,6 +27,20 @@ public class CreatureInfo {
 
 	/** If true, this is not a true mob, for example the fear entity. It will also not be automatically registered, etc. **/
 	public boolean dummy = false;
+
+	/** The Spawn Information for this creature. **/
+	public CreatureSpawn creatureSpawn;
+
+
+	// Stats:
+	public int experience = 5;
+	public double health = 20.0D;
+	public double defense = 0.0D;
+	public double speed = 24.0D;
+	public double damage = 2.0D;
+	public double haste = 1.0D;
+	public double effect = 1.0D;
+	public double pierce = 1.0D;
 
 
 	// Spawn Egg:
@@ -61,9 +75,18 @@ public class CreatureInfo {
 	/** The Dungeon Level of this mob, for Lycanites Dungeons this affects what floor the mob appears on, but this is also used by other mods such as Doomlike Dungeons to assess difficulty. Default: -1 (All levels). **/
 	public int dungeonLevel = -1;
 
+
 	// Items:
 	/** A list of all the item drops available to this creature. **/
 	public List<MobDrop> drops = new ArrayList<>();
+
+
+	// Visuals:
+	/** A custom scale to apply to the mob's size. **/
+	public double sizeScale = 1;
+
+	/** A custom scale to apply to the mob's hitbox. **/
+	public double hitboxScale = 1;
 
 
 	/**
@@ -78,22 +101,69 @@ public class CreatureInfo {
 	/** Loads this element from a JSON object. **/
 	public void loadFromJSON(JsonObject json) {
 		this.name = json.get("name").getAsString();
-
 		if(json.has("enabled"))
 			this.enabled = json.get("enabled").getAsBoolean();
-
 		if(json.has("dummy"))
 			this.dummy = json.get("dummy").getAsBoolean();
 		if(this.dummy)
 			return;
+		this.creatureSpawn = new CreatureSpawn();
+		this.creatureSpawn.loadFromJSON(json.get("spawning").getAsJsonObject());
+
+		if(json.has("experience"))
+			this.experience = json.get("experience").getAsInt();
+		if(json.has("health"))
+			this.health = json.get("health").getAsDouble();
+		if(json.has("defense"))
+			this.defense = json.get("defense").getAsDouble();
+		if(json.has("speed"))
+			this.speed = json.get("speed").getAsDouble();
+		if(json.has("damage"))
+			this.damage = json.get("damage").getAsDouble();
+		if(json.has("haste"))
+			this.haste = json.get("haste").getAsDouble();
+		if(json.has("effect"))
+			this.effect = json.get("effect").getAsDouble();
+		if(json.has("pierce"))
+			this.pierce = json.get("pierce").getAsDouble();
 
 		this.eggBackColor = Color.decode(json.get("eggBackColor").getAsString()).getRGB();
 		this.eggForeColor = Color.decode(json.get("eggForeColor").getAsString()).getRGB();
 
 		if(json.has("boss"))
 			this.boss = json.get("boss").getAsBoolean();
-
+		if(json.has("subspecies")) {
+			Iterator<JsonElement> jsonIterator = json.get("subspecies").getAsJsonArray().iterator();
+			while(jsonIterator.hasNext()) {
+				JsonObject jsonObject = jsonIterator.next().getAsJsonObject();
+				Subspecies subspecies = new Subspecies(jsonObject.get("name").getAsString().toLowerCase(), jsonObject.get("type").getAsString().toLowerCase());
+				subspecies.index = jsonObject.get("index").getAsInt();
+				this.subspecies.put(subspecies.index, subspecies);
+			}
+		}
 		this.elementName = json.get("element").getAsString();
+
+		if(json.has("peaceful"))
+			this.peaceful = json.get("peaceful").getAsBoolean();
+		if(json.has("summonCost"))
+			this.summonCost = json.get("summonCost").getAsInt();
+		if(json.has("dungeonLevel"))
+			this.dungeonLevel = json.get("dungeonLevel").getAsInt();
+
+		if(json.has("drops")) {
+			JsonArray dropEntries = json.getAsJsonArray("drops");
+			for(JsonElement mobDropJson : dropEntries) {
+				MobDrop mobDrop = MobDrop.createFromJSON(mobDropJson.getAsJsonObject());
+				if(mobDrop != null) {
+					this.drops.add(mobDrop);
+				}
+			}
+		}
+
+		if(json.has("sizeScale"))
+			this.sizeScale = json.get("sizeScale").getAsDouble();
+		if(json.has("hitboxScale"))
+			this.hitboxScale = json.get("hitboxScale").getAsDouble();
 	}
 
 

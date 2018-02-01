@@ -48,7 +48,7 @@ public class SpawnInfo {
 	public boolean disableSubspecies = false;
 	
 	// ========== Spawn Type ==========
-    /** A comma separated list of Spawn Types Entries to use. Can be: MONSTER, CREATURE, WATERCREATURE, AMBIENT, PORTAL, NETHER, FIRE, LAVA, etc. **/
+    /** A comma separated list of Spawn Types Entries to use. Can be: MONSTER, CREATURE, WATERCREATURE, AMBIENT or the name of any JSON Spawner. **/
     public String spawnerEntries = "";
 
     /** A list of JSON Spawner Names that this mob can use. Invalid names are just ignored. **/
@@ -76,12 +76,6 @@ public class SpawnInfo {
 	
 	/** The list of biomes that this mob spawns in. Use this to get the biomes not biomeTypes. **/
 	public Biome[] biomes;
-
-	/** The list of biome types that this mob can spawn in. **/
-	//public BiomeDictionary.Type[] biomeTypesAllowed;
-
-	/** The list of biome types that this mob cannot spawn in. **/
-	//public BiomeDictionary.Type[] biomeTypesDenied;
 
     /** If true, the biome check will be ignored completely, essnetially using ALL does the same thing but it doesn't always work with some mods. **/
     public boolean ignoreBiome = false;

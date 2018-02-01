@@ -6,9 +6,7 @@ import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.info.SpawnInfo;
+import com.lycanitesmobs.core.info.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -23,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MobSpawn {
-	/** The MobInfo to base this Mob Spawn off of (using the MobInfo's SpawnInfo for default values). **/
+	/** The Creature Info to base this Mob Spawn off of (using the Creature Spawn for default values). **/
+	public CreatureInfo creatureInfo;
+
+	/** The old Mob Info to base this Mob Spawn off of (using the MobInfo's SpawnInfo for default values). **/
 	public MobInfo mobInfo;
 
 	/** The entity class that this Mob Spawn should spawn if not using a MobInfo (for non-Lycanites Mobs entities). **/
@@ -116,6 +117,12 @@ public class MobSpawn {
 
 
 	/** Constructors **/
+	public MobSpawn(CreatureInfo creatureInfo) {
+		this.creatureInfo = creatureInfo;
+		this.entityClass = creatureInfo.entityClass;
+	}
+
+	@Deprecated
 	public MobSpawn(MobInfo mobInfo) {
 		this.mobInfo = mobInfo;
 		this.entityClass = mobInfo.entityClass;
@@ -224,10 +231,23 @@ public class MobSpawn {
 			}
 		}
 
+		// CreatureInfo Enabled:
+		if(this.creatureInfo != null) {
+			// Enabled:
+			if (!this.creatureInfo.enabled || !this.creatureInfo.creatureSpawn.enabled) {
+				return false;
+			}
+
+			// Peaceful Difficulty:
+			if (world.getDifficulty() == EnumDifficulty.PEACEFUL && !this.creatureInfo.peaceful) {
+				return false;
+			}
+		}
+
 		// MobInfo Enabled:
 		if(this.mobInfo != null) {
 			// Enabled:
-			if (!this.mobInfo.mobEnabled) {
+			if (!this.mobInfo.mobEnabled || !this.mobInfo.spawnInfo.enabled) {
 				return false;
 			}
 
@@ -245,6 +265,32 @@ public class MobSpawn {
 		// Block Count:
 		if(blockCount < this.getBlockCost()) {
 			return false;
+		}
+
+		// CreatureInfo World:
+		if(this.creatureInfo != null) {
+			// Minimum World Day:
+			if(this.creatureInfo != null && this.creatureInfo.creatureSpawn.worldDayMin > 0) {
+				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
+				if(worldExt != null) {
+					int day = (int) Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
+					if(day < this.creatureInfo.creatureSpawn.worldDayMin) {
+						return false;
+					}
+				}
+			}
+
+			// Dimension:
+			if (!forceIgnoreDimension && !this.ignoreDimension && !this.creatureInfo.creatureSpawn.isAllowedDimension(world)) {
+				return false;
+			}
+
+			// Biome:
+			if(biomes != null && this.shouldCheckBiome()) {
+				if(!this.creatureInfo.creatureSpawn.isValidBiome(biomes)) {
+					return false;
+				}
+			}
 		}
 
 		// MobInfo World:
@@ -295,10 +341,10 @@ public class MobSpawn {
 		if(this.blockCost > -1) {
 			return this.blockCost;
 		}
-		if(this.mobInfo == null) {
-			return 0;
+		if(this.mobInfo != null) {
+			return this.mobInfo.spawnInfo.spawnBlockCost;
 		}
-		return this.mobInfo.spawnInfo.spawnBlockCost;
+		return 0;
 	}
 
 
@@ -309,10 +355,10 @@ public class MobSpawn {
 		if(this.chance > -1) {
 			return this.chance;
 		}
-		if(this.mobInfo == null) {
-			return 1;
+		if(this.mobInfo != null) {
+			return this.mobInfo.spawnInfo.spawnChance;
 		}
-		return this.mobInfo.spawnInfo.spawnChance;
+		return 1;
 	}
 
 
@@ -323,10 +369,13 @@ public class MobSpawn {
 		if(this.weight > -1) {
 			return this.weight;
 		}
-		if(this.mobInfo == null) {
-			return 8;
+		if(this.creatureInfo != null) {
+			return this.creatureInfo.creatureSpawn.spawnWeight;
 		}
-		return this.mobInfo.spawnInfo.spawnWeight;
+		if(this.mobInfo != null) {
+			return this.mobInfo.spawnInfo.spawnWeight;
+		}
+		return 8;
 	}
 
 
@@ -340,10 +389,13 @@ public class MobSpawn {
 		if("false".equalsIgnoreCase(this.naturalDespawn)) {
 			return false;
 		}
-		if(this.mobInfo == null) {
-			return true;
+		if(this.creatureInfo != null) {
+			return this.creatureInfo.creatureSpawn.despawnNatural;
 		}
-		return this.mobInfo.spawnInfo.despawnNatural;
+		if(this.mobInfo != null) {
+			return this.mobInfo.spawnInfo.despawnNatural;
+		}
+		return true;
 	}
 
 
@@ -357,10 +409,13 @@ public class MobSpawn {
 		if("check".equalsIgnoreCase(this.biomeCheck)) {
 			return true;
 		}
-		if(this.mobInfo == null) {
-			return false;
+		if(this.creatureInfo != null) {
+			return !this.creatureInfo.creatureSpawn.ignoreBiome;
 		}
-		return !this.mobInfo.spawnInfo.ignoreBiome;
+		if(this.mobInfo != null) {
+			return !this.mobInfo.spawnInfo.ignoreBiome;
+		}
+		return false;
 	}
 
 
@@ -370,6 +425,8 @@ public class MobSpawn {
 	public EntityLiving createEntity(World world) {
 		try {
 			Class clazz = this.entityClass;
+			if(this.creatureInfo != null)
+				clazz = this.creatureInfo.entityClass;
 			if(this.mobInfo != null)
 				clazz = this.mobInfo.entityClass;
 			if(clazz == null)
@@ -423,6 +480,9 @@ public class MobSpawn {
 
 	@Override
 	public String toString() {
+		if(this.creatureInfo != null) {
+			return this.creatureInfo.name;
+		}
 		if(this.mobInfo != null) {
 			return this.mobInfo.name;
 		}

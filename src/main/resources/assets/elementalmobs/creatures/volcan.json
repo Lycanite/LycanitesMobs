@@ -1,5 +1,5 @@
 {
-	"name": "cinder",
+	"name": "volcan",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -21,18 +21,18 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
-	"defense": 0,
-	"speed": 28,
+	"experience": 10,
+	"health": 30,
+	"defense": 2,
+	"speed": 30,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 0,
+	"knockbackResistance": 1,
 	"followRange": 16,
-	"eggBackColor": "#FF9900",
-	"eggForeColor": "#FFFF00",
+	"eggBackColor": "#270d03",
+	"eggForeColor": "#fba905",
 	"subspecies": [
 		{
 			"index": 1,
@@ -45,14 +45,38 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "fire",
+	"element": "lava",
 	"peaceful": false,
-	"summonable": true,
+	"summonable": false,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,
 	"dungeonLevel": 1,
 	"drops": [
+		{
+			"item": "minecraft:stone",
+			"minAmount": 1,
+			"maxAmount": 8,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:iron_ore",
+			"minAmount": 1,
+			"maxAmount": 2,
+			"chance": 0.75
+		},
+		{
+			"item": "minecraft:quartz",
+			"minAmount": 1,
+			"maxAmount": 8,
+			"chance": 0.75
+		},
+		{
+			"item": "minecraft:gold_ore",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.1
+		},
 		{
 			"item": "minecraft:coal",
 			"minAmount": 1,

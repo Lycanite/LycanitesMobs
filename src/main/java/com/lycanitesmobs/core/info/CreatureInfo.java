@@ -36,11 +36,13 @@ public class CreatureInfo {
 	public int experience = 5;
 	public double health = 20.0D;
 	public double defense = 0.0D;
-	public double speed = 24.0D;
+	public double speed = 24.0D; // Divided by 100 when applied.
 	public double damage = 2.0D;
 	public double haste = 1.0D;
 	public double effect = 1.0D;
 	public double pierce = 1.0D;
+	public double knockbackResistance = 0.0D;
+	public double followRange = 16.0D;
 
 
 	// Spawn Egg:
@@ -68,6 +70,15 @@ public class CreatureInfo {
 	// Creature Difficulty:
 	/** If true, this mob is allowed on Peaceful Difficulty. **/
 	public boolean peaceful = false;
+
+	/** If true, this mob can be summoned as a minion. The entity must have pet AI for this. **/
+	public boolean summonable = false;
+
+	/** If true, this mob can be tamed as a pet. The entity must have pet AI and a treat item set for this. **/
+	public boolean tameable = false;
+
+	/** If true, this mob can be used as a mount. The entity must have mount AI for this. **/
+	public boolean mountable = false;
 
 	/** How many charges this creature normally costs to summon. **/
 	public int summonCost = 1;
@@ -126,6 +137,10 @@ public class CreatureInfo {
 			this.effect = json.get("effect").getAsDouble();
 		if(json.has("pierce"))
 			this.pierce = json.get("pierce").getAsDouble();
+		if(json.has("knockbackResistance"))
+			this.knockbackResistance = json.get("knockbackResistance").getAsDouble();
+		if(json.has("followRange"))
+			this.followRange = json.get("followRange").getAsDouble();
 
 		this.eggBackColor = Color.decode(json.get("eggBackColor").getAsString()).getRGB();
 		this.eggForeColor = Color.decode(json.get("eggForeColor").getAsString()).getRGB();
@@ -145,6 +160,12 @@ public class CreatureInfo {
 
 		if(json.has("peaceful"))
 			this.peaceful = json.get("peaceful").getAsBoolean();
+		if(json.has("summonable"))
+			this.summonable = json.get("summonable").getAsBoolean();
+		if(json.has("tameable"))
+			this.tameable = json.get("tameable").getAsBoolean();
+		if(json.has("mountable"))
+			this.mountable = json.get("mountable").getAsBoolean();
 		if(json.has("summonCost"))
 			this.summonCost = json.get("summonCost").getAsInt();
 		if(json.has("dungeonLevel"))

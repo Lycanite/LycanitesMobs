@@ -19,7 +19,6 @@ import com.lycanitesmobs.core.inventory.InventoryCreature;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.core.spawner.SpawnerEventListener;
-import com.sun.javafx.geom.Vec3f;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -2475,7 +2474,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	 * @param inaccuracy How inaccurate the projectile aiming is.
 	 * @return The newly created projectile.
 	 */
-	public EntityProjectileBase fireProjectile(Class projectileClass, Entity target, float range, float angle, Vec3f offset, float velocity, float scale, float inaccuracy) {
+	public EntityProjectileBase fireProjectile(Class projectileClass, Entity target, float range, float angle, Vec3d offset, float velocity, float scale, float inaccuracy) {
 		EntityProjectileBase projectile = null;
 		try {
 			projectile = (EntityProjectileBase) projectileClass.getConstructor(World.class, EntityLivingBase.class).newInstance(this.getEntityWorld(), this);

@@ -1,0 +1,14 @@
+{
+	"name": "void",
+	"loadDefault": true,
+	"buffs": [
+		"lycanitesmobs:leech"
+	],
+	"debuffs": [
+		"lycanitesmobs:decay"
+	],
+	"components": [
+		"order",
+		"chaos"
+	]
+}

@@ -1,5 +1,5 @@
 {
-	"name": "cinder",
+	"name": "djinn",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -21,31 +21,31 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
+	"experience": 10,
 	"health": 15,
 	"defense": 0,
-	"speed": 28,
-	"damage": 2,
+	"speed": 24,
+	"damage": 1,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#FF9900",
-	"eggForeColor": "#FFFF00",
+	"eggBackColor": "#b6bbc2",
+	"eggForeColor": "#f0f1f1",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "azure",
+			"name": "ashen",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "violet",
 			"type": "uncommon"
 		}
 	],
-	"element": "fire",
+	"element": "air",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,
@@ -54,22 +54,34 @@
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:feather",
 			"minAmount": 1,
-			"maxAmount": 1,
+			"maxAmount": 4,
 			"chance": 0.5
 		},
 		{
-			"item": "minecraft:blaze_rod",
+			"item": "minecraft:chorus_fruit",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.1
+			"maxAmount": 4,
+			"chance": 0.5
 		},
 		{
-			"item": "elementalmobs:embercharge",
+			"item": "minecraft:snowball",
+			"minAmount": 1,
+			"maxAmount": 8,
+			"chance": 1
+		},
+		{
+			"item": "elementalmobs:cleansingcrystal",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.25
+			"chance": 0.05
+		},
+		{
+			"item": "elementalmobs:whirlwindcharge",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.05
 		}
 	],
 	"sizeScale": 1,

@@ -11,13 +11,14 @@ import java.util.Map;
 public class CreatureManager extends JSONLoader {
 	public static CreatureManager INSTANCE;
 
-
-
 	/** A map of all creatures by name. **/
 	public Map<String, CreatureInfo> creatures = new HashMap<>();
 
 	/** A map of all creatures by class. **/
 	public Map<Class, CreatureInfo> creatureClassMap = new HashMap<>();
+
+	/** The map of all creatures by name to be used when reloading json. **/
+	public Map<String, CreatureInfo> oldCreatures = new HashMap<>();
 
 
 	/** Returns the main Creature Manager INSTANCE or creates it and returns it. **/
@@ -37,9 +38,11 @@ public class CreatureManager extends JSONLoader {
 
 	/** Loads all JSON Elements. Should only be done on pre-init and before Creature Info is loaded. **/
 	public void loadAllFromJSON(GroupInfo groupInfo) {
+		this.oldCreatures = new HashMap<>(this.creatures);
 		this.creatures.clear();
 		this.creatureClassMap.clear();
 		this.loadAllJson(groupInfo, "Creature", "creatures", "name", false);
+		this.oldCreatures.clear();
 		LycanitesMobs.printDebug("Creature", "Complete! " + this.creatures.size() + " JSON Creature Info Loaded In Total.");
 	}
 
@@ -52,6 +55,14 @@ public class CreatureManager extends JSONLoader {
 			LycanitesMobs.printWarning("", "Unable to load " + name + " json due to missing name.");
 			return;
 		}
+
+
+		// Already Exists:
+		if(this.oldCreatures.containsKey(creatureInfo.name)) {
+			creatureInfo = this.oldCreatures.get(creatureInfo.name);
+			creatureInfo.loadFromJSON(json);
+		}
+
 		this.creatures.put(creatureInfo.name, creatureInfo);
 		this.creatureClassMap.put(creatureInfo.entityClass, creatureInfo);
 	}

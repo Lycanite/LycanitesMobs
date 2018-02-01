@@ -90,6 +90,10 @@ public class ElementInfo {
 	 */
 	public void debuffEntity(EntityLivingBase targetEntity, int duration, int amplifier) {
 		for(String debuff : this.debuffs) {
+			if("burning".equalsIgnoreCase(debuff)) {
+				targetEntity.setFire(duration * 20);
+				continue;
+			}
 			Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(debuff));
 			if(potion != null) {
 				targetEntity.addPotionEffect(new PotionEffect(potion, duration, amplifier));

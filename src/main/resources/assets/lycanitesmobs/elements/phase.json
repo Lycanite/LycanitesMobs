@@ -1,0 +1,14 @@
+{
+	"name": "phase",
+	"loadDefault": true,
+	"buffs": [
+		"minecraft:speed"
+	],
+	"debuffs": [
+		"lycanitesmobs:fear"
+	],
+	"components": [
+		"earth",
+		"air"
+	]
+}

@@ -1,5 +1,5 @@
 {
-	"name": "cinder",
+	"name": "grue",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -23,50 +23,75 @@
 	},
 	"experience": 5,
 	"health": 15,
-	"defense": 0,
-	"speed": 28,
+	"defense": 1,
+	"speed": 24,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 0,
+	"knockbackResistance": 1,
 	"followRange": 16,
-	"eggBackColor": "#FF9900",
-	"eggForeColor": "#FFFF00",
+	"eggBackColor": "#997722",
+	"eggForeColor": "#008844",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "azure",
+			"name": "golden",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "scarlet",
 			"type": "uncommon"
 		}
 	],
-	"element": "fire",
+	"element": "arbour",
 	"peaceful": false,
-	"summonable": true,
+	"summonable": false,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:stick",
+			"burningItem": "minecraft:coal",
 			"minAmount": 1,
-			"maxAmount": 1,
+			"maxAmount": 6,
 			"chance": 0.5
 		},
 		{
-			"item": "minecraft:blaze_rod",
+			"item": "minecraft:vine",
 			"minAmount": 1,
-			"maxAmount": 1,
+			"maxAmount": 3,
 			"chance": 0.1
 		},
 		{
-			"item": "elementalmobs:embercharge",
+			"item": "minecraft:wheat_seeds",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.1
+		},
+		{
+			"item": "minecraft:pumpkin_seeds",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.1
+		},
+		{
+			"item": "minecraft:melon_seeds",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.1
+		},
+		{
+			"item": "lycanitesmobs:immunizer",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.05
+		},
+		{
+			"item": "elementalmobs:lifedraincharge",
 			"minAmount": 1,
 			"maxAmount": 1,
 			"chance": 0.25

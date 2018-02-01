@@ -35,6 +35,9 @@ public class ElementManager extends JSONLoader {
 	public void loadAllFromJSON(GroupInfo groupInfo) {
 		this.elements.clear();
 		this.loadAllJson(groupInfo, "Element", "elements", "name", false);
+		for(ElementInfo elementInfo : this.elements.values()) {
+			elementInfo.init();
+		}
 		LycanitesMobs.printDebug("Element", "Complete! " + this.elements.size() + " JSON Elements Loaded In Total.");
 	}
 

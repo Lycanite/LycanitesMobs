@@ -1,0 +1,14 @@
+{
+	"name": "order",
+	"loadDefault": true,
+	"buffs": [
+		"minecraft:strength"
+	],
+	"debuffs": [
+		"minecraft:wither"
+	],
+	"components": [
+		"air",
+		"chaos"
+	]
+}

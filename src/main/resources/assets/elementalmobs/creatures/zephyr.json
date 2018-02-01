@@ -1,5 +1,5 @@
 {
-	"name": "cinder",
+	"name": "zephyr",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -25,51 +25,51 @@
 	"health": 15,
 	"defense": 0,
 	"speed": 28,
-	"damage": 2,
+	"damage": 1,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 0,
+	"knockbackResistance": 1,
 	"followRange": 16,
-	"eggBackColor": "#FF9900",
-	"eggForeColor": "#FFFF00",
+	"eggBackColor": "#FFFFDD",
+	"eggForeColor": "#AABBFF",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "azure",
+			"name": "golden",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "keppel",
 			"type": "uncommon"
 		}
 	],
-	"element": "fire",
+	"element": "electric",
 	"peaceful": false,
-	"summonable": true,
+	"summonable": false,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:glowstone_dust",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.5
+			"maxAmount": 8,
+			"chance": 1
 		},
 		{
-			"item": "minecraft:blaze_rod",
+			"item": "minecraft:gunpowder",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.1
+			"maxAmount": 3,
+			"chance": 1
 		},
 		{
-			"item": "elementalmobs:embercharge",
+			"item": "elementalmobs:cleansingcrystal",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.25
+			"chance": 0.05
 		}
 	],
 	"sizeScale": 1,

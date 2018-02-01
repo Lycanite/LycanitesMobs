@@ -1,0 +1,14 @@
+{
+	"name": "frost",
+	"loadDefault": true,
+	"buffs": [
+		"lycanitesmobs:freezeaura"
+	],
+	"debuffs": [
+		"minecraft:slowness"
+	],
+	"components": [
+		"water",
+		"air"
+	]
+}

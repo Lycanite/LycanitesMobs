@@ -51,7 +51,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String versionNumber = "1.18.1.1";
+	public static final String versionNumber = "1.18.2.0";
 	public static final String versionMC = "1.12.2";
 	public static final String version = versionNumber + " - MC " + versionMC;
 	public static final String website = "http://lycanitesmobs.com";
@@ -136,21 +136,31 @@ public class LycanitesMobs {
 		// ========== Custom Potion Effects ==========
 		config.setCategoryComment("Potion Effects", "Here you can override each potion effect ID from the automatic ID, use 0 if you want it to stay automatic. Overrides should only be needed if you are running a lot of mods that add custom effects.");
 		if(config.getBool("Potion Effects", "Enable Custom Effects", true, "Set to false to disable the custom potion effects.")) {
-			PotionBase.reserveEffectIDSpace();
 			ObjectManager.addPotionEffect("paralysis", config, true, 0xFFFF00, 1, 0, false);
-			ObjectManager.addPotionEffect("leech", config, false, 0x00FF99, 7, 0, true);
 			ObjectManager.addPotionEffect("penetration", config, true, 0x222222, 7, 1, false);
 			ObjectManager.addPotionEffect("recklessness", config, true, 0xFF0044, 4, 0, false);
 			ObjectManager.addPotionEffect("rage", config, true, 0xFF4400, 4, 0, false);
 			ObjectManager.addPotionEffect("weight", config, true, 0x000022, 1, 0, false);
-			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
-            ObjectManager.addPotionEffect("fear", config, false, 0x220022, 5, 1, false);
-            ObjectManager.addPotionEffect("fallresist", config, false, 0xDDFFFF, 0, 0, true);
-			ObjectManager.addPotionEffect("rejuvenation", config, false, 0x99FFBB, 7, 2, true);
+			ObjectManager.addPotionEffect("fear", config, false, 0x220022, 5, 1, false);
 			ObjectManager.addPotionEffect("decay", config, true, 0x110033, 1, 2, false);
 			ObjectManager.addPotionEffect("insomnia", config, true, 0x002222, 5, 1, false);
+			ObjectManager.addPotionEffect("instability", config, true, 0x004422, 5, 1, false);
+			ObjectManager.addPotionEffect("lifeleak", config, true, 0x0055FF, 5, 1, false);
+			ObjectManager.addPotionEffect("plague", config, true, 0x220066, 5, 1, false);
+			ObjectManager.addPotionEffect("aphagia", config, true, 0xFFDDDD, 5, 1, false);
+
+			ObjectManager.addPotionEffect("leech", config, false, 0x00FF99, 7, 0, true);
+			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
+			ObjectManager.addPotionEffect("fallresist", config, false, 0xDDFFFF, 0, 0, true);
+			ObjectManager.addPotionEffect("rejuvenation", config, false, 0x99FFBB, 7, 2, true);
 			ObjectManager.addPotionEffect("immunization", config, false, 0x66FFBB, 7, 2, true);
-			ObjectManager.addPotionEffect("cleansed", config, true, 0x66BBFF, 6, 1, true);
+			ObjectManager.addPotionEffect("cleansed", config, false, 0x66BBFF, 6, 1, true);
+			ObjectManager.addPotionEffect("heataura", config, false, 0x996600, 5, 1, true);
+			ObjectManager.addPotionEffect("staticaura", config, false, 0xFFBB55, 5, 1, true);
+			ObjectManager.addPotionEffect("freezeaura", config, false, 0x55BBFF, 5, 1, true);
+			ObjectManager.addPotionEffect("envenom", config, false, 0x44DD66, 5, 1, true);
+			ObjectManager.addPotionEffect("smited", config, true, 0xDDDDFF, 5, 1, false);
+
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}
 		disableNausea = config.getBool("Potion Effects", "Disable Nausea Debuff", disableNausea, "Set to true to disable the vanilla nausea debuff on players.");

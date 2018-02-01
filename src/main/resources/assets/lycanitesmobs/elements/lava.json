@@ -1,0 +1,14 @@
+{
+	"name": "lava",
+	"loadDefault": true,
+	"buffs": [
+		"lycanitesmobs:heataura"
+	],
+	"debuffs": [
+		"lycanitesmobs:smouldering"
+	],
+	"components": [
+		"fire",
+		"earth"
+	]
+}

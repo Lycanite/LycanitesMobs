@@ -1,0 +1,14 @@
+{
+	"name": "crystal",
+	"loadDefault": true,
+	"buffs": [
+		"minecraft:saturation"
+	],
+	"debuffs": [
+		"lycanitesmobs:aphagia"
+	],
+	"components": [
+		"earth",
+		"order"
+	]
+}

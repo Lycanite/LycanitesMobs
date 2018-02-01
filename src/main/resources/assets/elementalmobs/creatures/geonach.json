@@ -1,5 +1,5 @@
 {
-	"name": "cinder",
+	"name": "geonach",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -22,30 +22,35 @@
 		"despawnForced": false
 	},
 	"experience": 5,
-	"health": 15,
-	"defense": 0,
+	"health": 20,
+	"defense": 3,
 	"speed": 28,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 0,
+	"knockbackResistance": 1,
 	"followRange": 16,
-	"eggBackColor": "#FF9900",
-	"eggForeColor": "#FFFF00",
+	"eggBackColor": "#443333",
+	"eggForeColor": "#BBBBCC",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "azure",
+			"name": "keppel",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "golden",
 			"type": "uncommon"
+		},
+		{
+			"index": 3,
+			"name": "celestial",
+			"type": "rare"
 		}
 	],
-	"element": "fire",
+	"element": "earth",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,
@@ -54,22 +59,55 @@
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:stone",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.5
+			"maxAmount": 8,
+			"chance": 1
 		},
 		{
-			"item": "minecraft:blaze_rod",
+			"item": "minecraft:iron_ore",
+			"minAmount": 1,
+			"maxAmount": 2,
+			"chance": 0.75
+		},
+		{
+			"item": "minecraft:quartz",
+			"minAmount": 1,
+			"maxAmount": 8,
+			"chance": 0.75
+		},
+		{
+			"item": "minecraft:gold_ore",
 			"minAmount": 1,
 			"maxAmount": 1,
 			"chance": 0.1
 		},
 		{
-			"item": "elementalmobs:embercharge",
+			"item": "elementalmobs:cleansingcrystal",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.25
+			"chance": 0.01
+		},
+		{
+			"item": "minecraft:diamond",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1,
+			"subspecies": 3
+		},
+		{
+			"item": "elementalmobs:cleansingcrystal",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1,
+			"subspecies": 3
+		},
+		{
+			"item": "mountainmobs:soulstonemountain",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 1,
+			"subspecies": 3
 		}
 	],
 	"sizeScale": 1,

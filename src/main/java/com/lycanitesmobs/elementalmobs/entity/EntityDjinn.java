@@ -6,7 +6,6 @@ import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobDrop;
-import com.sun.javafx.geom.Vec3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -17,8 +16,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -128,7 +126,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
     public void rangedAttack(Entity target, float range) {
     	int projectileCount = 10;
     	for(int i = 0; i < projectileCount; i++) {
-    		this.fireProjectile(EntityWhirlwind.class, target, range, (360 / 10) * i, new Vec3f(0, 0, 0), 1.2f, 2f, 1F);
+    		this.fireProjectile(EntityWhirlwind.class, target, range, (360 / 10) * i, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
 		}
         super.rangedAttack(target, range);
     }

@@ -6,7 +6,6 @@ import com.lycanitesmobs.api.IGroupIce;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.MobDrop;
-import com.sun.javafx.geom.Vec3f;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityBlaze;
@@ -14,16 +13,14 @@ import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -122,7 +119,7 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
     // ========== Ranged Attack ==========
     @Override
     public void rangedAttack(Entity target, float range) {
-    	this.fireProjectile(EntityFrostbolt.class, target, range, 0, new Vec3f(0, 0, 0), 1.2f, 2f, 1F);
+    	this.fireProjectile(EntityFrostbolt.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
     }
     
     

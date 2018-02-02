@@ -1,17 +1,17 @@
 {
-	"name": "spriggan",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntitySpriggan",
+	"name": "shambler",
+	"class": "com.lycanitesmobs.forestmobs.entity.EntityShambler",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
-		"spawnWeight": 8,
+		"biomes": ["forest", "-mountain"],
+		"spawnWeight": 4,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
@@ -22,50 +22,50 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
-	"defense": 1,
-	"speed": 24,
+	"experience": 10,
+	"health": 30,
+	"defense": 3,
+	"speed": 22,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 1,
+	"knockbackResistance": 0.75,
 	"followRange": 16,
-	"eggBackColor": "#997722",
-	"eggForeColor": "#008844",
+	"eggBackColor": "#DDFF22",
+	"eggForeColor": "#005511",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "dark",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "scarlet",
+			"name": "keppel",
 			"type": "uncommon"
 		}
 	],
 	"element": "arbour",
 	"peaceful": false,
 	"summonable": false,
-	"tameable": false,
+	"tameable": true,
 	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 1,
+	"summonCost": 4,
+	"dungeonLevel": 2,
 	"drops": [
+		{
+			"item": "minecraft:log",
+			"minAmount": 1,
+			"maxAmount": 6,
+			"chance": 0.5
+		},
 		{
 			"item": "minecraft:stick",
 			"burningItem": "minecraft:coal",
 			"minAmount": 1,
 			"maxAmount": 6,
 			"chance": 0.5
-		},
-		{
-			"item": "minecraft:vine",
-			"minAmount": 1,
-			"maxAmount": 3,
-			"chance": 0.1
 		},
 		{
 			"item": "minecraft:wheat_seeds",
@@ -86,16 +86,16 @@
 			"chance": 0.1
 		},
 		{
-			"item": "lycanitesmobs:immunizer",
+			"item": "minecraft:apple",
 			"minAmount": 1,
 			"maxAmount": 1,
 			"chance": 0.05
 		},
 		{
-			"item": "elementalmobs:lifedraincharge",
+			"item": "lycanitesmobs:immunizer",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.25
+			"chance": 0.05
 		}
 	],
 	"sizeScale": 1,

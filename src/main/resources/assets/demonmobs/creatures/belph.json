@@ -1,22 +1,22 @@
 {
-	"name": "zephyr",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityZephyr",
+	"name": "belph",
+	"class": "com.lycanitesmobs.demonmobs.entity.EntityBelph",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast", "portal", "nether"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
-		"dimensionListType": "blacklist",
-		"ignoreBiome": false,
-		"biomes": [],
+		"dimensionIds": [-1],
+		"dimensionListType": "whitelist",
+		"ignoreBiome": true,
+		"biomes": ["nether"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
 		"spawnGroupMax": 3,
-		"spawnsInLight": false,
+		"spawnsInLight": true,
 		"spawnsInDark": true,
 		"worldDayMin": -1,
 		"despawnNatural": true,
@@ -25,52 +25,46 @@
 	"experience": 5,
 	"health": 15,
 	"defense": 0,
-	"speed": 28,
+	"speed": 24,
 	"damage": 1,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#FFFFDD",
-	"eggForeColor": "#AABBFF",
+	"eggBackColor": "#992222",
+	"eggForeColor": "#000000",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "scarlet",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "keppel",
+			"name": "dark",
 			"type": "uncommon"
 		}
 	],
-	"element": "electric",
+	"element": "nether",
 	"peaceful": false,
-	"summonable": false,
+	"summonable": true,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:glowstone_dust",
-			"minAmount": 1,
-			"maxAmount": 8,
-			"chance": 1
-		},
-		{
-			"item": "minecraft:gunpowder",
+			"item": "minecraft:nether_wart",
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 1
 		},
 		{
-			"item": "elementalmobs:cleansingcrystal",
+			"item": "demonmobs:doomfirecharge",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
+			"maxAmount": 3,
+			"chance": 0.25
 		}
 	],
 	"sizeScale": 1,

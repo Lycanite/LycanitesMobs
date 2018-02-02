@@ -1,82 +1,82 @@
 {
-	"name": "grue",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityGrue",
+	"name": "erepede",
+	"class": "com.lycanitesmobs.desertmobs.entity.EntityErepede",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": ["underground"],
+		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
-		"spawnWeight": 8,
+		"biomes": ["sandy", "wasteland", "mesa", "-cold"],
+		"spawnWeight": 4,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
-		"spawnGroupMax": 3,
+		"spawnGroupMax": 2,
 		"spawnsInLight": false,
 		"spawnsInDark": true,
 		"worldDayMin": -1,
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
-	"defense": 1,
-	"speed": 32,
+	"experience": 10,
+	"health": 20,
+	"defense": 2,
+	"speed": 26,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 1,
+	"knockbackResistance": 0.25,
 	"followRange": 16,
-	"eggBackColor": "#191017",
-	"eggForeColor": "#BB44AA",
+	"eggBackColor": "#DD9922",
+	"eggForeColor": "#FFDDFF",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "scarlet",
+			"name": "golden",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
-			"type": "uncommon"
-		},
-		{
-			"index": 3,
-			"name": "lunar",
+			"name": "ashen",
 			"type": "uncommon"
 		}
 	],
-	"element": "shadow",
+	"element": "crystal",
 	"peaceful": false,
 	"summonable": false,
-	"tameable": false,
-	"mountable": false,
-	"summonCost": 2,
+	"tameable": true,
+	"mountable": true,
+	"summonCost": 6,
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:ender_pearl",
+			"item": "minecraft:flint",
+			"minAmount": 1,
+			"maxAmount": 2,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:iron_ore",
 			"minAmount": 1,
 			"maxAmount": 2,
 			"chance": 0.5
 		},
 		{
-			"item": "minecraft:obsidian",
+			"item": "minecraft:gold_nugget",
 			"minAmount": 1,
 			"maxAmount": 2,
-			"chance": 0.5
+			"chance": 0.25
 		},
 		{
-			"item": "shadowmobs:soulstoneshadow",
+			"item": "desertmobs:mudshotcharge",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 1,
-			"subspecies": 3
+			"maxAmount": 3,
+			"chance": 0.5
 		}
 	],
 	"sizeScale": 1,

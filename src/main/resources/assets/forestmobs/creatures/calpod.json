@@ -1,48 +1,48 @@
 {
-	"name": "spriggan",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntitySpriggan",
+	"name": "calpod",
+	"class": "com.lycanitesmobs.forestmobs.entity.EntityCalpod",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
-		"spawnWeight": 8,
+		"biomes": ["forest", "-mountain"],
+		"spawnWeight": 2,
 		"dungeonWeight": 200,
-		"spawnAreaLimit": 5,
+		"spawnAreaLimit": 3,
 		"spawnGroupMin": 1,
-		"spawnGroupMax": 3,
+		"spawnGroupMax": 2,
 		"spawnsInLight": false,
 		"spawnsInDark": true,
 		"worldDayMin": -1,
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
-	"defense": 1,
-	"speed": 24,
-	"damage": 2,
+	"experience": 3,
+	"health": 5,
+	"defense": 0,
+	"speed": 28,
+	"damage": 1,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 1,
+	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#997722",
-	"eggForeColor": "#008844",
+	"eggBackColor": "#996436",
+	"eggForeColor": "#3d2013",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "verdant",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "scarlet",
+			"name": "violet",
 			"type": "uncommon"
 		}
 	],
@@ -51,9 +51,15 @@
 	"summonable": false,
 	"tameable": false,
 	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 1,
+	"summonCost": 4,
+	"dungeonLevel": 2,
 	"drops": [
+		{
+			"item": "minecraft:log",
+			"minAmount": 1,
+			"maxAmount": 6,
+			"chance": 0.5
+		},
 		{
 			"item": "minecraft:stick",
 			"burningItem": "minecraft:coal",
@@ -62,11 +68,11 @@
 			"chance": 0.5
 		},
 		{
-			"item": "minecraft:vine",
+			"item": "minecraft:spider_eye",
 			"minAmount": 1,
-			"maxAmount": 3,
-			"chance": 0.1
-		},
+			"maxAmount": 2,
+			"chance": 0.5
+		}
 		{
 			"item": "minecraft:wheat_seeds",
 			"minAmount": 1,
@@ -84,18 +90,6 @@
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 0.1
-		},
-		{
-			"item": "lycanitesmobs:immunizer",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "elementalmobs:lifedraincharge",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.25
 		}
 	],
 	"sizeScale": 1,

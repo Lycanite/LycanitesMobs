@@ -1,76 +1,82 @@
 {
-	"name": "zephyr",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityZephyr",
+	"name": "wendigo",
+	"class": "com.lycanitesmobs.arcticmobs.entity.EntityWendigo",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast", "ooze"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
-		"spawnWeight": 8,
+		"biomes": ["cold", "snowy", "coniferous", "-end"],
+		"spawnWeight": 4,
 		"dungeonWeight": 200,
-		"spawnAreaLimit": 5,
+		"spawnAreaLimit": 1,
 		"spawnGroupMin": 1,
-		"spawnGroupMax": 3,
+		"spawnGroupMax": 1,
 		"spawnsInLight": false,
 		"spawnsInDark": true,
 		"worldDayMin": -1,
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
-	"defense": 0,
-	"speed": 28,
-	"damage": 1,
+	"experience": 15,
+	"health": 30,
+	"defense": 3,
+	"speed": 16,
+	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#FFFFDD",
-	"eggForeColor": "#AABBFF",
+	"eggBackColor": "#CCCCFF",
+	"eggForeColor": "#0055FF",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "keppel",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "keppel",
+			"name": "violet",
 			"type": "uncommon"
 		}
 	],
-	"element": "electric",
+	"element": "frost",
 	"peaceful": false,
 	"summonable": false,
 	"tameable": false,
 	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 1,
+	"summonCost": 6,
+	"dungeonLevel": 2,
 	"drops": [
 		{
-			"item": "minecraft:glowstone_dust",
+			"item": "minecraft:snow",
 			"minAmount": 1,
 			"maxAmount": 8,
-			"chance": 1
+			"chance": 0.5
 		},
 		{
-			"item": "minecraft:gunpowder",
+			"item": "minecraft:packed_ice",
 			"minAmount": 1,
-			"maxAmount": 3,
-			"chance": 1
+			"maxAmount": 8,
+			"chance": 0.25
 		},
 		{
-			"item": "elementalmobs:cleansingcrystal",
+			"item": "arcticmobs:tundracharge",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.05
+			"chance": 0.75
+		},
+		{
+			"item": "arcticmobs:frostyfur",
+			"minAmount": 2,
+			"maxAmount": 5,
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

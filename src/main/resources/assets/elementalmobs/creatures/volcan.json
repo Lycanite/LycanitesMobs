@@ -1,5 +1,6 @@
 {
 	"name": "volcan",
+	"class": "com.lycanitesmobs.elementalmobs.entity.EntityVolcan",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {

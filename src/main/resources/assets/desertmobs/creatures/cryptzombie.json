@@ -1,16 +1,16 @@
 {
-	"name": "zephyr",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityZephyr",
+	"name": "cryptzombie",
+	"class": "com.lycanitesmobs.desertmobs.entity.EntityCryptZombie",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
+		"biomes": ["sandy", "wasteland", "mesa", "-cold"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
@@ -23,54 +23,48 @@
 		"despawnForced": false
 	},
 	"experience": 5,
-	"health": 15,
+	"health": 25,
 	"defense": 0,
-	"speed": 28,
-	"damage": 1,
+	"speed": 24,
+	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#FFFFDD",
-	"eggForeColor": "#AABBFF",
+	"eggBackColor": "#CC9966",
+	"eggForeColor": "#AA8800",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "scarlet",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "keppel",
+			"name": "verdant",
 			"type": "uncommon"
 		}
 	],
-	"element": "electric",
+	"element": "crystal",
 	"peaceful": false,
-	"summonable": false,
+	"summonable": true,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:glowstone_dust",
-			"minAmount": 1,
-			"maxAmount": 8,
-			"chance": 1
-		},
-		{
-			"item": "minecraft:gunpowder",
+			"item": "minecraft:rotten_flesh",
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 1
 		},
 		{
-			"item": "elementalmobs:cleansingcrystal",
+			"item": "minecraft:gold_nugget",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
+			"maxAmount": 2,
+			"chance": 0.25
 		}
 	],
 	"sizeScale": 1,

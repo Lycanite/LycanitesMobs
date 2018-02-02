@@ -1,17 +1,17 @@
 {
-	"name": "zephyr",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityZephyr",
+	"name": "warg",
+	"class": "com.lycanitesmobs.forestmobs.entity.EntityWarg",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
-		"spawnWeight": 8,
+		"biomes": ["forest", "-mountain"],
+		"spawnWeight": 4,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
@@ -22,55 +22,49 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
-	"defense": 0,
-	"speed": 28,
-	"damage": 1,
+	"experience": 10,
+	"health": 20,
+	"defense": 1,
+	"speed": 30,
+	"damage": 3,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 0,
+	"knockbackResistance": 0.5,
 	"followRange": 16,
-	"eggBackColor": "#FFFFDD",
-	"eggForeColor": "#AABBFF",
+	"eggBackColor": "#321806",
+	"eggForeColor": "#68523b",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "ashen",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "keppel",
+			"name": "dark",
 			"type": "uncommon"
 		}
 	],
-	"element": "electric",
+	"element": "arbour",
 	"peaceful": false,
 	"summonable": false,
-	"tameable": false,
-	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 1,
+	"tameable": true,
+	"mountable": true,
+	"summonCost": 4,
+	"dungeonLevel": 2,
 	"drops": [
 		{
-			"item": "minecraft:glowstone_dust",
-			"minAmount": 1,
-			"maxAmount": 8,
-			"chance": 1
-		},
-		{
-			"item": "minecraft:gunpowder",
+			"item": "minecraft:leather",
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 1
 		},
 		{
-			"item": "elementalmobs:cleansingcrystal",
+			"item": "minecraft:bone",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
+			"maxAmount": 2,
+			"chance": 0.5
 		}
 	],
 	"sizeScale": 1,

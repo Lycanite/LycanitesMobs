@@ -1,6 +1,6 @@
 {
-	"name": "zephyr",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityZephyr",
+	"name": "tremor",
+	"class": "com.lycanitesmobs.elementalmobs.entity.EntityTremor",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -13,7 +13,7 @@
 		"biomes": [],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
-		"spawnAreaLimit": 5,
+		"spawnAreaLimit": 3,
 		"spawnGroupMin": 1,
 		"spawnGroupMax": 3,
 		"spawnsInLight": false,
@@ -23,30 +23,30 @@
 		"despawnForced": false
 	},
 	"experience": 5,
-	"health": 15,
-	"defense": 0,
-	"speed": 28,
-	"damage": 1,
+	"health": 20,
+	"defense": 1,
+	"speed": 30,
+	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 0,
+	"knockbackResistance": 1,
 	"followRange": 16,
-	"eggBackColor": "#FFFFDD",
-	"eggForeColor": "#AABBFF",
+	"eggBackColor": "#a1b5bf",
+	"eggForeColor": "#232d2e",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "russet",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "keppel",
+			"name": "verdant",
 			"type": "uncommon"
 		}
 	],
-	"element": "electric",
+	"element": "quake",
 	"peaceful": false,
 	"summonable": false,
 	"tameable": false,
@@ -55,22 +55,28 @@
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:glowstone_dust",
-			"minAmount": 1,
+			"item": "minecraft:gunpowder",
+			"minAmount": 4,
 			"maxAmount": 8,
 			"chance": 1
 		},
 		{
-			"item": "minecraft:gunpowder",
+			"item": "minecraft:firework_charge",
 			"minAmount": 1,
-			"maxAmount": 3,
+			"maxAmount": 1,
+			"chance": 0.25
+		},
+		{
+			"item": "minecraft:blaze_powder",
+			"minAmount": 1,
+			"maxAmount": 4,
 			"chance": 1
 		},
 		{
-			"item": "elementalmobs:cleansingcrystal",
+			"item": "minecraft:blaze_rod",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
+			"maxAmount": 2,
+			"chance": 0.75
 		}
 	],
 	"sizeScale": 1,

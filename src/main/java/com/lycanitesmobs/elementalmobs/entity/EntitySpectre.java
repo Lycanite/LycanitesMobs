@@ -95,7 +95,6 @@ public class EntitySpectre extends EntityCreatureTameable implements IMob, IGrou
 		this.drops.add(new MobDrop(new ItemStack(Items.CHORUS_FRUIT), 0.5F).setMaxAmount(10));
         this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
 		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstoneshadow")), 1F).setMaxAmount(1).setSubspecies(3));
 	}
 
     // ========== Set Size ==========

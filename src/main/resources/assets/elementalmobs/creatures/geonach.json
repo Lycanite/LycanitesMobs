@@ -1,5 +1,6 @@
 {
 	"name": "geonach",
+	"class": "com.lycanitesmobs.elementalmobs.entity.EntityGeonach",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {

@@ -1,17 +1,17 @@
 {
-	"name": "zephyr",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityZephyr",
+	"name": "gorgomite",
+	"class": "com.lycanitesmobs.desertmobs.entity.EntityGorgomite",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
-		"spawnWeight": 8,
+		"biomes": ["sandy", "wasteland", "mesa", "-cold"],
+		"spawnWeight": 6,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
@@ -22,8 +22,8 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
+	"experience": 3,
+	"health": 5,
 	"defense": 0,
 	"speed": 28,
 	"damage": 1,
@@ -32,12 +32,12 @@
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#FFFFDD",
-	"eggForeColor": "#AABBFF",
+	"eggBackColor": "#CC9900",
+	"eggForeColor": "#884400",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "dark",
 			"type": "uncommon"
 		},
 		{
@@ -46,7 +46,7 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "electric",
+	"element": "quake",
 	"peaceful": false,
 	"summonable": false,
 	"tameable": false,
@@ -55,22 +55,28 @@
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:glowstone_dust",
+			"item": "minecraft:sandstone",
 			"minAmount": 1,
-			"maxAmount": 8,
+			"maxAmount": 2,
 			"chance": 1
 		},
 		{
-			"item": "minecraft:gunpowder",
+			"item": "minecraft:stone",
 			"minAmount": 1,
-			"maxAmount": 3,
+			"maxAmount": 2,
 			"chance": 1
 		},
 		{
-			"item": "elementalmobs:cleansingcrystal",
+			"item": "minecraft:flint",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.05
+			"chance": 0.5
+		},
+		{
+			"item": "minecraft:iron_ore",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.1
 		}
 	],
 	"sizeScale": 1,

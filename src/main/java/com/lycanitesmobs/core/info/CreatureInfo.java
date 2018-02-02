@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.info;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.helpers.JSONHelper;
 
 import java.awt.*;
@@ -112,6 +113,12 @@ public class CreatureInfo {
 	/** Loads this element from a JSON object. **/
 	public void loadFromJSON(JsonObject json) {
 		this.name = json.get("name").getAsString();
+		try {
+			this.entityClass = Class.forName(json.get("class").getAsString());
+		}
+		catch(Exception e) {
+			LycanitesMobs.printWarning("", "[Creature] Unable to find the Java Entity Class: " + json.get("class").getAsString() + " for " + this.name);
+		}
 		if(json.has("enabled"))
 			this.enabled = json.get("enabled").getAsBoolean();
 		if(json.has("dummy"))

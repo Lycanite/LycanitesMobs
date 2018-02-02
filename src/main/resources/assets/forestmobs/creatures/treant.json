@@ -1,48 +1,48 @@
 {
-	"name": "spriggan",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntitySpriggan",
+	"name": "treant",
+	"class": "com.lycanitesmobs.forestmobs.entity.EntityTreant",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": [],
+		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": [],
-		"spawnWeight": 8,
+		"biomes": ["forest", "-mountain"],
+		"spawnWeight": 2,
 		"dungeonWeight": 200,
-		"spawnAreaLimit": 5,
+		"spawnAreaLimit": 2,
 		"spawnGroupMin": 1,
-		"spawnGroupMax": 3,
+		"spawnGroupMax": 1,
 		"spawnsInLight": false,
 		"spawnsInDark": true,
 		"worldDayMin": -1,
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 15,
-	"defense": 1,
-	"speed": 24,
-	"damage": 2,
+	"experience": 15,
+	"health": 60,
+	"defense": 3,
+	"speed": 18,
+	"damage": 4,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 1,
 	"followRange": 16,
-	"eggBackColor": "#997722",
-	"eggForeColor": "#008844",
+	"eggBackColor": "#663300",
+	"eggForeColor": "#00AA11",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "golden",
+			"name": "russet",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "scarlet",
+			"name": "ashen",
 			"type": "uncommon"
 		}
 	],
@@ -51,21 +51,21 @@
 	"summonable": false,
 	"tameable": false,
 	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 1,
+	"summonCost": 6,
+	"dungeonLevel": 3,
 	"drops": [
+		{
+			"item": "minecraft:log",
+			"minAmount": 16,
+			"maxAmount": 32,
+			"chance": 1
+		},
 		{
 			"item": "minecraft:stick",
 			"burningItem": "minecraft:coal",
-			"minAmount": 1,
-			"maxAmount": 6,
-			"chance": 0.5
-		},
-		{
-			"item": "minecraft:vine",
-			"minAmount": 1,
-			"maxAmount": 3,
-			"chance": 0.1
+			"minAmount": 16,
+			"maxAmount": 32,
+			"chance": 1
 		},
 		{
 			"item": "minecraft:wheat_seeds",
@@ -86,13 +86,19 @@
 			"chance": 0.1
 		},
 		{
-			"item": "lycanitesmobs:immunizer",
+			"item": "minecraft:apple",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.05
+			"chance": 0.25
 		},
 		{
-			"item": "elementalmobs:lifedraincharge",
+			"item": "minecraft:emerald",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.25
+		},
+		{
+			"item": "lycanitesmobs:immunizer",
 			"minAmount": 1,
 			"maxAmount": 1,
 			"chance": 0.25

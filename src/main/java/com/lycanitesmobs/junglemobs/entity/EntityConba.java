@@ -113,7 +113,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
 		if(this.vespidInfection) {
 			String entityName = EntityList.getEntityString(this);
 	    	if(entityName != null)
-	    		infection = I18n.translateToLocal("entity." + entityName + ".infected") + " ";
+	    		infection = I18n.translateToLocal("entity." + this.group.filename + "." + entityName + ".infected") + " ";
 		}
     	return infection + super.getSpeciesName();
     }

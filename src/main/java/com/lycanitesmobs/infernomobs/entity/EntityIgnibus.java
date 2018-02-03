@@ -115,7 +115,6 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 10F).setMaxAmount(20));
         this.drops.add(new MobDrop(new ItemStack(Items.GOLD_NUGGET), 1F).setMinAmount(10).setMaxAmount(40));
         this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("scorchfirecharge")), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("embercharge")), 1F).setMinAmount(4).setMaxAmount(10));
 	}
 
     // ========== Size ==========

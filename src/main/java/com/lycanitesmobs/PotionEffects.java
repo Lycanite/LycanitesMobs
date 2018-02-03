@@ -141,6 +141,19 @@ public class PotionEffects {
 			}
 		}
 
+		// ========== Instability ==========
+		PotionBase instability = ObjectManager.getPotionEffect("instability");
+		if(instability != null) {
+			if(!invulnerable && entity.isPotionActive(instability)) {
+				if(entity.getEntityWorld().rand.nextDouble() <= 0.1) {
+					double strength = 1 + entity.getActivePotionEffect(instability).getAmplifier();
+					entity.motionX = strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
+					entity.motionY = strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
+					entity.motionZ = strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
+				}
+			}
+		}
+
 		// ========== Disable Nausea ==========
 		if(LycanitesMobs.disableNausea && event.getEntityLiving() instanceof EntityPlayer) {
 			if(entity.isPotionActive(MobEffects.NAUSEA)) {

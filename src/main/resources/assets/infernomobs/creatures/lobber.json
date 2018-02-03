@@ -1,0 +1,96 @@
+{
+	"name": "lobber",
+	"class": "com.lycanitesmobs.infernomobs.entity.EntityLobber",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": ["lava"],
+		"disableSubspecies": false,
+		"dimensionIds": [],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": false,
+		"biomes": ["all"],
+		"spawnWeight": 2,
+		"dungeonWeight": 200,
+		"spawnAreaLimit": 2,
+		"spawnGroupMin": 1,
+		"spawnGroupMax": 2,
+		"spawnsInLight": false,
+		"spawnsInDark": true,
+		"worldDayMin": -1,
+		"despawnNatural": true,
+		"despawnForced": false
+	},
+	"experience": 5,
+	"health": 40,
+	"defense": 3,
+	"speed": 16,
+	"damage": 2,
+	"haste": 1,
+	"effect": 1,
+	"pierce": 0,
+	"knockbackResistance": 0,
+	"followRange": 24,
+	"eggBackColor": "#330011",
+	"eggForeColor": "#FF5500",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "azure",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "scarlet",
+			"type": "uncommon"
+		},
+		{
+			"index": 3,
+			"name": "umber",
+			"type": "rare"
+		}
+	],
+	"element": "lava",
+	"peaceful": false,
+	"summonable": false,
+	"tameable": false,
+	"mountable": false,
+	"summonCost": 6,
+	"dungeonLevel": 2,
+	"drops": [
+		{
+			"item": "minecraft:coal",
+			"minAmount": 1,
+			"maxAmount": 16,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:magma_cream",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:blaze_powder",
+			"minAmount": 1,
+			"maxAmount": 6,
+			"chance": 1
+		},
+		{
+			"item": "infernomobs:magmacharge",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.25
+		},
+		{
+			"item": "infernomobs:soulstoneinferno",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 1,
+			"subspecies": 3
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

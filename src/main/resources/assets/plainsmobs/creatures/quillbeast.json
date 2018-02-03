@@ -1,0 +1,72 @@
+{
+	"name": "quillbeast",
+	"class": "com.lycanitesmobs.plainsmobs.entity.EntityQuillbeast",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": ["monster", "beast"],
+		"disableSubspecies": false,
+		"dimensionIds": [-1, 1],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": false,
+		"biomes": ["plains", "savanna", "-snowy"],
+		"spawnWeight": 4,
+		"dungeonWeight": 200,
+		"spawnAreaLimit": 5,
+		"spawnGroupMin": 1,
+		"spawnGroupMax": 3,
+		"spawnsInLight": false,
+		"spawnsInDark": true,
+		"worldDayMin": -1,
+		"despawnNatural": true,
+		"despawnForced": false
+	},
+	"experience": 10,
+	"health": 10,
+	"defense": 0,
+	"speed": 26,
+	"damage": 2,
+	"haste": 1,
+	"effect": 1,
+	"pierce": 0,
+	"knockbackResistance": 0.25,
+	"followRange": 16,
+	"eggBackColor": "#642a12",
+	"eggForeColor": "#6051fe",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "dark",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "light",
+			"type": "uncommon"
+		}
+	],
+	"element": "order",
+	"peaceful": false,
+	"summonable": false,
+	"tameable": true,
+	"mountable": false,
+	"summonCost": 4,
+	"dungeonLevel": 1,
+	"drops": [
+		{
+			"item": "minecraft:leather",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
+			"item": "plainsmobs:quill",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

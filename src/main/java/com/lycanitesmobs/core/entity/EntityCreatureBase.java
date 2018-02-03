@@ -1074,7 +1074,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		}
 		if(MobInfo.levelPerLocalDifficulty > 0) {
 			double levelGain = this.getEntityWorld().getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
-			startingLevelMin += (int)Math.floor(levelGain);
+			startingLevelMin += Math.max(0, (int)Math.floor(levelGain - 1.5D));
 		}
 		return startingLevelMin;
 	}
@@ -1380,7 +1380,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 				Subspecies fusionSubspecies = transformedCreature.mobInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partnerCreature.getSubspecies());
 				transformedCreature.setSubspecies(fusionSubspecies != null ? fusionSubspecies.index : 0, true);
 				transformedCreature.setSizeScale(this.sizeScale + partnerCreature.sizeScale);
-				transformedCreature.setLevel(this.getLevel() + partnerCreature.getLevel());
+				transformedCreature.setLevel((this.getLevel() + partnerCreature.getLevel()) * 10);
 
 				// Tamed:
 				if (transformedCreature instanceof EntityCreatureTameable) {
@@ -3003,7 +3003,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this entity is climbing a ladder or wall, can be used for animation. **/
     @Override
     public boolean isOnLadder() {
-    	if(this.isFlying() || this.isStrongSwimmer()) return false;
+    	if(this.isFlying() || (this.isStrongSwimmer() && this.isInWater())) return false;
     	if(this.canClimb()) {
             return (this.getByteFromDataManager(CLIMBING) & 1) != 0;
         }

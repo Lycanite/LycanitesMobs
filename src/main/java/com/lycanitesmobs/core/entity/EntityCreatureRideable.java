@@ -73,7 +73,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     		this.riderEffects(riderLiving);
     		
     		// Protect Rider from Potion Effects:
-    		for(Object possibleEffect : riderLiving.getActivePotionEffects()) {
+    		for(Object possibleEffect : riderLiving.getActivePotionEffects().toArray(new Object[riderLiving.getActivePotionEffects().size()])) {
     			if(possibleEffect instanceof PotionEffect) {
     				PotionEffect potionEffect = (PotionEffect)possibleEffect;
     				if(!this.isPotionApplicable(potionEffect))

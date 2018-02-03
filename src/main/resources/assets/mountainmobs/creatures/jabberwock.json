@@ -1,0 +1,72 @@
+{
+	"name": "jabberwock",
+	"class": "com.lycanitesmobs.mountainmobs.entity.EntityJabberwock",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": ["monster", "beast"],
+		"disableSubspecies": false,
+		"dimensionIds": [-1, 1],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": false,
+		"biomes": ["mountain"],
+		"spawnWeight": 8,
+		"dungeonWeight": 200,
+		"spawnAreaLimit": 5,
+		"spawnGroupMin": 1,
+		"spawnGroupMax": 3,
+		"spawnsInLight": false,
+		"spawnsInDark": true,
+		"worldDayMin": -1,
+		"despawnNatural": true,
+		"despawnForced": false
+	},
+	"experience": 5,
+	"health": 15,
+	"defense": 0,
+	"speed": 26,
+	"damage": 4,
+	"haste": 1,
+	"effect": 1,
+	"pierce": 0,
+	"knockbackResistance": 0.25,
+	"followRange": 16,
+	"eggBackColor": "#662222",
+	"eggForeColor": "#FFFFAA",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "dark",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "russet",
+			"type": "uncommon"
+		}
+	],
+	"element": "earth",
+	"peaceful": false,
+	"summonable": true,
+	"tameable": false,
+	"mountable": false,
+	"summonCost": 2,
+	"dungeonLevel": 0,
+	"drops": [
+		{
+			"item": "minecraft:bone",
+			"minAmount": 1,
+			"maxAmount": 2,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:leather",
+			"minAmount": 1,
+			"maxAmount": 2,
+			"chance": 1
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

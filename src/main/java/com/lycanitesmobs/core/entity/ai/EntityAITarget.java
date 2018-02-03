@@ -8,6 +8,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.MathHelper;
@@ -204,7 +205,7 @@ public abstract class EntityAITarget extends EntityAIBase {
             return false;
         
         // Sight Check:
-        if(this.checkSight && !this.host.getEntitySenses().canSee(checkTarget))
+        if(this.checkSight && !checkTarget.isPotionActive(MobEffects.GLOWING) && !this.host.getEntitySenses().canSee(checkTarget))
             return false;
         
         // Nearby Check:

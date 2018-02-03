@@ -1,0 +1,78 @@
+{
+	"name": "vespid",
+	"class": "com.lycanitesmobs.junglemobs.entity.EntityVespid",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": ["sky", "underground"],
+		"disableSubspecies": false,
+		"dimensionIds": [-1, 1],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": false,
+		"biomes": ["jungle"],
+		"spawnWeight": 8,
+		"dungeonWeight": 200,
+		"spawnAreaLimit": 10,
+		"spawnGroupMin": 3,
+		"spawnGroupMax": 6,
+		"spawnsInLight": false,
+		"spawnsInDark": true,
+		"worldDayMin": -1,
+		"despawnNatural": true,
+		"despawnForced": false
+	},
+	"experience": 5,
+	"health": 5,
+	"defense": 0,
+	"speed": 32,
+	"damage": 1,
+	"haste": 1,
+	"effect": 1,
+	"pierce": 0,
+	"knockbackResistance": 0,
+	"followRange": 16,
+	"eggBackColor": "#112200",
+	"eggForeColor": "#998800",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "scarlet",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "ashen",
+			"type": "uncommon"
+		}
+	],
+	"element": "arbour",
+	"peaceful": false,
+	"summonable": false,
+	"tameable": false,
+	"mountable": false,
+	"summonCost": 2,
+	"dungeonLevel": 2,
+	"drops": [
+		{
+			"item": "minecraft:clay_ball",
+			"minAmount": 1,
+			"maxAmount": 16,
+			"chance": 1
+		},
+		{
+			"item": "junglemobs:propolis",
+			"minAmount": 1,
+			"maxAmount": 4,
+			"chance": 0.5
+		},
+		{
+			"item": "junglemobs:veswax",
+			"minAmount": 1,
+			"maxAmount": 4,
+			"chance": 0.5
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

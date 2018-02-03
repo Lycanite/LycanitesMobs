@@ -1,0 +1,66 @@
+{
+	"name": "geken",
+	"class": "com.lycanitesmobs.junglemobs.entity.EntityGeken",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": ["monster", "beast"],
+		"disableSubspecies": false,
+		"dimensionIds": [-1, 1],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": false,
+		"biomes": ["jungle"],
+		"spawnWeight": 8,
+		"dungeonWeight": 200,
+		"spawnAreaLimit": 5,
+		"spawnGroupMin": 1,
+		"spawnGroupMax": 3,
+		"spawnsInLight": false,
+		"spawnsInDark": true,
+		"worldDayMin": -1,
+		"despawnNatural": true,
+		"despawnForced": false
+	},
+	"experience": 5,
+	"health": 20,
+	"defense": 0,
+	"speed": 24,
+	"damage": 2,
+	"haste": 1,
+	"effect": 1,
+	"pierce": 0,
+	"knockbackResistance": 0,
+	"followRange": 16,
+	"eggBackColor": "#00AA00",
+	"eggForeColor": "#FFFF00",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "scarlet",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "keppel",
+			"type": "uncommon"
+		}
+	],
+	"element": "arbour",
+	"peaceful": false,
+	"summonable": true,
+	"tameable": false,
+	"mountable": false,
+	"summonCost": 2,
+	"dungeonLevel": 0,
+	"drops": [
+		{
+			"item": "minecraft:bone",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

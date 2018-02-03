@@ -5,7 +5,13 @@
 	"sectorCountMax": 20,
 	"corridorToCorridorChance": 0.1,
 	"roomToRoomChance": 0.1,
-	"conditions": [],
+	"conditions": [
+		{
+			"type": "world",
+			"dimensionIds": [0, -1],
+			"dimensionListType": "whitelist"
+		}
+	],
 	"themes": ["demonic"],
 	"entrances": ["entrancebasic"],
 	"rooms": ["roombasic", "roombasicloot", "roombasicmob", "roombasicpit"],

@@ -22,6 +22,9 @@ public class TickSpawnTrigger extends SpawnTrigger {
 	/** The maximum distance the player must be away from the last tick position. **/
 	public double lastTickDistanceMax = -1;
 
+	/** If true, the world time that the player is in is used instead of the player's ticks. **/
+	public boolean useWorldTime = false;
+
 	/** Stores the position of a player from the last tick for calculating distance. **/
 	protected Map<EntityPlayer, BlockPos> lastTickPositions = new HashMap<>();
 
@@ -43,12 +46,20 @@ public class TickSpawnTrigger extends SpawnTrigger {
 		if(json.has("lastTickDistanceMax"))
 			this.lastTickDistanceMax = json.get("lastTickDistanceMax").getAsDouble();
 
+		if(json.has("useWorldTime"))
+			this.useWorldTime = json.get("useWorldTime").getAsBoolean();
+
 		super.loadFromJSON(json);
 	}
 
 
 	/** Called every player tick. **/
 	public void onTick(EntityPlayer player, long ticks) {
+		// World Time:
+		if(this.useWorldTime) {
+			ticks = player.getEntityWorld().getWorldTime() % 24000;
+		}
+
 		// Tick Rate:
 		if(ticks == 0 || ticks % this.tickRate != 0) {
 			return;

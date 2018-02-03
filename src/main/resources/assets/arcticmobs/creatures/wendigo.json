@@ -23,7 +23,7 @@
 		"despawnForced": false
 	},
 	"experience": 15,
-	"health": 30,
+	"health": 40,
 	"defense": 3,
 	"speed": 16,
 	"damage": 2,

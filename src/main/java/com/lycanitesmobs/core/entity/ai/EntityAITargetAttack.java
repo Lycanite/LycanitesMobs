@@ -129,10 +129,10 @@ public class EntityAITargetAttack extends EntityAITarget {
         	return false;
         
         // Ownable Checks:
-        if(this.host instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() != null) {
-            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() == ((IEntityOwnable)target).getOwner())
+        if(this.host instanceof IEntityOwnable && this.host.getOwner() != null) {
+            if(target instanceof IEntityOwnable && this.host.getOwner() == ((IEntityOwnable)target).getOwner())
                 return false;
-            if(target == ((IEntityOwnable)this.host).getOwner())
+            if(target == this.host.getOwner())
                 return false;
         }
         

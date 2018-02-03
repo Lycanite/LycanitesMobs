@@ -238,6 +238,9 @@ public class ModelObj extends ModelCustom {
             if(!this.canRenderPart(partName, entity, layer, renderAsTrophy))
                 continue;
             this.currentAnimationPart = this.animationParts.get(partName);
+            if(this.currentAnimationPart == null) {
+            	continue;
+			}
 
             // Begin Rendering Part:
             GlStateManager.pushMatrix();

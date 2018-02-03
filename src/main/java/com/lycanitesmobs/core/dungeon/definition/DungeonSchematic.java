@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.spawner.MobSpawn;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
@@ -12,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
 import java.util.*;
 
@@ -38,6 +40,9 @@ public class DungeonSchematic {
 
 	/** A list of SpawnConditions to use. Optional. **/
 	public List<SpawnCondition> conditions = new ArrayList<>();
+
+	/** The list of biomes that this dungeon spawns in. **/
+	public List<Biome> biomes = new ArrayList<>();
 
 	/** A list of themes to use. Required. **/
 	public List<String> themes = new ArrayList<>();
@@ -115,6 +120,10 @@ public class DungeonSchematic {
 				this.conditions.add(spawnCondition);
 			}
 		}
+
+		// Biomes:
+		if(json.has("biomes"))
+			this.biomes = JSONHelper.getJsonBiomes(json.get("biomes").getAsJsonArray());
 
 		// Themes:
 		if(json.has("themes")) {
@@ -227,9 +236,24 @@ public class DungeonSchematic {
 			}
 		}
 
-		// TODO Add biomes.
+		if(!this.biomes.isEmpty() && !isValidBiome(world.getBiome(pos))) {
+			return false;
+		}
 
 		return true;
+	}
+
+
+	/**
+	 * Returns if any of the provided biomes are valid for this dungeon to spawn in.
+	 * @param biome The biome to check.
+	 * @return True if at least one biome in the provided list is a valid biome.
+	 */
+	public boolean isValidBiome(Biome biome) {
+		if(this.biomes.contains(biome)) {
+			return true;
+		}
+		return false;
 	}
 
 

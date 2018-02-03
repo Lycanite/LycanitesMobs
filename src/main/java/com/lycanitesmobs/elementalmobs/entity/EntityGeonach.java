@@ -311,6 +311,9 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 		if(fusable instanceof EntityJengu) {
 			return EntitySpriggan.class;
 		}
+		if(fusable instanceof EntityArgus) {
+			return EntityTremor.class;
+		}
 		return null;
 	}
 }

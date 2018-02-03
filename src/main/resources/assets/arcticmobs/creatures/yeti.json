@@ -19,7 +19,7 @@
 		"spawnsInLight": true,
 		"spawnsInDark": false,
 		"worldDayMin": -1,
-		"despawnNatural": true,
+		"despawnNatural": false,
 		"despawnForced": false
 	},
 	"experience": 5,

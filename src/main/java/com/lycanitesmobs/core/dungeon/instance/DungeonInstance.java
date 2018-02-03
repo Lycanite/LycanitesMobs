@@ -63,15 +63,16 @@ public class DungeonInstance {
 	/**
 	 * Initialises this Dungeon where if it's not complete it will generate its layout, etc. Should be called after readFromNBT when loading an existing dungeon and origin must be set.
 	 * @param world The world that this Instance will build in.
+	 * @return True on success and false if unable to initialize.
 	 */
-	public void init(World world) {
+	public boolean init(World world) {
 		this.world = world;
 		if(this.complete) {
-			return;
+			return true;
 		}
 		if(this.world == null || this.originPos == null) {
 			LycanitesMobs.printWarning("Dungeon", "Tried to initialise a dungeon with a missing world or origin. " + this);
-			return;
+			return false;
 		}
 
 		// Get Schematic:
@@ -83,7 +84,7 @@ public class DungeonInstance {
 				}
 			}
 			if(schematics.isEmpty()) {
-				return;
+				return false;
 			}
 			if(schematics.size() == 1) {
 				this.schematic = schematics.get(0);
@@ -111,6 +112,8 @@ public class DungeonInstance {
 		if(extendedWorld != null) {
 			extendedWorld.markDirty();
 		}
+
+		return true;
 	}
 
 

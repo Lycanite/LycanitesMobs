@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.renderer.LayerGlow;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import com.lycanitesmobs.elementalmobs.entity.EntitySpectre;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraftforge.fml.relauncher.Side;
@@ -127,6 +128,7 @@ public class ModelSpectre extends ModelTemplateElemental {
 		if(!partName.contains("effect"))
 			return;
 		GL11.glEnable(GL11.GL_BLEND);
+		OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 	}
 
 	@Override

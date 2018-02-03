@@ -37,7 +37,7 @@ public class CreatureSpawn {
 
 
 	// Biomes:
-	/** The list of biomes that this creature spawns in. Use this to get the biomes not biomeTypes. **/
+	/** The list of biomes that this creature spawns in. **/
 	public List<Biome> biomes = new ArrayList<>();
 
 	/** If true, the biome check will be ignored completely by this creature. **/

@@ -1,0 +1,82 @@
+{
+	"name": "chaos",
+	"type": "spawner",
+	"enabled": true,
+	"triggersRequired": 3,
+	"loadDefault": true,
+	"mobCountMin": 1,
+	"ignoreDimensions": true,
+	"ignoreBiomes": true,
+	"ignoreCollision": true,
+	"ignoreLightLevel": true,
+	"ignoreForgeCanSpawnEvent": true,
+	"conditions": [
+		{
+			"type": "player"
+		}
+	],
+	"triggers": [
+		{
+			"type": "kill",
+			"chance": 0.15,
+			"entityTypesListType": "blacklist",
+			"entityIds": [
+				"elementalmobs.cinder",
+				"elementalmobs.jengu",
+				"elementalmobs.geonach",
+				"elementalmobs.djinn",
+				"elementalmobs.argus",
+				"elementalmobs.volcan",
+				"elementalmobs.zephyr",
+				"elementalmobs.grue",
+				"elementalmobs.spriggan",
+				"elementalmobs.reiver",
+				"elementalmobs.tremor",
+				"elementalmobs.wraith",
+				"elementalmobs.spectre"
+			],
+			"entityIdsListType": "whitelist"
+		},
+		{
+			"type": "tick",
+			"count": 0,
+			"chance": 1,
+			"tickRate": 1,
+			"useWorldTime": true,
+			"conditions": [
+				{
+					"type": "player"
+				}
+			]
+		}
+	],
+	"locations": [
+		{
+			"type": "random",
+			"rangeMin": [8, 0, 8],
+			"rangeMax": [16, 8, 16],
+			"sorting": "random",
+			"limit": 32,
+			"solidGround": false
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "elementalmobs.argus"
+		}
+	],
+	"triggerCountMessages": [
+		{
+			"count": 1,
+			"message": "spawner.chaos.level1"
+		},
+		{
+			"count": 2,
+			"message": "spawner.chaos.level2"
+		},
+		{
+			"count": 3,
+			"message": "spawner.chaos.level3"
+		}
+	]
+}

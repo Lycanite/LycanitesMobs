@@ -72,7 +72,7 @@
 			"minAmount": 1,
 			"maxAmount": 2,
 			"chance": 0.5
-		}
+		},
 		{
 			"item": "minecraft:wheat_seeds",
 			"minAmount": 1,

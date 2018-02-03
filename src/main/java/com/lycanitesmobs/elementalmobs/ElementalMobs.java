@@ -134,7 +134,15 @@ public class ElementalMobs extends Submod {
 				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("MOUNTAIN, PARADISE, MAGICAL")
 				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("")
+				.setDimensions("-1, 1").setDimensionWhitelist(false)
 				.setSpawnWeight(6).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
+		ObjectManager.addMob(newMob);
+
+		newMob = new MobInfo(group, "argus", EntityArgus.class, 0x0e5000, 0xe305dc)
+				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("SHADOW, NECRO")
+				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
+		newMob.spawnInfo.setSpawnTypes("")
+				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
 

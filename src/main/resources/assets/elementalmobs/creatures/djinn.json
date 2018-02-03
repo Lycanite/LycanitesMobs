@@ -7,7 +7,7 @@
 		"enabled": true,
 		"spawners": [],
 		"disableSubspecies": false,
-		"dimensionIds": [],
+		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
 		"biomes": [],

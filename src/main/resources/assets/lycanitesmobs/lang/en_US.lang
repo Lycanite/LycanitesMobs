@@ -54,6 +54,10 @@ spawner.darkness.level1=It is pitch black, you are likely to be eaten by somethi
 spawner.darkness.level2=You can hear sounds from the darkness itself... Quick, return to the light!
 spawner.darkness.level3=A shadowy creature has spawned from the darkness!
 spawner.darkness.level1.back=The sounds seem to have stopped... For now at least...
+spawner.chaos.level1=You are disrupting the balance of nature, be careful!
+spawner.chaos.level2=Your destructive actions on the elements is drawing in Chaotic energy!
+spawner.chaos.level3=Chaotic energy has manifested! Beware!
+spawner.chaos.level1.back=Balance seems to be restored... For now at least...
 #
 #
 #

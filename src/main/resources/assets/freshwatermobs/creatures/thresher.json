@@ -1,0 +1,88 @@
+{
+	"name": "thresher",
+	"class": "com.lycanitesmobs.freshwatermobs.entity.EntityThresher",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": ["water"],
+		"disableSubspecies": false,
+		"dimensionIds": [-1, 1],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": false,
+		"biomes": ["all", "-ocean", "-beach"],
+		"spawnWeight": 1,
+		"dungeonWeight": 200,
+		"spawnAreaLimit": 1,
+		"spawnGroupMin": 1,
+		"spawnGroupMax": 1,
+		"spawnsInLight": false,
+		"spawnsInDark": true,
+		"worldDayMin": -1,
+		"despawnNatural": true,
+		"despawnForced": false
+	},
+	"experience": 20,
+	"health": 80,
+	"defense": 2,
+	"speed": 24,
+	"damage": 4,
+	"haste": 1,
+	"effect": 1,
+	"pierce": 0,
+	"knockbackResistance": 1,
+	"followRange": 32,
+	"eggBackColor": "#77747e",
+	"eggForeColor": "#3f4567",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "golden",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "verdant",
+			"type": "uncommon"
+		}
+	],
+	"element": "water",
+	"peaceful": false,
+	"summonable": false,
+	"tameable": true,
+	"mountable": true,
+	"summonCost": 6,
+	"dungeonLevel": 3,
+	"drops": [
+		{
+			"item": "minecraft:fish",
+			"burningItem": "minecraft:cooked_fish",
+			"minAmount": 3,
+			"maxAmount": 6,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:fish",
+			"metadata": 5,
+			"burningItem": "minecraft:cooked_fish",
+			"burningMetadata": 5,
+			"minAmount": 3,
+			"maxAmount": 6,
+			"chance": 0.75
+		},
+		{
+			"item": "minecraft:prismarine_shard",
+			"minAmount": 3,
+			"maxAmount": 6,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:prismarine_crystals",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.75
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

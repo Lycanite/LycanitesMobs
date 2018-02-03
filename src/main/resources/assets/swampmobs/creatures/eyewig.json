@@ -1,6 +1,6 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "eyewig",
+	"class": "com.lycanitesmobs.swampmobs.entity.EntityEyewig",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -10,7 +10,7 @@
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
+		"biomes": ["swamp", "spooky"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
@@ -22,61 +22,61 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 10,
-	"defense": 0,
-	"speed": 28,
-	"damage": 2,
+	"experience": 10,
+	"health": 15,
+	"defense": 1,
+	"speed": 32,
+	"damage": 1,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"eggBackColor": "#000000",
+	"eggForeColor": "#009900",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "ashen",
+			"name": "azure",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "violet",
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "arbour",
 	"peaceful": false,
-	"summonable": true,
-	"tameable": false,
-	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 0,
+	"summonable": false,
+	"tameable": true,
+	"mountable": true,
+	"summonCost": 4,
+	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:string",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:spider_eye",
 			"minAmount": 1,
 			"maxAmount": 2,
+			"chance": 0.5
+		},
+		{
+			"item": "minecraft:fermented_spider_eye",
+			"minAmount": 1,
+			"maxAmount": 1,
 			"chance": 0.25
 		},
 		{
-			"item": "minecraft:iron_ingot",
+			"item": "swampmobs:poisongland",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
+			"maxAmount": 2,
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

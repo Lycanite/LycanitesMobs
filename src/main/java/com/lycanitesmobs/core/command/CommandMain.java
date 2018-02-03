@@ -8,6 +8,7 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.info.Beastiary;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.mobevent.MobEventListener;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
@@ -182,6 +183,23 @@ public class CommandMain implements ICommand {
 				ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
 				config.setBool("Dungeons", "Dungeons Enabled", false);
 				LycanitesMobs.dungeonGenerator.enabled = false;
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+		}
+
+		// Spawner:
+		if("creature".equalsIgnoreCase(args[0]) || "creatures".equalsIgnoreCase(args[0])) {
+			reply = I18n.translateToLocal("lyc.command.creatures.invalid");
+			if (args.length < 2) {
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Reload:
+			if("reload".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.creatures.reload");
+				CreatureManager.getInstance().reload();
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}

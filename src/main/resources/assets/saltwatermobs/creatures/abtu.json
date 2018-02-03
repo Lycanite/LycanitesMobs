@@ -1,16 +1,16 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "abtu",
+	"class": "com.lycanitesmobs.saltwatermobs.entity.EntityAbtu",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": ["monster", "beast"],
+		"spawners": ["water"],
 		"disableSubspecies": false,
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
+		"biomes": ["ocean", "beach"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
@@ -23,60 +23,45 @@
 		"despawnForced": false
 	},
 	"experience": 5,
-	"health": 10,
+	"health": 5,
 	"defense": 0,
-	"speed": 28,
-	"damage": 2,
+	"speed": 24,
+	"damage": 1,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
-	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"followRange": 32,
+	"eggBackColor": "#FFBB00",
+	"eggForeColor": "#44AAFF",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "ashen",
+			"name": "azure",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "scarlet",
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "water",
 	"peaceful": false,
-	"summonable": true,
+	"summonable": false,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,
-	"dungeonLevel": 0,
+	"dungeonLevel": 2,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:fish",
+			"metadata": 1,
+			"burningItem": "minecraft:cooked_fish",
+			"burningMetadata": 1,
 			"minAmount": 1,
-			"maxAmount": 2,
-			"chance": 0.25
-		},
-		{
-			"item": "minecraft:iron_ingot",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
+			"maxAmount": 3,
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

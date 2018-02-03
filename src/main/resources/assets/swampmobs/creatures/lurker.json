@@ -1,6 +1,6 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "lurker",
+	"class": "com.lycanitesmobs.swampmobs.entity.EntityLurker",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -10,7 +10,7 @@
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
+		"biomes": ["swamp", "spooky"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
@@ -22,18 +22,18 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 10,
+	"experience": 10,
+	"health": 15,
 	"defense": 0,
-	"speed": 28,
+	"speed": 32,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"eggBackColor": "#009900",
+	"eggForeColor": "#99FF00",
 	"subspecies": [
 		{
 			"index": 1,
@@ -46,37 +46,31 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "poison",
 	"peaceful": false,
-	"summonable": true,
-	"tameable": false,
+	"summonable": false,
+	"tameable": true,
 	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 0,
+	"summonCost": 4,
+	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:coal",
-			"minAmount": 1,
-			"maxAmount": 2,
+			"item": "minecraft:string",
+			"minAmount": 2,
+			"maxAmount": 5,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:leather",
+			"minAmount": 2,
+			"maxAmount": 3,
 			"chance": 0.25
 		},
 		{
-			"item": "minecraft:iron_ingot",
+			"item": "swampmobs:poisongland",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
+			"maxAmount": 2,
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

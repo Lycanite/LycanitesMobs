@@ -1,17 +1,17 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "skylus",
+	"class": "com.lycanitesmobs.saltwatermobs.entity.EntitySkylus",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": ["monster", "beast"],
+		"spawners": ["water", "waterfloor"],
 		"disableSubspecies": false,
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
-		"spawnWeight": 8,
+		"biomes": ["ocean", "beach"],
+		"spawnWeight": 6,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
@@ -22,18 +22,18 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 10,
+	"experience": 10,
+	"health": 20,
 	"defense": 0,
-	"speed": 28,
-	"damage": 2,
+	"speed": 16,
+	"damage": 4,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
-	"knockbackResistance": 0,
-	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"knockbackResistance": 0.5,
+	"followRange": 32,
+	"eggBackColor": "#FFCCDD",
+	"eggForeColor": "#BB2299",
 	"subspecies": [
 		{
 			"index": 1,
@@ -42,41 +42,35 @@
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "scarlet",
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "shadow",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,
 	"mountable": false,
-	"summonCost": 2,
+	"summonCost": 3,
 	"dungeonLevel": 0,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:dye",
+			"minAmount": 1,
+			"maxAmount": 5,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:prismarine_shard",
 			"minAmount": 1,
 			"maxAmount": 2,
-			"chance": 0.25
+			"chance": 0.5
 		},
 		{
-			"item": "minecraft:iron_ingot",
+			"item": "minecraft:prismarine_crystals",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
+			"chance": 0.125
 		}
 	],
 	"sizeScale": 1,

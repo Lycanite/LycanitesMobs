@@ -1,16 +1,16 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "lacedon",
+	"class": "com.lycanitesmobs.saltwatermobs.entity.EntityLacedon",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": ["monster", "beast"],
+		"spawners": ["waterfloor"],
 		"disableSubspecies": false,
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
+		"biomes": ["ocean", "beach"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
@@ -23,30 +23,30 @@
 		"despawnForced": false
 	},
 	"experience": 5,
-	"health": 10,
+	"health": 15,
 	"defense": 0,
-	"speed": 28,
+	"speed": 24,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
-	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"followRange": 32,
+	"eggBackColor": "#000099",
+	"eggForeColor": "#2244FF",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "ashen",
+			"name": "verdant",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "verdant",
+			"name": "scarlet",
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "earth",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,
@@ -55,28 +55,34 @@
 	"dungeonLevel": 0,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:fish",
+			"burningItem": "minecraft:cooked_fish",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:fish",
+			"metadata": 1,
+			"burningItem": "minecraft:cooked_fish",
+			"burningMetadata": 1,
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.5
+		},
+		{
+			"item": "minecraft:fish",
+			"metadata": 2,
+			"minAmount": 1,
+			"maxAmount": 2,
+			"chance": 0.1
+		},
+		{
+			"item": "minecraft:fish",
+			"metadata": 3,
 			"minAmount": 1,
 			"maxAmount": 2,
 			"chance": 0.25
-		},
-		{
-			"item": "minecraft:iron_ingot",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
 		}
 	],
 	"sizeScale": 1,

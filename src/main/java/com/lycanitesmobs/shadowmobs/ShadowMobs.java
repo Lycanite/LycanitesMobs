@@ -140,7 +140,7 @@ public class ShadowMobs extends Submod {
 				.setPeaceful(false).setSummonCost(3).setDungeonLevel(2)
 				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setBiomes("GROUP, SPOOKY").setDimensions("-1, 1").setDimensionWhitelist(false)
+				.setBiomes("GROUP, SPOOKY").setDimensions("").setDimensionWhitelist(false)
 				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
 		ObjectManager.addMob(newMob);
 
@@ -161,7 +161,7 @@ public class ShadowMobs extends Submod {
 		ObjectManager.addMob(newMob);
 
 		newMob = new MobInfo(group, "shade", EntityShade.class, 0x000402, 0x102336)
-				.setPeaceful(true).setTameable(true).setSummonCost(4).setDungeonLevel(3)
+				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(3)
 				.addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
 		newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
 				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)

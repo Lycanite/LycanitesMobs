@@ -5,7 +5,9 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.config.ConfigBase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreatureManager extends JSONLoader {
@@ -19,6 +21,9 @@ public class CreatureManager extends JSONLoader {
 
 	/** The map of all creatures by name to be used when reloading json. **/
 	public Map<String, CreatureInfo> oldCreatures = new HashMap<>();
+
+	/** A list of mod groups that have loaded with this Creature Manager. **/
+	public List<GroupInfo> loadedGroups = new ArrayList<>();
 
 
 	/** Returns the main Creature Manager INSTANCE or creates it and returns it. **/
@@ -38,6 +43,9 @@ public class CreatureManager extends JSONLoader {
 
 	/** Loads all JSON Elements. Should only be done on pre-init and before Creature Info is loaded. **/
 	public void loadAllFromJSON(GroupInfo groupInfo) {
+		if(!this.loadedGroups.contains(groupInfo)) {
+			this.loadedGroups.add(groupInfo);
+		}
 		this.oldCreatures = new HashMap<>(this.creatures);
 		this.creatures.clear();
 		this.creatureClassMap.clear();
@@ -65,6 +73,16 @@ public class CreatureManager extends JSONLoader {
 
 		this.creatures.put(creatureInfo.name, creatureInfo);
 		this.creatureClassMap.put(creatureInfo.entityClass, creatureInfo);
+	}
+
+
+	/**
+	 * Reloads all Creature JSON.
+	 */
+	public void reload() {
+		for(GroupInfo group : this.loadedGroups) {
+			this.loadAllFromJSON(group);
+		}
 	}
 
 

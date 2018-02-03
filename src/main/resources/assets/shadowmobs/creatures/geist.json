@@ -1,17 +1,17 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "geist",
+	"class": "com.lycanitesmobs.shadowmobs.entity.EntityGeist",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
 		"spawners": ["monster", "beast"],
 		"disableSubspecies": false,
-		"dimensionIds": [-1, 1],
+		"dimensionIds": [],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
-		"spawnWeight": 8,
+		"biomes": ["spooky"],
+		"spawnWeight": 10,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
@@ -22,22 +22,22 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 10,
+	"experience": 10,
+	"health": 15,
 	"defense": 0,
-	"speed": 28,
+	"speed": 30,
 	"damage": 2,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"eggBackColor": "#705449",
+	"eggForeColor": "#310e08",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "ashen",
+			"name": "dark",
 			"type": "uncommon"
 		},
 		{
@@ -46,37 +46,38 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "shadow",
 	"peaceful": false,
-	"summonable": true,
+	"summonable": false,
 	"tameable": false,
 	"mountable": false,
-	"summonCost": 2,
-	"dungeonLevel": 0,
+	"summonCost": 3,
+	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:rotten_flesh",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:ender_pearl",
 			"minAmount": 1,
 			"maxAmount": 2,
 			"chance": 0.25
 		},
 		{
-			"item": "minecraft:iron_ingot",
+			"item": "minecraft:skull",
+			"metadata": 1,
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.05
+			"chance": 0.25
 		},
 		{
-			"item": "minecraft:gold_nugget",
+			"item": "shadowmobs:geistliver",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
+			"maxAmount": 3,
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

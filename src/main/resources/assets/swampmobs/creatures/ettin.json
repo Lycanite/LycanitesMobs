@@ -1,6 +1,6 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "ettin",
+	"class": "com.lycanitesmobs.swampmobs.entity.EntityEttin",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -10,8 +10,8 @@
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
-		"spawnWeight": 8,
+		"biomes": ["swamp", "spooky"],
+		"spawnWeight": 4,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
@@ -22,22 +22,22 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
-	"health": 10,
-	"defense": 0,
-	"speed": 28,
-	"damage": 2,
+	"experience": 15,
+	"health": 30,
+	"defense": 2,
+	"speed": 16,
+	"damage": 6,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"eggBackColor": "#669900",
+	"eggForeColor": "#FF6600",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "ashen",
+			"name": "scarlet",
 			"type": "uncommon"
 		},
 		{
@@ -46,37 +46,43 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "quake",
 	"peaceful": false,
-	"summonable": true,
+	"summonable": false,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,
-	"dungeonLevel": 0,
+	"dungeonLevel": 2,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:log",
+			"minAmount": 2,
+			"maxAmount": 6,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:brown_mushroom",
 			"minAmount": 1,
 			"maxAmount": 2,
-			"chance": 0.25
+			"chance": 1
 		},
 		{
-			"item": "minecraft:iron_ingot",
+			"item": "minecraft:red_mushroom",
 			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
+			"maxAmount": 2,
+			"chance": 1
 		},
 		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
+			"item": "minecraft:leather",
+			"minAmount": 2,
+			"maxAmount": 6,
+			"chance": 1
 		},
 		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
+			"item": "minecraft:coal",
+			"minAmount": 2,
+			"maxAmount": 8,
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

@@ -92,7 +92,7 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
 	public void loadItemDrops() {
         this.drops.add(new MobDrop(new ItemStack(Items.ROTTEN_FLESH), 1).setMaxAmount(3));
         this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.25F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("geistliver")), 0.25F).setMaxAmount(1));
+        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("geistliver")), 1F).setMaxAmount(3));
 	}
     
     

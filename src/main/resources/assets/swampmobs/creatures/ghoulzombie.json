@@ -1,6 +1,6 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "ghoulzombie",
+	"class": "com.lycanitesmobs.swampmobs.entity.EntityGhoulZombie",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
@@ -10,7 +10,7 @@
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
+		"biomes": ["swamp", "spooky"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
@@ -23,7 +23,7 @@
 		"despawnForced": false
 	},
 	"experience": 5,
-	"health": 10,
+	"health": 15,
 	"defense": 0,
 	"speed": 28,
 	"damage": 2,
@@ -32,12 +32,12 @@
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"eggBackColor": "#009966",
+	"eggForeColor": "#AAFFDD",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "ashen",
+			"name": "scarlet",
 			"type": "uncommon"
 		},
 		{
@@ -46,7 +46,7 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "poison",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,
@@ -55,28 +55,16 @@
 	"dungeonLevel": 0,
 	"drops": [
 		{
+			"item": "minecraft:rotten_flesh",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
 			"item": "minecraft:coal",
 			"minAmount": 1,
 			"maxAmount": 2,
 			"chance": 0.25
-		},
-		{
-			"item": "minecraft:iron_ingot",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
 		}
 	],
 	"sizeScale": 1,

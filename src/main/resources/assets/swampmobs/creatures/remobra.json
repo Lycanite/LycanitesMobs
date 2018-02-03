@@ -1,16 +1,16 @@
 {
-	"name": "kobold",
-	"class": "com.lycanitesmobs.plainsmobs.entity.EntityKobold",
+	"name": "remobra",
+	"class": "com.lycanitesmobs.swampmobs.entity.EntityRemobra",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": ["monster", "beast"],
+		"spawners": ["sky"],
 		"disableSubspecies": false,
 		"dimensionIds": [-1, 1],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["plains", "savanna", "-snowy"],
+		"biomes": ["swamp", "spooky"],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,
@@ -22,22 +22,22 @@
 		"despawnNatural": true,
 		"despawnForced": false
 	},
-	"experience": 5,
+	"experience": 10,
 	"health": 10,
 	"defense": 0,
-	"speed": 28,
-	"damage": 2,
+	"speed": 32,
+	"damage": 1,
 	"haste": 1,
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
 	"followRange": 16,
-	"eggBackColor": "#996633",
-	"eggForeColor": "#FF7777",
+	"eggBackColor": "#440066",
+	"eggForeColor": "#DD00FF",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "ashen",
+			"name": "golden",
 			"type": "uncommon"
 		},
 		{
@@ -46,7 +46,7 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"element": "poison",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,
@@ -55,28 +55,16 @@
 	"dungeonLevel": 0,
 	"drops": [
 		{
-			"item": "minecraft:coal",
+			"item": "minecraft:slime_ball",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.5
+		},
+		{
+			"item": "swampmobs:poisongland",
 			"minAmount": 1,
 			"maxAmount": 2,
-			"chance": 0.25
-		},
-		{
-			"item": "minecraft:iron_ingot",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.05
-		},
-		{
-			"item": "minecraft:gold_nugget",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.025
-		},
-		{
-			"item": "minecraft:emerald",
-			"minAmount": 1,
-			"maxAmount": 1,
-			"chance": 0.01
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

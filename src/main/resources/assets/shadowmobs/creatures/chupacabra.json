@@ -1,0 +1,73 @@
+{
+	"name": "chupacabra",
+	"class": "com.lycanitesmobs.shadowmobs.entity.EntityChupacabra",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": ["underground"],
+		"disableSubspecies": false,
+		"dimensionIds": [-1],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": true,
+		"biomes": [],
+		"spawnWeight": 8,
+		"dungeonWeight": 200,
+		"spawnAreaLimit": 5,
+		"spawnGroupMin": 1,
+		"spawnGroupMax": 3,
+		"spawnsInLight": false,
+		"spawnsInDark": true,
+		"worldDayMin": -1,
+		"despawnNatural": false,
+		"despawnForced": false
+	},
+	"experience": 5,
+	"health": 15,
+	"defense": 0,
+	"speed": 28,
+	"damage": 2,
+	"haste": 1,
+	"effect": 1,
+	"pierce": 0,
+	"knockbackResistance": 0,
+	"followRange": 16,
+	"eggBackColor": "#36251b",
+	"eggForeColor": "#aa8c63",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "violet",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "verdant",
+			"type": "uncommon"
+		}
+	],
+	"element": "void",
+	"peaceful": true,
+	"summonable": false,
+	"tameable": true,
+	"mountable": false,
+	"summonCost": 4,
+	"dungeonLevel": 1,
+	"drops": [
+		{
+			"item": "shadowmobs:chupacabrameatraw",
+			"burningItem": "shadowmobs:chupacabrameatcooked",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:leather",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.75
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

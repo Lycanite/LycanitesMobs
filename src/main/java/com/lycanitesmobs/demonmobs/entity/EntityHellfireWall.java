@@ -9,6 +9,7 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
@@ -128,6 +129,9 @@ public class EntityHellfireWall extends EntityProjectileBase {
         }
         if(target instanceof IGroupBoss)
             obliterate = false;
+        if(target instanceof IEntityOwnable) {
+            obliterate = ((IEntityOwnable)target).getOwner() == null;
+        }
         if(obliterate)
             target.setHealth(0);
         super.onDamage(target, damage, attackSuccess);

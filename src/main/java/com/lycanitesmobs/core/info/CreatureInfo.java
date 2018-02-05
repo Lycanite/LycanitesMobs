@@ -42,8 +42,8 @@ public class CreatureInfo {
 	public double haste = 1.0D;
 	public double effect = 1.0D;
 	public double pierce = 1.0D;
+	public double sight = 16.0D;
 	public double knockbackResistance = 0.0D;
-	public double followRange = 16.0D;
 
 
 	// Spawn Egg:
@@ -146,8 +146,8 @@ public class CreatureInfo {
 			this.pierce = json.get("pierce").getAsDouble();
 		if(json.has("knockbackResistance"))
 			this.knockbackResistance = json.get("knockbackResistance").getAsDouble();
-		if(json.has("followRange"))
-			this.followRange = json.get("followRange").getAsDouble();
+		if(json.has("sight"))
+			this.sight = json.get("sight").getAsDouble();
 
 		this.eggBackColor = Color.decode(json.get("eggBackColor").getAsString()).getRGB();
 		this.eggForeColor = Color.decode(json.get("eggForeColor").getAsString()).getRGB();

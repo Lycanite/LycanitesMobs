@@ -25,6 +25,15 @@ public class CreatureManager extends JSONLoader {
 	/** A list of mod groups that have loaded with this Creature Manager. **/
 	public List<GroupInfo> loadedGroups = new ArrayList<>();
 
+	/** A map containing all the global multipliers for each stat for each difficulty. **/
+	public Map<String, Double> difficultyMultipliers = new HashMap<>();
+
+	/** A map containing all the global multipliers for each stat for mob level scaling. **/
+	public Map<String, Double> levelMultipliers = new HashMap<>();
+
+	/** The global multiplier to use for the health of tamed creatures. **/
+	public double tamedHealthMultiplier = 3;
+
 
 	/** Returns the main Creature Manager INSTANCE or creates it and returns it. **/
 	public static CreatureManager getInstance() {
@@ -107,5 +116,33 @@ public class CreatureManager extends JSONLoader {
 		if(!this.creatureClassMap.containsKey(creatureClass))
 			return null;
 		return this.creatureClassMap.get(creatureClass);
+	}
+
+
+	/**
+	 * Returns a global difficulty multiplier for a stat.
+	 * @param difficultyName The difficulty name.
+	 * @param statName The stat name.
+	 * @return The multiplier.
+	 */
+	public double getDifficultyMultiplier(String difficultyName, String statName) {
+		String key = difficultyName.toUpperCase() + "-" + statName.toUpperCase();
+		if(!this.difficultyMultipliers.containsKey(key)) {
+			return 1;
+		}
+		return this.difficultyMultipliers.get(key);
+	}
+
+
+	/**
+	 * Returns a global level multiplier for a stat.
+	 * @param statName The stat name.
+	 * @return The multiplier.
+	 */
+	public double getLevelMultiplier(String statName) {
+		if(!this.levelMultipliers.containsKey(statName.toUpperCase())) {
+			return 1;
+		}
+		return this.levelMultipliers.get(statName.toUpperCase());
 	}
 }

@@ -70,17 +70,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
 	public static Map<Class, Double> baseHealthMap = new HashMap<>();
     
-	// Info:
+	// Core:
+	/** The Creature Info used by this creature. **/
+	public CreatureInfo creatureInfo;
+	/** The Creature Stats instance used by this Entity instance to get and manage stats. **/
+	public CreatureStats creatureStats;
+	/** The Subspecies of this creature, if null this creature is the default common species. **/
+	public Subspecies subspecies = null;
+	/** What attribute is this creature, used for effects such as Bane of Arthropods. **/
+	public EnumCreatureAttribute attribute = EnumCreatureAttribute.UNDEAD;
+	/** A class that opens up extra stats and behaviours for NBT based customization.**/
+	public ExtraMobBehaviour extraMobBehaviour;
+
 	/** A class that contains information about this mob, this class also links to the SpawnInfo class relevant to this mob. **/
 	public MobInfo mobInfo;
     /** The group that this mob belongs to, this provides config settings, asset locations and more. **/
 	public GroupInfo group;
-	/** The Subspecies of this creature, if null this creature is the default common species. **/
-	public Subspecies subspecies = null;
-    /** What attribute is this creature, used for effects such as Bane of Arthropods. **/
-	public EnumCreatureAttribute attribute = EnumCreatureAttribute.UNDEAD;
-	/** A class that opens up extra stats and behaviours for NBT based customization.**/
-	public ExtraMobBehaviour extraMobBehaviour;
+
+	// Info:
 	/** The name of the event that spawned this mob if any, an empty string ("") if none. **/
 	public String spawnEventType = "";
 	/** The number of the event that spawned this mob. Used for despawning this mob when a new event starts. Ignored if the spawnEventType is blank or the count is less than 0. **/
@@ -313,14 +320,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // Override AI:
     public EntityAITargetAttack aiTargetPlayer = new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class);
     public EntityAITargetRevenge aiDefendAnimals = new EntityAITargetRevenge(this).setHelpClasses(IAnimals.class);
-	
+
+
     // ==================================================
   	//                    Constructor
   	// ==================================================
     public EntityCreatureBase(World world) {
         super(world);
 
-        // Size:
+        // Info:
+		this.creatureInfo = CreatureManager.getInstance().getCreature(this.getClass());
+		this.creatureStats = new CreatureStats(this);
+
+        // Size: TODO Use CreatureInfo Width and Height
         this.width = this.setWidth;
         this.height = this.setHeight;
 
@@ -389,9 +401,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Item Drops ==========
     /** Loads all default item drops, will be ignored if the Enable Default Drops config setting for this mob is set to false, should be overridden to add drops. **/
-    public void loadItemDrops() {}
+    public void loadItemDrops() {
+		for(MobDrop drop : this.creatureInfo.drops) {
+			MobDrop newDrop = new MobDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);
+			this.drops.add (newDrop);
+		}
+	}
 
     /** Loads custom item drops from the config. **/
+    @Deprecated
     public void loadCustomDrops() {
         for(MobDrop drop : this.mobInfo.customDrops) {
             MobDrop newDrop = new MobDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);

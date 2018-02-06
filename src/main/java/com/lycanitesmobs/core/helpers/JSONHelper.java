@@ -151,11 +151,9 @@ public class JSONHelper {
 		return materials;
 	}
 
-	public static List<Biome> getJsonBiomes(JsonArray jsonArray) {
+	public static List<Biome> getJsonBiomes(List<String> biomeTags) {
 		List<Biome> biomeList = new ArrayList<>();
-		Iterator<JsonElement> jsonIterator = jsonArray.iterator();
-		while (jsonIterator.hasNext()) {
-			String biomeEntry = jsonIterator.next().getAsString();
+		for(String biomeEntry : biomeTags) {
 
 			// Determine Function:
 			boolean additive = true;

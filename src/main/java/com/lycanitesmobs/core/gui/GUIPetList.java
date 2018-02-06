@@ -2,7 +2,7 @@ package com.lycanitesmobs.core.gui;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.pets.PetEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -53,8 +53,8 @@ public class GUIPetList extends GuiScrollingList {
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		PetEntry petEntry = this.petList.get(index);
-		MobInfo mobInfo = petEntry.getMobInfo();
-		if(mobInfo == null)
+		CreatureInfo creatureInfo = petEntry.getCreatureInfo();
+		if(creatureInfo == null)
 			return;
 
 		int boxLeft = this.left;
@@ -64,7 +64,7 @@ public class GUIPetList extends GuiScrollingList {
 		int levelBarY = boxTop + boxBottom - levelBarHeight - 4;
 		int levelBarU = 256 - levelBarWidth;
 		int levelBarV = 256 - levelBarHeight;
-		int level = mobInfo.summonCost;
+		int level = creatureInfo.summonCost;
 
 		// Spawned Entry:
 		if(petEntry.spawningActive) {
@@ -100,7 +100,7 @@ public class GUIPetList extends GuiScrollingList {
 		}
 
 		this.parentGUI.getFontRenderer().drawString(petEntry.getDisplayName(), boxLeft + 20 , boxTop + 2, 0xFFFFFF);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
+		Minecraft.getMinecraft().getTextureManager().bindTexture(creatureInfo.getIcon());
 		this.parentGUI.drawTexturedModalRect(this.left + 2, boxTop + 4, 0, 0, 16, 16, 16);
 	}
 }

@@ -2,7 +2,6 @@ package com.lycanitesmobs.core.spawner;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.CreatureInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,7 +14,7 @@ public class SpawnerMobRegistry {
 	public static Map<String, SpawnerMobRegistry> SPAWNER_MOB_REGISTRIES = new HashMap<>();
 
 	/** A map of all MobSpawns added to this SpawnerMobRegistry. **/
-	public Map<MobInfo, MobSpawn> mobSpawns = new HashMap<>();
+	public Map<CreatureInfo, MobSpawn> mobSpawns = new HashMap<>();
 
 
 	/**
@@ -34,31 +33,6 @@ public class SpawnerMobRegistry {
 
 	/**
 	 * Generates a new global SpawnInfo and adds it to the provided SpawnerMobRegistry which is created if it doesn't exist.
-	 * @param mobInfo The MobInfo of the mob to create a MobSpawn from.
-	 * @param spawnerName The name of the Spawner to map the MobSpawn to.
-	 **/
-	@Deprecated
-	public static void createSpawn(MobInfo mobInfo, String spawnerName) {
-		if(mobInfo == null) {
-			LycanitesMobs.printWarning("", "Tried to create a global MobSpawn to " + spawnerName + " from a null MobInfo!");
-		}
-		if(spawnerName == null) {
-			LycanitesMobs.printWarning("", "Tried to create a global MobSpawn for " + mobInfo.name + " with a null Spawner Name!");
-		}
-
-		MobSpawn mobSpawn = new MobSpawn(mobInfo);
-
-		if(!SPAWNER_MOB_REGISTRIES.containsKey(spawnerName)) {
-			SPAWNER_MOB_REGISTRIES.put(spawnerName, new SpawnerMobRegistry());
-		}
-		if(!SPAWNER_MOB_REGISTRIES.get(spawnerName).addMobSpawn(mobSpawn)) {
-			LycanitesMobs.printWarning("", "Tried to create a duplicate global MobSpawn for " + mobInfo.name + " in Spawner: " + spawnerName + "!");
-		}
-	}
-
-
-	/**
-	 * Generates a new global SpawnInfo and adds it to the provided SpawnerMobRegistry which is created if it doesn't exist.
 	 * @param creatureInfo The Creature Info of the mob to create a Mob Spawn from.
 	 * @param spawnerName The name of the Spawner to map the MobSpawn to.
 	 **/
@@ -67,7 +41,7 @@ public class SpawnerMobRegistry {
 			LycanitesMobs.printWarning("", "Tried to create a global Mob Spawn to " + spawnerName + " from a null Creature Info!");
 		}
 		if(spawnerName == null) {
-			LycanitesMobs.printWarning("", "Tried to create a global Mob Spawn for " + creatureInfo.name + " with a null Spawner Name!");
+			LycanitesMobs.printWarning("", "Tried to create a global Mob Spawn for " + creatureInfo.getName() + " with a null Spawner Name!");
 		}
 
 		MobSpawn mobSpawn = new MobSpawn(creatureInfo);
@@ -76,7 +50,7 @@ public class SpawnerMobRegistry {
 			SPAWNER_MOB_REGISTRIES.put(spawnerName, new SpawnerMobRegistry());
 		}
 		if(!SPAWNER_MOB_REGISTRIES.get(spawnerName).addMobSpawn(mobSpawn)) {
-			LycanitesMobs.printWarning("", "Tried to create a duplicate global MobSpawn for " + creatureInfo.name + " in Spawner: " + spawnerName + "!");
+			LycanitesMobs.printWarning("", "Tried to create a duplicate global MobSpawn for " + creatureInfo.getName() + " in Spawner: " + spawnerName + "!");
 		}
 	}
 
@@ -87,10 +61,10 @@ public class SpawnerMobRegistry {
 	 * @return True on success, false on failure (if it already exists).
 	 **/
 	public boolean addMobSpawn(MobSpawn mobSpawn) {
-		if(this.mobSpawns.containsKey(mobSpawn.mobInfo)) {
+		if(this.mobSpawns.containsKey(mobSpawn.creatureInfo)) {
 			return false;
 		}
-		this.mobSpawns.put(mobSpawn.mobInfo, mobSpawn);
+		this.mobSpawns.put(mobSpawn.creatureInfo, mobSpawn);
 		return true;
 	}
 }

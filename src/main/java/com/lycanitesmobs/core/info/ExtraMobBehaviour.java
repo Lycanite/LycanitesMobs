@@ -11,6 +11,7 @@ public class ExtraMobBehaviour {
 	// ========== Stats ==========
     public double multiplierHealth = 1.0D;
 	public double multiplierDefense = 1.0D;
+	public double multiplierArmor = 1.0D;
 	public double multiplierSpeed = 1.0D;
 	public double multiplierDamage = 1.0D;
 	public double multiplierHaste = 1.0D;
@@ -19,6 +20,7 @@ public class ExtraMobBehaviour {
 
     public int boostHealth = 0;
 	public int boostDefense = 0;
+	public int boostArmor = 0;
 	public int boostSpeed = 0;
 	public int boostDamage = 0;
 	public int boostHaste = 0;
@@ -62,6 +64,9 @@ public class ExtraMobBehaviour {
     	if(nbtTagCompound.hasKey("MultiplierDefense")) {
     		this.multiplierDefense = nbtTagCompound.getDouble("MultiplierDefense");
     	}
+		if(nbtTagCompound.hasKey("MultiplierArmor")) {
+			this.multiplierArmor = nbtTagCompound.getDouble("MultiplierArmor");
+		}
     	if(nbtTagCompound.hasKey("MultiplierSpeed")) {
     		this.multiplierSpeed = nbtTagCompound.getDouble("MultiplierSpeed");
     	}
@@ -85,6 +90,9 @@ public class ExtraMobBehaviour {
     	if(nbtTagCompound.hasKey("BoostDefense")) {
     		this.boostDefense = nbtTagCompound.getInteger("BoostDefense");
     	}
+		if(nbtTagCompound.hasKey("BoostArmor")) {
+			this.boostArmor = nbtTagCompound.getInteger("BoostArmor");
+		}
     	if(nbtTagCompound.hasKey("BoostSpeed")) {
     		this.boostSpeed = nbtTagCompound.getInteger("BoostSpeed");
     	}
@@ -153,6 +161,7 @@ public class ExtraMobBehaviour {
     	// Stat Multipliers:
         nbtTagCompound.setDouble("MultiplierHealth", this.multiplierHealth);
     	nbtTagCompound.setDouble("MultiplierDefense", this.multiplierDefense);
+		nbtTagCompound.setDouble("MultiplierArmor", this.multiplierArmor);
     	nbtTagCompound.setDouble("MultiplierSpeed", this.multiplierSpeed);
     	nbtTagCompound.setDouble("MultiplierDamage", this.multiplierDamage);
     	nbtTagCompound.setDouble("MultiplierHaste", this.multiplierHaste);
@@ -162,6 +171,7 @@ public class ExtraMobBehaviour {
     	// Stat Boosts:
         nbtTagCompound.setInteger("BoostHealth", this.boostHealth);
     	nbtTagCompound.setInteger("BoostDefense", this.boostDefense);
+		nbtTagCompound.setInteger("BoostArmor", this.boostArmor);
     	nbtTagCompound.setInteger("BoostSpeed", this.boostSpeed);
     	nbtTagCompound.setInteger("BoostDamage", this.boostDamage);
     	nbtTagCompound.setInteger("BoostHaste", this.boostHaste);

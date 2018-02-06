@@ -2,7 +2,7 @@
 	"itemName": "entarm",
 	"loadDefault": true,
 	"slotType": "base",
-	"dropMobId": "forestmobs.ent",
+	"dropMobId": "forestmobs:ent",
 	"dropChance": 0.1,
 	"levelMin": 1,
 	"levelMax": 3,

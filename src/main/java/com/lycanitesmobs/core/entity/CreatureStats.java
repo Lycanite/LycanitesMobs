@@ -72,6 +72,28 @@ public class CreatureStats {
 
 
 	/**
+	 * Returns the armor this entity should use. This armor value is applied through the vanilla system and can be pierced by piercing effects unlike defense.
+	 * @return Base armor.
+	 */
+	public double getArmor() {
+		String statName = "armor";
+		double statValue = this.entity.creatureInfo.armor;
+
+		// Wild:
+		if(this.entity.getOwner() != null) {
+			statValue *= this.getDifficultyMultiplier(statName);
+			statValue *= this.getSubspeciesMultiplier(statName);
+			if(entity.extraMobBehaviour != null) {
+				statValue *= entity.extraMobBehaviour.multiplierArmor;
+				statValue += entity.extraMobBehaviour.boostArmor;
+			}
+		}
+
+		return statValue;
+	}
+
+
+	/**
 	 * Returns the speed this entity should use. Speed affects how fast an entity can travel.
 	 * @return Base speed.
 	 */

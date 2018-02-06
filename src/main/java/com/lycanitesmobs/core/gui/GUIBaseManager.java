@@ -1,10 +1,10 @@
 package com.lycanitesmobs.core.gui;
 
-import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -427,8 +427,8 @@ public class GUIBaseManager extends GUIBaseScreen {
         for(Object buttonObj : this.buttonList) {
             GuiButton button = (GuiButton)buttonObj;
             if(button instanceof GUIButtonCreature && button.id == this.editSet + this.tabButtonID) {
-                MobInfo mobInfo = this.playerExt.getSummonSet(this.editSet).getMobInfo();
-                ((GUIButtonCreature)button).mobInfo = mobInfo;
+                CreatureInfo creatureInfo = this.playerExt.getSummonSet(this.editSet).getCreatureInfo();
+                ((GUIButtonCreature)button).creatureInfo = creatureInfo;
             }
         }
     }

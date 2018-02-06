@@ -36,23 +36,23 @@ public class Beastiary {
 	}
 
 	public void addToKnowledgeList(CreatureKnowledge newKnowledge) {
-		if(ObjectManager.getMob(newKnowledge.creatureName) == null)
+		if(CreatureManager.getInstance().getCreature(newKnowledge.creatureName) == null)
 			return;
 		this.creatureKnowledgeList.put(newKnowledge.creatureName, newKnowledge);
 	}
 
-	public void sendAddedMessage(MobInfo mobInfo) {
+	public void sendAddedMessage(CreatureInfo creatureInfo) {
 		if(extendedPlayer.player.getEntityWorld().isRemote)
 			return;
 		String message = I18n.translateToLocal("message.soulgazer.new");
-		message = message.replace("%creature%", mobInfo.getTitle());
+		message = message.replace("%creature%", creatureInfo.getTitle());
 		extendedPlayer.player.sendMessage(new TextComponentString(message));
-		if(mobInfo.isSummonable()) {
+		if(creatureInfo.isSummonable()) {
 			String summonMessage = I18n.translateToLocal("message.soulgazer.summonable");
-			summonMessage = summonMessage.replace("%creature%", mobInfo.getTitle());
+			summonMessage = summonMessage.replace("%creature%", creatureInfo.getTitle());
 			extendedPlayer.player.sendMessage(new TextComponentString(summonMessage));
 		}
-		extendedPlayer.player.addStat(ObjectManager.getStat(mobInfo.name + ".learn"), 1);
+		extendedPlayer.player.addStat(ObjectManager.getStat(creatureInfo.name + ".learn"), 1);
 	}
 	
 	public boolean hasFullKnowledge(String creatureName) {

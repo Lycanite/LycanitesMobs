@@ -2,7 +2,7 @@
 	"itemName": "darklingskull",
 	"loadDefault": true,
 	"slotType": "blade",
-	"dropMobId": "shadowmobs.darkling",
+	"dropMobId": "shadowmobs:darkling",
 	"dropChance": 0.2,
 	"levelMin": 2,
 	"levelMax": 3,

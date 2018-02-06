@@ -1,15 +1,15 @@
 package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.VersionChecker;
+import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.Beastiary;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.item.ItemStaffSummoning;
 import com.lycanitesmobs.core.network.*;
 import com.lycanitesmobs.core.pets.DonationFamiliars;
 import com.lycanitesmobs.core.pets.PetEntry;
-import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
-import com.lycanitesmobs.core.item.ItemStaffSummoning;
 import com.lycanitesmobs.core.pets.PetManager;
 import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.entity.Entity;
@@ -33,7 +33,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public EntityPlayer player;
 	public Beastiary beastiary;
 	public GroupInfo beastiaryGroup;
-	public MobInfo beastiaryCreature;
+	public CreatureInfo beastiaryCreature;
 	public String beastiaryCategory;
 	public PetManager petManager;
 	public long timePlayed = 0;

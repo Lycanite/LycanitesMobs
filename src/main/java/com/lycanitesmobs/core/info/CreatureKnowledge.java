@@ -5,7 +5,7 @@ import com.lycanitesmobs.ObjectManager;
 public class CreatureKnowledge {
 	public Beastiary beastiary;
 	public String creatureName;
-	public MobInfo creatureInfo;
+	public CreatureInfo creatureInfo;
 	public double completion = 0;
 	
 	// ==================================================
@@ -14,7 +14,7 @@ public class CreatureKnowledge {
 	public CreatureKnowledge(Beastiary beastiary, String creatureName, double completion) {
 		this.beastiary = beastiary;
 		this.creatureName = creatureName;
-		this.creatureInfo = MobInfo.mobClassToInfo.get(ObjectManager.getMob(creatureName));
+		this.creatureInfo = CreatureManager.getInstance().getCreature(creatureName);
 		this.completion = completion;
 	}
 }

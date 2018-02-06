@@ -16,6 +16,7 @@ import com.lycanitesmobs.core.entity.EntityPortal;
 import com.lycanitesmobs.core.helpers.LMReflectionHelper;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.*;
+import com.lycanitesmobs.core.item.equipment.EquipmentPartManager;
 import com.lycanitesmobs.core.mobevent.MobEventListener;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mods.DLDungeons;
@@ -51,7 +52,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String versionNumber = "1.18.2.0";
+	public static final String versionNumber = "1.19.2.0";
 	public static final String versionMC = "1.12.2";
 	public static final String version = versionNumber + " - MC " + versionMC;
 	public static final String website = "http://lycanitesmobs.com";
@@ -93,6 +94,7 @@ public class LycanitesMobs {
 	// Dungeon System:
 	public static WorldGeneratorDungeon dungeonGenerator;
 
+	// Universal Bucket:
 	static {
 		FluidRegistry.enableUniversalBucket();
 	}
@@ -173,11 +175,9 @@ public class LycanitesMobs {
 
 		// ========== Creatures ==========
 		CreatureManager.getInstance().loadConfig();
-		MobInfo.loadGlobalSettings(); // Old MobInfo system to be replaced.
 
 
 		// ========== Spawners ==========
-		SpawnInfo.loadGlobalSettings();
 		FMLCommonHandler.instance().bus().register(SpawnerEventListener.getInstance());
 
 
@@ -265,22 +265,22 @@ public class LycanitesMobs {
 	// ==================================================
 	@Mod.EventHandler
     public void load(FMLInitializationEvent event) {
-		// ========== Register and Initialize Handlers ==========
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
+		// ========== Creatures ==========
+		CreatureManager.getInstance().loadAllFromJSON(group);
+
+
+		// ========== Equipment ==========
+		EquipmentPartManager.getInstance().loadAllFromJSON(group);
 		
 		
-		// ========== Register Special Entities ==========
+		// ========== Special Entities ==========
 		int specialEntityID = 0;
 		EntityRegistry.registerModEntity(new ResourceLocation(this.group.filename, "summoningportal"), EntityPortal.class, "summoningportal", specialEntityID++, instance, 64, 1, true);
-		MobInfo newMob = new MobInfo(group, "fear", EntityFear.class, 0x000000, 0x000000)
-			.setPeaceful(true).setSummonable(false).setSummonCost(0).setDungeonLevel(0).setDummy(true);
 		EntityRegistry.registerModEntity(new ResourceLocation(this.group.filename, "fear"), EntityFear.class, "fear", specialEntityID++, instance, 64, 1, true);
 		AssetManager.addSound("effect_fear", group, "effect.fear");
-        EntityRegistry.registerModEntity(new ResourceLocation(this.group.filename, "hitarea"), EntityHitArea.class, "hitarea", specialEntityID++, instance, 64, 1, true);
-
-
-        // ========== Load All Mob Info from Configs ==========
-        MobInfo.loadAllFromConfigs(this.group);
+		EntityRegistry.registerModEntity(new ResourceLocation(this.group.filename, "hitarea"), EntityHitArea.class, "hitarea", specialEntityID++, instance, 64, 1, true);
 	}
 	
 	
@@ -292,7 +292,6 @@ public class LycanitesMobs {
 
         // ========== Assign Mob Spawning ==========
         GroupInfo.loadAllSpawningFromConfigs();
-        MobInfo.loadAllSpawningFromConfigs();
 
 
 		// ========== Register and Initialize Handlers/Objects ==========
@@ -300,15 +299,20 @@ public class LycanitesMobs {
         proxy.registerTileEntities();
 
 
-		// ========== Load JSON Spawners ==========
+        // ========== Creatures ==========
+		CreatureManager.getInstance().initAll();
+		CreatureManager.getInstance().registerAll();
+
+
+		// ========== Spawners ==========
 		SpawnerManager.getInstance().loadAllFromJSON();
 		
 		
-		// ========== Load JSON Mob Events ==========
+		// ========== Mob Events ==========
         MobEventManager.getInstance().loadAllFromJSON(group);
 
 
-        // ========== Load JSON Dungeons ==========
+        // ========== Dungeons ==========
 		DungeonManager.getInstance().loadAllFromJSON();
 		dungeonGenerator = new WorldGeneratorDungeon();
 		GameRegistry.registerWorldGenerator(dungeonGenerator, 1000);

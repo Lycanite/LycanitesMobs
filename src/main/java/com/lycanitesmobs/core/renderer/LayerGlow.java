@@ -40,7 +40,7 @@ public class LayerGlow extends LayerBase {
 		}
 		textureName += "_glow";
 		if(AssetManager.getTexture(textureName) == null)
-			AssetManager.addTexture(textureName, entity.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+			AssetManager.addTexture(textureName, entity.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
 		return AssetManager.getTexture(textureName);
     }
 

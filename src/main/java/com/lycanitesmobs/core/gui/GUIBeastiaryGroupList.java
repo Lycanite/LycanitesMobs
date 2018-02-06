@@ -1,7 +1,7 @@
 package com.lycanitesmobs.core.gui;
 
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.text.translation.I18n;
@@ -28,12 +28,11 @@ public class GUIBeastiaryGroupList extends GuiScrollingList {
   	//                    List Info
   	// ==================================================
 	public void updateList() {
-		this.groupList = new HashMap<Integer, GroupInfo>();
+		this.groupList = new HashMap<>();
 		
 		int groupIndex = 0;
-		for(String groupName : MobInfo.mobGroups.keySet()) {
-			GroupInfo group = MobInfo.mobGroups.get(groupName);
-			if(group != null && parentGUI.playerExt.beastiary.hasCreatureFromGroup(group)) {
+		for(GroupInfo group : CreatureManager.getInstance().loadedGroups) {
+			if(parentGUI.playerExt.beastiary.hasCreatureFromGroup(group)) {
 				this.groupList.put(groupIndex++, group);
 			}
 		}

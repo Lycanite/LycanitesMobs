@@ -33,14 +33,11 @@ public class GroupInfo {
     public String eggName = "spawnegg";
     
     // ========== Mobs ==========
-    /** A list of all MobInfos assigned to this group. **/
-    public List<MobInfo> mobInfos = new ArrayList<MobInfo>();
-
     /** The next available ID for registering a mob. **/
-    public int nextMobID = 0;
+    protected int nextMobID = 0;
 
     /** The next available ID for registering a projectile. **/
-    public int nextProjectileID = 100;
+	protected int nextProjectileID = 100;
 
     // ========== Projectiles ==========
     /** A list of all Projectile Classes assigned to this group. **/

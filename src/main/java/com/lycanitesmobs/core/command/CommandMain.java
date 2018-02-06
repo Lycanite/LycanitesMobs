@@ -3,16 +3,15 @@ package com.lycanitesmobs.core.command;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.info.Beastiary;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.CreatureManager;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.mobevent.MobEvent;
 import com.lycanitesmobs.core.mobevent.MobEventListener;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
-import com.lycanitesmobs.core.mobevent.MobEvent;
 import com.lycanitesmobs.core.mobevent.MobEventPlayerServer;
 import com.lycanitesmobs.core.spawner.SpawnerEventListener;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
@@ -233,23 +232,23 @@ public class CommandMain implements ICommand {
 					return;
 				}
 
-				String mobName = args[2].toLowerCase();
-				MobInfo mobInfo = ObjectManager.getMobInfo(mobName);
-				if(mobInfo == null) {
+				String creatureName = args[2].toLowerCase();
+				CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(creatureName);
+				if(creatureInfo == null) {
 					reply = I18n.translateToLocal("lyc.command.beastiary.add.unknown");
 					commandSender.sendMessage(new TextComponentString(reply));
 					return;
 				}
 
-				beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, mobInfo.name, 1));
-				beastiary.sendAddedMessage(mobInfo);
+				beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.name, 1));
+				beastiary.sendAddedMessage(creatureInfo);
 				return;
 			}
 
 			// Add:
 			if("complete".equalsIgnoreCase(args[1])) {
-				for(MobInfo mobInfo : ObjectManager.mobs.values()) {
-					beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, mobInfo.name, 1));
+				for(CreatureInfo creatureInfo : CreatureManager.getInstance().creatures.values()) {
+					beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.name, 1));
 				}
 				beastiary.sendAllToClient();
 				reply = I18n.translateToLocal("lyc.command.beastiary.complete");

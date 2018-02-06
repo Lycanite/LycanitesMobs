@@ -18,7 +18,7 @@
 	"triggers": [
 		{
 			"type": "kill",
-			"chance": 0.15,
+			"chance": 0.1,
 			"entityTypesListType": "blacklist",
 			"entityIds": [
 				"elementalmobs.cinder",

@@ -5,8 +5,11 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
-import com.lycanitesmobs.core.info.MobInfo;
-import net.minecraft.entity.*;
+import com.lycanitesmobs.core.info.CreatureManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemFood;
@@ -88,7 +91,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ========== Name ==========
     @Override
     public String getName() {
-    	if(!this.isTamed() || !MobInfo.ownerTags)
+    	if(!this.isTamed() || !CreatureManager.getInstance().config.ownerTags)
     		return super.getName();
     	
     	String ownerName = this.getOwnerName();
@@ -130,21 +133,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     @Override
     public boolean isPersistant() {
     	return this.isTamed() || super.isPersistant();
-    }
-    
-    
-	// ==================================================
-    //                      Stats
-    // ==================================================
-    /** Applies the tamed health multiplier for this mob. This should override subspecies. **/
-    public void applyTamedHealthMultiplier() {
-    	double tamedHealth = this.getBaseHealth();
-    	if(this.isTamed()) {
-    		tamedHealth *= 3;
-    		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tamedHealth);
-	    	if(this.getHealth() > tamedHealth)
-	    		this.setHealth((float)tamedHealth);
-    	}
     }
     
     
@@ -205,7 +193,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	if(!this.getEntityWorld().isRemote && itemStack != null && !player.isSneaking()) {
     		
     		// Taming:
-    		if(!this.isTamed() && isTamingItem(itemStack) && MobInfo.tamingEnabled)
+    		if(!this.isTamed() && isTamingItem(itemStack) && CreatureManager.getInstance().config.tamingEnabled)
     			commands.put(CMD_PRIOR.IMPORTANT.id, "Tame");
     		
     		// Feeding:
@@ -464,7 +452,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             this.dataManager.set(TAMED, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
         }
         this.setAlwaysRenderNameTag(setTamed);
-        this.applyTamedHealthMultiplier();
+        this.refreshHealth();
     }
     
     public boolean isTamingItem(ItemStack itemstack) {
@@ -481,7 +469,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
                 tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
         		player.sendMessage(new TextComponentString(tameMessage));
         		this.playTameEffect(this.isTamed());
-                player.addStat(ObjectManager.getStat(this.mobInfo.name + ".tame"), 1);
+                player.addStat(ObjectManager.getStat(this.creatureInfo.getName() + ".tame"), 1);
                 if(this.timeUntilPortal > this.getPortalCooldown())
                     this.timeUntilPortal = this.getPortalCooldown();
             }
@@ -986,16 +974,16 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     	String sound = "_say";
     	if(this.isTamed() && this.getHealth() < this.getMaxHealth())
     		sound = "_beg";
-    	return AssetManager.getSound(this.mobInfo.name + sound);
+    	return AssetManager.getSound(this.creatureInfo.getName() + sound);
     }
     
     // ========== Tame ==========
     public void playTameSound() {
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_tame"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_tame"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
     
     // ========== Eat ==========
     public void playEatSound() {
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_eat"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_eat"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 }

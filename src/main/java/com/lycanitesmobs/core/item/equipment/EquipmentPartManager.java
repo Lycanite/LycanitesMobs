@@ -1,17 +1,11 @@
 package com.lycanitesmobs.core.item.equipment;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.Utilities;
 import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.info.GroupInfo;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,9 +27,14 @@ public class EquipmentPartManager extends JSONLoader {
 
 	/** Loads all JSON Equipment Parts. Should only be done on pre-init. **/
 	public void loadAllFromJSON(GroupInfo groupInfo) {
-		this.equipmentParts.clear();
-		this.loadAllJson(groupInfo, "Equipment", "equipment", "itemName", false);
-		LycanitesMobs.printDebug("Equipment", "Complete! " + this.equipmentParts.size() + " JSON Equipment Parts Loaded In Total.");
+		try {
+			this.equipmentParts.clear();
+			this.loadAllJson(groupInfo, "Equipment", "equipment", "itemName", false);
+			LycanitesMobs.printDebug("Equipment", "Complete! " + this.equipmentParts.size() + " JSON Equipment Parts Loaded In Total.");
+		}
+		catch(Exception e) {
+			LycanitesMobs.printWarning("", "No Equipment loaded for: " + groupInfo.name);
+		}
 	}
 
 

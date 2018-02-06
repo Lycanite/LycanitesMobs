@@ -1,8 +1,8 @@
 package com.lycanitesmobs.core.entity;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -344,7 +344,7 @@ public class EntityProjectileBase extends EntityThrowable {
 		    }
 		    
 		    // Friendly Fire:
-		    if(owner.isOnSameTeam(targetEntity) && MobInfo.friendlyFire)
+		    if(owner.isOnSameTeam(targetEntity) && CreatureManager.getInstance().config.friendlyFire)
 		    	return false;
 	    }
 	    
@@ -433,7 +433,7 @@ public class EntityProjectileBase extends EntityThrowable {
     	 float damage = (float)this.baseDamage;
     	 if(this.getThrower() != null) {
              if(this.getThrower() instanceof EntityCreatureBase)
-                 damage *= ((EntityCreatureBase) this.getThrower()).getAttackDamageScale();
+                 damage *= ((EntityCreatureBase)this.getThrower()).creatureStats.getDamage() / 2;
              else if(this.getThrower() instanceof EntityPlayer && !(entity instanceof EntityPlayer) || this.getThrower().getControllingPassenger() instanceof EntityPlayer)
                  damage *= 1.2f;
          }

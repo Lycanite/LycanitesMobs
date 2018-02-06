@@ -31,6 +31,10 @@
 	],
 	"mobSpawns": [
 		{
+			"mobId": "elementalmobs.djinn",
+			"weight": 8
+		},
+		{
 			"mobId": "elementalmobs.zephyr",
 			"weight": 8
 		},

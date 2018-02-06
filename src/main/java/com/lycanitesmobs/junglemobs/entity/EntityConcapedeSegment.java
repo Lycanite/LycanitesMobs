@@ -9,7 +9,7 @@ import com.lycanitesmobs.core.entity.ai.EntityAITargetRevenge;
 import com.lycanitesmobs.core.entity.ai.EntityAIWander;
 import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.SpawnInfo;
+import com.lycanitesmobs.core.info.CreatureSpawnConfig;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.EntityAIFollowParent;
 import net.minecraft.block.Block;
@@ -99,7 +99,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     @Override
     public boolean environmentSpawnCheck(World world, BlockPos pos) {
-    	if(this.getNearbyEntities(EntityConcapedeHead.class, null, SpawnInfo.spawnLimitRange).size() <= 0)
+    	if(this.getNearbyEntities(EntityConcapedeHead.class, null, CreatureSpawnConfig.spawnLimitRange).size() <= 0)
     		return false;
     	return super.environmentSpawnCheck(world, pos);
     }

@@ -5,8 +5,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.helpers.JSONHelper;
+import com.lycanitesmobs.core.spawner.SpawnerMobRegistry;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.DungeonHooks;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +32,9 @@ public class CreatureSpawn {
 	/** A list of Spawners that this creature should use. **/
 	public List<String> spawners = new ArrayList<>();
 
+	/** A list of Vanilla Creature Types to use. **/
+	public List<EnumCreatureType> creatureTypes = new ArrayList<>();
+
 
 	// Dimensions:
 	/** The dimension IDs that the world must or must not match depending on the list type. **/
@@ -37,8 +45,11 @@ public class CreatureSpawn {
 
 
 	// Biomes:
+	/** The list of biome tags that this creature spawns in. Converts to a list of biomes on demand. **/
+	public List<String> biomeTags = new ArrayList<>();
+
 	/** The list of biomes that this creature spawns in. **/
-	public List<Biome> biomes = new ArrayList<>();
+	public List<Biome> biomes = null;
 
 	/** If true, the biome check will be ignored completely by this creature. **/
 	public boolean ignoreBiome = false;
@@ -82,12 +93,31 @@ public class CreatureSpawn {
 	public boolean despawnForced = false;
 
 
-	/** Loads this element from a JSON object. **/
+	/**
+	 * Loads this element from a JSON object.
+	 */
 	public void loadFromJSON(JsonObject json) {
 		if(json.has("enabled"))
 			this.enabled = json.get("enabled").getAsBoolean();
 		if(json.has("disableSubspecies"))
 			this.disableSubspecies = json.get("disableSubspecies").getAsBoolean();
+
+		// Spawners:
+		this.spawners.clear();
+		this.creatureTypes.clear();
+		if(json.has("spawners")) {
+			this.spawners = JSONHelper.getJsonStrings(json.get("spawners").getAsJsonArray());
+			for(String spawner : this.spawners) {
+				if ("monster".equalsIgnoreCase(spawner))
+					this.creatureTypes.add(EnumCreatureType.MONSTER);
+				else if ("creature".equalsIgnoreCase(spawner))
+					this.creatureTypes.add(EnumCreatureType.CREATURE);
+				else if ("watercreature".equalsIgnoreCase(spawner))
+					this.creatureTypes.add(EnumCreatureType.WATER_CREATURE);
+				else if ("ambient".equalsIgnoreCase(spawner))
+					this.creatureTypes.add(EnumCreatureType.AMBIENT);
+			}
+		}
 
 		// Dimensions:
 		if(json.has("dimensionIds")) {
@@ -106,8 +136,11 @@ public class CreatureSpawn {
 		// Biomes:
 		if(json.has("ignoreBiome"))
 			this.ignoreBiome = json.get("ignoreBiome").getAsBoolean();
-		if(json.has("biomes"))
-			this.biomes = JSONHelper.getJsonBiomes(json.get("biomes").getAsJsonArray());
+		if(json.has("biomes")) {
+			this.biomeTags.clear();
+			this.biomes = null;
+			this.biomeTags = JSONHelper.getJsonStrings(json.get("biomes").getAsJsonArray());
+		}
 
 		if(json.has("spawnWeight"))
 			this.spawnWeight = json.get("spawnWeight").getAsInt();
@@ -132,6 +165,43 @@ public class CreatureSpawn {
 			this.despawnNatural = json.get("despawnNatural").getAsBoolean();
 		if (json.has("despawnForced"))
 			this.despawnForced = json.get("despawnForced").getAsBoolean();
+	}
+
+
+	/** Initialises this Creature Spawn Info, should be called after pre-init and when reloading. **/
+	public void init(CreatureInfo creatureInfo) {
+		for(String spawner : this.spawners) {
+			SpawnerMobRegistry.createSpawn(creatureInfo, spawner);
+		}
+	}
+
+
+	/**
+	 * Registers this mob to vanilla spawners and dungeons. Can only be done during startup.
+	 */
+	public void register(CreatureInfo creatureInfo) {
+		// Add Vanilla Spawns:
+		if(!CreatureManager.getInstance().spawnConfig.disableAllSpawning) {
+			if(this.enabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {
+				for(EnumCreatureType creatureType : this.creatureTypes) {
+					EntityRegistry.addSpawn(creatureInfo.entityClass, this.spawnWeight, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, this.biomes.toArray(new Biome[this.biomes.size()]));
+					for(Biome biome : this.biomes) {
+						if(biome == Biomes.HELL) {
+							EntityRegistry.addSpawn(creatureInfo.entityClass, this.spawnWeight * 10, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, biome);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		// Dungeon Spawn:
+		if(!CreatureManager.getInstance().spawnConfig.disableDungeonSpawners) {
+			if(this.dungeonWeight > 0) {
+				DungeonHooks.addDungeonMob(creatureInfo.getResourceLocation(), this.dungeonWeight);
+				LycanitesMobs.printDebug("MobSetup", "Dungeon Spawn Added - Weight: " + this.dungeonWeight);
+			}
+		}
 	}
 
 
@@ -166,6 +236,9 @@ public class CreatureSpawn {
 	public boolean isValidBiome(List<Biome> biomes) {
 		if(this.ignoreBiome) {
 			return true;
+		}
+		if(this.biomes == null) {
+			this.biomes = JSONHelper.getJsonBiomes(this.biomeTags);
 		}
 		for(Biome validBiome : this.biomes) {
 			if(biomes.contains(validBiome)) {

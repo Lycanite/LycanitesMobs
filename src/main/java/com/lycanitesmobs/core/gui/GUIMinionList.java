@@ -2,7 +2,8 @@ package com.lycanitesmobs.core.gui;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.GuiScrollingList;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class GUIMinionList extends GuiScrollingList {
 	GUIMinion parentGUI;
-	Map<Integer, String> minionList = new HashMap<Integer, String>();
+	Map<Integer, String> minionList = new HashMap<>();
 	
 	// ==================================================
   	//                    Constructor
@@ -51,8 +52,8 @@ public class GUIMinionList extends GuiScrollingList {
 
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
-		String mobName = this.minionList.get(index);
-		MobInfo mobInfo = MobInfo.mobNameToInfo.get(mobName);
+		String creatureName = this.minionList.get(index);
+		CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(creatureName);
 
 		int boxLeft = this.left;
 		int levelBarWidth = 9;
@@ -61,7 +62,7 @@ public class GUIMinionList extends GuiScrollingList {
 		int levelBarY = boxTop + boxBottom - levelBarHeight - 4;
 		int levelBarU = 256 - (levelBarWidth * 2);
 		int levelBarV = 256 - levelBarHeight;
-		int level = mobInfo.summonCost;
+		int level = creatureInfo.summonCost;
 
 		// Summon Level:
 		Minecraft.getMinecraft().getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
@@ -69,8 +70,8 @@ public class GUIMinionList extends GuiScrollingList {
 			this.parentGUI.drawTexturedModalRect(levelBarX + (levelBarWidth * currentLevel), levelBarY, levelBarU, levelBarV, levelBarWidth, levelBarHeight);
 		}
 
-		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
+		this.parentGUI.getFontRenderer().drawString(creatureInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(creatureInfo.getIcon());
 		this.parentGUI.drawTexturedModalRect(this.left + 2, boxTop + 4, 0, 0, 16, 16, 16);
 	}
 }

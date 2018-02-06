@@ -1,6 +1,6 @@
 package com.lycanitesmobs.core.renderer;
 
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -9,8 +9,8 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderFactoryCreature<T extends Entity> implements IRenderFactory {
     protected String entityID;
 
-    public RenderFactoryCreature(MobInfo mobInfo) {
-        this.entityID = mobInfo.getEntityID();
+    public RenderFactoryCreature(CreatureInfo creatureInfo) {
+        this.entityID = creatureInfo.getEntityId();
     }
 
     @Override

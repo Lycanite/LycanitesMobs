@@ -21,8 +21,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     private float scaledHeight;
     
     // Targets:
-    private EntityCreatureAgeable breedingTarget, breedingTargetPrev;
-    public boolean hasBreedingTarget = false;
+    private EntityCreatureAgeable breedingTarget;
     
     // Growth:
     public int growthTime = -24000;
@@ -32,7 +31,6 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     // Breeding:
     public int loveTime;
     private int loveTimeMax = 600;
-    private int breedingTime;
     public int breedingCooldown = 6000;
     
     public boolean hasBeenFarmed = false;
@@ -142,8 +140,6 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 	            }
             }
         }
-        else
-            this.breedingTime = 0;
     }
     
     // ========== AI Update ==========
@@ -168,7 +164,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     	if(itemStack != null) {
     		
     		// Spawn Egg:
-    		if(itemStack.getItem() == ObjectManager.getItem(this.group.getEggName()))
+    		if(itemStack.getItem() == ObjectManager.getItem(this.creatureInfo.group.getEggName()))
     			commands.put(CMD_PRIOR.ITEM_USE.id, "Spawn Baby");
     		
     		// Breeding Item:
@@ -184,9 +180,9 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
     public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
     	
     	// Spawn Baby:
-    	if(command.equals("Spawn Baby") && !this.getEntityWorld().isRemote && ObjectManager.entityLists.containsKey(this.group.filename)) {
+    	if(command.equals("Spawn Baby") && !this.getEntityWorld().isRemote && ObjectManager.entityLists.containsKey(this.creatureInfo.group.filename)) {
             ItemCustomSpawnEgg itemCustomSpawnEgg = (ItemCustomSpawnEgg)itemStack.getItem();
-			 Class eggClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(itemCustomSpawnEgg.getEntityIdFromItem(itemStack));
+			 Class eggClass = ObjectManager.entityLists.get(this.creatureInfo.group.filename).getClassFromID(itemCustomSpawnEgg.getEntityIdFromItem(itemStack));
 			 if(eggClass != null && eggClass.isAssignableFrom(this.getClass())) {
 				 EntityCreatureAgeable baby = this.createChild(this);
 				 if(baby != null) {
@@ -321,7 +317,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
             this.finishBreeding();
             partner.finishBreeding();
             baby.setGrowingAge(baby.growthTime);
-            Subspecies babySubspecies = this.mobInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partner.getSubspecies());
+            Subspecies babySubspecies = this.creatureInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partner.getSubspecies());
             baby.setSubspecies(babySubspecies != null ? babySubspecies.index : 0, true);
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
 
@@ -346,7 +342,6 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
         this.setGrowingAge(this.breedingCooldown);
         this.setBreedingTarget(null);
         this.loveTime = 0;
-        this.breedingTime = 0;
 	}
 	
 	

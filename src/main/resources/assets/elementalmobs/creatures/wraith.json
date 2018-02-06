@@ -31,7 +31,7 @@
 	"effect": 1,
 	"pierce": 0,
 	"knockbackResistance": 0,
-	"followRange": 40,
+	"sight": 40,
 	"eggBackColor": "#FF9900",
 	"eggForeColor": "#FF0000",
 	"subspecies": [

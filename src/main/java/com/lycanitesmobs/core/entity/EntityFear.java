@@ -55,9 +55,6 @@ public class EntityFear extends EntityCreatureBase {
         // Stats:
         this.experienceValue = 0;
         this.inventory = new InventoryCreature(this.getName(), this);
-        if(this.mobInfo.defaultDrops)
-            this.loadItemDrops();
-        this.loadCustomDrops();
 
         // Fire Immunity:
         this.isImmuneToFire = true;
@@ -66,7 +63,7 @@ public class EntityFear extends EntityCreatureBase {
     // ========== Stats ==========
 	@Override
 	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
+		HashMap<String, Double> baseAttributes = new HashMap<>();
 		baseAttributes.put("maxHealth", 10D);
 		baseAttributes.put("movementSpeed", 0.38D);
 		baseAttributes.put("knockbackResistance", 1.0D);

@@ -3,7 +3,8 @@ package com.lycanitesmobs.core.pets;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class SummonSet {
@@ -30,7 +31,10 @@ public class SummonSet {
     //                   Static Methods
     // ==================================================
 	public static boolean isSummonableCreature(String creatureName) {
-		return MobInfo.summonableCreatures.contains(creatureName);
+		CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(creatureName);
+		if(creatureInfo == null)
+			return false;
+		return creatureInfo.isSummonable();
 	}
 	
 	
@@ -71,12 +75,18 @@ public class SummonSet {
 	public boolean getPVP() {
 		return this.pvp;
 	}
-	
-	public MobInfo getMobInfo() {
-		return MobInfo.getFromName(this.summonType);
+
+	/**
+	 * Gets the creature info used by this summon set.
+	 * @return The summon set creature info.
+	 */
+	public CreatureInfo getCreatureInfo() {
+		return CreatureManager.getInstance().getCreature(this.summonType);
 	}
 
-    /** Applies all behaviour in this set to the provided entity. **/
+    /**
+	 * Applies all behaviour in this set to the provided entity.
+	 */
     public void applyBehaviour(EntityCreatureTameable minion) {
         minion.setSitting(this.getSitting());
         minion.setFollowing(this.getFollowing());
@@ -85,7 +95,9 @@ public class SummonSet {
         minion.setPVP(this.getPVP());
     }
 
-    /** Copies the provided entity's behaviour into this summon set's behaviour. **/
+    /**
+	 * Copies the provided entity's behaviour into this summon set's behaviour.
+	 */
     public void updateBehaviour(EntityCreatureTameable minion) {
         this.sitting = minion.isSitting();
         this.following = minion.isFollowing();
@@ -100,14 +112,17 @@ public class SummonSet {
     // ==================================================
 	/** Returns true if this summon set has a valid mob to summon and can be used by staves, etc. **/
 	public boolean isUseable() {
-		if(this.summonType == null || "".equals(this.summonType) || ObjectManager.getMob(this.summonType) == null || !isSummonableCreature(this.summonType))
+		if(this.summonType == null || "".equals(this.summonType) || CreatureManager.getInstance().getCreature(this.summonType) == null || !isSummonableCreature(this.summonType))
 			return false;
 		return true;
 	}
 	
 	/** Returns the class of the creature to summon. **/
 	public Class getCreatureClass() {
-		return ObjectManager.getMob(this.summonType);
+		CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(this.summonType);
+		if(creatureInfo == null)
+			return null;
+		return creatureInfo.entityClass;
 	}
 	
 	

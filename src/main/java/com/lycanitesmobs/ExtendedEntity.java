@@ -3,7 +3,7 @@ package com.lycanitesmobs;
 import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityFear;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.network.MessageEntityPickedUp;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -251,7 +251,7 @@ public class ExtendedEntity implements IExtendedEntity {
         if(this.pickedUpByEntity instanceof EntityCreatureBase) {
             pickupOffset = ((EntityCreatureBase) this.pickedUpByEntity).getPickupOffset(this.entity);
         }
-        if(MobInfo.disablePickupOffsets && this.entity instanceof EntityPlayer) {
+        if(CreatureManager.getInstance().config.disablePickupOffsets && this.entity instanceof EntityPlayer) {
             return new double[] {0, 0, 0};
         }
         return pickupOffset;

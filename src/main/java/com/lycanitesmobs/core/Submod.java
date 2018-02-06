@@ -4,8 +4,6 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.info.SpawnInfo;
 import com.lycanitesmobs.core.item.equipment.EquipmentPartManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -42,14 +40,13 @@ public abstract class Submod {
 
 	public void init(FMLInitializationEvent event) {
 		ObjectManager.setCurrentGroup(this.group);
-		MobInfo.loadAllFromConfigs(this.group);
 		this.registerOres();
 		this.addRecipes();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
 		ObjectManager.setCurrentGroup(this.group);
-		if(SpawnInfo.controlVanillaSpawns) {
+		if(CreatureManager.getInstance().spawnConfig.controlVanillaSpawns) {
 			this.editVanillaSpawns();
 		}
 	}

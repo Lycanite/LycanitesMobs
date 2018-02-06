@@ -2,11 +2,7 @@ package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.block.BlockSlabCustom;
 import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.entity.EntityCreatureRideable;
-import com.lycanitesmobs.core.info.EntityListCustom;
-import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.info.ObjectLists;
+import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSlabCustom;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
@@ -52,7 +48,6 @@ public class ObjectManager {
 	public static Map<String, PotionBase> potionEffects = new HashMap<>();
 	
 	public static Map<String, EntityListCustom> entityLists = new HashMap<>();
-	public static Map<String, MobInfo> mobs = new HashMap<>();
 	
 	public static Map<String, Class> projectiles = new HashMap<>();
 
@@ -161,34 +156,6 @@ public class ObjectManager {
 		return potion;
 	}
 	
-	// ========== Creature ==========
-	public static MobInfo addMob(MobInfo mobInfo) {
-		GroupInfo group = mobInfo.group;
-		String name = mobInfo.name.toLowerCase();
-		mobs.put(name, mobInfo);
-		
-		// Sounds:
-		AssetManager.addSound(name + "_say", group, "entity." + name + ".say");
-		AssetManager.addSound(name + "_hurt", group, "entity." + name + ".hurt");
-		AssetManager.addSound(name + "_death", group, "entity." + name + ".death");
-		AssetManager.addSound(name + "_step", group, "entity." + name + ".step");
-		AssetManager.addSound(name + "_attack", group, "entity." + name + ".attack");
-		AssetManager.addSound(name + "_jump", group, "entity." + name + ".jump");
-		AssetManager.addSound(name + "_fly", group, "entity." + name + ".fly");
-        if(mobInfo.isSummonable() || mobInfo.isTameable())
-		    AssetManager.addSound(name + "_tame", group, "entity." + name + ".tame");
-        if(mobInfo.isSummonable() || mobInfo.isTameable())
-            AssetManager.addSound(name + "_beg", group, "entity." + name + ".beg");
-        if(mobInfo.isTameable())
-            AssetManager.addSound(name + "_eat", group, "entity." + name + ".eat");
-        if(EntityCreatureRideable.class.isAssignableFrom(mobInfo.entityClass) && (mobInfo.isSummonable() || mobInfo.isTameable()))
-            AssetManager.addSound(name + "_mount", group, "entity." + name + ".mount");
-        if(mobInfo.isBoss())
-            AssetManager.addSound(name + "_phase", group, "entity." + name + ".phase");
-
-        return mobInfo;
-	}
-	
 
 	// ========== Projectile ==========
     public static void addProjectile(String name, Class entityClass, int updateFrequency) {
@@ -261,19 +228,6 @@ public class ObjectManager {
 		if(!potionEffects.containsKey(name)) return null;
 		return potionEffects.get(name);
 	}
-	
-	// ========== Mob ==========
-	public static Class getMob(String mobName) {
-		mobName = mobName.toLowerCase();
-		if(!mobs.containsKey(mobName)) return null;
-		return mobs.get(mobName).entityClass;
-	}
-	
-	public static MobInfo getMobInfo(String mobName) {
-		mobName = mobName.toLowerCase();
-		if(!mobs.containsKey(mobName)) return null;
-		return mobs.get(mobName);
-	}
 
     // ========== Damage Source ==========
     public static DamageSource getDamageSource(String name) {
@@ -323,12 +277,12 @@ public class ObjectManager {
 
 	// ========== Entities ==========
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event, GroupInfo group) {
-		for(MobInfo mobInfo : mobs.values()) {
-			if(mobInfo.group != group) {
+		for(CreatureInfo creatureInfo : CreatureManager.getInstance().creatures.values()) {
+			if(creatureInfo.group != group) {
 				continue;
 			}
-			EntityEntry entityEntry = new EntityEntry(mobInfo.entityClass, mobInfo.getRegistryName());
-			entityEntry.setRegistryName(mobInfo.getRegistryName());
+			EntityEntry entityEntry = new EntityEntry(creatureInfo.entityClass, creatureInfo.getEntityId());
+			entityEntry.setRegistryName(creatureInfo.getEntityId());
 			event.getRegistry().register(entityEntry);
 		}
 	}

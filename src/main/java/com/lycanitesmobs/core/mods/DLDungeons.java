@@ -1,7 +1,8 @@
 package com.lycanitesmobs.core.mods;
 
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Method;
@@ -32,7 +33,7 @@ public class DLDungeons {
 		
 		try {
 			if(((Boolean)isLoaded.invoke(null)).booleanValue())
-				MobInfo.dlDungeonsLoaded = true;
+				CreatureManager.getInstance().dlDungeonsLoaded = true;
 		} catch (Exception e) {
 			LycanitesMobs.printWarning("", "Unable to invoke DLDungeons API method isLoaded():");
 			e.printStackTrace();
@@ -43,18 +44,18 @@ public class DLDungeons {
 	// ========== Add Mob ==========
 	/**
 	 * Adds a mob entry to the DLDungeon Themes.
-	 * @param mobInfo The MobInfo class of the mob, this will be used to get the theme amongst other things.
+	 * @param creatureInfo The MobInfo class of the mob, this will be used to get the theme amongst other things.
 	 */
-	public static void addMob(MobInfo mobInfo) {
-		String mobName = mobInfo.getRegistryName();
-		String themes = mobInfo.dungeonThemes.replace("GROUP", mobInfo.group.dungeonThemes).replace(" ", "");
-		if(!"".equalsIgnoreCase(themes) && mobInfo.dungeonLevel > 0) {
+	public static void addMob(CreatureInfo creatureInfo) {
+		String mobName = creatureInfo.getEntityId();
+		String themes = creatureInfo.group.dungeonThemes;
+		if(!"".equalsIgnoreCase(themes) && creatureInfo.dungeonLevel > 0) {
 			try {
 				Class dlDungeonsAPI = Class.forName("jaredbgreat.dldungeons.api.DLDungeonsAPI");
 				Method addMob = dlDungeonsAPI.getMethod("addMob", String.class, int.class, String[].class);
-				addMob.invoke(null, mobName, mobInfo.dungeonLevel, themes.split(","));
-				//DLDungeonsAPI.addMob(mobName, mobInfo.dungeonLevel, themes.split(","));
-				LycanitesMobs.printDebug("MobSetup", "[DLDungeons] Added " + mobName + " with the level: " + mobInfo.dungeonLevel + " and themes: " + themes);
+				addMob.invoke(null, mobName, creatureInfo.dungeonLevel, themes.split(","));
+				//DLDungeonsAPI.addMob(mobName, creatureInfo.dungeonLevel, themes.split(","));
+				LycanitesMobs.printDebug("MobSetup", "[DLDungeons] Added " + mobName + " with the level: " + creatureInfo.dungeonLevel + " and themes: " + themes);
 			} catch(Exception e) {
 				LycanitesMobs.printWarning("", "Unable to add " + mobName + " to DLDungeons API:");
 			}

@@ -5,7 +5,7 @@ import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -172,9 +172,9 @@ public class GUIMinion extends GUIBaseScreen {
         int tabSpacing = buttonSpacing;
         for(int i = 1; i <= tabCount; i++) {
 	        String buttonText = String.valueOf(i);
-	        MobInfo mobInfo = this.playerExt.getSummonSet(i).getMobInfo();
+	        CreatureInfo creatureInfo = this.playerExt.getSummonSet(i).getCreatureInfo();
 	        buttonX += tabSpacing;
-	        GuiButton tabButton = new GUIButtonCreature(tabButtonID + i, buttonX, buttonY, buttonWidth, buttonHeight, buttonText, mobInfo);
+	        GuiButton tabButton = new GUIButtonCreature(tabButtonID + i, buttonX, buttonY, buttonWidth, buttonHeight, buttonText, creatureInfo);
 	        this.buttonList.add(tabButton);
 	        if(i == this.editSet)
 	        	tabButton.enabled = false;
@@ -279,8 +279,8 @@ public class GUIMinion extends GUIBaseScreen {
 		for(Object buttonObj : this.buttonList) {
 			GuiButton button = (GuiButton)buttonObj;
 			if(button instanceof GUIButtonCreature && button.id == this.editSet + this.tabButtonID) {
-				MobInfo mobInfo = this.playerExt.getSummonSet(this.editSet).getMobInfo();
-				((GUIButtonCreature)button).mobInfo = mobInfo;
+				CreatureInfo creatureInfo = this.playerExt.getSummonSet(this.editSet).getCreatureInfo();
+				((GUIButtonCreature)button).creatureInfo = creatureInfo;
 			}
 		}
 	}

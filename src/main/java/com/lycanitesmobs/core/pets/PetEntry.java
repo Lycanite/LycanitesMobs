@@ -5,7 +5,8 @@ import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -78,9 +79,9 @@ public class PetEntry {
     // ==================================================
     /** Returns a new PetEntry based off the provided entity for the provided player. **/
     public static PetEntry createFromEntity(EntityPlayer player, EntityCreatureBase entity, String petType) {
-        MobInfo mobInfo = entity.mobInfo;
-        String entryName = petType + "-" + player.getName() + mobInfo.name + "-" + UUID.randomUUID().toString();
-        PetEntry petEntry = new PetEntry(entryName, petType, player, mobInfo.name);
+        CreatureInfo creatureInfo = entity.creatureInfo;
+        String entryName = petType + "-" + player.getName() + creatureInfo.getName() + "-" + UUID.randomUUID().toString();
+        PetEntry petEntry = new PetEntry(entryName, petType, player, creatureInfo.getName());
         if(entity.hasCustomName())
             petEntry.setEntityName(entity.getCustomNameTag());
         petEntry.setEntitySubspeciesID(entity.getSubspeciesIndex());
@@ -167,10 +168,10 @@ public class PetEntry {
     // ==================================================
     //                     Get Values
     // ==================================================
-    public MobInfo getMobInfo() {
+    public CreatureInfo getCreatureInfo() {
         if(this.summonSet == null || "".equals(this.summonSet.summonType))
             return null;
-        return MobInfo.getFromName(this.summonSet.summonType);
+        return CreatureManager.getInstance().getCreature(this.summonSet.summonType);
     }
 
     public float getHealth() {
@@ -204,7 +205,7 @@ public class PetEntry {
     //                       Name
     // ==================================================
     public String getDisplayName() {
-        String displayName = this.summonSet.getMobInfo().getTitle();
+        String displayName = this.summonSet.getCreatureInfo().getTitle();
         if(!"".equals(this.entityName))
             displayName = this.entityName + " (" + displayName + ")";
         return displayName;
@@ -490,7 +491,7 @@ public class PetEntry {
     public int getSpiritCost() {
         if(this.summonSet.playerExt == null)
             return 0;
-        return this.summonSet.playerExt.spiritCharge * this.getMobInfo().summonCost;
+        return this.summonSet.playerExt.spiritCharge * this.getCreatureInfo().summonCost;
     }
 
 

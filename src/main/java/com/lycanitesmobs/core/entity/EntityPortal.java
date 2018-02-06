@@ -1,7 +1,7 @@
 package com.lycanitesmobs.core.entity;
 
 import com.lycanitesmobs.*;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.item.ItemStaffSummoning;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import net.minecraft.entity.Entity;
@@ -144,7 +144,7 @@ public class EntityPortal extends EntityProjectileBase {
                     if(this.shootingEntity.capabilities.isCreativeMode)
                         this.summonAmount += this.portalItem.getSummonAmount();
                     else {
-                        float summonMultiplier = (float) (MobInfo.mobClassToInfo.get(this.summonClass).summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
+                        float summonMultiplier = (float) (CreatureManager.getInstance().getCreature(this.summonClass).summonCost + this.portalItem.getSummonCostBoost()) * this.portalItem.getSummonCostMod();
                         int summonCost = Math.round((float) playerExt.summonFocusCharge * summonMultiplier);
                         if(playerExt.summonFocus >= summonCost) {
                             if(this.portalItem.getAdditionalCosts(this.shootingEntity)) {
@@ -231,7 +231,7 @@ public class EntityPortal extends EntityProjectileBase {
                     entityCreature.setTemporary(this.summonDuration);
 
                 if (this.shootingEntity != null)
-                    this.shootingEntity.addStat(ObjectManager.getStat(entityCreature.mobInfo.name + ".summon"), 1);
+                    this.shootingEntity.addStat(ObjectManager.getStat(entityCreature.creatureInfo.getName() + ".summon"), 1);
             }
 	    	this.getEntityWorld().spawnEntity(entity);
     	}

@@ -66,9 +66,6 @@ import java.util.*;
 
 public abstract class EntityCreatureBase extends EntityLiving {
     public static Boolean ENABLE_HITAREAS = false;
-
-	/** A snapshot of the base health for each mob. This is used when calculating subspecies or tamed health. **/
-	public static Map<Class, Double> baseHealthMap = new HashMap<>();
     
 	// Core:
 	/** The Creature Info used by this creature. **/
@@ -81,11 +78,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public EnumCreatureAttribute attribute = EnumCreatureAttribute.UNDEAD;
 	/** A class that opens up extra stats and behaviours for NBT based customization.**/
 	public ExtraMobBehaviour extraMobBehaviour;
-
-	/** A class that contains information about this mob, this class also links to the SpawnInfo class relevant to this mob. **/
-	public MobInfo mobInfo;
-    /** The group that this mob belongs to, this provides config settings, asset locations and more. **/
-	public GroupInfo group;
 
 	// Info:
 	/** The name of the event that spawned this mob if any, an empty string ("") if none. **/
@@ -374,11 +366,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** This should be called by the specific mob entity and set the default starting values. **/
     public void setupMob() {
         // Size:
-        this.setWidth *= this.mobInfo.hitboxScale;
-        this.setHeight *= this.mobInfo.hitboxScale;
+        this.setWidth *= this.creatureInfo.hitboxScale;
+        this.setHeight *= this.creatureInfo.hitboxScale;
         this.updateSize();
-        if(this.mobInfo.sizeScale != 1)
-            this.setSizeScale(this.mobInfo.sizeScale);
+        if(this.creatureInfo.sizeScale != 1)
+            this.setSizeScale(this.creatureInfo.sizeScale);
         
         // Stats:
         this.stepHeight = 0.5F;
@@ -387,10 +379,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		this.experienceValue = this.experience;
 
         // Drops:
-        if(this.mobInfo.defaultDrops)
-        	this.loadItemDrops();
-        this.loadCustomDrops();
-		ItemEquipmentPart itemEquipmentPart = ItemEquipmentPart.MOB_PART_DROPS.get(this.getEntityIdName());
+        this.loadItemDrops();
+		ItemEquipmentPart itemEquipmentPart = ItemEquipmentPart.MOB_PART_DROPS.get(this.creatureInfo.getEntityId());
 		if(itemEquipmentPart != null) {
 			this.drops.add(new MobDrop(new ItemStack(itemEquipmentPart), itemEquipmentPart.dropChance).setMaxAmount(1));
 		}
@@ -408,15 +398,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		}
 	}
 
-    /** Loads custom item drops from the config. **/
-    @Deprecated
-    public void loadCustomDrops() {
-        for(MobDrop drop : this.mobInfo.customDrops) {
-            MobDrop newDrop = new MobDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);
-            this.drops.add (newDrop);
-        }
-    }
-
     /** Adds a saved item drop to this creature instance where it will be read/written from/to NBT Data. **/
     public void addSavedItemDrop(MobDrop mobDrop) {
     	this.drops.add(mobDrop);
@@ -424,46 +405,24 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	}
     
     // ========== Attributes ==========
-    /** Creates and sets all the entity attributes with default values. This should be overriden by specific entities and should always run applyEntityAttributes(HashMap<String, Double> baseAttributes). **/
+    /** Creates and sets all the entity attributes with default values. **/
     @Override
     protected void applyEntityAttributes() {
-        HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-        baseAttributes.put("armor", 0D);
-		baseAttributes.put("movementSpeed", 1D);
-		baseAttributes.put("knockbackResistance", 0D);
-		baseAttributes.put("followRange", 35D);
-		baseAttributes.put("attackDamage", 1D);
-        baseAttributes.put("attackSpeed", 4D);
-        this.applyEntityAttributes(baseAttributes);
-    }
-    
-    /** Creates and sets all the entity attributes using a HashMap of values. This must always be called. **/
-    protected void applyEntityAttributes(HashMap<String, Double> baseAttributes) {
-        this.mobInfo = MobInfo.mobClassToInfo.get(this.getClass());
-        this.group = mobInfo.group;
-        this.extraMobBehaviour = new ExtraMobBehaviour(this);
-        this.directNavigator = new DirectNavigator(this);
+		this.extraMobBehaviour = new ExtraMobBehaviour(this);
+		this.directNavigator = new DirectNavigator(this);
+		super.applyEntityAttributes();
 
-        super.applyEntityAttributes();
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-        if(baseAttributes.containsKey("maxHealth")) {
-        	this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue((baseAttributes.get("maxHealth") * this.getHealthMultiplier()) + this.getHealthBoost());
-        	baseHealthMap.put(this.getClass(), baseAttributes.get("maxHealth"));
-        }
-        if(baseAttributes.containsKey("armor"))
-            this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(baseAttributes.get("armor"));
-        if(baseAttributes.containsKey("movementSpeed"))
-        	this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(baseAttributes.get("movementSpeed"));
-        if(baseAttributes.containsKey("knockbackResistance"))
-        	this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(baseAttributes.get("knockbackResistance"));
-        if(baseAttributes.containsKey("followRange"))
-        	this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(baseAttributes.get("followRange"));
-        if(baseAttributes.containsKey("attackDamage"))
-        	this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(baseAttributes.get("attackDamage"));
-        if(baseAttributes.containsKey("attackSpeed"))
-            this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(baseAttributes.get("attackSpeed"));
+		// Register Attributes:
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.creatureStats.getHealth());
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(this.creatureStats.getArmor());
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.creatureStats.getSpeed());
+		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(this.creatureStats.getKnockbackResistance());
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.creatureStats.getSight());
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.creatureStats.getDamage());
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4 * this.creatureStats.getHaste());
     }
 	
 	// ========== Init ==========
@@ -480,17 +439,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.dataManager.register(SIZE, (float) 1D);
 		this.dataManager.register(LEVEL, 1);
         this.dataManager.register(SUBSPECIES, (byte) 0);
-        this.dataManager.register(ARENA, Optional.<BlockPos>absent());
+        this.dataManager.register(ARENA, Optional.absent());
         InventoryCreature.registerDataParameters(this.dataManager);
         this.initiated = true;
     }
     
     // ========== Name ==========
-    /** Returns the name that this entity uses when checking the config class. Also it's spawner name, etc. **/
-    public String getConfigName() {
-    	return this.mobInfo.name;
-    }
-    
     /** Returns the display name of this entity. Use this when displaying it's name. **/
     @Override
     public String getName() {
@@ -512,9 +466,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     /** Returns the species name of this entity. **/
     public String getSpeciesName() {
-        if(this.mobInfo == null)
-            return super.getName();
-    	return I18n.translateToLocal("entity." + this.getEntityIdName() + ".name");
+    	return this.creatureInfo.getTitle();
     }
 
     /** Returns the subpsecies title (translated name) of this entity, returns a blank string if this is a base species mob. **/
@@ -531,11 +483,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			return "";
 		}
 		return " " + I18n.translateToLocal("entity.level") + " " + this.getLevel();
-	}
-
-	/** Returns the id name of this entity, used for referencing this entity by string. **/
-	public String getEntityIdName() {
-		return this.mobInfo.group.filename + "." + this.mobInfo.name;
 	}
 
     /** Gets the name of this entity relative to it's age, more useful for EntityCreatureAgeable. **/
@@ -632,7 +579,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     @Override
     public int getMaxSpawnedInChunk() {
-        return this.mobInfo.spawnInfo.spawnGroupMax;
+        return this.creatureInfo.creatureSpawn.spawnGroupMax;
     }
 
 	// ========== Vanilla Spawn Check ==========
@@ -642,13 +589,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			return false;
 		}
 
-    	LycanitesMobs.printDebug("MobSpawns", " ~O==================== Vanilla Spawn Check: " + this.getConfigName() + " ====================O~");
-    	LycanitesMobs.printDebug("MobSpawns", "Attempting to Spawn: " + this.getConfigName());
+    	LycanitesMobs.printDebug("MobSpawns", " ~O==================== Vanilla Spawn Check: " + this.creatureInfo.getName() + " ====================O~");
+    	LycanitesMobs.printDebug("MobSpawns", "Attempting to Spawn: " + this.creatureInfo.getName());
 		LycanitesMobs.printDebug("MobSpawns", "Target Spawn Location: " + pos);
     	
     	// Peaceful Check:
     	LycanitesMobs.printDebug("MobSpawns", "Checking for peaceful difficulty...");
-        if(!this.mobInfo.peacefulDifficulty && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL) {
+        if(!this.creatureInfo.peaceful && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL) {
         	return false;
 		}
         
@@ -689,8 +636,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return false;
 		}
 
-		LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.mobInfo.spawnInfo.spawnAreaLimit);
-		if(!this.checkSpawnGroupLimit(world, pos, SpawnInfo.spawnLimitRange))
+		LycanitesMobs.printDebug("MobSpawns", "Counting mobs of the same kind, max allowed is: " + this.creatureInfo.creatureSpawn.spawnAreaLimit);
+		if(!this.checkSpawnGroupLimit(world, pos, CreatureManager.getInstance().spawnConfig.spawnLimitRange))
 			return false;
 
     	return true;
@@ -699,10 +646,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Environment Spawn Check ==========
     /** Second stage checks for vanilla spawning, this check is ignored if there is a valid monster spawner nearby. **/
     public boolean environmentSpawnCheck(World world, BlockPos pos) {
-        if(this.mobInfo.spawnInfo.spawnMinDay > 0) {
+        if(this.creatureInfo.creatureSpawn.worldDayMin > 0) {
             int currentDay = (int) Math.floor(world.getTotalWorldTime() / 24000D);
-            LycanitesMobs.printDebug("MobSpawns", "Checking world age, currently on day: " + currentDay + ", must be at least day: " + this.mobInfo.spawnInfo.spawnMinDay + ".");
-            if (currentDay < this.mobInfo.spawnInfo.spawnMinDay)
+            LycanitesMobs.printDebug("MobSpawns", "Checking world age, currently on day: " + currentDay + ", must be at least day: " + this.creatureInfo.creatureSpawn.worldDayMin + ".");
+            if (currentDay < this.creatureInfo.creatureSpawn.worldDayMin)
                 return false;
         }
     	LycanitesMobs.printDebug("MobSpawns", "Checking dimension.");
@@ -728,11 +675,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     // ========== Spawn Dimension Check ==========
     public boolean isNativeDimension(World world) {
-    	if(this.mobInfo == null || this.mobInfo.spawnInfo == null) {
-            LycanitesMobs.printDebug("MobSpawns", "No dimension spawn settings were found for this mob, defaulting to valid.");
-            return true;
-        }
-        return this.mobInfo.spawnInfo.isAllowedDimension(world);
+        return this.creatureInfo.creatureSpawn.isAllowedDimension(world);
     }
 
 	// ========== Collision Spawn Check ==========
@@ -750,19 +693,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ========== Light Level Spawn Check ==========
 	/** Returns true if the light level is valid for spawning. **/
 	public boolean checkSpawnLightLevel(World world, BlockPos pos) {
-		if(this.mobInfo.spawnInfo.spawnsInDark && this.mobInfo.spawnInfo.spawnsInLight) {
+		if(this.creatureInfo.creatureSpawn.spawnsInDark && this.creatureInfo.creatureSpawn.spawnsInLight) {
 			return true;
 		}
-		if(!this.mobInfo.spawnInfo.spawnsInDark && !this.mobInfo.spawnInfo.spawnsInLight) {
+		if(!this.creatureInfo.creatureSpawn.spawnsInDark && !this.creatureInfo.creatureSpawn.spawnsInLight) {
 			return false;
 		}
 
 		byte light = this.testLightLevel(pos);
-		if(this.mobInfo.spawnInfo.spawnsInDark && light <= 1) {
+		if(this.creatureInfo.creatureSpawn.spawnsInDark && light <= 1) {
 			return true;
 		}
 
-		if(this.mobInfo.spawnInfo.spawnsInLight && light >= 2) {
+		if(this.creatureInfo.creatureSpawn.spawnsInLight && light >= 2) {
 			return true;
 		}
 
@@ -772,9 +715,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ========== Group Limit Spawn Check ==========
 	/** Checks for nearby entities of this type, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
 	public boolean checkSpawnGroupLimit(World world, BlockPos pos, double range) {
-		int spawnLimit = this.mobInfo.spawnInfo.spawnAreaLimit;
+		int spawnLimit = this.creatureInfo.creatureSpawn.spawnAreaLimit;
 		if(spawnLimit > 0 && range > 0) {
-			List targets = this.getNearbyEntities(EntityCreatureBase.class, this.mobInfo.entityClass, range);
+			List targets = this.getNearbyEntities(EntityCreatureBase.class, this.creatureInfo.entityClass, range);
 			if(targets.size() >= spawnLimit) {
 				return false;
 			}
@@ -785,7 +728,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ========== Boss Spawn Check ==========
 	/** Checks for nearby bosses, mobs usually shouldn't randomly spawn near a boss. **/
 	public boolean checkSpawnBoss(World world, BlockPos pos) {
-		List bosses = this.getNearbyEntities(EntityCreatureBase.class, IGroupBoss.class, SpawnInfo.spawnLimitRange);
+		List bosses = this.getNearbyEntities(EntityCreatureBase.class, IGroupBoss.class, CreatureManager.getInstance().spawnConfig.spawnLimitRange);
 		return bosses.size() == 0;
 	}
 
@@ -801,9 +744,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns whether this mob should despawn overtime or not. Config defined forced despawns override everything except tamed creatures and tagged creatures. **/
     @Override
     protected boolean canDespawn() {
-    	if(this.mobInfo.spawnInfo.despawnForced)
+    	if(this.creatureInfo.creatureSpawn.despawnForced)
     		return true;
-    	if(!this.mobInfo.spawnInfo.despawnNatural)
+    	if(!this.creatureInfo.creatureSpawn.despawnNatural)
     		return false;
         if(this.boss || this.getSubspeciesIndex() >= 3)
             return false;
@@ -836,7 +779,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	return false;
 
         // Disabled Mobs:
-        if(!this.mobInfo.mobEnabled)
+        if(!this.creatureInfo.enabled)
         	return true;
 
         // Temporary Mobs:
@@ -849,7 +792,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         	this.spawnEventCount = -1;
         }
         else {
-        	if(!this.mobInfo.peacefulDifficulty && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL && !this.hasCustomName())
+        	if(!this.creatureInfo.peaceful && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL && !this.hasCustomName())
             	return true;
 
         	ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.getEntityWorld());
@@ -887,7 +830,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                                     NBTTagCompound spawnData = nbt.getCompoundTag("SpawnData");
                                     if (spawnData.hasKey("id")) {
                                         String mobSpawnEntityId = spawnData.getString("id");
-                                        if (mobSpawnEntityId.equalsIgnoreCase(this.mobInfo.getRegistryName()))
+                                        if (mobSpawnEntityId.equalsIgnoreCase(this.creatureInfo.getEntityId()))
                                             return true;
                                     }
                                 }
@@ -1031,16 +974,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void onFirstSpawn() {
         if(this.hasPetEntry() || this.isMinion())
             return;
-        if(MobInfo.subspeciesSpawn && !this.mobInfo.spawnInfo.disableSubspecies)
+        if(CreatureManager.getInstance().config.subspeciesSpawn && !this.creatureInfo.creatureSpawn.disableSubspecies)
     	    this.getRandomSubspecies();
-        if(MobInfo.randomSizes)
+        if(CreatureManager.getInstance().config.randomSizes)
     	    this.getRandomSize();
     }
 
     // ========== Get Random Subspecies ==========
     public void getRandomSubspecies() {
     	if(this.subspecies == null && !this.isMinion()) {
-    		this.subspecies = this.mobInfo.getRandomSubspecies(this, this.spawnedRare);
+    		this.subspecies = this.creatureInfo.getRandomSubspecies(this, this.spawnedRare);
     		if(this.subspecies != null)
     			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + this.subspecies.getTitle());
     		else
@@ -1081,16 +1024,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 	/** Returns the default starting level to use. **/
 	public int getStartingLevel() {
-		int startingLevelMin = Math.max(1, MobInfo.startingLevelMin);
-		if(MobInfo.startingLevelMax > startingLevelMin) {
-			return startingLevelMin + this.getRNG().nextInt(MobInfo.startingLevelMax - startingLevelMin);
+		int startingLevelMin = Math.max(1, CreatureManager.getInstance().config.startingLevelMin);
+		if(CreatureManager.getInstance().config.startingLevelMax > startingLevelMin) {
+			return startingLevelMin + this.getRNG().nextInt(CreatureManager.getInstance().config.startingLevelMax - startingLevelMin);
 		}
-		if(MobInfo.levelPerDay > 0 && MobInfo.levelPerDayMax > 0) {
+		if(CreatureManager.getInstance().config.levelPerDay > 0 && CreatureManager.getInstance().config.levelPerDayMax > 0) {
 			int day = (int)Math.floor(this.getEntityWorld().getTotalWorldTime() / 23999D);
-			double levelGain = Math.min(MobInfo.levelPerDay * day, MobInfo.levelPerDayMax);
+			double levelGain = Math.min(CreatureManager.getInstance().config.levelPerDay * day, CreatureManager.getInstance().config.levelPerDayMax);
 			startingLevelMin += (int)Math.floor(levelGain);
 		}
-		if(MobInfo.levelPerLocalDifficulty > 0) {
+		if(CreatureManager.getInstance().config.levelPerLocalDifficulty > 0) {
 			double levelGain = this.getEntityWorld().getDifficultyForLocation(this.getPosition()).getAdditionalDifficulty();
 			startingLevelMin += Math.max(0, (int)Math.floor(levelGain - 1.5D));
 		}
@@ -1109,184 +1052,71 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		this.setLevel(this.level + level);
 	}
 
-	/**
-	 * Reevaluates this entity's max health based on stats and then resets this entity's health to max
-	 */
-	public void refreshHealth() {
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.getBaseHealth());
-		this.setHealth((float)this.getBaseHealth());
-	}
-
-	/** Returns the base health for this mob. This is not the current max health. **/
-    public double getBaseHealth() {
-    	if(baseHealthMap.containsKey(this.getClass()))
-    		return (baseHealthMap.get(this.getClass()) * this.getHealthMultiplier()) + this.getHealthBoost();
-    	return 10D;
-    }
-
     /** Returns the shared multiplier for all stats based on difficulty and mob level. **/
 	public double getStatMultiplier(String stat) {
         if(this.getEntityWorld() == null || this.getEntityWorld().getDifficulty() == null)
-            return MobInfo.difficultyMultipliers.get("NORMAL" + "-" + stat.toUpperCase());
+            return CreatureManager.getInstance().difficultyMultipliers.get("NORMAL" + "-" + stat.toUpperCase());
 		EnumDifficulty difficulty = this.getEntityWorld().getDifficulty();
 		String difficultyName = "Easy";
 		if(difficulty.getDifficultyId() >= 3)
 			difficultyName = "Hard";
 		else if(difficulty == EnumDifficulty.NORMAL)
 			difficultyName = "Normal";
-		double difficultyMultiplier = MobInfo.difficultyMultipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
+		double difficultyMultiplier = CreatureManager.getInstance().difficultyMultipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
 		double subspeciesMultiplier = 1;
 		if(this.getSubspeciesIndex() > 0 && this.getOwner() == null) {
 			if(Subspecies.statMultipliers.containsKey(this.getSubspecies().type.toUpperCase() + "-" + stat.toUpperCase()))
 			subspeciesMultiplier = Subspecies.statMultipliers.get(this.getSubspecies().type.toUpperCase() + "-" + stat.toUpperCase());
 		}
-		double levelMultiplier = 1 + (((double)this.getLevel() - 1) * MobInfo.levelMultipliers.get(stat.toUpperCase()));
+		double levelMultiplier = 1 + (((double)this.getLevel() - 1) * CreatureManager.getInstance().levelMultipliers.get(stat.toUpperCase()));
 		return difficultyMultiplier * subspeciesMultiplier * levelMultiplier;
 	}
 
     // ========= Health ==========
-    /** Returns the health scale of this mob. **/
-    public double getHealthMultiplier() {
-        double multiplier = this.mobInfo.multiplierHealth * this.getStatMultiplier("health");
-        if(this.extraMobBehaviour != null)
-            multiplier *= this.extraMobBehaviour.multiplierHealth;
-        return multiplier;
-    }
-    /** Returns the health boost of this mob. **/
-    public int getHealthBoost() {
-        int boost = this.mobInfo.boostHealth;
-        if(this.extraMobBehaviour != null)
-            boost += this.extraMobBehaviour.boostHealth;
-        return boost;
-    }
-
-    // ========= Defense ==========
-    /** Returns the defense scale of this mob, see getDamageAfterDefense() for the logic. **/
-    public double getDefenseMultiplier() {
-    	double multiplier = this.mobInfo.multiplierDefense * this.getStatMultiplier("defense");
-    	if(this.extraMobBehaviour != null)
-    		multiplier *= this.extraMobBehaviour.multiplierDefense;
-    	return multiplier;
-    }
-    /** Returns the defense boost of this mob. **/
-    public int getDefenseBoost() {
-    	int boost = this.mobInfo.boostDefense;
-    	if(this.extraMobBehaviour != null)
-    		boost += this.extraMobBehaviour.boostDefense;
-    	return boost;
-    }
-
-    // ========= Speed ==========
-    /** Returns the speed scale of this mob. **/
-    public double getSpeedMultiplier() {
-    	double multiplier = this.mobInfo.multiplierSpeed * this.getStatMultiplier("speed");
-    	if(this.extraMobBehaviour != null)
-    		multiplier *= this.extraMobBehaviour.multiplierSpeed;
-    	return multiplier;
-    }
-    /** Returns the speed boost of this mob. **/
-    public float getSpeedBoost() {
-    	int boost = this.mobInfo.boostSpeed / 100;
-    	if(this.extraMobBehaviour != null)
-    		boost += this.extraMobBehaviour.boostSpeed;
-    	return boost;
-    }
-
-    // ========= Damage ==========
-    /**Returns the damage scale of this mob. **/
-    public double getDamageMultiplier() {
-    	double multiplier = this.mobInfo.multiplierDamage * this.getStatMultiplier("damage");
-    	if(this.extraMobBehaviour != null)
-    		multiplier *= this.extraMobBehaviour.multiplierDamage;
-    	return multiplier;
-    }
-    /**Returns the damage boost of this mob. **/
-    public int getDamageBoost() {
-    	int boost = this.mobInfo.boostDamage;
-    	if(this.extraMobBehaviour != null)
-    		boost += this.extraMobBehaviour.boostDamage;
-    	return boost;
-    }
+	/**
+	 * Reevaluates this entity's max health based on stats and then resets this entity's health to max
+	 */
+	public void refreshHealth() {
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.creatureStats.getHealth());
+		this.setHealth((float)this.creatureStats.getHealth());
+	}
 
     // ========= Haste ==========
-    /** Used to scale the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
-    public double getHasteMultiplier() {
-    	double multiplier = this.mobInfo.multiplierHaste * this.getStatMultiplier("haste");
-    	if(this.extraMobBehaviour != null)
-    		multiplier *= this.extraMobBehaviour.multiplierHaste;
-    	return multiplier;
-    }
-    /** Used to boost the rate of abilities such as attack speed. Note: Abilities are normally capped at around 10 ticks minimum due to performance issues and the entity update rate. **/
-    public int getHasteBoost() {
-    	int boost = this.mobInfo.boostHaste;
-    	if(this.extraMobBehaviour != null)
-    		boost += this.extraMobBehaviour.boostHaste;
-    	return boost;
-    }
     /** When given a base delay (in ticks) this will return the scaled delay with difficulty and other modifiers taken into account
      * ticks - The base duration in ticks between actions (such as between ranged attacks).
     **/
     public int getHaste(int ticks) {
-    	ticks -= this.getHasteBoost();
-    	double ticksScale = 1 / this.getHasteMultiplier();
+    	double ticksScale = 1 / this.creatureStats.getHaste();
     	ticks = Math.round((float)ticks * (float)ticksScale);
 		return Math.max(0, ticks);
     }
 
     // ========= Effect ==========
-    /** Returns the duration scale of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
-    public double getEffectMultiplier() {
-    	double multiplier = this.mobInfo.multiplierEffect * this.getStatMultiplier("effect");
-    	if(this.extraMobBehaviour != null)
-    		multiplier *= this.extraMobBehaviour.multiplierEffect;
-    	return multiplier;
-    }
-    /** Returns the duration boost of any effects that this mob uses, can include both buffs and debuffs on the enemy. **/
-    public int getEffectBoost() {
-    	int boost = this.mobInfo.boostEffect;
-    	if(this.extraMobBehaviour != null)
-    		boost += this.extraMobBehaviour.boostEffect;
-    	return boost;
-    }
     /** When given a base time (in seconds) this will return the scaled time with difficulty and other modifiers taken into account
      * seconds - The base duration in seconds that this effect should last for.
     **/
     public int getEffectDuration(int seconds) {
-		return Math.round(((float)seconds * (float)(this.getEffectMultiplier())) * 20) + this.getEffectBoost();
+		return Math.round(((float)seconds * (float)(this.creatureStats.getEffect())) * 20);
     }
     /** When given a base effect strngth value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account
      * value - The base effect strength.
      **/
     public float getEffectStrength(float value) {
-        return Math.round((value * (float)(this.getEffectMultiplier()))) + this.getEffectBoost();
+        return Math.round((value * (float)(this.creatureStats.getEffect())));
     }
 
     // ========= Pierce ==========
-    /** Returns the armor piercing multipler. **/
-    public double getPierceMultiplier() {
-    	double multiplier = this.mobInfo.multiplierPierce * this.getStatMultiplier("pierce");
-    	if(this.extraMobBehaviour != null)
-    		multiplier *= this.extraMobBehaviour.multiplierPierce;
-    	return multiplier;
-    }
-    /** Returns the armor piercing boost. **/
-    public double getPierceBoost() {
-    	int boost = this.mobInfo.boostPierce;
-    	if(this.extraMobBehaviour != null)
-    		boost += this.extraMobBehaviour.boostPierce;
-    	return boost;
-    }
     /** Returns the base armor piercing value. This should really be left unchanged. **/
     public double getPierceBase() {
     	return 5;
     }
-    /** Returns the calculated armor piercing value. This is with all multipliers and boosts applied. Cannot be less than 1 where all damage will pierce. **/
+
+    /** Returns the calculated armor piercing value. Cannot be less than 1 where all damage will pierce. **/
     public double getPierceValue() {
-        if(this.getPierceMultiplier() == 0)
+        if(this.creatureStats.getPierce() == 0)
             return 100;
     	double value = this.getPierceBase();
-    	value *= 1 / this.getPierceMultiplier();
-    	value -= Math.max(0, this.getPierceBoost());
+    	value *= 1 / this.creatureStats.getPierce();
     	return Math.max(1.0D, value);
     }
 
@@ -1319,7 +1149,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	// ==================================================
     /** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
     public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
-    	this.subspecies = this.mobInfo.getSubspecies(subspeciesIndex);
+    	this.subspecies = this.creatureInfo.getSubspecies(subspeciesIndex);
         float scaledExp = this.experience;
         if(subspeciesIndex == 1 || subspeciesIndex == 2)
             scaledExp = Math.round((float)(this.experience * Subspecies.uncommonExperienceScale));
@@ -1395,7 +1225,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			// With Partner:
 			if (partner != null && partner instanceof EntityCreatureBase) {
 				EntityCreatureBase partnerCreature = (EntityCreatureBase) partner;
-				Subspecies fusionSubspecies = transformedCreature.mobInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partnerCreature.getSubspecies());
+				Subspecies fusionSubspecies = transformedCreature.creatureInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partnerCreature.getSubspecies());
 				transformedCreature.setSubspecies(fusionSubspecies != null ? fusionSubspecies.index : 0, true);
 				transformedCreature.setSizeScale(this.sizeScale + partnerCreature.sizeScale);
 				transformedCreature.setLevel((this.getLevel() + partnerCreature.getLevel()) * 10);
@@ -1630,7 +1460,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Time Out Quicker In Light:
         float light = this.getBrightness();
-        if(!this.mobInfo.spawnInfo.spawnsInLight && light > 0.5F)
+        if(!this.creatureInfo.creatureSpawn.spawnsInLight && light > 0.5F)
             this.idleTime += 2;
 
 	    // Stealth Invisibility:
@@ -1854,9 +1684,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     **/
     // ========== Get Block Path Weight ==========
     public float getBlockPathWeight(int par1, int par2, int par3) {
-        if(this.mobInfo.spawnInfo.spawnsInDark && !this.mobInfo.spawnInfo.spawnsInLight)
+        if(this.creatureInfo.creatureSpawn.spawnsInDark && !this.creatureInfo.creatureSpawn.spawnsInLight)
         	return 0.5F - this.getEntityWorld().getLightBrightness(new BlockPos(par1, par2, par3));
-        if(this.mobInfo.spawnInfo.spawnsInLight && !this.mobInfo.spawnInfo.spawnsInDark)
+        if(this.creatureInfo.creatureSpawn.spawnsInLight && !this.creatureInfo.creatureSpawn.spawnsInDark)
         	return this.getEntityWorld().getLightBrightness(new BlockPos(par1, par2, par3)) - 0.5F;
     	return 0.0F;
     }
@@ -2108,7 +1938,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when setting the movement speed of this mob, called by AI classes before movement and is given a speed modifier, a local speed modifier is also applied here. **/
     @Override
     public void setAIMoveSpeed(float speed) {
-        super.setAIMoveSpeed(((speed + this.getSpeedBoost()) * this.getAISpeedModifier()) * (float)this.getSpeedMultiplier());
+        super.setAIMoveSpeed((speed * this.getAISpeedModifier()) * (float)this.creatureStats.getSpeed());
     }
     
     // ========== Movement Speed Modifier ==========
@@ -2387,7 +2217,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns whether or not this mob is allowed to attack the given target class. **/
 	@Override
 	public boolean canAttackClass(Class targetClass) {
-		if(!MobInfo.mobsAttackVillagers && targetClass == EntityVillager.class)
+		if(!CreatureManager.getInstance().config.mobsAttackVillagers && targetClass == EntityVillager.class)
 			return false;
         if(this.isBlocking() && !this.canAttackWhileBlocking())
             return false;
@@ -2396,7 +2226,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns whether or not this mob is allowed to attack the given target entity. **/
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
-		if(!MobInfo.mobsAttackVillagers && targetEntity instanceof EntityVillager)
+		if(!CreatureManager.getInstance().config.mobsAttackVillagers && targetEntity instanceof EntityVillager)
 			return false;
         if(targetEntity instanceof EntityPlayer) {
             EntityPlayer targetPlayer = (EntityPlayer)targetEntity;
@@ -2450,7 +2280,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     **/
     @Override
     public void setRevengeTarget(EntityLivingBase entityLivingBase) {
-    	boolean aggressiveOverride = MobInfo.animalsFightBack;
+    	boolean aggressiveOverride = CreatureManager.getInstance().config.animalsFightBack;
     	if(!aggressiveOverride && this.extraMobBehaviour != null)
     		aggressiveOverride = this.extraMobBehaviour.aggressiveOverride;
     	if(!aggressiveOverride && this.fleeHealthPercent > 0 && this.getHealth() / this.getMaxHealth() <= this.fleeHealthPercent)
@@ -2466,7 +2296,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.attackEntityAsMob(target, damageScale)) {
     		
     		// Spread Fire:
-        	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < this.getEffectMultiplier())
+        	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < this.creatureStats.getEffect())
         		target.setFire(this.getEffectDuration(4) / 20);
         	
     	}
@@ -2565,15 +2395,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
         float damage = this.getAttackDamage(damageScale);
         int i = 0;
         
-        //if(target instanceof EntityLivingBase) { // TODO Enchanted Weapon Damage
+        //if(target instanceof EntityLivingBase) { // TODO Enchanted Weapon Damage and Knockback
         	//damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE));
             //i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)target);
         //}
         
-        boolean attackSuccess = false;
+        boolean attackSuccess;
         float pierceDamage = 1 + (float)Math.floor(damage / this.getPierceValue());
-        if(this.getPierceMultiplier() == 0)
-            pierceDamage = 0;
         if(damage <= pierceDamage)
         	attackSuccess = target.attackEntityFrom(this.getDamageSource(null).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
@@ -2594,9 +2422,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
             int fireEnchantDuration = EnchantmentHelper.getFireAspectModifier(this);
             if(fireEnchantDuration > 0)
             	target.setFire(fireEnchantDuration * 4);
-            
-            //if(target instanceof EntityLivingBase)
-                //EnchantmentThorns.func_151367_b(this, (EntityLivingBase)target, this.rand);
         }
         
         return attackSuccess;
@@ -2606,16 +2431,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns how much attack damage this mob does. **/
     public float getAttackDamage(double damageScale) {
     	float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-    	damage += this.getDamageBoost();
-        damage *= this.getAttackDamageScale();
         damage *= damageScale;
         return damage;
-    }
-    
-    // ========= Get Attack Damage Scale ==========
-    /** Used to scale how much damage this mob does, this is used by getAttackDamage() for melee and should be passed to projectiles for ranged attacks. **/
-    public double getAttackDamageScale() {
-    	return this.getDamageMultiplier();
     }
 
     // ========= Get Damage Source ==========
@@ -2679,15 +2496,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Defense ==========
     /** This is provided with how much damage this mob will take and returns the reduced (or sometimes increased) damage with defense applied. Note: Damage Modifiers are applied after this. This also applies the blocking ability. **/
     public float getDamageAfterDefense(float damage) {
-    	float baseDefense = (float)(this.defense + this.getDefenseBoost());
-    	float scaledDefense = baseDefense * (float)this.getDefenseMultiplier();
+		float defense = (float)this.creatureStats.getDefense();
     	float minDamage = 0F;
     	if(this.isBlocking()) {
-	    	if(scaledDefense <= 0)
-	    		scaledDefense = 1;
-	    	scaledDefense *= this.getBlockingMultiplier();
+	    	if(defense <= 0)
+	    		defense = 1;
+	    	defense *= this.getBlockingMultiplier();
     	}
-        damage = Math.max(damage - scaledDefense, 1);
+        damage = Math.max(damage - defense, 1);
         if(this.damageMax > 0)
             damage = Math.min(damage, this.damageMax);
     	return Math.max(damage, minDamage);
@@ -2722,14 +2538,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 if(damageSource.getTrueSource() instanceof EntityPlayer) {
                     try {
                         EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
-                        player.addStat(ObjectManager.getStat(this.mobInfo.name + ".kill"), 1);
-                        if (this.isBoss() || this.getRNG().nextDouble() <= MobInfo.beastiaryAddOnDeathChance) {
+                        player.addStat(ObjectManager.getStat(this.creatureInfo.getName() + ".kill"), 1);
+                        if (this.isBoss() || this.getRNG().nextDouble() <= CreatureManager.getInstance().config.beastiaryAddOnDeathChance) {
                             ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-                            if (playerExt != null && !playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
-                                CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), this.mobInfo.name, 1);
+                            if (playerExt != null && !playerExt.getBeastiary().hasFullKnowledge(this.creatureInfo.getName())) {
+                                CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), this.creatureInfo.getName(), 1);
                                 playerExt.getBeastiary().addToKnowledgeList(creatureKnowledge);
                                 playerExt.getBeastiary().sendNewToClient(creatureKnowledge);
-                                playerExt.getBeastiary().sendAddedMessage(this.mobInfo);
+                                playerExt.getBeastiary().sendAddedMessage(this.creatureInfo);
                             }
                         }
                     }
@@ -2901,7 +2717,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(forSpawnCount) {
     		if(this.isMinion()) // Minions shouldn't take up the spawn count.
     			return false;
-    		for(EnumCreatureType creatureType : this.mobInfo.spawnInfo.creatureTypes) {
+    		for(EnumCreatureType creatureType : this.creatureInfo.creatureSpawn.creatureTypes) {
     			if(creatureType == type)
     				return true;
     		}
@@ -3395,7 +3211,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @SideOnly(Side.CLIENT)
     public boolean getAlwaysRenderNameTagForRender() {
         if(this.renderSubspeciesNameTag() && this.getSubspecies() != null)
-    		return MobInfo.subspeciesTags;
+    		return CreatureManager.getInstance().config.subspeciesTags;
         return super.getAlwaysRenderNameTagForRender();
     }
     
@@ -3479,7 +3295,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns true if the player is allowed to equip this creature with items such as armor or saddles. **/
     public boolean canEquip() {
-        return this.mobInfo.isTameable();
+        return this.creatureInfo.isTameable();
     }
     
     // ========== Set Equipment ==========
@@ -3719,7 +3535,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         IBlockState spawnBlockState = this.getEntityWorld().getBlockState(pos);
         if(pos.getY() < 0)
             return 0;
-        if(spawnBlockState != null && spawnBlockState.getMaterial() == Material.WATER && SpawnInfo.useSurfaceLightLevel)
+        if(spawnBlockState != null && spawnBlockState.getMaterial() == Material.WATER && CreatureManager.getInstance().spawnConfig.useSurfaceLightLevel)
             pos = new BlockPos(pos.getX(), this.getWaterSurfaceY(pos), pos.getZ());
         else
             pos = new BlockPos(pos.getX(), this.getGroundY(pos), pos.getZ());
@@ -3972,7 +3788,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
             textureName += "_" + this.getSubspecies().name;
         }
     	if(AssetManager.getTexture(textureName) == null)
-    		AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+    		AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
     	return AssetManager.getTexture(textureName);
     }
 
@@ -3989,13 +3805,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
         String textureName = this.getTextureName();
         textureName += "_" + subName;
         if(AssetManager.getTexture(textureName) == null)
-            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+            AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
         return AssetManager.getTexture(textureName);
     }
 
     /** Gets the name of this creature's texture, normally links to it's code name but can be overridden by subspecies and alpha creatures. **/
     public String getTextureName() {
-    	return this.mobInfo.name;
+    	return this.creatureInfo.getName();
     }
     
     
@@ -4075,17 +3891,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns the sound to play when this creature is making a random ambient roar, grunt, etc. **/
     @Override
-    protected SoundEvent getAmbientSound() { return AssetManager.getSound(this.mobInfo.name + "_say"); }
+    protected SoundEvent getAmbientSound() { return AssetManager.getSound(this.creatureInfo.getName() + "_say"); }
 
     // ========== Hurt ==========
     /** Returns the sound to play when this creature is damaged. **/
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) { return AssetManager.getSound(this.mobInfo.name + "_hurt"); }
+    protected SoundEvent getHurtSound(DamageSource damageSource) { return AssetManager.getSound(this.creatureInfo.getName() + "_hurt"); }
 
     // ========== Death ==========
     /** Returns the sound to play when this creature dies. **/
     @Override
-    protected SoundEvent getDeathSound() { return AssetManager.getSound(this.mobInfo.name + "_death"); }
+    protected SoundEvent getDeathSound() { return AssetManager.getSound(this.creatureInfo.getName() + "_death"); }
      
     // ========== Step ==========
     /** Plays an additional footstep sound that this creature makes when moving on the ground (all mobs use the block's stepping sounds by default). **/
@@ -4097,7 +3913,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
             super.playStepSound(pos, block);
             return;
         }
-        this.playSound(AssetManager.getSound(this.mobInfo.name + "_step"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_step"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Fall ==========
@@ -4124,36 +3940,34 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Plays the jump sound when this creature jumps. **/
     public void playJumpSound() {
     	if(!this.hasJumpSound) return;
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_jump"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_jump"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
      
     // ========== Fly ==========
     /** Plays a flying sound, usually a wing flap, called randomly when flying. **/
     public void playFlySound() {
     	if(!this.isFlying()) return;
-      	this.playSound(AssetManager.getSound(this.mobInfo.name + "_fly"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+      	this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_fly"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Attack ==========
     /** Plays an attack sound, called once this creature has attacked. note that ranged attacks normally rely on the projectiles playing their launched sound instead. **/
     public void playAttackSound() {
      	if(!this.hasAttackSound) return;
-     	this.playSound(AssetManager.getSound(this.mobInfo.name + "_attack"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+     	this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_attack"), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 
     // ========== Phase ==========
     /** Plays a sound for when this mob changes battle phase, normally used by bosses. **/
     public void playPhaseSound() {
-        if(AssetManager.getSound(this.mobInfo.name + "_phase") == null)
+        if(AssetManager.getSound(this.creatureInfo.getName() + "_phase") == null)
             return;
-        this.playSound(AssetManager.getSound(this.mobInfo.name + "_phase"), this.getSoundVolume() * 2, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_phase"), this.getSoundVolume() * 2, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
     
     // ========== Play Sound ==========
     @Override
     public void playSound(SoundEvent sound, float volume, float pitch) {
-    	if(sound == null)
-    		return;
     	super.playSound(sound, volume, pitch);
     }
 

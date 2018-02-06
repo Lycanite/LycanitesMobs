@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.gui;
 
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.GuiScrollingList;
@@ -9,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GUIBeastiaryCreatureList extends GuiScrollingList {
-	GUIBeastiary parentGUI;
-	Map<Integer, MobInfo> creatureList = new HashMap<Integer, MobInfo>();
+	private GUIBeastiary parentGUI;
+	private Map<Integer, CreatureInfo> creatureList = new HashMap<>();
 	
 	// ==================================================
   	//                    Constructor
@@ -26,13 +27,13 @@ public class GUIBeastiaryCreatureList extends GuiScrollingList {
   	//                    List Info
   	// ==================================================
 	public void updateList() {
-		this.creatureList = new HashMap<Integer, MobInfo>();
+		this.creatureList = new HashMap<>();
 		if(this.parentGUI.getSelectedGroup() == null)
 			return;
 		
 		int creatureIndex = 0;
 		for(String minionName : this.parentGUI.playerExt.getBeastiary().creatureKnowledgeList.keySet()) {
-			MobInfo mobInfo = MobInfo.getFromName(minionName.toLowerCase());
+			CreatureInfo mobInfo = CreatureManager.getInstance().getCreature(minionName.toLowerCase());
 			if(mobInfo != null && mobInfo.group == this.parentGUI.getSelectedGroup()) {
 				this.creatureList.put(creatureIndex++, mobInfo);
 			}
@@ -68,11 +69,11 @@ public class GUIBeastiaryCreatureList extends GuiScrollingList {
 
 	@Override
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
-		MobInfo mobInfo = this.creatureList.get(index);
-		if(mobInfo == null) return;
-		this.parentGUI.getFontRenderer().drawString(mobInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
-		if(mobInfo.getIcon() != null) {
-			Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
+		CreatureInfo creatureInfo = this.creatureList.get(index);
+		if(creatureInfo == null) return;
+		this.parentGUI.getFontRenderer().drawString(creatureInfo.getTitle(), this.left + 20 , boxTop + 4, 0xFFFFFF);
+		if(creatureInfo.getIcon() != null) {
+			Minecraft.getMinecraft().getTextureManager().bindTexture(creatureInfo.getIcon());
 			this.parentGUI.drawTexturedModalRect(this.left + 2, boxTop, 0, 0, 16, 16, 16);
 		}
 	}

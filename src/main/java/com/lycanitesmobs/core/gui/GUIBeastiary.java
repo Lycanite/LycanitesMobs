@@ -5,8 +5,8 @@ import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiInventory;
@@ -219,7 +219,7 @@ public class GUIBeastiary extends GUIBaseScreen {
 			try {
 				String url = LycanitesMobs.website + "/creature";
 				if(this.getSelectedCreature() != null)
-					url += "/" + this.getSelectedCreature().name;
+					url += "/" + this.getSelectedCreature().getName();
 				this.openURI(new URI(url));
 			} catch (URISyntaxException e) {}
 		}
@@ -249,12 +249,12 @@ public class GUIBeastiary extends GUIBaseScreen {
 		return this.playerExt.beastiaryGroup;
 	}
 	
-	public void selectCreature(MobInfo mobInfo) {
+	public void selectCreature(CreatureInfo mobInfo) {
 		this.playerExt.beastiaryCreature = mobInfo;
 		this.updateSelectedCreature();
 	}
 	
-	public MobInfo getSelectedCreature() {
+	public CreatureInfo getSelectedCreature() {
 		return this.playerExt.beastiaryCreature;
 	}
 	
@@ -263,7 +263,7 @@ public class GUIBeastiary extends GUIBaseScreen {
 			this.creaturePreviewEntity = null;
 		else
 			try {
-				this.creaturePreviewEntity = (EntityLivingBase)this.getSelectedCreature().entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.player.getEntityWorld()});
+				this.creaturePreviewEntity = this.getSelectedCreature().entityClass.getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.player.getEntityWorld()});
 				this.creaturePreviewEntity.onGround = true;
 				if(this.creaturePreviewEntity instanceof EntityCreatureAgeable) {
 					((EntityCreatureAgeable)this.creaturePreviewEntity).setGrowingAge(0);

@@ -100,7 +100,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             this.loadMinionIDs = null;
         }
 
-        if(this.summonSet == null || this.summonSet.getMobInfo() == null)
+        if(this.summonSet == null || this.summonSet.getCreatureInfo() == null)
             return;
 
         if(this.summonSet.getFollowing())
@@ -120,13 +120,13 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
                 if(minion == null || minion.isDead)
                     this.minions.remove(minion);
                 else {
-                    this.capacity += (minion.mobInfo.summonCost * this.capacityCharge);
+                    this.capacity += (minion.creatureInfo.summonCost * this.capacityCharge);
                 }
             }
         }
 
         // Check Capacity:
-        if(this.capacity + this.summonSet.getMobInfo().summonCost > this.capacityMax) {
+        if(this.capacity + this.summonSet.getCreatureInfo().summonCost > this.capacityMax) {
             this.summonProgress = 0;
         }
 
@@ -134,7 +134,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
         else if(this.summonProgress++ >= this.summonProgressMax) {
             this.summoningPortal.summonCreatures();
             this.summonProgress = 0;
-            this.capacity = Math.min(this.capacity + (this.capacityCharge * this.summonSet.getMobInfo().summonCost), this.capacityMax);
+            this.capacity = Math.min(this.capacity + (this.capacityCharge * this.summonSet.getCreatureInfo().summonCost), this.capacityMax);
         }
 
         // Block State:

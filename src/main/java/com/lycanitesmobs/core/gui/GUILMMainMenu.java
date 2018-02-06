@@ -4,7 +4,6 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -114,7 +113,6 @@ public class GUILMMainMenu extends GUIBaseScreen {
 		int buttonXRight = this.centerX + buttonSpacing;
         int buttonY = this.centerY - Math.round(buttonHeight / 2);
         GuiButton button;
-        MobInfo mobInfo;
         int nextY = this.windowY + buttonHeight + buttonSpacing;
 
 		// Beastiary:

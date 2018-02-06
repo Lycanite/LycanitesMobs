@@ -6,16 +6,15 @@ import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.*;
-import net.minecraft.entity.Entity;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +22,6 @@ import java.util.List;
 public class MobSpawn {
 	/** The Creature Info to base this Mob Spawn off of (using the Creature Spawn for default values). **/
 	public CreatureInfo creatureInfo;
-
-	/** The old Mob Info to base this Mob Spawn off of (using the MobInfo's SpawnInfo for default values). **/
-	public MobInfo mobInfo;
 
 	/** The entity class that this Mob Spawn should spawn if not using a MobInfo (for non-Lycanites Mobs entities). **/
 	public Class entityClass;
@@ -96,9 +92,9 @@ public class MobSpawn {
 		MobSpawn mobSpawn = null;
 		if(json.has("mobId")) {
 			String mobId = json.get("mobId").getAsString();
-			MobInfo mobInfo = MobInfo.getFromId(mobId);
-			if(mobInfo != null) {
-				mobSpawn = new MobSpawn(mobInfo);
+			CreatureInfo creatureInfo = CreatureManager.getInstance().getCreatureFromId(mobId);
+			if(creatureInfo != null) {
+				mobSpawn = new MobSpawn(creatureInfo);
 				mobSpawn.loadFromJSON(json);
 			}
 			else {
@@ -120,12 +116,6 @@ public class MobSpawn {
 	public MobSpawn(CreatureInfo creatureInfo) {
 		this.creatureInfo = creatureInfo;
 		this.entityClass = creatureInfo.entityClass;
-	}
-
-	@Deprecated
-	public MobSpawn(MobInfo mobInfo) {
-		this.mobInfo = mobInfo;
-		this.entityClass = mobInfo.entityClass;
 	}
 
 	public MobSpawn(Class entityClass) {
@@ -212,21 +202,21 @@ public class MobSpawn {
 	 **/
 	public boolean canSpawn(World world, int blockCount, List<Biome> biomes, boolean forceIgnoreDimension) {
 		// Global Blocks:
-		if(SpawnInfo.disableAllSpawning) {
+		if(CreatureManager.getInstance().spawnConfig.disableAllSpawning) {
 			return false;
 		}
-		if(SpawnInfo.dimensionList.length > 0) {
+		if(CreatureManager.getInstance().spawnConfig.dimensionList.length > 0) {
 			boolean inDimensionList = false;
-			for (int dimensionId : SpawnInfo.dimensionList) {
+			for (int dimensionId : CreatureManager.getInstance().spawnConfig.dimensionList) {
 				if (dimensionId == world.provider.getDimension()) {
 					inDimensionList = true;
 					break;
 				}
 			}
-			if (inDimensionList && !SpawnInfo.dimensionListWhitelist) {
+			if (inDimensionList && !CreatureManager.getInstance().spawnConfig.dimensionListWhitelist) {
 				return false;
 			}
-			if (!inDimensionList && SpawnInfo.dimensionListWhitelist) {
+			if (!inDimensionList && CreatureManager.getInstance().spawnConfig.dimensionListWhitelist) {
 				return false;
 			}
 		}
@@ -240,19 +230,6 @@ public class MobSpawn {
 
 			// Peaceful Difficulty:
 			if (world.getDifficulty() == EnumDifficulty.PEACEFUL && !this.creatureInfo.peaceful) {
-				return false;
-			}
-		}
-
-		// MobInfo Enabled:
-		if(this.mobInfo != null) {
-			// Enabled:
-			if (!this.mobInfo.mobEnabled || !this.mobInfo.spawnInfo.enabled) {
-				return false;
-			}
-
-			// Peaceful Difficulty:
-			if (world.getDifficulty() == EnumDifficulty.PEACEFUL && !this.mobInfo.peacefulDifficulty) {
 				return false;
 			}
 		}
@@ -293,38 +270,6 @@ public class MobSpawn {
 			}
 		}
 
-		// MobInfo World:
-		if(this.mobInfo != null) {
-			// Minimum World Day:
-			if(this.mobInfo != null && this.mobInfo.spawnInfo.spawnMinDay > 0) {
-				ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-				if(worldExt != null) {
-					int day = (int) Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 24000D);
-					if(day < this.mobInfo.spawnInfo.spawnMinDay) {
-						return false;
-					}
-				}
-			}
-
-			// Dimension:
-			if (!forceIgnoreDimension && !this.ignoreDimension && !this.mobInfo.spawnInfo.isAllowedDimension(world)) {
-				return false;
-			}
-
-			// Biome:
-			if(biomes != null && this.shouldCheckBiome()) {
-				boolean biomeMatched = false;
-				for(Biome validBiome : this.mobInfo.spawnInfo.biomes) {
-					if(biomes.contains(validBiome)) {
-						biomeMatched = true;
-					}
-				}
-				if(!biomeMatched) {
-					return false;
-				}
-			}
-		}
-
 		// Chance:
 		if(this.getChance() < 1 && world.rand.nextDouble() > this.getChance()) {
 			return false;
@@ -341,9 +286,6 @@ public class MobSpawn {
 		if(this.blockCost > -1) {
 			return this.blockCost;
 		}
-		if(this.mobInfo != null) {
-			return this.mobInfo.spawnInfo.spawnBlockCost;
-		}
 		return 0;
 	}
 
@@ -354,9 +296,6 @@ public class MobSpawn {
 	public double getChance() {
 		if(this.chance > -1) {
 			return this.chance;
-		}
-		if(this.mobInfo != null) {
-			return this.mobInfo.spawnInfo.spawnChance;
 		}
 		return 1;
 	}
@@ -371,9 +310,6 @@ public class MobSpawn {
 		}
 		if(this.creatureInfo != null) {
 			return this.creatureInfo.creatureSpawn.spawnWeight;
-		}
-		if(this.mobInfo != null) {
-			return this.mobInfo.spawnInfo.spawnWeight;
 		}
 		return 8;
 	}
@@ -392,9 +328,6 @@ public class MobSpawn {
 		if(this.creatureInfo != null) {
 			return this.creatureInfo.creatureSpawn.despawnNatural;
 		}
-		if(this.mobInfo != null) {
-			return this.mobInfo.spawnInfo.despawnNatural;
-		}
 		return true;
 	}
 
@@ -412,9 +345,6 @@ public class MobSpawn {
 		if(this.creatureInfo != null) {
 			return !this.creatureInfo.creatureSpawn.ignoreBiome;
 		}
-		if(this.mobInfo != null) {
-			return !this.mobInfo.spawnInfo.ignoreBiome;
-		}
 		return false;
 	}
 
@@ -427,8 +357,6 @@ public class MobSpawn {
 			Class clazz = this.entityClass;
 			if(this.creatureInfo != null)
 				clazz = this.creatureInfo.entityClass;
-			if(this.mobInfo != null)
-				clazz = this.mobInfo.entityClass;
 			if(clazz == null)
 				return null;
 			return (EntityLiving)clazz.getConstructor(new Class[]{World.class}).newInstance(new Object[]{world});
@@ -481,10 +409,7 @@ public class MobSpawn {
 	@Override
 	public String toString() {
 		if(this.creatureInfo != null) {
-			return this.creatureInfo.name;
-		}
-		if(this.mobInfo != null) {
-			return this.mobInfo.name;
+			return this.creatureInfo.getName();
 		}
 		return this.entityClass.toString();
 	}

@@ -3,8 +3,20 @@ package com.lycanitesmobs.core.info;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.helpers.JSONHelper;
+import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.entity.EntityCreatureRideable;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.stats.StatBase;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.awt.*;
 import java.util.*;
@@ -15,10 +27,10 @@ public class CreatureInfo {
 
 	// Core Info:
 	/** The name of this mob. Lowercase, no space, used for language entries and for generating the entity id, etc. Required. **/
-	public String name;
+	protected String name;
 
 	/** The entity class used by this creature. **/
-	public Class entityClass;
+	public Class<? extends EntityLiving> entityClass;
 
 	/** The group that this mob belongs to. **/
 	public GroupInfo group;
@@ -37,6 +49,7 @@ public class CreatureInfo {
 	public int experience = 5;
 	public double health = 20.0D;
 	public double defense = 0.0D;
+	public double armor = 0.0D;
 	public double speed = 24.0D; // Divided by 100 when applied.
 	public double damage = 2.0D;
 	public double haste = 1.0D;
@@ -93,7 +106,7 @@ public class CreatureInfo {
 	public List<MobDrop> drops = new ArrayList<>();
 
 
-	// Visuals:
+	// Scale:
 	/** A custom scale to apply to the mob's size. **/
 	public double sizeScale = 1;
 
@@ -110,14 +123,14 @@ public class CreatureInfo {
 	}
 
 
-	/** Loads this element from a JSON object. **/
+	/** Loads this creature from a JSON object. **/
 	public void loadFromJSON(JsonObject json) {
 		this.name = json.get("name").getAsString();
 		try {
-			this.entityClass = Class.forName(json.get("class").getAsString());
+			this.entityClass = (Class<? extends EntityLiving>) Class.forName(json.get("class").getAsString());
 		}
 		catch(Exception e) {
-			LycanitesMobs.printWarning("", "[Creature] Unable to find the Java Entity Class: " + json.get("class").getAsString() + " for " + this.name);
+			LycanitesMobs.printWarning("", "[Creature] Unable to find the Java Entity Class: " + json.get("class").getAsString() + " for " + this.getName());
 		}
 		if(json.has("enabled"))
 			this.enabled = json.get("enabled").getAsBoolean();
@@ -195,7 +208,7 @@ public class CreatureInfo {
 	}
 
 
-	/** Initialises this Creature Info, should be called after pre-init. **/
+	/** Initialises this Creature Info, should be called after pre-init and when reloading. **/
 	public void init() {
 		if(this.dummy)
 			return;
@@ -203,7 +216,261 @@ public class CreatureInfo {
 		// Element:
 		this.element = ElementManager.getInstance().getElement(this.elementName);
 		if(this.element == null) {
-			throw new RuntimeException("[Creature] Unable to initialise Creature Info for " + this.name + " as the element " + this.elementName + " cannot be found.");
+			throw new RuntimeException("[Creature] Unable to initialise Creature Info for " + this.getName() + " as the element " + this.elementName + " cannot be found.");
 		}
+
+		// Spawning:
+		this.creatureSpawn.init(this);
+	}
+
+
+	/**
+	 * Registers this creature to vanilla and custom entity lists. Must be called after init and only during game startup.
+	 */
+	public void register() {
+		if(this.dummy)
+			return;
+
+		// ID and Enabled Check:
+		LycanitesMobs.printDebug("Creature", "~0==================== Creature Setup: "+ this.getName() + " [" + this.getEntityId() +"] ====================0~");
+		if(!this.enabled) {
+			LycanitesMobs.printDebug("Creature", "Creature Disabled: " + this.getName() + " - " + this.entityClass + " (" + group.name + ")");
+		}
+
+		// Mapping and Registration:
+		if(!ObjectManager.entityLists.containsKey(this.group.filename)) {
+			ObjectManager.entityLists.put(this.group.filename, new EntityListCustom());
+		}
+		ObjectManager.entityLists.get(this.group.filename).addMapping(this.entityClass, this.getResourceLocation(), this.eggBackColor, this.eggForeColor);
+		EntityRegistry.registerModEntity(this.getResourceLocation(), this.entityClass, this.getName(), this.group.getNextMobID(), this.group.mod, 128, 3, true);
+
+		// Add Stats:
+		ItemStack achievementStack = new ItemStack(ObjectManager.getItem("mobtoken"));
+		achievementStack.setTagInfo("Mob", new NBTTagString(this.getName()));
+		ObjectManager.addStat(this.getName() + ".kill", new StatBase(this.getName() + ".kill", new TextComponentString(this.getName() + ".kill")));
+		ObjectManager.addStat(this.getName() + ".learn", new StatBase(this.getName() + ".learn", new TextComponentString(this.getName() + ".learn")));
+		if(this.isSummonable()) {
+			ObjectManager.addStat(this.getName() + ".summon", new StatBase(this.getName() + ".summon", new TextComponentString(this.getName() + ".summon")));
+		}
+		if(this.isTameable()) {
+			ObjectManager.addStat(this.getName() + ".tame", new StatBase(this.getName() + ".tame", new TextComponentString(this.getName() + ".tame")));
+		}
+
+		// Add Sounds:
+		AssetManager.addSound(name + "_say", group, "entity." + name + ".say");
+		AssetManager.addSound(name + "_hurt", group, "entity." + name + ".hurt");
+		AssetManager.addSound(name + "_death", group, "entity." + name + ".death");
+		AssetManager.addSound(name + "_step", group, "entity." + name + ".step");
+		AssetManager.addSound(name + "_attack", group, "entity." + name + ".attack");
+		AssetManager.addSound(name + "_jump", group, "entity." + name + ".jump");
+		AssetManager.addSound(name + "_fly", group, "entity." + name + ".fly");
+		if(this.isSummonable() || this.isTameable())
+			AssetManager.addSound(name + "_tame", group, "entity." + name + ".tame");
+		if(this.isSummonable() || this.isTameable())
+			AssetManager.addSound(name + "_beg", group, "entity." + name + ".beg");
+		if(this.isTameable())
+			AssetManager.addSound(name + "_eat", group, "entity." + name + ".eat");
+		if(EntityCreatureRideable.class.isAssignableFrom(this.entityClass) && (this.isSummonable() || this.isTameable()))
+			AssetManager.addSound(name + "_mount", group, "entity." + name + ".mount");
+		if(this.isBoss())
+			AssetManager.addSound(name + "_phase", group, "entity." + name + ".phase");
+
+		// Register Spawning:
+		this.creatureSpawn.register(this);
+
+		// Debug Message - Added:
+		LycanitesMobs.printDebug("Creature", "Creature Added: " + this.getName() + " - " + this.entityClass + " (" + this.group.name + ")");
+	}
+
+
+	/**
+	 * Returns the name of this creature, this is the unformatted lowercase name. Ex: lurker
+	 * @return Creature name.
+	 */
+	public String getName() {
+		return this.name;
+	}
+
+
+	/**
+	 * Returns the registry id of this creature. Ex: swampmobs:lurker
+	 * @return Creature registry entity id.
+	 */
+	public String getEntityId() {
+		return this.group.filename + ":" + this.getName();
+	}
+
+
+	/**
+	 * Returns the resource location for this creature.
+	 * @return Creature resource location.
+	 */
+	public ResourceLocation getResourceLocation() {
+		return new ResourceLocation(this.group.filename, this.getName());
+	}
+
+
+	/**
+	 * Returns the language key for this creature. Ex: swampmobs.lurker
+	 * @return Creature language key.
+	 */
+	public String getLocalisationKey() {
+		return this.group.filename + "." + this.getName();
+	}
+
+	/**
+	 * Returns a translated title for this creature. Ex: Lurker
+	 * @return The display name of this creature.
+	 */
+	public String getTitle() {
+		return I18n.translateToLocal("entity." + this.getLocalisationKey() + ".name");
+	}
+
+
+	/**
+	 * Returns a translated description of this creature.
+	 * @return The creature description.
+	 */
+	public String getDescription() {
+		return I18n.translateToLocal("entity." + this.getLocalisationKey() + ".description");
+	}
+
+
+	/**
+	 * Returns the resource location for the GUI icon of this creature.
+	 * @return Creature icon resource location.
+	 */
+	public ResourceLocation getIcon() {
+		ResourceLocation texture = AssetManager.getTexture(this.getName() + "_icon");
+		if(texture == null) {
+			AssetManager.addTexture(this.getName() + "_icon", this.group, "textures/guis/" + this.getName() + "_icon.png");
+			texture = AssetManager.getTexture(this.getName() + "_icon");
+		}
+		return texture;
+	}
+
+
+	/**
+	 * Returns if this creature is summonable.
+	 * @return True if creature is summonable.
+	 */
+	public boolean isSummonable() {
+		return this.summonable && this.entityClass.isAssignableFrom(EntityCreatureTameable.class);
+	}
+
+
+	/**
+	 * Returns if this creature is tameable.
+	 * @return True if creature is tameable.
+	 */
+	public boolean isTameable() {
+		return this.tameable && this.entityClass.isAssignableFrom(EntityCreatureTameable.class);
+	}
+
+
+	/**
+	 * Returns if this creature is mountable.
+	 * @return True if creature is mountable.
+	 */
+	public boolean isMountable() {
+		return this.mountable;
+	}
+
+
+	/**
+	 * Returns if this creature is a boss.
+	 * @return True if creature is a boss.
+	 */
+	public boolean isBoss() {
+		return this.boss;
+	}
+
+
+	/**
+	 * Returns a subspecies for the provided index or null if invalid.
+	 * @param index The index of the subspecies for this creature.
+	 * @return Creature subspecies.
+	 */
+	public Subspecies getSubspecies(int index) {
+		if(!this.subspecies.containsKey(index)) {
+			return null;
+		}
+		return this.subspecies.get(index);
+	}
+
+
+	/**
+	 * Gets a random subspecies, normally used by a new mob when spawned.
+	 * @param entity The entity that has this subspecies.
+	 * @param rare If true, there will be much higher odds of a subspecies being picked.
+	 * @return A Subspecies or null if using the base species.
+	 */
+	public Subspecies getRandomSubspecies(EntityLivingBase entity, boolean rare) {
+		LycanitesMobs.printDebug("Subspecies", "~0===== Subspecies =====0~");
+		LycanitesMobs.printDebug("Subspecies", "Selecting random subspecies for: " + entity);
+		if(rare) {
+			LycanitesMobs.printDebug("Subspecies", "The conditions have been set to rare increasing the chances of a subspecies being picked.");
+		}
+		if(this.subspecies.isEmpty()) {
+			LycanitesMobs.printDebug("Subspecies", "No species available, will be base species.");
+			return null;
+		}
+		LycanitesMobs.printDebug("Subspecies", "Subspecies Available: " + this.subspecies.size());
+
+		// Get Weights:
+		int baseSpeciesWeightScaled = Subspecies.baseSpeciesWeight;
+		if(rare)
+			baseSpeciesWeightScaled /= 4;
+		int totalWeight = baseSpeciesWeightScaled;
+		for(Subspecies subspeciesEntry : this.subspecies.values()) {
+			totalWeight += subspeciesEntry.weight;
+		}
+		LycanitesMobs.printDebug("Subspecies", "Total Weight: " + totalWeight);
+
+		// Roll and Check Default:
+		int roll = entity.getRNG().nextInt(totalWeight);
+		LycanitesMobs.printDebug("Subspecies", "Rolled: " + roll);
+		if(roll <= baseSpeciesWeightScaled) {
+			LycanitesMobs.printDebug("Subspecies", "Base species selected: " + baseSpeciesWeightScaled);
+			return null;
+		}
+
+		// Get Random Subspecies:
+		int checkWeight = baseSpeciesWeightScaled;
+		for(Subspecies subspeciesEntry : this.subspecies.values()) {
+			checkWeight += subspeciesEntry.weight;
+			if(roll <= checkWeight) {
+				LycanitesMobs.printDebug("Subspecies", "Subspecies selected: " + subspeciesEntry.name + " - " + subspeciesEntry.weight);
+				return subspeciesEntry;
+			}
+		}
+
+		LycanitesMobs.printWarning("Subspecies", "The roll was higher than the Total Weight, this shouldn't happen.");
+		return null;
+	}
+
+	public Subspecies getRandomSubspecies(EntityLivingBase entity) {
+		return this.getRandomSubspecies(entity, false);
+	}
+
+	/**
+	 * Used for when two mobs breed to randomly determine the subspecies of the child.
+	 * @param entity The entity that has this subspecies, currently only used to get RNG.
+	 * @param hostSubspeciesIndex The index of the subspecies of the host entity.
+	 * @param partnerSubspecies The subspecies of the partner. Null if the partner is default.
+	 * @return
+	 */
+	public Subspecies getChildSubspecies(EntityLivingBase entity, int hostSubspeciesIndex, Subspecies partnerSubspecies) {
+		Subspecies hostSubspecies = this.getSubspecies(hostSubspeciesIndex);
+		int partnerSubspeciesIndex = (partnerSubspecies != null ? partnerSubspecies.index : 0);
+		if(hostSubspeciesIndex == partnerSubspeciesIndex)
+			return hostSubspecies;
+
+		int hostWeight = (hostSubspecies != null ? hostSubspecies.weight : Subspecies.baseSpeciesWeight);
+		int partnerWeight = (partnerSubspecies != null ? partnerSubspecies.weight : Subspecies.baseSpeciesWeight);
+		int roll = entity.getRNG().nextInt(hostWeight + partnerWeight);
+		if(roll > hostWeight)
+			return partnerSubspecies;
+		return hostSubspecies;
 	}
 }

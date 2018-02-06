@@ -1,25 +1,25 @@
 package com.lycanitesmobs.core.gui;
 
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.opengl.GL11;
 
 public class GUIButtonCreature extends GUIBaseButton {
-	public MobInfo mobInfo;
+	public CreatureInfo creatureInfo;
 	
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIButtonCreature(int buttonID, int x, int y, String text, MobInfo mobInfo) {
+	public GUIButtonCreature(int buttonID, int x, int y, String text, CreatureInfo creatureInfo) {
         super(buttonID, x, y, 32, 32, text);
-        this.mobInfo = mobInfo;
+        this.creatureInfo = creatureInfo;
     }
 	
-	public GUIButtonCreature(int buttonID, int x, int y, int w, int h, String text, MobInfo mobInfo) {
+	public GUIButtonCreature(int buttonID, int x, int y, int w, int h, String text, CreatureInfo creatureInfo) {
         super(buttonID, x, y, w, h, text);
-        this.mobInfo = mobInfo;
+        this.creatureInfo = creatureInfo;
     }
 	
 	
@@ -40,8 +40,8 @@ public class GUIButtonCreature extends GUIBaseButton {
             int buttonY = this.y;
             mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
             this.drawTexturedModalRect(buttonX, buttonY, 193, 187 - (hoverState * 32), this.width, this.height);
-            if(mobInfo != null) {
-	            Minecraft.getMinecraft().getTextureManager().bindTexture(mobInfo.getIcon());
+            if(creatureInfo != null) {
+	            Minecraft.getMinecraft().getTextureManager().bindTexture(creatureInfo.getIcon());
 	    		this.drawTexturedModalRect(buttonX + 8, buttonY + 8, 0, 0, 16, 16, 16);
             }
             

@@ -56,12 +56,12 @@ public class TickSpawnTrigger extends SpawnTrigger {
 	/** Called every player tick. **/
 	public void onTick(EntityPlayer player, long ticks) {
 		// World Time:
-		if(this.useWorldTime) {
-			ticks = player.getEntityWorld().getWorldTime() % 24000;
+		if(this.useWorldTime && player.getEntityWorld().getWorldTime() % 24000 != this.tickRate) {
+			return;
 		}
 
 		// Tick Rate:
-		if(ticks == 0 || ticks % this.tickRate != 0) {
+		else if(ticks == 0 || ticks % this.tickRate != 0) {
 			return;
 		}
 

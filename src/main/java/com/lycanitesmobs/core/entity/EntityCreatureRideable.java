@@ -2,8 +2,7 @@ package com.lycanitesmobs.core.entity;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
-import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -42,14 +41,6 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     @Override
     protected void entityInit() {
         super.entityInit();
-    }
-    
-    // ========= Speed Multiplier ==========
-    // Skip the difficulty scale when a mounted mob.
-    public double getSpeedMultiplier() {
-    	if(this.hasRiderTarget())
-    		return this.mobInfo.multiplierSpeed;
-    	return super.getSpeedMultiplier();
     }
     
     
@@ -197,10 +188,10 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                 EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                 if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
-                    verticalMotion = this.getSpeedMultiplier();
+                    verticalMotion = this.creatureStats.getSpeed();
                 }
                 else if(player.rotationPitch > 0 && forward != 0.0F) {
-                    verticalMotion = this.getSpeedMultiplier() * -(player.rotationPitch / 90);
+                    verticalMotion = this.creatureStats.getSpeed() * -(player.rotationPitch / 90);
                 }
                 else {
                     verticalMotion = 0;
@@ -247,19 +238,19 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             if(!this.useDirectNavigator()) {
                 if(this.isFlying() && !this.isInWater() && !this.isInLava()) {
                     this.moveRelative(strafe, 0, forward, 0.1F);
-                    this.move(MoverType.SELF, this.motionX, verticalMotion, this.motionZ);
+                    this.move(MoverType.SELF, this.motionX, verticalMotion / 16, this.motionZ);
                     this.motionX *= 0.8999999761581421D;
                     this.motionY *= 0.8999999761581421D;
                     this.motionZ *= 0.8999999761581421D;
                 }
                 else if(this.isInWater() || this.isInLava()) {
 					if(!this.isStrongSwimmer()) {
-						verticalMotion *= 0.25f;
+						verticalMotion *= 0.015625f;
 						strafe *= 0.25f;
 						forward *= 0.25f;
 					}
                     this.moveRelative(strafe, 0, forward, 0.1F);
-                    this.move(MoverType.SELF, this.motionX, verticalMotion, this.motionZ);
+                    this.move(MoverType.SELF, this.motionX, verticalMotion / 16, this.motionZ);
                     this.motionX *= 0.8999999761581421D;
                     this.motionY *= 0.8999999761581421D;
                     this.motionZ *= 0.8999999761581421D;
@@ -347,9 +338,9 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	commands.putAll(super.getInteractCommands(player, itemStack));
     	
     	// Mount:
-        boolean mountingAllowed = MobInfo.mountingEnabled;
+        boolean mountingAllowed = CreatureManager.getInstance().config.mountingEnabled;
         if(mountingAllowed && this.isFlying())
-            mountingAllowed = MobInfo.mountingFlightEnabled;
+            mountingAllowed = CreatureManager.getInstance().config.mountingFlightEnabled;
     	if(this.canBeMounted(player) && !player.isSneaking() && !this.getEntityWorld().isRemote && mountingAllowed)
     		commands.put(CMD_PRIOR.MAIN.id, "Mount");
     	
@@ -454,6 +445,6 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
    	// ==================================================
     // ========== Mount ==========
     public void playMountSound() {
-    	this.playSound(AssetManager.getSound(this.mobInfo.name + "_mount"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+    	this.playSound(AssetManager.getSound(this.creatureInfo.getName() + "_mount"), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
     }
 }

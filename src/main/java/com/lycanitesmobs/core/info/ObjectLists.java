@@ -24,9 +24,9 @@ public class ObjectLists {
 	public static String[] itemListNames = new String[] {"RawMeat", "CookedMeat", "Vegetables", "RawFish", "CookedFish", "CactusFood", "Mushrooms", "Sweets", "Fuel"};
 	
 	// Maps:
-	public static Map<String, List<ItemStack>> itemLists = new HashMap<String, List<ItemStack>>();
-	public static Map<String, List<Class>> entityLists = new HashMap<String, List<Class>>();
-	public static Map<String, List<Potion>> effectLists = new HashMap<String, List<Potion>>();
+	public static Map<String, List<ItemStack>> itemLists = new HashMap<>();
+	public static Map<String, List<Class>> entityLists = new HashMap<>();
+	public static Map<String, List<Potion>> effectLists = new HashMap<>();
 	
 	
     // ==================================================
@@ -37,7 +37,7 @@ public class ObjectLists {
 			return;
 		list = list.toLowerCase();
 		if(!itemLists.containsKey(list))
-			itemLists.put(list, new ArrayList<ItemStack>());
+			itemLists.put(list, new ArrayList<>());
 		ItemStack itemStack = null;
 		
 		if(object instanceof Item)
@@ -61,16 +61,18 @@ public class ObjectLists {
 			return;
 		list = list.toLowerCase();
 		if(!entityLists.containsKey(list))
-			entityLists.put(list, new ArrayList<Class>());
+			entityLists.put(list, new ArrayList<>());
+
 		Class entity = null;
-		
-		if(object instanceof Class)
-			entity = (Class)object;
-		else if(object instanceof String)
-			entity = ObjectManager.getMob((String)object);
-		
-		if(entity != null)
+		if(object instanceof String) {
+			CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature((String) object);
+			if(creatureInfo != null) {
+				entity = creatureInfo.entityClass;
+			}
+		}
+		if(entity != null) {
 			entityLists.get(list).add(entity);
+		}
 	}
 	
 	public static void addEffect(String list, Potion potion) {
@@ -78,7 +80,7 @@ public class ObjectLists {
 			return;
 		list = list.toLowerCase();
 		if(!effectLists.containsKey(list))
-			effectLists.put(list, new ArrayList<Potion>());
+			effectLists.put(list, new ArrayList<>());
 		effectLists.get(list).add(potion);
 	}
 	

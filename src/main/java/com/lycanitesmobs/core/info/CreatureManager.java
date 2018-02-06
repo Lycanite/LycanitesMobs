@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.spawner.SpawnerMobRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,12 @@ import java.util.Map;
 
 public class CreatureManager extends JSONLoader {
 	public static CreatureManager INSTANCE;
+
+	/** Handles all global creature general config settings. **/
+	public CreatureConfig config;
+
+	/** Handles all global creature spawning config settings. **/
+	public CreatureSpawnConfig spawnConfig;
 
 	/** A map of all creatures by name. **/
 	public Map<String, CreatureInfo> creatures = new HashMap<>();
@@ -34,6 +41,9 @@ public class CreatureManager extends JSONLoader {
 	/** The global multiplier to use for the health of tamed creatures. **/
 	public double tamedHealthMultiplier = 3;
 
+	/** Set to true if Doomlike Dungeons is loaded allowing mobs to register their Dungeon themes. **/
+	public boolean dlDungeonsLoaded = false;
+
 
 	/** Returns the main Creature Manager INSTANCE or creates it and returns it. **/
 	public static CreatureManager getInstance() {
@@ -44,23 +54,38 @@ public class CreatureManager extends JSONLoader {
 	}
 
 
+	/**
+	 * Constructor
+	 */
+	public CreatureManager() {
+		this.config = new CreatureConfig();
+		this.spawnConfig = new CreatureSpawnConfig();
+	}
+
+
 	/** Called during early start up, loads all global configs into this manager. **/
 	public void loadConfig() {
-		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
+		this.config.loadConfig(ConfigBase.getConfig(LycanitesMobs.group, "general"));
+		this.spawnConfig.loadConfig(ConfigBase.getConfig(LycanitesMobs.group, "spawning"));
 	}
 
 
 	/** Loads all JSON Elements. Should only be done on pre-init and before Creature Info is loaded. **/
 	public void loadAllFromJSON(GroupInfo groupInfo) {
-		if(!this.loadedGroups.contains(groupInfo)) {
-			this.loadedGroups.add(groupInfo);
+		try {
+			if(!this.loadedGroups.contains(groupInfo)) {
+				this.loadedGroups.add(groupInfo);
+			}
+			this.oldCreatures = new HashMap<>(this.creatures);
+			this.creatures.clear();
+			this.creatureClassMap.clear();
+			this.loadAllJson(groupInfo, "Creature", "creatures", "name", false);
+			this.oldCreatures.clear();
+			LycanitesMobs.printDebug("Creature", "Complete! " + this.creatures.size() + " JSON Creature Info Loaded In Total.");
 		}
-		this.oldCreatures = new HashMap<>(this.creatures);
-		this.creatures.clear();
-		this.creatureClassMap.clear();
-		this.loadAllJson(groupInfo, "Creature", "creatures", "name", false);
-		this.oldCreatures.clear();
-		LycanitesMobs.printDebug("Creature", "Complete! " + this.creatures.size() + " JSON Creature Info Loaded In Total.");
+		catch(Exception e) {
+			LycanitesMobs.printWarning("", "No Creatures loaded for: " + groupInfo.name);
+		}
 	}
 
 
@@ -86,12 +111,35 @@ public class CreatureManager extends JSONLoader {
 
 
 	/**
+	 * Initialises all creatures. Called after all creatures are loaded.
+	 */
+	public void initAll() {
+		SpawnerMobRegistry.SPAWNER_MOB_REGISTRIES.clear();
+		for(CreatureInfo creature : this.creatures.values()) {
+			creature.init();
+		}
+	}
+
+
+	/**
+	 * Registers all creatures. Can only be called once and during post init.
+	 */
+	public void registerAll() {
+		for(CreatureInfo creature : this.creatures.values()) {
+			creature.register();
+		}
+	}
+
+
+	/**
 	 * Reloads all Creature JSON.
 	 */
 	public void reload() {
+		this.loadConfig();
 		for(GroupInfo group : this.loadedGroups) {
 			this.loadAllFromJSON(group);
 		}
+		this.initAll();
 	}
 
 
@@ -116,6 +164,18 @@ public class CreatureManager extends JSONLoader {
 		if(!this.creatureClassMap.containsKey(creatureClass))
 			return null;
 		return this.creatureClassMap.get(creatureClass);
+	}
+
+
+	/**
+	 * Gets a creature by entity id.
+	 * @param entityId The the entity id of the creature to get. Periods will be replaced with semicolons.
+	 * @return The Creature Info.
+	 */
+	public CreatureInfo getCreatureFromId(String entityId) {
+		entityId = entityId.replace(".", ":");
+		String[] mobIdParts = entityId.toLowerCase().split(":");
+		return this.getCreature(mobIdParts[mobIdParts.length - 1]);
 	}
 
 

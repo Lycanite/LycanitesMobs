@@ -51,7 +51,8 @@ public class EntityProjectileBase extends EntityThrowable {
 
     // Data Manager:
     protected static final DataParameter<Float> SCALE = EntityDataManager.<Float>createKey(EntityProjectileBase.class, DataSerializers.FLOAT);
-	
+
+
 	// ==================================================
  	//                   Constructors
  	// ==================================================
@@ -172,9 +173,6 @@ public class EntityProjectileBase extends EntityThrowable {
                         boolean attackSuccess = false;
  						float damage = this.getDamage(target);
  						float damageInit = damage;
- 				        double pierceDamage = 1;
-						if(this.getThrower() instanceof EntityCreatureBase)
-							pierceDamage = ((EntityCreatureBase)this.getThrower()).creatureStats.getPierce();
 
                         // Prevent Knockback:
                         double targetKnockbackResistance = 0;
@@ -192,17 +190,10 @@ public class EntityProjectileBase extends EntityThrowable {
                         // Deal Damage:
                         if(this.getThrower() instanceof EntityCreatureBase) {
                             EntityCreatureBase creatureThrower = (EntityCreatureBase)this.getThrower();
-                            if(damage <= pierceDamage)
-                                attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), damage);
-                            else {
-                                int hurtResistantTimeBefore = target.hurtResistantTime;
-                                target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), (float)pierceDamage);
-                                target.hurtResistantTime = hurtResistantTimeBefore;
-                                damage -= pierceDamage;
-                                attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower())), damage);
-                            }
+                            attackSuccess = creatureThrower.doRangedDamage(target, this, damage);
                         }
                         else {
+							double pierceDamage = 1;
                             if(damage <= pierceDamage)
                                 attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
                             else {
@@ -431,9 +422,7 @@ public class EntityProjectileBase extends EntityThrowable {
      public float getDamage(Entity entity) {
     	 float damage = (float)this.baseDamage;
     	 if(this.getThrower() != null) {
-             if(this.getThrower() instanceof EntityCreatureBase)
-                 damage *= ((EntityCreatureBase)this.getThrower()).creatureStats.getDamage() / 2;
-             else if(this.getThrower() instanceof EntityPlayer && !(entity instanceof EntityPlayer) || this.getThrower().getControllingPassenger() instanceof EntityPlayer)
+             if(this.getThrower() instanceof EntityPlayer && !(entity instanceof EntityPlayer) || this.getThrower().getControllingPassenger() instanceof EntityPlayer)
                  damage *= 1.2f;
          }
          return damage;

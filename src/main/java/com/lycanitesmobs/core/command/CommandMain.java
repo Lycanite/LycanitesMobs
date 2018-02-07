@@ -104,7 +104,7 @@ public class CommandMain implements ICommand {
 
 			String debugValue = args[1];
 			reply = I18n.translateToLocal("lyc.command.debug.set");
-			reply.replace("%debug%", debugValue);
+			reply = reply.replace("%debug%", debugValue);
 			LycanitesMobs.config.setBool("Debug", debugValue, "true".equalsIgnoreCase(args[2]));
 			commandSender.sendMessage(new TextComponentString(reply));
 			return;
@@ -130,6 +130,7 @@ public class CommandMain implements ICommand {
 			if("creative".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.spawners.creative");
 				SpawnerEventListener.testOnCreative = !SpawnerEventListener.testOnCreative;
+				reply = reply.replace("%value%", "" + SpawnerEventListener.testOnCreative);
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}
@@ -277,6 +278,7 @@ public class CommandMain implements ICommand {
 			if("creative".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.mobevent.creative");
 				MobEventPlayerServer.testOnCreative = !MobEventPlayerServer.testOnCreative;
+				reply = reply.replace("%value%", "" + MobEventPlayerServer.testOnCreative);
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}

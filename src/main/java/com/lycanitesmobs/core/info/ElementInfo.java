@@ -32,6 +32,12 @@ public class ElementInfo {
 	/** A list of detrimental potion effects that this element can inflict as well as grant immunity to. **/
 	public List<String> debuffs = new ArrayList<>();
 
+	/** Whether creatures of this element are able to burn by default. Some creatures will override this with their own settings. **/
+	public boolean canBurn = true;
+
+	/** Whether creatures of this element are able to freeze by default. Some creatures will override this with their own settings. **/
+	public boolean canFreeze = true;
+
 
 	/** Loads this element from a JSON object. **/
 	public void loadFromJSON(JsonObject json) {
@@ -50,6 +56,12 @@ public class ElementInfo {
 
 		if(json.has("debuffs"))
 			this.debuffs = JSONHelper.getJsonStrings(json.get("debuffs").getAsJsonArray());
+
+		if(json.has("canBurn"))
+			this.canBurn = json.get("canBurn").getAsBoolean();
+
+		if(json.has("canFreeze"))
+			this.canFreeze = json.get("canFreeze").getAsBoolean();
 	}
 
 
@@ -99,5 +111,35 @@ public class ElementInfo {
 				targetEntity.addPotionEffect(new PotionEffect(potion, duration, amplifier));
 			}
 		}
+	}
+
+
+	/**
+	 * Returns if a creature of this element can be affected by the provided effect.
+	 * @param effect The effect to check.
+	 * @return True if the effect can be applied.
+	 */
+	public boolean isEffectApplicable(PotionEffect effect) {
+		if(this.debuffs.isEmpty())
+			return true;
+		return !this.debuffs.contains(effect.getPotion().getRegistryName().toString());
+	}
+
+
+	/**
+	 * Returns if creatures of this element can burn by default. (Fire damage).
+	 * @return True if can burn.
+	 */
+	public boolean canBurn() {
+		return this.canBurn;
+	}
+
+
+	/**
+	 * Returns if creatures of this element can freeze by default. (Ooze damage).
+	 * @return True if can burn.
+	 */
+	public boolean canFreeze() {
+		return this.canFreeze;
 	}
 }

@@ -189,7 +189,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
                 this.attackTime = this.host.getMeleeCooldown();
                 if(this.host.getHeldItemMainhand() != null)
                     this.host.swingArm(EnumHand.MAIN_HAND);
-                this.host.meleeAttack(attackTarget, damage);
+                this.host.attackMelee(attackTarget, damage);
             }
 
             // Move helper won't change the Yaw if the target is already close by

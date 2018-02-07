@@ -442,36 +442,26 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	boolean attackSuccess = false;
     	float damage = this.getDamage(target);
 		float damageInit = damage;
-		double pierceDamage = 1;
-		if(this.getThrower() instanceof EntityCreatureBase)
-			pierceDamage = ((EntityCreatureBase)this.getThrower()).creatureStats.getPierce();
-        
-        // Prevent Knockback:
-        double targetKnockbackResistance = 0;
-        if(this.knockbackChance < 1) {
-            if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
-                if(target instanceof EntityLivingBase) {
-                    targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
-                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
-                }
-            }
-        }
-        
-        // Deal Damage:
-        if(this.getThrower() instanceof EntityCreatureBase) {
-            EntityCreatureBase creatureThrower = (EntityCreatureBase)this.getThrower();
-            if(damage <= pierceDamage)
-                attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), damage);
-            else {
-                int hurtResistantTimeBefore = target.hurtResistantTime;
-                target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), (float)pierceDamage);
-                target.hurtResistantTime = hurtResistantTimeBefore;
-                damage -= pierceDamage;
-                attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower())), damage);
-            }
-        }
+
+		// Prevent Knockback:
+		double targetKnockbackResistance = 0;
+		if(this.knockbackChance < 1) {
+			if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
+				if(target instanceof EntityLivingBase) {
+					targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
+					((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
+				}
+			}
+		}
+
+		// Deal Damage:
+		if(this.getThrower() instanceof EntityCreatureBase) {
+			EntityCreatureBase creatureThrower = (EntityCreatureBase)this.getThrower();
+			attackSuccess = creatureThrower.doRangedDamage(target, this, damage);
+		}
         else {
-            if(damage <= pierceDamage)
+			double pierceDamage = 1;
+			if(damage <= pierceDamage)
                 attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
             else {
                 int hurtResistantTimeBefore = target.hurtResistantTime;

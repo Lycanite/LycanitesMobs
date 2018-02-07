@@ -236,7 +236,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            if(outerRangeFactor > 1.0F)
 	            	outerRangeFactor = 1.0F;
 	
-	            this.host.rangedAttack(this.attackTarget, outerRangeFactor);
+	            this.host.attackRanged(this.attackTarget, outerRangeFactor);
 	            this.attackTime = this.host.getRangedCooldown();
 	        }
 	        else if(this.attackTime < 0) {

@@ -99,11 +99,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	
 	// Size:
     /** The width of this mob. XZ axis. **/
-	public float setWidth = 0.6F;
+	public float setWidth;
     /** The depth of this mob. Overrides width's Z axis. This currently doesn't work, use width only for now. **/
-	public float setDepth = 0.6F;
+	public float setDepth;
     /** The height of this mob. Y axis. **/
-	public float setHeight = 1.8F;
+	public float setHeight;
     /** The size scale of this mob. Randomly varies normally by 10%. **/
 	public double sizeScale = 1.0D;
     /** An array of additional hitboxes for large entities. **/
@@ -1086,17 +1086,31 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	}
 
     // ========= Effect ==========
-    /** When given a base time (in seconds) this will return the scaled time with difficulty and other modifiers taken into account
-     * seconds - The base duration in seconds that this effect should last for.
-    **/
-    public int getEffectDuration(int seconds) {
-		return Math.round(((float)seconds * (float)(this.creatureStats.getEffect())) * 20);
+	/**
+	 * When given a base time (in seconds) this will return the scaled time with difficulty and other modifiers taken into account.
+	 * @param seconds The base duration in seconds that this effect should last for, this is scaled by stats.
+	 * @return The scaled effect duration to use.
+	 */
+	public int getEffectDuration(int seconds) {
+		return Math.round(seconds * (float)this.creatureStats.getEffect() * 20);
     }
-    /** When given a base effect strength value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account
-     * value - The base effect strength.
-     **/
-    public int getEffectStrength(float value) {
-        return Math.round((value * (float)(this.creatureStats.getEffect())));
+
+	/**
+	 * Returns the default amplifier to use for effects.
+	 * @param scale The scale to multiplier the amplifier by, use one for default.
+	 * @return Potion effects amplifier.
+	 */
+	public int getEffectAmplifier(float scale) {
+		return Math.round((float)this.creatureStats.getAmplifier());
+	}
+
+	/**
+	 * When given a base effect strength value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account.
+	 * @param value The base effect strength to scale.
+	 * @return The strength of a special effect.
+	 */
+	public int getEffectStrength(float value) {
+        return Math.round((value * (float)(this.creatureStats.getAmplifier())));
     }
 
 
@@ -2269,13 +2283,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
     
     // ========== Melee ==========
     /** Used to make this entity perform a melee attack on the target entity with the given damage scale. **/
-    public boolean meleeAttack(Entity target, double damageScale) {
+    public boolean attackMelee(Entity target, double damageScale) {
     	boolean success = true;
     	if(this.attackEntityAsMob(target, damageScale)) {
     		
     		// Spread Fire:
         	if(this.spreadFire && this.isBurning() && this.rand.nextFloat() < this.creatureStats.getEffect())
         		target.setFire(this.getEffectDuration(4) / 20);
+
+        	// Element Effects:
+			if(target instanceof EntityLivingBase && this.creatureStats.getAmplifier() >= 0) {
+				this.creatureInfo.element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
+			}
         	
     	}
     	this.setJustAttacked();
@@ -2284,9 +2303,39 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     // ========== Ranged ==========
     /** Used to make this entity fire a ranged attack at the target entity, range is also passed which can be used. **/
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
     	this.setJustAttacked();
     }
+
+	/**
+	 * Deals damage to target entity from a projectile fired by this entity.
+	 * @param target The target entity to damage.
+	 * @param projectile The projectile that caused the damage.
+	 * @param damage The amount of damage the projectile deals. This will be scaled by this creature's damage stat.
+	 * @return True if damage is dealt.
+	 */
+	public boolean doRangedDamage(Entity target, EntityThrowable projectile, float damage) {
+		damage *= this.creatureStats.getDamage() / 2;
+		double pierceDamage = this.creatureStats.getPierce();
+		boolean success;
+		if(damage <= pierceDamage) {
+			success = target.attackEntityFrom(this.getDamageSource((EntityDamageSource) DamageSource.causeThrownDamage(projectile, this).setDamageBypassesArmor()).setDamageIsAbsolute(), damage);
+		}
+		else {
+			int hurtResistantTimeBefore = target.hurtResistantTime;
+			target.attackEntityFrom(this.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(projectile, this).setDamageBypassesArmor()).setDamageIsAbsolute(), (float)pierceDamage);
+			target.hurtResistantTime = hurtResistantTimeBefore;
+			damage -= pierceDamage;
+			success = target.attackEntityFrom(this.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(projectile, this)), damage);
+		}
+
+		// Element Effects:
+		if(success && target instanceof EntityLivingBase && this.creatureStats.getAmplifier() >= 0) {
+			this.creatureInfo.element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
+		}
+
+		return success;
+	}
 
 	/**
 	 * Fires a projectile from this mob.
@@ -3376,20 +3425,27 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns whether or not the specified potion effect can be applied to this entity. **/
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        return super.isPotionApplicable(potionEffect);
+        return this.creatureInfo.element.isEffectApplicable(potionEffect);
     }
+
     /** Returns whether or not this entity can be set on fire, this will block both the damage and the fire effect, use isDamageTypeApplicable() to block fire but keep the effect. **/
     public boolean canBurn() {
     	if(this.extraMobBehaviour != null)
     		if(this.extraMobBehaviour.fireImmunityOverride)
     			return false;
-    	return true;
+    	return this.creatureInfo.element.canBurn();
     }
+
     /** Returns true if this mob should be damaged by the sun. **/
     public boolean daylightBurns() { return false; }
 
     /** Returns true if this mob should be damaged by extreme cold such as from ooze. **/
-    public boolean canFreeze() { return !(this instanceof IGroupIce); }
+    public boolean canFreeze() {
+    	if(this instanceof IGroupIce) {
+    		return false;
+		}
+		return this.creatureInfo.element.canFreeze();
+    }
 
     /** Returns true if this mob should be damaged by water. **/
     public boolean waterDamage() { return false; }
@@ -3560,13 +3616,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
    	// ========== Get Nearby Entities ==========
     /** Get entities that are near this entity. **/
     public <T extends Entity> List<T> getNearbyEntities(Class <? extends T > clazz, final Class filterClass, double range) {
-        return this.getEntityWorld().<T>getEntitiesWithinAABB(clazz, this.getEntityBoundingBox().grow(range, range, range), new Predicate<Entity>() {
-            public boolean apply(Entity entity) {
-                if(filterClass == null)
-                    return true;
-                return filterClass.isAssignableFrom(entity.getClass());
-            }
-        });
+        return this.getEntityWorld().<T>getEntitiesWithinAABB(clazz, this.getEntityBoundingBox().grow(range, range, range), (Predicate<Entity>) entity -> {
+			if(filterClass == null)
+				return true;
+			return filterClass.isAssignableFrom(entity.getClass());
+		});
     }
 
     // ========== Get Nearest Entity ==========

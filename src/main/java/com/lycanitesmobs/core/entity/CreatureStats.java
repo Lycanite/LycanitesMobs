@@ -184,7 +184,7 @@ public class CreatureStats {
 
 
 	/**
-	 * Returns the effect this entity should use. This affects how long any debuffs applied by this entity's element last for.
+	 * Returns the effect this entity should use. This affects how long any debuffs applied by this entity's element last for where 1 is default and 1 second for element effects.
 	 * @return Base effect duration.
 	 */
 	public double getEffect() {

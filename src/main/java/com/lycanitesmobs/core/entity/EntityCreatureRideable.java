@@ -57,30 +57,30 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
             this.lastRiddenByEntity = this.getControllingPassenger();
         }
 
-    	if(this.hasRiderTarget() && this.getControllingPassenger() instanceof EntityLivingBase) {
-    		EntityLivingBase riderLiving = (EntityLivingBase)this.getControllingPassenger();
-    		
-    		// Run Mount Rider Effects:
-    		this.riderEffects(riderLiving);
-    		
-    		// Protect Rider from Potion Effects:
-    		for(Object possibleEffect : riderLiving.getActivePotionEffects().toArray(new Object[riderLiving.getActivePotionEffects().size()])) {
-    			if(possibleEffect instanceof PotionEffect) {
-    				PotionEffect potionEffect = (PotionEffect)possibleEffect;
-    				if(!this.isPotionApplicable(potionEffect))
-    					riderLiving.removePotionEffect(potionEffect.getPotion());
-    			}
-    		}
-    	}
-    	
-    	if(this.hasRiderTarget()) {
+		if(this.hasRiderTarget()) {
+			if(this.getControllingPassenger() instanceof EntityLivingBase) {
+				EntityLivingBase riderLiving = (EntityLivingBase)this.getControllingPassenger();
+
+				// Run Mount Rider Effects:
+				this.riderEffects(riderLiving);
+
+				// Protect Rider from Potion Effects:
+				for(Object possibleEffect : riderLiving.getActivePotionEffects().toArray(new Object[riderLiving.getActivePotionEffects().size()])) {
+					if(possibleEffect instanceof PotionEffect) {
+						PotionEffect potionEffect = (PotionEffect)possibleEffect;
+						if(!this.isPotionApplicable(potionEffect))
+							riderLiving.removePotionEffect(potionEffect.getPotion());
+					}
+				}
+			}
+
     		// Player Rider Controls:
 	    	if(this.getControllingPassenger() instanceof EntityPlayer) {
 	    		EntityPlayer player = (EntityPlayer)this.getControllingPassenger();
 	    		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 	    		if(playerExt == null)
 	    			return;
-	    		
+
 	    		// Mount Ability:
 	    		if(playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY)) {
 	    			this.mountAbility(player);
@@ -88,7 +88,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
 	    		}
 	    		else
 	    			this.abilityToggled = false;
-	    		
+
 	    		// Player Inventory:
 	    		if(playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.MOUNT_INVENTORY)) {
 	    			if(!this.inventoryToggled)

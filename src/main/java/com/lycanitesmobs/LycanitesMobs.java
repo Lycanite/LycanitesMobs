@@ -150,6 +150,7 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("lifeleak", config, true, 0x0055FF, 5, 1, false);
 			ObjectManager.addPotionEffect("plague", config, true, 0x220066, 5, 1, false);
 			ObjectManager.addPotionEffect("aphagia", config, true, 0xFFDDDD, 5, 1, false);
+			ObjectManager.addPotionEffect("smited", config, true, 0xDDDDFF, 5, 1, false);
 
 			ObjectManager.addPotionEffect("leech", config, false, 0x00FF99, 7, 0, true);
 			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
@@ -161,7 +162,6 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("staticaura", config, false, 0xFFBB55, 5, 1, true);
 			ObjectManager.addPotionEffect("freezeaura", config, false, 0x55BBFF, 5, 1, true);
 			ObjectManager.addPotionEffect("envenom", config, false, 0x44DD66, 5, 1, true);
-			ObjectManager.addPotionEffect("smited", config, true, 0xDDDDFF, 5, 1, false);
 
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}

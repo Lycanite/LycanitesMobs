@@ -3,12 +3,11 @@ package com.lycanitesmobs.demonmobs.entity;
 import com.google.common.base.Predicate;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
+import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -22,7 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGroupAnimal, IGroupAlpha, IGroupPredator, IGroupHunter, IGroupDemon {
@@ -37,13 +35,8 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
         this.spreadFire = true;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 1.95F;
         this.setupMob();
         
         this.attackTime = 10;
@@ -57,8 +50,8 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("pinkytreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPigZombie.class).setSpeed(1.5D).setRate(10).setDamage(8.0D).setRange(2.5D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(10));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPigZombie.class).setSpeed(1.5D).setDamage(8.0D).setRange(2.5D));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this).setSpeed(1.5D));
         this.playerControlAI = new EntityAIPlayerControl(this);
         this.tasks.addTask(5, playerControlAI);
         this.tasks.addTask(7, new EntityAIWander(this).setSpeed(1.0D));
@@ -68,7 +61,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityCow.class).setTameTargetting(true));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPig.class).setTameTargetting(true));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntitySheep.class).setTameTargetting(true));
@@ -76,31 +69,13 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityPigZombie.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("pinkymeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("pinkymeatcooked"))).setMinAmount(1).setMaxAmount(3));
-	}
 	
 	
     // ==================================================
@@ -269,7 +244,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
 	// ========== Breeding Item ==========
 	@Override
 	public boolean isBreedingItem(ItemStack itemStack) {
-        if(!MobInfo.predatorsAttackAnimals)
+        if(!CreatureManager.getInstance().config.predatorsAttackAnimals)
             return ObjectLists.inItemList("rawmeat", itemStack) || ObjectLists.inItemList("cookedmeat", itemStack);
         return false; // Breeding is triggered by attacking specific mobs instead!
     }

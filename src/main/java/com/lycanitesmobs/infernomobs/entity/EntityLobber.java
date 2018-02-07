@@ -10,7 +10,6 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -21,8 +20,6 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -32,8 +29,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.HashMap;
 
 public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire {
 
@@ -48,17 +43,12 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 3;
-        this.experience = 10;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.isLavaCreature = true;
         this.hasAttackSound = false;
 
-        this.lobberMelting = ConfigBase.getConfig(this.group, "general").getBool("Features", "Rare Lobber Melting", this.lobberMelting, "Set to false to disable Umber Lobbers melting certain blocks.");
-        
-        this.setWidth = 1.9F;
-        this.setHeight = 3.5F;
+        this.lobberMelting = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Rare Lobber Melting", this.lobberMelting, "Set to false to disable Umber Lobbers melting certain blocks.");
         this.setupMob();
 
         this.setPathPriority(PathNodeType.LAVA, 0F);
@@ -69,14 +59,13 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(1, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(40).setRange(16.0F).setMinChaseDistance(8.0F));
+        this.tasks.addTask(1, new EntityAIAttackRanged(this).setSpeed(1.0D).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(2, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(ObjectManager.getMob("cinder")));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupIce.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupWater.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntitySnowman.class));
@@ -84,28 +73,6 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.16D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 1.0F).setMaxAmount(16));
-        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("magmacharge")), 0.25F));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstoneinferno")), 1F).setMaxAmount(1).setSubspecies(3));
-	}
 
     // ========== Set Size ==========
     @Override

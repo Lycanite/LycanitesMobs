@@ -1,10 +1,9 @@
 package com.lycanitesmobs.core.item;
 
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.entity.EntityFear;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityFear;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,8 +53,8 @@ public class ItemSoulgazer extends ItemBase {
     	if(entity instanceof EntityFear) {
     		return false;
     	}
-    	MobInfo mobInfo = ((EntityCreatureBase)entity).mobInfo;
-    	if(playerExt.getBeastiary().hasFullKnowledge(mobInfo.name)) {
+    	CreatureInfo creatureInfo = ((EntityCreatureBase)entity).creatureInfo;
+    	if(playerExt.getBeastiary().hasFullKnowledge(creatureInfo.getName())) {
     		if(!player.getEntityWorld().isRemote)
     			player.sendMessage(new TextComponentString(I18n.translateToLocal("message.soulgazer.known")));
     		return false;
@@ -71,8 +70,8 @@ public class ItemSoulgazer extends ItemBase {
     		}
     	}
 
-    	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(playerExt.getBeastiary(), mobInfo.name, 1));
-		playerExt.getBeastiary().sendAddedMessage(mobInfo);
+    	playerExt.getBeastiary().addToKnowledgeList(new CreatureKnowledge(playerExt.getBeastiary(), creatureInfo.getName(), 1));
+		playerExt.getBeastiary().sendAddedMessage(creatureInfo);
     	return true;
     }
 }

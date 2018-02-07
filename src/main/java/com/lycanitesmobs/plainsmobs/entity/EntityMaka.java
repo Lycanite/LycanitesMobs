@@ -1,13 +1,12 @@
 package com.lycanitesmobs.plainsmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -15,14 +14,11 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 	
@@ -34,14 +30,9 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 5;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0.1D;
-        
-        this.setWidth = 2.9F;
-        this.setHeight = 3.2F;
         this.attackTime = 10;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
@@ -62,30 +53,11 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityMakaAlpha.class));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(2, new EntityAITargetMaster(this).setTargetClass(EntityMakaAlpha.class).setSightCheck(false).setRange(64.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 20D);
-		baseAttributes.put("attackDamage", 2D);
-        baseAttributes.put("attackSpeed", 8D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("MakaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("MakaMeatCooked"))).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 0.5F).setMinAmount(1).setMaxAmount(3));
     }
 
 
@@ -96,9 +68,9 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
     @Override
     public void onFirstSpawn() {
         // Random Alpha:
-        MobInfo alphaInfo = ObjectManager.getMobInfo("makaalpha");
+        CreatureInfo alphaInfo = CreatureManager.getInstance().getCreature("makaalpha");
         if(alphaInfo != null) {
-            float alphaChance = (float)alphaInfo.spawnInfo.spawnWeight / Math.max(this.mobInfo.spawnInfo.spawnWeight, 1);
+            float alphaChance = (float)alphaInfo.creatureSpawn.spawnWeight / Math.max(this.creatureInfo.creatureSpawn.spawnWeight, 1);
             if (this.getRNG().nextFloat() <= alphaChance) {
                 EntityMakaAlpha alpha = new EntityMakaAlpha(this.getEntityWorld());
                 alpha.copyLocationAndAnglesFrom(this);

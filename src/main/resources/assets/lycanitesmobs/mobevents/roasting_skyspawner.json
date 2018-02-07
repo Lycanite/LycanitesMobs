@@ -31,19 +31,19 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.cinder",
+			"mobId": "elementalmobs:cinder",
 			"weight": 8
 		},
 		{
-			"mobId": "infernomobs.afrit",
+			"mobId": "infernomobs:afrit",
 			"weight": 8
 		},
 		{
-			"mobId": "elementalmobs.reiver",
+			"mobId": "elementalmobs:reiver",
 			"weight": 8
 		},
 		{
-			"mobId": "arcticmobs.arix",
+			"mobId": "arcticmobs:arix",
 			"weight": 8
 		}
 	]

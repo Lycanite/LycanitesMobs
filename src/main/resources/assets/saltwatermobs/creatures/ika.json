@@ -22,16 +22,21 @@
 		"despawnNatural": false,
 		"despawnForced": false
 	},
-	"experience": 10,
+	"width": 0.9,
+	"height": 0.9,
+	"experience": 5,
 	"health": 10,
-	"defense": 0,
+	"defense": 1,
+	"armor": 0,
 	"speed": 26,
 	"damage": 2,
-	"haste": 1,
+	"attackSpeed": 1,
+	"rangedSpeed": 1,
 	"effect": 1,
-	"pierce": 0,
-	"knockbackResistance": 0.5,
+	"amplifier": 0,
+	"pierce": 1,
 	"sight": 16,
+	"knockbackResistance": 0.5,
 	"eggBackColor": "#99FFBB",
 	"eggForeColor": "#229944",
 	"subspecies": [
@@ -62,7 +67,7 @@
 			"chance": 1
 		},
 		{
-			"item": "saltwatermobs:dye",
+			"item": "minecraft:dye",
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 0.25

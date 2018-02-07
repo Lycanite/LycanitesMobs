@@ -6,15 +6,15 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.swampmobs.block.BlockPoisonCloud;
 import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorPoisonRay;
 import com.lycanitesmobs.swampmobs.dispenser.DispenserBehaviorVenomShot;
-import com.lycanitesmobs.swampmobs.entity.*;
+import com.lycanitesmobs.swampmobs.entity.EntityPoisonRay;
+import com.lycanitesmobs.swampmobs.entity.EntityPoisonRayEnd;
+import com.lycanitesmobs.swampmobs.entity.EntityVenomShot;
 import com.lycanitesmobs.swampmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -120,70 +120,6 @@ public class SwampMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("swampspawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
-		
-		newMob = new MobInfo(this.group, "ghoulzombie", EntityGhoulZombie.class, 0x009966, 0xAAFFDD)
-				.setPeaceful(false).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "aglebemu", EntityAglebemu.class, 0x047f0a, 0xc3a85b)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0).setDungeonThemes("GROUP, WATER")
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, WATER")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "dweller", EntityDweller.class, 0x009922, 0x994499)
-				.setPeaceful(false).setSummonable(true).setSummonCost(1).setDungeonLevel(1).setDungeonThemes("GROUP, WATER")
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERFLOOR")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "ettin", EntityEttin.class, 0x669900, 0xFF6600)
-				.setPeaceful(false).setSummonCost(6).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(3).setAreaLimit(3).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "lurker", EntityLurker.class, 0x009900, 0x99FF00)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "eyewig", EntityEyewig.class, 0x000000, 0x009900)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(3).setAreaLimit(5).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "aspid", EntityAspid.class, 0x009944, 0x446600)
-				.setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
-				.setSpawnWeight(12).setAreaLimit(10).setGroupLimits(1, 5).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "triffid", EntityTriffid.class, 0xe60f05, 0x09e30d)
-				.setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(3).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(this.group, "remobra", EntityRemobra.class, 0x440066, 0xDD00FF)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
 
 		// Projectiles:
 		ObjectManager.addProjectile("poisonray", EntityPoisonRay.class, Items.FERMENTED_SPIDER_EYE, new DispenserBehaviorPoisonRay());

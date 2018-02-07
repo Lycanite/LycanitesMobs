@@ -1,8 +1,6 @@
 package com.lycanitesmobs.infernomobs.entity;
 
 import com.google.common.base.Predicate;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
@@ -11,7 +9,8 @@ import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +20,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
@@ -34,7 +32,6 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class EntitySalamander extends EntityCreatureRideable implements IMob, IGroupFire {
@@ -47,8 +44,6 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 10;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.isLavaCreature = true;
@@ -57,9 +52,6 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
 
         this.canGrow = true;
         this.babySpawnChance = 0.01D;
-
-        this.setWidth = 2.5F;
-        this.setHeight = 0.9F;
         this.solidCollision = false;
         this.setupMob();
 
@@ -75,7 +67,7 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("salamandertreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this).setRate(20));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this));
         this.tasks.addTask(5, new EntityAIStayByWater(this).setSpeed(1.25D));
         this.tasks.addTask(6, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(7, new EntityAIWander(this).setPauseRate(30));
@@ -90,31 +82,11 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class).setPackHuntingScale(1, 1));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
         }
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 28D);
-		baseAttributes.put("movementSpeed", 0.20D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 1.0F).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(4));
-	}
 	
 	
     // ==================================================

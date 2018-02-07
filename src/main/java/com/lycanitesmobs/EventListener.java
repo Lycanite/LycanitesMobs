@@ -13,6 +13,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -444,14 +445,22 @@ public class EventListener {
 					event.getLeft().add("");
 					event.getLeft().add("Target Creature: " + mouseOverCreature.getName());
 					event.getLeft().add("Subspecies: " + mouseOverCreature.getSubspeciesIndex());
-					event.getLeft().add("Size: " + mouseOverCreature.sizeScale);
 					event.getLeft().add("Level: " + mouseOverCreature.getLevel());
-					event.getLeft().add("Health: " + mouseOverCreature.getHealth() + "/" + mouseOverCreature.getMaxHealth() + " Base: " + mouseOverCreature.getBaseHealth() + " (x" + mouseOverCreature.getHealthMultiplier() + " +" + mouseOverCreature.getHealthBoost() + ")");
-					event.getLeft().add("Defense: " + (mouseOverCreature.defense * mouseOverCreature.getDefenseMultiplier()) + mouseOverCreature.getDefenseBoost() + " (x" + mouseOverCreature.getDefenseMultiplier() + " +" + mouseOverCreature.getDefenseBoost() + ")");
-					event.getLeft().add("Attack: " + mouseOverCreature.getAttackDamage(1) + " (x" + mouseOverCreature.getDamageMultiplier() + " +" + mouseOverCreature.getDamageBoost() + ")");
-					event.getLeft().add("Pierce: " + mouseOverCreature.getPierceValue() + " (x" + mouseOverCreature.getPierceMultiplier() + " +" + mouseOverCreature.getPierceBoost() + ")");
-					event.getLeft().add("Haste: " + "20 Ticks = " + mouseOverCreature.getHaste(20) + " Ticks" + " (x" + mouseOverCreature.getHasteMultiplier() + " +" + mouseOverCreature.getHasteBoost() + ")");
-					event.getLeft().add("Speed: " + "(x" + mouseOverCreature.getSpeedMultiplier() + " +" + mouseOverCreature.getSpeedBoost() + ")");
+					event.getLeft().add("Size: " + mouseOverCreature.sizeScale);
+					event.getLeft().add("");
+					event.getLeft().add("Health: " + mouseOverCreature.getHealth() + "/" + mouseOverCreature.getMaxHealth());
+					event.getLeft().add("Speed: " + mouseOverCreature.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() + "/" + mouseOverCreature.creatureStats.getSpeed());
+					event.getLeft().add("");
+					event.getLeft().add("Defense: " + mouseOverCreature.creatureStats.getDefense());
+					event.getLeft().add("Armor: " + mouseOverCreature.creatureStats.getArmor());
+					event.getLeft().add("");
+					event.getLeft().add("Damage: " + mouseOverCreature.creatureStats.getDamage());
+					event.getLeft().add("Melee Speed: " + mouseOverCreature.creatureStats.getAttackSpeed());
+					event.getLeft().add("Ranged Speed: " + mouseOverCreature.creatureStats.getRangedSpeed());
+					event.getLeft().add("Pierce: " + mouseOverCreature.creatureStats.getPierce());
+					event.getLeft().add("");
+					event.getLeft().add("Effect Duration: " + mouseOverCreature.creatureStats.getEffect());
+					event.getLeft().add("Effect Amplifier: " + mouseOverCreature.creatureStats.getAmplifier());
 				}
 			}
 		}

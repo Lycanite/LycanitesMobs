@@ -32,7 +32,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.phantom"
+			"mobId": "shadowmobs:phantom"
 		}
 	]
 }

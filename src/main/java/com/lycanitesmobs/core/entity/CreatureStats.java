@@ -6,6 +6,8 @@ import net.minecraft.world.EnumDifficulty;
 
 /** Manages the stats of an EntityCreature. This applies difficulty multipliers, subspecies, levels, etc also. **/
 public class CreatureStats {
+	/** A static array of all stat names used by configs, etc. **/
+	public static String[] STAT_NAMES = new String[] {"health", "defense", "armor", "speed", "damage", "attackSpeed", "rangedSpeed", "effect", "amplifier", "pierce", "sight"};
 
 	/** The entity using these stats. **/
 	public EntityCreatureBase entity;
@@ -99,7 +101,7 @@ public class CreatureStats {
 	 */
 	public double getSpeed() {
 		String statName = "speed";
-		double statValue = this.entity.creatureInfo.speed;
+		double statValue = this.entity.creatureInfo.speed / 100;
 
 		// Wild:
 		if(this.entity.getOwner() != null) {
@@ -138,12 +140,12 @@ public class CreatureStats {
 
 
 	/**
-	 * Returns the haste this entity should use. Haste affects how quickly this entity attacks, at 1 it is at default at 2 twice as fast. Capped at 1 attack per 10 ticks.
-	 * @return Base haste.
+	 * Returns the melee attack speed this entity should use. This affects how quickly this entity melee attacks, the default is 1 for once per second.
+	 * @return Attack speed.
 	 */
-	public double getHaste() {
-		String statName = "haste";
-		double statValue = this.entity.creatureInfo.haste;
+	public double getAttackSpeed() {
+		String statName = "attackSpeed";
+		double statValue = this.entity.creatureInfo.attackSpeed;
 
 		// Wild:
 		if(this.entity.getOwner() != null) {
@@ -160,8 +162,30 @@ public class CreatureStats {
 
 
 	/**
-	 * Returns the effect this entity should use. This affects how long any debuffs applied by this entity last for.
-	 * @return Base effect.
+	 * Returns the ranged attack speed this entity should use. This affects how quickly this entity fires projectiles, the default is 0.5 for once every 2 seconds.
+	 * @return Attack speed.
+	 */
+	public double getRangedSpeed() {
+		String statName = "rangedSpeed";
+		double statValue = this.entity.creatureInfo.rangedSpeed;
+
+		// Wild:
+		if(this.entity.getOwner() != null) {
+			statValue *= this.getDifficultyMultiplier(statName);
+			statValue *= this.getSubspeciesMultiplier(statName);
+			if(entity.extraMobBehaviour != null) {
+				statValue *= entity.extraMobBehaviour.multiplierHaste;
+				statValue += entity.extraMobBehaviour.boostHaste;
+			}
+		}
+
+		return statValue;
+	}
+
+
+	/**
+	 * Returns the effect this entity should use. This affects how long any debuffs applied by this entity's element last for.
+	 * @return Base effect duration.
 	 */
 	public double getEffect() {
 		String statName = "effect";
@@ -175,6 +199,24 @@ public class CreatureStats {
 				statValue *= entity.extraMobBehaviour.multiplierEffect;
 				statValue += entity.extraMobBehaviour.boostEffect;
 			}
+		}
+
+		return statValue;
+	}
+
+
+	/**
+	 * Returns the effect amplifier this entity should use. This affects the amplifier of the effects applied by this creatures element. If less than 0, no effect is applied.
+	 * @return Base effect amplifier.
+	 */
+	public double getAmplifier() {
+		String statName = "amplifier";
+		double statValue = this.entity.creatureInfo.amplifier;
+
+		// Wild:
+		if(this.entity.getOwner() != null) {
+			statValue *= this.getDifficultyMultiplier(statName);
+			statValue *= this.getSubspeciesMultiplier(statName);
 		}
 
 		return statValue;
@@ -204,20 +246,29 @@ public class CreatureStats {
 
 
 	/**
+	 * Returns the sight this entity should use. How far this entity can see other entities. Aka Follow Range.
+	 * @return Base sight.
+	 */
+	public double getSight() {
+		String statName = "sight";
+		double statValue = this.entity.creatureInfo.sight;
+
+		// Wild:
+		if(this.entity.getOwner() != null) {
+			statValue *= this.getDifficultyMultiplier(statName);
+			statValue *= this.getSubspeciesMultiplier(statName);
+		}
+
+		return statValue;
+	}
+
+
+	/**
 	 * Returns the knockback resistance this entity should use. The chance from 0.0-1.0 of an entity being knocked back when hit.
 	 * @return Base knockback resistance.
 	 */
 	public double getKnockbackResistance() {
 		return this.entity.creatureInfo.knockbackResistance;
-	}
-
-
-	/**
-	 * Returns the sight this entity should use. How far this entity can see other entities. Aka Follow Range.
-	 * @return Base sight.
-	 */
-	public double getSight() {
-		return this.entity.creatureInfo.sight;
 	}
 
 

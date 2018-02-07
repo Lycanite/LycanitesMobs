@@ -31,19 +31,19 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "plainsmobs.kobold",
+			"mobId": "plainsmobs:kobold",
 			"weight": 8
 		},
 		{
-			"mobId": "junglemobs.conba",
+			"mobId": "junglemobs:conba",
 			"weight": 8
 		},
 		{
-			"mobId": "demonmobs.belph",
+			"mobId": "demonmobs:belph",
 			"weight": 8
 		},
 		{
-			"mobId": "swampmobs.aglebemu",
+			"mobId": "swampmobs:aglebemu",
 			"weight": 8
 		}
 	]

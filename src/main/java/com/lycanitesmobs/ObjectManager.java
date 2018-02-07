@@ -277,6 +277,7 @@ public class ObjectManager {
 
 	// ========== Entities ==========
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event, GroupInfo group) {
+		LycanitesMobs.printDebug("Creature", "Forge registering all " + CreatureManager.getInstance().creatures.size() + " creatures from the group: " + group.name + "...");
 		for(CreatureInfo creatureInfo : CreatureManager.getInstance().creatures.values()) {
 			if(creatureInfo.group != group) {
 				continue;

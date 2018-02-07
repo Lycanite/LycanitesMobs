@@ -7,8 +7,7 @@ import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -20,14 +19,11 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupPredator {
 
@@ -42,17 +38,12 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 8;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0D;
         this.canGrow = true;
-        
-        this.setWidth = 2.8F;
-        this.setHeight = 0.95F;
         this.setupMob();
     }
 
@@ -64,7 +55,7 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ioraytreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(4.0F));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F).setMountedAttacking(false);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F).setMountedAttacking(false);
         this.tasks.addTask(6, rangedAttackAI);
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI.setPauseRate(60));
@@ -78,36 +69,12 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntitySquid.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.36D);
-		baseAttributes.put("knockbackResistance", 0.8D);
-		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH), 1F).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 3)).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.75F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.DIAMOND, 1), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("waterjetcharge")), 0.5F).setMaxAmount(1));
     }
     
     

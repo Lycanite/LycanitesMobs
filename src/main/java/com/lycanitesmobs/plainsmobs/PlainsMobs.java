@@ -5,13 +5,11 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.plainsmobs.dispenser.DispenserBehaviorQuill;
-import com.lycanitesmobs.plainsmobs.entity.*;
+import com.lycanitesmobs.plainsmobs.entity.EntityQuill;
 import com.lycanitesmobs.plainsmobs.item.ItemPlainsEgg;
 import com.lycanitesmobs.plainsmobs.item.ItemQuill;
 import com.lycanitesmobs.plainsmobs.item.ItemScepterQuill;
@@ -113,71 +111,6 @@ public class PlainsMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("plainsspawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
-
-		newMob = new MobInfo(group, "kobold", EntityKobold.class, 0x996633, 0xFF7777)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "ventoraptor", EntityVentoraptor.class, 0x99BBFF, 0x0033FF)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "maka", EntityMaka.class, 0xAA8855, 0x221100)
-				.setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
-				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(2, 5).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "makaalpha", EntityMakaAlpha.class, 0x663300, 0x000000)
-				.setPeaceful(false).setSummonCost(4).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("").setDespawn(false)
-				.setSpawnWeight(1).setAreaLimit(4).setGroupLimits(1, 2).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "zoataur", EntityZoataur.class, 0x442200, 0xFFDDBB)
-				.setPeaceful(false).setSummonable(true).setSummonCost(4).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(4).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "roc", EntityRoc.class, 0xAA0000, 0x00DD44)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("golden", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "feradon", EntityFeradon.class, 0xe4a23d, 0x552d0e)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "quillbeast", EntityQuillbeast.class, 0x642a12, 0x6051fe)
-				.setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("light", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(5).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "morock", EntityMorock.class, 0x222211, 0x554444)
-				.setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(3)
-				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
 
 		// Projectiles:
 		ObjectManager.addProjectile("quill", EntityQuill.class, ObjectManager.getItem("quill"), new DispenserBehaviorQuill());

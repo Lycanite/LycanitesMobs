@@ -31,11 +31,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "forestmobs.shambler",
+			"mobId": "forestmobs:shambler",
 			"weight": 8
 		},
 		{
-			"mobId": "swampmobs.triffid",
+			"mobId": "swampmobs:triffid",
 			"weight": 8
 		}
 	]

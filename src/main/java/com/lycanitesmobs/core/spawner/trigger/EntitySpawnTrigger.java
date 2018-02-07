@@ -86,7 +86,7 @@ public abstract class EntitySpawnTrigger extends SpawnTrigger {
 		// Check Entity Id:
 		String entityId = EntityList.getEntityString(killedEntity);
 		if(killedEntity instanceof EntityCreatureBase) {
-			entityId = ((EntityCreatureBase)killedEntity).getEntityIdName();
+			entityId = ((EntityCreatureBase)killedEntity).creatureInfo.getEntityId();
 		}
 		if(entityId == null) {
 			if ("whitelist".equalsIgnoreCase(this.entityIdsListType)) {

@@ -31,7 +31,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "saltwatermobs.roa",
+			"mobId": "saltwatermobs:roa",
 			"weight": 8
 		}
 	]

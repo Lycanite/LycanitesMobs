@@ -5,14 +5,15 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorArcaneLaserStorm;
 import com.lycanitesmobs.mountainmobs.dispenser.DispenserBehaviorBoulderBlast;
-import com.lycanitesmobs.mountainmobs.entity.*;
+import com.lycanitesmobs.mountainmobs.entity.EntityArcaneLaser;
+import com.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserEnd;
+import com.lycanitesmobs.mountainmobs.entity.EntityArcaneLaserStorm;
+import com.lycanitesmobs.mountainmobs.entity.EntityBoulderBlast;
 import com.lycanitesmobs.mountainmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -112,50 +113,6 @@ public class MountainMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("mountainspawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
-
-		newMob = new MobInfo(group, "jabberwock", EntityJabberwock.class, 0x662222, 0xFFFFAA)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "troll", EntityTroll.class, 0x007711, 0xEEEEEE)
-				.setPeaceful(false).setSummonable(true).setSummonCost(6).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "yale", EntityYale.class, 0xFFEEAA, 0xFFDD77)
-				.setPeaceful(true).setSummonCost(1).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
-				.setSpawnWeight(14).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "beholder", EntityBeholder.class, 0x442211, 0x44AA33)
-				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "barghest", EntityBarghest.class, 0xD08237, 0x00070A)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "wildkin", EntityWildkin.class, 0x433929, 0x766f5a)
-				.setPeaceful(false).setTameable(true).setSummonCost(6).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
 
 		// Projectiles:
 		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());

@@ -8,22 +8,16 @@ import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.BlockLog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey {
 	private int calpodSwarmLimit = 5;
@@ -37,17 +31,11 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 0;
-        this.experience = 3;
         this.hasAttackSound = true;
-
-
-		this.setWidth = 1.3F;
-        this.setHeight = 0.9F;
         this.setupMob();
         
-        this.calpodSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Calpod Swarm Limit", this.calpodSwarmLimit, "Limits how many Calpods there can be when swarming.");
-		this.calpodGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Calpod Griefing", this.calpodGreifing, "Set to false to disable Calpod block destruction.");
+        this.calpodSwarmLimit = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Calpod Swarm Limit", this.calpodSwarmLimit, "Limits how many Calpods there can be when swarming.");
+		this.calpodGreifing = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Calpod Griefing", this.calpodGreifing, "Set to false to disable Calpod block destruction.");
 	}
 
     // ========== Init AI ==========
@@ -56,7 +44,7 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(2.0D).setFarSpeed(1.5D).setNearDistance(5.0D).setFarDistance(10.0D));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -67,29 +55,6 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupAlpha.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.LOG, 1, 0), 1).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL)));
-        this.drops.add(new MobDrop(new ItemStack(Items.SPIDER_EYE), 0.5F).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
-	}
 	
 	
     // ==================================================

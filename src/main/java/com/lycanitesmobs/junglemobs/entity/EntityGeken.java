@@ -3,20 +3,15 @@ package com.lycanitesmobs.junglemobs.entity;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityGeken extends EntityCreatureTameable implements IMob {
 	
@@ -30,15 +25,10 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
 
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
-        
-        this.setWidth = 0.6F;
-        this.setHeight = 1.9F;
         this.setupMob();
         
         // Stats:
@@ -51,13 +41,14 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        meleeAttackAI = new EntityAIAttackMelee(this).setRate(10);
+        meleeAttackAI = new EntityAIAttackMelee(this);
         this.tasks.addTask(3, meleeAttackAI);
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -65,24 +56,6 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1).setMinAmount(1).setMaxAmount(2));
-	}
 	
 	
     // ==================================================
@@ -120,15 +93,23 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         if(target instanceof EntityLivingBase) {
             ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 0));
         }
-        
-        // Update Phase:
-        if(this.getAttackPhase() == 2)
-        	meleeAttackAI.setRate(40);
-        else
-        	meleeAttackAI.setRate(10);
-        this.nextAttackPhase();
+
         return true;
     }
+
+	@Override
+	public int getMeleeCooldown() {
+		if(this.getAttackPhase() == 2)
+			return super.getMeleeCooldown() * 3;
+		return super.getMeleeCooldown();
+	}
+
+	@Override
+	public int getRangedCooldown() {
+		if(this.getAttackPhase() == 2)
+			return super.getRangedCooldown() * 3;
+		return super.getRangedCooldown();
+	}
 
 
 	// ==================================================

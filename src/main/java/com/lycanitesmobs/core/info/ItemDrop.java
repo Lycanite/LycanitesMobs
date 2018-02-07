@@ -1,20 +1,22 @@
 package com.lycanitesmobs.core.info;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class MobDrop {
+public class ItemDrop {
 	// ========== Item ==========
 	public ItemStack itemStack = null;
 	public ItemStack burningItemStack = null;
@@ -33,45 +35,44 @@ public class MobDrop {
 	//                       JSON
 	// ==================================================
 	/** Creates a MobDrop from the provided JSON data. **/
-	public static MobDrop createFromJSON(JsonObject json) {
-		MobDrop mobDrop = null;
-		int dropMeta = 0;
+	public static ItemDrop createFromJSON(JsonObject json) {
+		ItemDrop itemDrop = null;
+		int itemMetadata = 0;
 		if(json.has("item")) {
 			if(json.has("metadata")) {
-				dropMeta = json.get("metadata").getAsInt();
+				itemMetadata = json.get("metadata").getAsInt();
 			}
-			String dropName = json.get("item").getAsString();
+			String itemId = json.get("item").getAsString();
 
-			ItemStack itemStack = null;
-			if (Item.getByNameOrId(dropName) != null) {
-				itemStack = new ItemStack(Item.getByNameOrId(dropName), 1, dropMeta);
+			Item item = GameRegistry.findRegistry(Item.class).getValue(new ResourceLocation(itemId));
+			if(item != null) {
+				itemDrop = new ItemDrop(new ItemStack(item, 1, itemMetadata), 1);
+				itemDrop.loadFromJSON(json);
 			}
-			else if (Block.getBlockFromName(dropName) != null) {
-				itemStack = new ItemStack(Block.getBlockFromName(dropName), 1, dropMeta);
+			else {
+				LycanitesMobs.printWarning("", "[JSON] Unable to load item drop from the item id: " + itemId);
+				return null;
 			}
-
-			if(itemStack == null) {
-				return mobDrop;
-			}
-			mobDrop = new MobDrop(itemStack, 1);
-			mobDrop.loadFromJSON(json);
+		}
+		else {
+			LycanitesMobs.printWarning("", "[JSON] Unable to load item drop from json as it has no name!");
 		}
 
-		return mobDrop;
+		return itemDrop;
 	}
 
 	
     // ==================================================
    	//                     Constructor
    	// ==================================================
-	public MobDrop(ItemStack itemStack, float chance) {
+	public ItemDrop(ItemStack itemStack, float chance) {
 		this.itemStack = itemStack;
 		this.minAmount = 1;
 		this.maxAmount = 1;
 		this.chance = chance;
 	}
 
-	public MobDrop(NBTTagCompound nbtTagCompound) {
+	public ItemDrop(NBTTagCompound nbtTagCompound) {
 		this.readFromNBT(nbtTagCompound);
 	}
 
@@ -108,37 +109,37 @@ public class MobDrop {
     // ==================================================
    	//                     Properties
    	// ==================================================
-	public MobDrop setDrop(ItemStack item) {
+	public ItemDrop setDrop(ItemStack item) {
 		this.itemStack = item;
 		return this;
 	}
 
-	public MobDrop setBurningDrop(ItemStack item) {
+	public ItemDrop setBurningDrop(ItemStack item) {
 		this.burningItemStack = item;
 		return this;
 	}
 
-	public MobDrop setEffectDrop(int effectID, ItemStack item) {
+	public ItemDrop setEffectDrop(int effectID, ItemStack item) {
 		effectsItem.put(effectID, item);
 		return this;
 	}
 
-	public MobDrop setMinAmount(int amount) {
+	public ItemDrop setMinAmount(int amount) {
 		this.minAmount = amount;
 		return this;
 	}
 
-	public MobDrop setMaxAmount(int amount) {
+	public ItemDrop setMaxAmount(int amount) {
 		this.maxAmount = amount;
 		return this;
 	}
 
-	public MobDrop setChance(float chance) {
+	public ItemDrop setChance(float chance) {
 		this.chance = chance;
 		return this;
 	}
 
-    public MobDrop setSubspecies(int subspeciesID) {
+    public ItemDrop setSubspecies(int subspeciesID) {
         this.subspeciesID = subspeciesID;
         return this;
     }

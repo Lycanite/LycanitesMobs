@@ -5,12 +5,9 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.forestmobs.entity.*;
 import com.lycanitesmobs.forestmobs.item.ItemForestEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.entity.EnumCreatureType;
@@ -110,52 +107,8 @@ public class ForestMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("forestspawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
 
-		newMob = new MobInfo(group, "ent", EntityEnt.class, 0x997700, 0x00FF22)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "treant", EntityTreant.class, 0x663300, 0x00AA11)
-				.setPeaceful(false).setSummonable(false).setSummonCost(6).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(1).setAreaLimit(2).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "shambler", EntityShambler.class, 0xDDFF22, 0x005511)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "arisaur", EntityArisaur.class, 0x008800, 0x00FF00)
-				.setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
-				.setSpawnWeight(10).setAreaLimit(12).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "warg", EntityWarg.class, 0x321806, 0x68523b)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "calpod", EntityCalpod.class, 0x996436, 0x3d2013)
-				.setPeaceful(false).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(6).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-
-		// Projectiles:
+		// No Projectiles
 	}
 
 	@Override

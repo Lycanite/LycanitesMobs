@@ -4,7 +4,6 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,16 +11,11 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityArgus extends EntityCreatureTameable implements IMob, IFusable {
 
@@ -35,13 +29,8 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
         this.spawnsInWater = true;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.8F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -55,7 +44,7 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
         super.initEntityAI();
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
         this.tasks.addTask(2, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -70,25 +59,6 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
 		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.5F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
-	}
 
     // ========== Set Size ==========
     @Override

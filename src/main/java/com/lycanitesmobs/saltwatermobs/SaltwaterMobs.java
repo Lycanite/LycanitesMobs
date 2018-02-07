@@ -5,12 +5,9 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
-import com.lycanitesmobs.saltwatermobs.entity.*;
 import com.lycanitesmobs.saltwatermobs.item.ItemSaltwaterEgg;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.MobEffects;
@@ -103,63 +100,8 @@ public class SaltwaterMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("saltwaterspawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
 
-		newMob = new MobInfo(group, "lacedon", EntityLacedon.class, 0x000099, 0x2244FF)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERFLOOR")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "skylus", EntitySkylus.class, 0xFFCCDD, 0xBB2299)
-				.setPeaceful(false).setSummonable(true).setSummonCost(3).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER, WATERFLOOR")
-				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "ika", EntityIka.class, 0x99FFBB, 0x229944)
-				.setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATERANIMAL").setDespawn(false)
-				.setSpawnWeight(6).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "abtu", EntityAbtu.class, 0xFFBB00, 0x44AAFF)
-				.setPeaceful(false).setSummonCost(2).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
-				.setSpawnWeight(2).setAreaLimit(32).setGroupLimits(1, 5).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "raiko", EntityRaiko.class, 0xCCCCDD, 0xFF6633)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "roa", EntityRoa.class, 0x222288, 0x222233)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("verdant", "uncommon")).addSubspecies(new Subspecies("scarlet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("WATER")
-				.setSpawnWeight(4).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "herma", EntityHerma.class, 0xe50403, 0xf1c2a1)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, WATERFLOOR")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "quetzodracl", EntityQuetzodracl.class, 0x229944, 0x99FFBB)
-				.setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(3)
-				.addSubspecies(new Subspecies("ashen", "uncommon")).addSubspecies(new Subspecies("golden", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY")
-				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
+		// No Projectiles
 	}
 
 	@Override

@@ -35,7 +35,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "saltwatermobs.abtu",
+			"mobId": "saltwatermobs:abtu",
 			"weight": 8
 		}
 	]

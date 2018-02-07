@@ -1,11 +1,9 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -33,12 +31,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 10;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.6F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -49,7 +42,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(80).setRange(16.0F).setMinChaseDistance(8.0F));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -64,28 +57,6 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
         this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.22D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.FEATHER), 0.5F).setMaxAmount(4));
-        this.drops.add(new MobDrop(new ItemStack(Items.CHORUS_FRUIT), 0.5F).setMaxAmount(4));
-        this.drops.add(new MobDrop(new ItemStack(Items.SNOWBALL), 1F).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("whirlwindcharge")), 0.25F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("cleansingcrystal")), 0.05F).setMaxAmount(1));
-	}
 	
 	
     // ==================================================

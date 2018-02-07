@@ -4,10 +4,9 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
+import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -104,13 +103,13 @@ public class ItemHalloweenTreat extends ItemBase {
                 if (entity instanceof EntityCreatureBase) {
                     EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
 					entityCreature.addLevel(world.rand.nextInt(10));
-                    if (entityCreature.mobInfo.getEntityID().equals("ent"))
+                    if (entityCreature.creatureInfo.getName().equals("ent"))
                         entityCreature.setCustomNameTag("Twisted Ent");
-					else if (entityCreature.mobInfo.getEntityID().equals("treant"))
+					else if (entityCreature.creatureInfo.getName().equals("treant"))
 						entityCreature.setCustomNameTag("Wicked Treant");
-					else if (entityCreature.mobInfo.getEntityID().equals("epion"))
+					else if (entityCreature.creatureInfo.getName().equals("epion"))
 						entityCreature.setCustomNameTag("Vampire Bat");
-					else if (entityCreature.mobInfo.getEntityID().equals("grue"))
+					else if (entityCreature.creatureInfo.getName().equals("grue"))
 						entityCreature.setCustomNameTag("Shadow Clown");
                 }
 

@@ -3,8 +3,8 @@ package com.lycanitesmobs.core.item;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.pets.PetEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,8 +52,8 @@ public class ItemSoulstone extends ItemBase {
     	}
 
 		EntityCreatureTameable entityTameable = (EntityCreatureTameable)entity;
-		MobInfo mobInfo = entityTameable.mobInfo;
-	 	if(!mobInfo.isTameable() || entityTameable.getOwner() != player) {
+		CreatureInfo creatureInfo = entityTameable.creatureInfo;
+	 	if(!creatureInfo.isTameable() || entityTameable.getOwner() != player) {
 			if(!player.getEntityWorld().isRemote)
 				player.sendMessage(new TextComponentString(I18n.translateToLocal("message.soulstone.untamed")));
 			return false;
@@ -83,7 +83,7 @@ public class ItemSoulstone extends ItemBase {
 			}
 
     		String message = I18n.translateToLocal("message.soulstone." + petType + ".added");
-    		message = message.replace("%creature%", mobInfo.getTitle());
+    		message = message.replace("%creature%", creatureInfo.getTitle());
     		player.sendMessage(new TextComponentString(message));
             //player.addStat(ObjectManager.getStat("soulstone"), 1);
 

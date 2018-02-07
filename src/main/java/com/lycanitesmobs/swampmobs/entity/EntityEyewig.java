@@ -4,8 +4,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,13 +12,10 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityEyewig extends EntityCreatureRideable {
 
@@ -33,12 +29,7 @@ public class EntityEyewig extends EntityCreatureRideable {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 0;
-        this.experience = 10;
         this.hasAttackSound = true;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
         this.setupMob();
         this.stepHeight = 1.0F;
     }
@@ -51,7 +42,7 @@ public class EntityEyewig extends EntityCreatureRideable {
         //this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("eyewigtreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(4.0F));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F).setMountedAttacking(false);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F).setMountedAttacking(false);
         this.tasks.addTask(6, rangedAttackAI);
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -63,30 +54,10 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
         }
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.SPIDER_EYE), 0.9F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.FERMENTED_SPIDER_EYE), 0.2F));
-        this.drops.add(new MobDrop(new ItemStack(Items.STRING), 1).setMinAmount(2).setMaxAmount(5));
-	}
 	
 	
     // ==================================================

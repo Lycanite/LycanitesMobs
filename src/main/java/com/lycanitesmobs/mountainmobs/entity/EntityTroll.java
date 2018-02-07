@@ -6,26 +6,20 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityTroll extends EntityCreatureTameable implements IMob {
 	
@@ -42,17 +36,12 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
-        this.experience = 5;
         this.hasAttackSound = false;
 
         //this.canGrow = false;
         //this.babySpawnChance = 0.01D;
         
-        this.trollGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Troll Griefing", this.trollGreifing, "Set to false to disable Troll block destruction.");
-        
-        this.setWidth = 1.5F;
-        this.setHeight = 3.2F;
+        this.trollGreifing = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Troll Griefing", this.trollGreifing, "Set to false to disable Troll block destruction.");
         this.solidCollision = true;
         this.setupMob();
     }
@@ -67,12 +56,13 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
         }
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRate(60).setRange(14.0F).setMinChaseDistance(5.0F));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRange(14.0F).setMinChaseDistance(5.0F));
         this.tasks.addTask(6, this.aiSit);
         this.tasks.addTask(7, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -80,28 +70,6 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 6D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.LOG), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 1).setMinAmount(2).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 1).setMinAmount(2).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("BoulderBlastCharge")), 0.5F).setMinAmount(1).setMaxAmount(1));
-	}
     
     
     // ==================================================

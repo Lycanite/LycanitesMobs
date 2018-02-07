@@ -172,10 +172,9 @@ public class EntityProjectileBase extends EntityThrowable {
                         boolean attackSuccess = false;
  						float damage = this.getDamage(target);
  						float damageInit = damage;
- 						double pierceValue = 5.0D;
- 						if(this.getThrower() instanceof EntityCreatureBase)
- 							pierceValue = ((EntityCreatureBase)this.getThrower()).getPierceValue();
- 				        float pierceDamage = 1 + (float)Math.floor(damage / pierceValue);
+ 				        double pierceDamage = 1;
+						if(this.getThrower() instanceof EntityCreatureBase)
+							pierceDamage = ((EntityCreatureBase)this.getThrower()).creatureStats.getPierce();
 
                         // Prevent Knockback:
                         double targetKnockbackResistance = 0;
@@ -183,8 +182,8 @@ public class EntityProjectileBase extends EntityThrowable {
                         if(this.knockbackChance < 1) {
                             if(this.knockbackChance <= 0 || this.rand.nextDouble() <= this.knockbackChance) {
                                 if(target instanceof EntityLivingBase) {
-                                    targetKnockbackResistance = ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
-                                    ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
+                                    targetKnockbackResistance = target.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue();
+                                    target.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1);
                                     stopKnockback = true;
                                 }
                             }
@@ -197,7 +196,7 @@ public class EntityProjectileBase extends EntityThrowable {
                                 attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), damage);
                             else {
                                 int hurtResistantTimeBefore = target.hurtResistantTime;
-                                target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), pierceDamage);
+                                target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), (float)pierceDamage);
                                 target.hurtResistantTime = hurtResistantTimeBefore;
                                 damage -= pierceDamage;
                                 attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower())), damage);
@@ -208,7 +207,7 @@ public class EntityProjectileBase extends EntityThrowable {
                                 attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
                             else {
                                 int hurtResistantTimeBefore = target.hurtResistantTime;
-                                target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
+                                target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), (float)pierceDamage);
                                 target.hurtResistantTime = hurtResistantTimeBefore;
                                 damage -= pierceDamage;
                                 attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);

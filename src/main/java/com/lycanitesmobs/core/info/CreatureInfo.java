@@ -46,15 +46,21 @@ public class CreatureInfo {
 
 
 	// Stats:
+	public double width = 0.8D;
+	public double height = 1.8D;
+
 	public int experience = 5;
 	public double health = 20.0D;
 	public double defense = 0.0D;
 	public double armor = 0.0D;
 	public double speed = 24.0D; // Divided by 100 when applied.
 	public double damage = 2.0D;
-	public double haste = 1.0D;
-	public double effect = 1.0D;
+	public double attackSpeed = 1.0D; // Seconds per melee.
+	public double rangedSpeed = 0.5D; // Seconds per ranged.
+	public double effect = 1.0D; // Seconds of effect.
+	public double amplifier = -1.0D; // No effect when less than 0.
 	public double pierce = 1.0D;
+
 	public double sight = 16.0D;
 	public double knockbackResistance = 0.0D;
 
@@ -103,7 +109,10 @@ public class CreatureInfo {
 
 	// Items:
 	/** A list of all the item drops available to this creature. **/
-	public List<MobDrop> drops = new ArrayList<>();
+	public List<ItemDrop> drops = new ArrayList<>();
+
+	/** A json array containing a list of drops to be loaded during init. **/
+	protected JsonArray dropsJson;
 
 
 	// Scale:
@@ -120,6 +129,7 @@ public class CreatureInfo {
 	 */
 	public CreatureInfo(GroupInfo group) {
 		this.group = group;
+		this.creatureSpawn = new CreatureSpawn();
 	}
 
 
@@ -138,8 +148,12 @@ public class CreatureInfo {
 			this.dummy = json.get("dummy").getAsBoolean();
 		if(this.dummy)
 			return;
-		this.creatureSpawn = new CreatureSpawn();
 		this.creatureSpawn.loadFromJSON(json.get("spawning").getAsJsonObject());
+
+		if(json.has("width"))
+			this.width = json.get("width").getAsDouble();
+		if(json.has("height"))
+			this.height = json.get("height").getAsDouble();
 
 		if(json.has("experience"))
 			this.experience = json.get("experience").getAsInt();
@@ -147,16 +161,23 @@ public class CreatureInfo {
 			this.health = json.get("health").getAsDouble();
 		if(json.has("defense"))
 			this.defense = json.get("defense").getAsDouble();
+		if(json.has("armor"))
+			this.armor = json.get("armor").getAsDouble();
 		if(json.has("speed"))
 			this.speed = json.get("speed").getAsDouble();
 		if(json.has("damage"))
 			this.damage = json.get("damage").getAsDouble();
-		if(json.has("haste"))
-			this.haste = json.get("haste").getAsDouble();
+		if(json.has("attackSpeed"))
+			this.attackSpeed = json.get("attackSpeed").getAsDouble();
+		if(json.has("rangedSpeed"))
+			this.rangedSpeed = json.get("rangedSpeed").getAsDouble();
 		if(json.has("effect"))
 			this.effect = json.get("effect").getAsDouble();
+		if(json.has("amplifier"))
+			this.amplifier = json.get("amplifier").getAsDouble();
 		if(json.has("pierce"))
 			this.pierce = json.get("pierce").getAsDouble();
+
 		if(json.has("knockbackResistance"))
 			this.knockbackResistance = json.get("knockbackResistance").getAsDouble();
 		if(json.has("sight"))
@@ -192,13 +213,7 @@ public class CreatureInfo {
 			this.dungeonLevel = json.get("dungeonLevel").getAsInt();
 
 		if(json.has("drops")) {
-			JsonArray dropEntries = json.getAsJsonArray("drops");
-			for(JsonElement mobDropJson : dropEntries) {
-				MobDrop mobDrop = MobDrop.createFromJSON(mobDropJson.getAsJsonObject());
-				if(mobDrop != null) {
-					this.drops.add(mobDrop);
-				}
-			}
+			this.dropsJson = json.getAsJsonArray("drops");
 		}
 
 		if(json.has("sizeScale"))
@@ -219,20 +234,33 @@ public class CreatureInfo {
 			throw new RuntimeException("[Creature] Unable to initialise Creature Info for " + this.getName() + " as the element " + this.elementName + " cannot be found.");
 		}
 
+		// Item Drops:
+		this.drops.clear();
+		if(this.dropsJson != null) {
+			for(JsonElement mobDropJson : this.dropsJson) {
+				ItemDrop itemDrop = ItemDrop.createFromJSON(mobDropJson.getAsJsonObject());
+				if(itemDrop != null) {
+					this.drops.add(itemDrop);
+				}
+				else {
+					LycanitesMobs.printWarning("", "[Creature] Unable to add item drop to creature: " + this.name + ".");
+				}
+			}
+		}
+
 		// Spawning:
 		this.creatureSpawn.init(this);
 	}
 
 
 	/**
-	 * Registers this creature to vanilla and custom entity lists. Must be called after init and only during game startup.
+	 * Registers this creature to vanilla and custom entity lists. Must be called after init and only during game startup adn only by its own submod.
 	 */
 	public void register() {
 		if(this.dummy)
 			return;
 
 		// ID and Enabled Check:
-		LycanitesMobs.printDebug("Creature", "~0==================== Creature Setup: "+ this.getName() + " [" + this.getEntityId() +"] ====================0~");
 		if(!this.enabled) {
 			LycanitesMobs.printDebug("Creature", "Creature Disabled: " + this.getName() + " - " + this.entityClass + " (" + group.name + ")");
 		}

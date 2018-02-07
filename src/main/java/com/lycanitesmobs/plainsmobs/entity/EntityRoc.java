@@ -5,10 +5,9 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.entity.EntityCreatureRideable;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,15 +17,12 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHunter {
     public EntityAIAttackMelee attackAI;
@@ -42,15 +38,10 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 7;
         this.hasAttackSound = true;
         this.flySoundSpeed = 20;
 
-        this.creeperDropping = ConfigBase.getConfig(this.group, "general").getBool("Features", "Roc Creeper Dropping", this.creeperDropping, "Set to false to prevent Rocs from picking up Creepers to drop on their victims!");
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.8F;
+        this.creeperDropping = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Roc Creeper Dropping", this.creeperDropping, "Set to false to prevent Rocs from picking up Creepers to drop on their victims!");
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -78,26 +69,6 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.42D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 48D);
-		baseAttributes.put("attackDamage", 2D);
-        baseAttributes.put("attackSpeed", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.FEATHER), 1.0F).setMinAmount(3).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 0.75F).setMinAmount(1).setMaxAmount(3));
-	}
 	
 	
     // ==================================================

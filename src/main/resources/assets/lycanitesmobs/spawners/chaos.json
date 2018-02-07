@@ -21,19 +21,19 @@
 			"chance": 0.1,
 			"entityTypesListType": "blacklist",
 			"entityIds": [
-				"elementalmobs.cinder",
-				"elementalmobs.jengu",
-				"elementalmobs.geonach",
-				"elementalmobs.djinn",
-				"elementalmobs.argus",
-				"elementalmobs.volcan",
-				"elementalmobs.zephyr",
-				"elementalmobs.grue",
-				"elementalmobs.spriggan",
-				"elementalmobs.reiver",
-				"elementalmobs.tremor",
-				"elementalmobs.wraith",
-				"elementalmobs.spectre"
+				"elementalmobs:cinder",
+				"elementalmobs:jengu",
+				"elementalmobs:geonach",
+				"elementalmobs:djinn",
+				"elementalmobs:argus",
+				"elementalmobs:volcan",
+				"elementalmobs:zephyr",
+				"elementalmobs:grue",
+				"elementalmobs:spriggan",
+				"elementalmobs:reiver",
+				"elementalmobs:tremor",
+				"elementalmobs:wraith",
+				"elementalmobs:spectre"
 			],
 			"entityIdsListType": "whitelist"
 		},
@@ -62,7 +62,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.argus"
+			"mobId": "elementalmobs:argus"
 		}
 	],
 	"triggerCountMessages": [

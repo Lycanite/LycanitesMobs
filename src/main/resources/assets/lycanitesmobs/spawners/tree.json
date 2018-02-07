@@ -29,11 +29,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "forestmobs.ent",
+			"mobId": "forestmobs:ent",
 			"weight": 8
 		},
 		{
-			"mobId": "forestmobs.calpod",
+			"mobId": "forestmobs:calpod",
 			"weight": 2
 		}
 	]

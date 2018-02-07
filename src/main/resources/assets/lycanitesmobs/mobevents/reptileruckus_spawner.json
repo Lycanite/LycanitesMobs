@@ -31,19 +31,19 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "plainsmobs.ventoraptor",
+			"mobId": "plainsmobs:ventoraptor",
 			"weight": 8
 		},
 		{
-			"mobId": "junglemobs.geken",
+			"mobId": "junglemobs:geken",
 			"weight": 8
 		},
 		{
-			"mobId": "infernomobs.salamander",
+			"mobId": "infernomobs:salamander",
 			"weight": 4
 		},
 		{
-			"mobId": "shadowmobs.shade",
+			"mobId": "shadowmobs:shade",
 			"weight": 2
 		}
 	]

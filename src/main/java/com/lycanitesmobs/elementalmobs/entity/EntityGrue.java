@@ -5,7 +5,6 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -14,10 +13,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -27,7 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupShadow {
@@ -42,13 +37,8 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 5;
         this.hasAttackSound = true;
         this.spawnsInWater = true;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -60,12 +50,13 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -73,26 +64,6 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.5F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstoneshadow")), 1F).setMaxAmount(1).setSubspecies(3));
-	}
 
     // ========== Set Size ==========
     @Override
@@ -279,7 +250,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 
         String textureName = this.getTextureName() + "_shadowclown";
         if(AssetManager.getTexture(textureName) == null)
-            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+            AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
         return AssetManager.getTexture(textureName);
     }
 }

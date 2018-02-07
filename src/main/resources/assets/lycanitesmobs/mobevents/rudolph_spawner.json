@@ -31,12 +31,12 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "mountainmobs.jabberwock",
+			"mobId": "mountainmobs:jabberwock",
 			"weight": 8,
 			"mobNameTag": "Rudolph"
 		},
 		{
-			"mobId": "arcticmobs.wildkin",
+			"mobId": "arcticmobs:wildkin",
 			"weight": 2,
 			"mobNameTag": "Gooderness"
 		}

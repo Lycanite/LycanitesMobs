@@ -6,7 +6,6 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -15,8 +14,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,8 +21,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityShambler extends EntityCreatureTameable implements IMob, IGroupPlant {
     
@@ -37,17 +32,12 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 3;
-        this.experience = 7;
         this.spawnsUnderground = true;
         this.hasAttackSound = true;
         this.spreadFire = true;
 
         this.canGrow = true;
         this.babySpawnChance = 0.01D;
-        
-        this.setWidth = 1.5F;
-        this.setHeight = 3.5F;
         this.setupMob();
     }
 
@@ -73,29 +63,6 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.2D);
-		baseAttributes.put("knockbackResistance", 0.75D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.LOG, 1, 0), 1).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL)));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.VINE), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
-	}
 	
 	
     // ==================================================

@@ -6,7 +6,6 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -14,14 +13,11 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupHeavy {
 	
@@ -33,15 +29,10 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
-        this.experience = 5;
         this.hasAttackSound = false;
 
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
-        
-        this.setWidth = 2.9F;
-        this.setHeight = 4.2F;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.solidCollision = true;
@@ -65,25 +56,6 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 40D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 20D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("arisaurmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("arisaurmeatcooked"))).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.APPLE), 0.5F).setMinAmount(0).setMaxAmount(3));
     }
 	
 	

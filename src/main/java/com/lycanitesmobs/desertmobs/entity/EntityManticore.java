@@ -4,22 +4,16 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityManticore extends EntityCreatureTameable implements IMob, IGroupHunter {
     
@@ -31,13 +25,8 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
         this.flySoundSpeed = 20;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -55,6 +44,7 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -63,27 +53,6 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.SANDSTONE), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.STONE), 1).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 0.5F));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.25F));
-	}
 	
 	
     // ==================================================

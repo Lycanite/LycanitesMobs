@@ -6,7 +6,6 @@ import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupPlant;
 import net.minecraft.entity.Entity;
@@ -16,11 +15,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -29,8 +25,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.HashMap;
 
 public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlant, IGroupHeavy {
     
@@ -42,14 +36,9 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
-        this.experience = 10;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = true;
-        
-        this.setWidth = 2.9F;
-        this.setHeight = 7.9F;
         this.solidCollision = true;
         this.setupMob();
         this.hitAreaWidthScale = 1.5F;
@@ -62,7 +51,7 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(60));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
         //this.tasks.addTask(5, this.aiSit);
         //this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
@@ -77,31 +66,6 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         //this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 60D);
-		baseAttributes.put("movementSpeed", 0.18D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.LOG, 1, 0), 1).setMaxAmount(32));
-        this.drops.add(new MobDrop(new ItemStack(Items.STICK), 0.75F).setMaxAmount(16).setBurningDrop(new ItemStack(Items.COAL)));
-        this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.APPLE), 0.2F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD), 0.05F).setMaxAmount(1));
-		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("immunizer")), 0.1F).setMaxAmount(2));
-	}
 	
 	
     // ==================================================
@@ -212,14 +176,14 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
 		if("Wicked Treant".equals(this.getCustomNameTag())) {
 			String textureName = this.getTextureName() + "_wicked";
 			if (AssetManager.getTexture(textureName) == null)
-				AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+				AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
 			return AssetManager.getTexture(textureName);
 		}
 
 		if("Salty Tree".equals(this.getCustomNameTag())) {
 			String textureName = this.getTextureName() + "_saltytree";
 			if (AssetManager.getTexture(textureName) == null)
-				AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+				AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
 			return AssetManager.getTexture(textureName);
 		}
 

@@ -1,11 +1,10 @@
 package com.lycanitesmobs.junglemobs.entity;
 
-import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPrey;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,13 +14,9 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityTarantula extends EntityCreatureTameable implements IMob {
     
@@ -33,12 +28,7 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
         this.setupMob();
     }
 
@@ -53,36 +43,18 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.STRING), 1.0F).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.SPIDER_EYE), 0.5F).setMaxAmount(2));
-	}
 	
 	
     // ==================================================

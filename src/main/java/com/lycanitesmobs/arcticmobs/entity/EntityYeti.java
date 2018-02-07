@@ -7,7 +7,6 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -38,12 +37,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
-        this.experience = 5;
         this.hasAttackSound = false;
-        
-        this.setWidth = 1.8F;
-        this.setHeight = 2.8F;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.setupMob();
@@ -62,31 +56,11 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 0.5D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("YetiMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("YetiMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("FrostyFur")), 0.25F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.SNOWBALL), 0.25F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(3));
-	}
 	
 	
     // ==================================================

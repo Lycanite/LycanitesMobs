@@ -7,15 +7,14 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.shadowmobs.block.BlockShadowfire;
 import com.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorBloodleech;
 import com.lycanitesmobs.shadowmobs.dispenser.DispenserBehaviorSpectralbolt;
-import com.lycanitesmobs.shadowmobs.entity.*;
+import com.lycanitesmobs.shadowmobs.entity.EntityBloodleech;
+import com.lycanitesmobs.shadowmobs.entity.EntitySpectralbolt;
 import com.lycanitesmobs.shadowmobs.item.*;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Blocks;
@@ -125,57 +124,6 @@ public class ShadowMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("shadowspawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
-
-		newMob = new MobInfo(group, "phantom", EntityPhantom.class, 0x101519, 0xDD2233)
-				.setPeaceful(false).setSummonable(false).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setBiomes("SPOOKY").setDimensions("-1000").setDimensionWhitelist(false)
-				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-		AssetManager.addSound("phantom_say_jon", group, "entity.phantom.say.jon");
-
-		newMob = new MobInfo(group, "epion", EntityEpion.class, 0x553300, 0xFF22DD)
-				.setPeaceful(false).setSummonCost(3).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setBiomes("GROUP, SPOOKY").setDimensions("").setDimensionWhitelist(false)
-				.setSpawnWeight(6).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "geist", EntityGeist.class, 0x705449, 0x310e08)
-				.setPeaceful(false).setSummonCost(3).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("dark", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setBiomes("GROUP, SPOOKY")
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "chupacabra", EntityChupacabra.class, 0x36251b, 0xaa8c63)
-				.setPeaceful(true).setTameable(true).setSummonCost(3).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
-				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "shade", EntityShade.class, 0x000402, 0x102336)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(3)
-				.addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("UNDERGROUND").setDespawn(false)
-				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
-				.setSpawnWeight(2).setAreaLimit(2).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "darkling", EntityDarkling.class, 0x10191a, 0x9dfbcd)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("UNDERGROUND")
-				.setBiomes("ALL").setDimensions("-1").setDimensionWhitelist(false)
-				.setSpawnWeight(8).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
 
 		// Projectiles:
 		ObjectManager.addProjectile("spectralbolt", EntitySpectralbolt.class, ObjectManager.getItem("spectralboltcharge"), new DispenserBehaviorSpectralbolt());

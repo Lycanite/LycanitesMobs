@@ -46,41 +46,41 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.geist",
+			"mobId": "shadowmobs:geist",
 			"weight": 14
 		},
 		{
-			"mobId": "elementalmobs.grue",
+			"mobId": "elementalmobs:grue",
 			"weight": 8,
 			"dungeonLevelMin": "0"
 		},
 		{
-			"mobId": "shadowmobs.shade",
+			"mobId": "shadowmobs:shade",
 			"weight": 4,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "shadowmobs.chupacabra",
+			"mobId": "shadowmobs:chupacabra",
 			"weight": 4,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "shadowmobs.darkling",
+			"mobId": "shadowmobs:darkling",
 			"weight": 14,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "shadowmobs.epion",
+			"mobId": "shadowmobs:epion",
 			"weight": 1,
 			"dungeonLevelMin": "2"
 		},
 		{
-			"mobId": "shadowmobs.phantom",
+			"mobId": "shadowmobs:phantom",
 			"weight": 1,
 			"dungeonLevelMin": "2"
 		},
 		{
-			"mobId": "shadowmobs.chupacabra",
+			"mobId": "shadowmobs:chupacabra",
 			"weight": 1,
 			"subspecies": 1,
 			"mobNameTag": "Shadow Hound",
@@ -97,7 +97,7 @@
 			]
 		},
 		{
-			"mobId": "shadowmobs.shade",
+			"mobId": "shadowmobs:shade",
 			"weight": 1,
 			"subspecies": 1,
 			"mobNameTag": "Chaos Serpent",
@@ -109,12 +109,12 @@
 			"dungeonBoss": true,
 			"mobDrops": [
 				{
-					"item": "shadowmobs:spectralscepter"
+					"item": "shadowmobs:spectralboltscepter"
 				}
 			]
 		},
 		{
-			"mobId": "elementalmobs.grue",
+			"mobId": "elementalmobs:grue",
 			"weight": 1,
 			"subspecies": 3,
 			"mobNameTag": "Night Shade",
@@ -123,7 +123,7 @@
 			"dungeonBoss": true,
 			"mobDrops": [
 				{
-					"item": "shadowmobs:spectralscepter"
+					"item": "shadowmobs:spectralboltscepter"
 				}
 			]
 		}

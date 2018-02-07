@@ -1,12 +1,11 @@
 package com.lycanitesmobs.desertmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobInfo;
-import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -20,8 +19,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-
 public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 	
 	// ==================================================
@@ -32,15 +29,9 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
-
         this.babySpawnChance = 0.1D;
         this.canGrow = true;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 2.2F;
         this.attackTime = 10;
         this.setupMob();
     }
@@ -52,7 +43,7 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAITempt(this).setItemList("CactusFood"));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(5, new EntityAIFollowMaster(this).setSpeed(1.0D).setStrayDistance(8.0F));
         this.tasks.addTask(6, new EntityAIWander(this));
@@ -63,24 +54,6 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(2, new EntityAITargetMaster(this).setTargetClass(EntityJoustAlpha.class).setSightCheck(false).setRange(64.0D));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("JoustMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("JoustMeatCooked"))).setMaxAmount(3));
-	}
 
 
     // ==================================================
@@ -90,9 +63,9 @@ public class EntityJoust extends EntityCreatureAgeable implements IAnimals, IGro
     @Override
     public void onFirstSpawn() {
         // Random Alpha:
-        MobInfo alphaInfo = ObjectManager.getMobInfo("joustalpha");
+        CreatureInfo alphaInfo = CreatureManager.getInstance().getCreature("joustalpha");
         if(alphaInfo != null) {
-            float alphaChance = (float)alphaInfo.spawnInfo.spawnWeight / Math.max(this.mobInfo.spawnInfo.spawnWeight, 1);
+            float alphaChance = (float)alphaInfo.creatureSpawn.spawnWeight / Math.max(this.creatureInfo.creatureSpawn.spawnWeight, 1);
             if (this.getRNG().nextFloat() <= alphaChance) {
                 EntityJoustAlpha alpha = new EntityJoustAlpha(this.getEntityWorld());
                 alpha.copyLocationAndAnglesFrom(this);

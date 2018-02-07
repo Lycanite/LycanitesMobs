@@ -8,8 +8,7 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.navigate.ArenaNode;
 import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetwork;
 import com.lycanitesmobs.core.entity.navigate.ArenaNodeNetworkGrid;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.elementalmobs.entity.EntityWraith;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,9 +18,7 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -38,7 +35,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDemon {
@@ -92,21 +88,15 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
-        this.defense = 2;
-        this.experience = 1000;
         this.hasAttackSound = false;
         this.justAttackedTime = 30;
         this.hasJumpSound = true;
-        
-        this.setWidth = 20F;
-        this.setHeight = 21F;
         this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
         this.hitAreaWidthScale = 2F;
 
         // Boss:
-        this.boss = true;
         this.damageMax = 25;
         this.damageLimit = 40;
     }
@@ -116,14 +106,14 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.aiRangedAttack = new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setStaminaTime(200).setStaminaDrainRate(3).setRange(90.0F).setChaseTime(0).setCheckSight(false);
+        this.aiRangedAttack = new EntityAIAttackRanged(this).setSpeed(1.0D).setStaminaTime(200).setStaminaDrainRate(3).setRange(90.0F).setChaseTime(0).setCheckSight(false);
         this.tasks.addTask(2, this.aiRangedAttack);
         //this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
         //this.tasks.addTask(7, new EntityAIStayByHome(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
-		this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrite.class, EntityAstaroth.class, EntityCacodemon.class, ObjectManager.getMob("wraith")));
+		this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTrite.class, EntityAstaroth.class, EntityCacodemon.class, CreatureManager.getInstance().getCreature("wraith").entityClass));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
@@ -135,37 +125,6 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         super.entityInit();
         this.dataManager.register(ANIMATION_STATES, (byte) 0);
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5000D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 100D);
-		baseAttributes.put("attackDamage", 18D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.REDSTONE), 1F).setMinAmount(20).setMaxAmount(50));
-        this.drops.add(new MobDrop(new ItemStack(Items.IRON_INGOT), 1F).setMinAmount(20).setMaxAmount(50));
-        this.drops.add(new MobDrop(new ItemStack(Items.GOLD_INGOT), 1F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new MobDrop(new ItemStack(Items.DIAMOND), 1F).setMinAmount(10).setMaxAmount(20));
-        this.drops.add(new MobDrop(new ItemStack(Items.NETHER_STAR), 1F).setMinAmount(1).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("devilstarcharge")), 1F).setMinAmount(10).setMaxAmount(50));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("demoniclightningcharge")), 1F).setMinAmount(10).setMaxAmount(50));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstone")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstonebrick")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demonstonetile")), 1F).setMinAmount(64).setMaxAmount(128));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("demoncrystal")), 1F).setMinAmount(64).setMaxAmount(128));
-        if(ObjectManager.getItem("wraithsigil") != null)
-            this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("wraithsigil")), 1F).setMinAmount(1).setMaxAmount(3));
-	}
 
     // ========== Rendering Distance ==========
     /** Returns a larger bounding box for rendering this large entity. **/
@@ -229,7 +188,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
-                if(MobInfo.bossAntiFlight > 0 && target.posY > this.posY + MobInfo.bossAntiFlight + 1) {
+                if(CreatureManager.getInstance().config.bossAntiFlight > 0 && target.posY > this.posY + CreatureManager.getInstance().config.bossAntiFlight + 1) {
                     for(int i = 0; i < 3; i++) {
                         EntityWraith minion = new EntityWraith(this.getEntityWorld());
                         this.summonMinion(minion, this.getRNG().nextDouble() * 360, 5);
@@ -528,7 +487,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
    	// ==================================================
 	@Override
 	public void onDeath(DamageSource damageSource) {
-        if(!this.getEntityWorld().isRemote && MobInfo.getFromName("trite").mobEnabled) {
+        if(!this.getEntityWorld().isRemote && CreatureManager.getInstance().getCreature("trite").enabled) {
             int j = 6 + this.rand.nextInt(20) + (getEntityWorld().getDifficulty().getDifficultyId() * 4);
             for(int k = 0; k < j; ++k) {
                 float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;
@@ -608,7 +567,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         }
         if(entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)entity;
-            if (!player.capabilities.isCreativeMode && player.posY > this.posY + MobInfo.bossAntiFlight) {
+            if (!player.capabilities.isCreativeMode && player.posY > this.posY + CreatureManager.getInstance().config.bossAntiFlight) {
                 return false;
             }
         }

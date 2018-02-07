@@ -22,7 +22,7 @@
 			],
 			"entityTypesListType": "whitelist",
 			"entityIds": [
-				"shadowmobs.geist"
+				"shadowmobs:geist"
 			],
 			"entityIdsListType": "blacklist"
 		}
@@ -37,7 +37,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.geist"
+			"mobId": "shadowmobs:geist"
 		}
 	]
 }

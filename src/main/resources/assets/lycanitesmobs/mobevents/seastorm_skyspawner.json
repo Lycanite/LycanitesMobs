@@ -31,11 +31,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "saltwatermobs.raiko",
+			"mobId": "saltwatermobs:raiko",
 			"weight": 8
 		},
 		{
-			"mobId": "saltwatermobs.quetzodracl",
+			"mobId": "saltwatermobs:quetzodracl",
 			"weight": 1
 		}
 	]

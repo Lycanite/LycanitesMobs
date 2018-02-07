@@ -442,10 +442,9 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     	boolean attackSuccess = false;
     	float damage = this.getDamage(target);
 		float damageInit = damage;
-		double pierceValue = 5.0D;
+		double pierceDamage = 1;
 		if(this.getThrower() instanceof EntityCreatureBase)
-			pierceValue = ((EntityCreatureBase)this.getThrower()).getPierceValue();
-        float pierceDamage = 1 + (float)Math.floor(damage / pierceValue);
+			pierceDamage = ((EntityCreatureBase)this.getThrower()).creatureStats.getPierce();
         
         // Prevent Knockback:
         double targetKnockbackResistance = 0;
@@ -465,7 +464,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
                 attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), damage);
             else {
                 int hurtResistantTimeBefore = target.hurtResistantTime;
-                target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), pierceDamage);
+                target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor()).setDamageIsAbsolute(), (float)pierceDamage);
                 target.hurtResistantTime = hurtResistantTimeBefore;
                 damage -= pierceDamage;
                 attackSuccess = target.attackEntityFrom(creatureThrower.getDamageSource((EntityDamageSource)DamageSource.causeThrownDamage(this, this.getThrower())), damage);
@@ -476,7 +475,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
                 attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
             else {
                 int hurtResistantTimeBefore = target.hurtResistantTime;
-                target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
+                target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), (float)pierceDamage);
                 target.hurtResistantTime = hurtResistantTimeBefore;
                 damage -= pierceDamage;
                 attackSuccess = target.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), damage);

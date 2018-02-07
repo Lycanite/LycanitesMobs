@@ -1,26 +1,21 @@
 package com.lycanitesmobs.plainsmobs.entity;
 
-import com.lycanitesmobs.api.IGroupPrey;
-import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.api.IGroupPrey;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityZoataur extends EntityCreatureTameable implements IGroupPredator, IMob {
     
@@ -32,17 +27,12 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 4;
-        this.experience = 7;
         this.spawnsUnderground = true;
         this.hasAttackSound = true;
         this.spreadFire = true;
 
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
-        
-        this.setWidth = 1.2F;
-        this.setHeight = 2.5F;
         this.setupMob();
         
         // Stats:
@@ -62,6 +52,7 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -69,31 +60,11 @@ public class EntityZoataur extends EntityCreatureTameable implements IGroupPreda
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class).setPackHuntingScale(1, 1));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
             this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
         }
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 4D);
-        baseAttributes.put("attackSpeed", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 1F).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 0.5F).setMaxAmount(3));
-	}
 
 
     // ==================================================

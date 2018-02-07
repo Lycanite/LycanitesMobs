@@ -1,7 +1,6 @@
 package com.lycanitesmobs.core.item.equipment.features;
 
 import com.google.gson.JsonObject;
-import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import net.minecraft.item.ItemStack;
 
 public class EquipmentFeature {

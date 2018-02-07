@@ -46,6 +46,7 @@ public abstract class Submod {
 
 	public void postInit(FMLPostInitializationEvent event) {
 		ObjectManager.setCurrentGroup(this.group);
+		CreatureManager.getInstance().registerAll(this.group);
 		if(CreatureManager.getInstance().spawnConfig.controlVanillaSpawns) {
 			this.editVanillaSpawns();
 		}

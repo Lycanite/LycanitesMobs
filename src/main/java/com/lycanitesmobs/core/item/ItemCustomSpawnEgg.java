@@ -2,9 +2,10 @@ package com.lycanitesmobs.core.item;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.EntityListCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.material.Material;
@@ -19,7 +20,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -88,12 +88,12 @@ public class ItemCustomSpawnEgg extends ItemBase {
     public String getDescription(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         ResourceLocation entityID = this.getEntityIdFromItem(stack);
         Class entityClass = ObjectManager.entityLists.get(this.group.filename).getClassFromID(entityID);
-        MobInfo mobInfo = MobInfo.mobClassToInfo.get(entityClass);
-        if(mobInfo == null) {
+        CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(entityClass);
+        if(creatureInfo == null) {
             LycanitesMobs.printWarning("Mob Spawn Egg", "Unable to get a MobInfo entry for id: " + entityID + " class: " + entityClass);
             return "Unable to get a MobInfo entry for id: " + entityID + " class: " + entityClass;
         }
-        return mobInfo.getDescription();
+        return creatureInfo.getDescription();
     }
     
     

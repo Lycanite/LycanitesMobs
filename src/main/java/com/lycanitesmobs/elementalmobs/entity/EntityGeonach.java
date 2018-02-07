@@ -6,7 +6,6 @@ import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,21 +15,15 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-
 public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock, IFusable {
-	
-	private EntityAIAttackMelee meleeAttackAI;
 	
 	public int geonachBlockBreakRadius = 0;
 	public float fireDamageAbsorbed = 0;
@@ -43,14 +36,9 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 3;
-        this.experience = 5;
         this.hasAttackSound = true;
         
-        this.geonachBlockBreakRadius = ConfigBase.getConfig(this.group, "general").getInt("Features", "Rare Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the Celestial Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead. Note that this is only for the extremely rare Geonach.");
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.6F;
+        this.geonachBlockBreakRadius = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Rare Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the Celestial Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead. Note that this is only for the extremely rare Geonach.");
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -64,8 +52,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.meleeAttackAI = new EntityAIAttackMelee(this).setRate(20).setLongMemory(true);
-        this.tasks.addTask(2, meleeAttackAI);
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -81,30 +68,6 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
 		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.STONE), 1F).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.75F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.QUARTZ), 0.75F).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.1F).setMaxAmount(1));
-		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("cleansingcrystal")), 0.01F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstonemountain")), 1F).setMaxAmount(1).setSubspecies(3));
-		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("cleansingcrystal")), 0.1F).setMaxAmount(3).setSubspecies(3));
-	}
 
     // ========== Set Size ==========
     @Override
@@ -202,13 +165,6 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         	else
         		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(7), 0));
         }
-        
-        // Update Phase:
-        this.nextAttackPhase();
-        if(this.getAttackPhase() == 2)
-        	this.meleeAttackAI.setRate(60);
-        else
-        	this.meleeAttackAI.setRate(10);
 
         // Silverfish Extermination:
         if(target instanceof EntitySilverfish) {
@@ -217,6 +173,20 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         
         return true;
     }
+
+	@Override
+	public int getMeleeCooldown() {
+		if(this.getAttackPhase() == 2)
+			return super.getMeleeCooldown() * 3;
+		return super.getMeleeCooldown();
+	}
+
+	@Override
+	public int getRangedCooldown() {
+		if(this.getAttackPhase() == 2)
+			return super.getRangedCooldown() * 3;
+		return super.getRangedCooldown();
+	}
     
     
     // ==================================================

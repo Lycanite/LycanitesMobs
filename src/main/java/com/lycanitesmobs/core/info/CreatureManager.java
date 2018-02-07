@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.CreatureStats;
 import com.lycanitesmobs.core.spawner.SpawnerMobRegistry;
 
 import java.util.ArrayList;
@@ -25,9 +26,6 @@ public class CreatureManager extends JSONLoader {
 
 	/** A map of all creatures by class. **/
 	public Map<Class, CreatureInfo> creatureClassMap = new HashMap<>();
-
-	/** The map of all creatures by name to be used when reloading json. **/
-	public Map<String, CreatureInfo> oldCreatures = new HashMap<>();
 
 	/** A list of mod groups that have loaded with this Creature Manager. **/
 	public List<GroupInfo> loadedGroups = new ArrayList<>();
@@ -65,8 +63,58 @@ public class CreatureManager extends JSONLoader {
 
 	/** Called during early start up, loads all global configs into this manager. **/
 	public void loadConfig() {
-		this.config.loadConfig(ConfigBase.getConfig(LycanitesMobs.group, "general"));
+		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
+		this.config.loadConfig(config);
 		this.spawnConfig.loadConfig(ConfigBase.getConfig(LycanitesMobs.group, "spawning"));
+
+		// Difficulty:
+		String[] difficultyNames = new String[] {"easy", "normal", "hard"};
+		double[] difficultyDefaults = new double[] {0.8D, 1.0D, 1.1D};
+		difficultyMultipliers = new HashMap<>();
+		config.setCategoryComment("Difficulty Multipliers", "Here you can scale the stats of every mob on a per difficulty basis. Note that on easy, speed is kept at 1.0 by default as 0.5 makes them stupidly slow.");
+		int difficultyIndex = 0;
+		for(String difficultyName : difficultyNames) {
+			for(String statName : CreatureStats.STAT_NAMES) {
+				double defaultValue = difficultyDefaults[difficultyIndex];
+				if("easy".equalsIgnoreCase(difficultyName) && "speed".equalsIgnoreCase(statName))
+					defaultValue = 1.0D;
+				if("hard".equalsIgnoreCase(difficultyName) && ("attackSpeed".equalsIgnoreCase(statName) || "rangedSpeed".equalsIgnoreCase(statName)))
+					defaultValue = 1.5D;
+				if("armor".equalsIgnoreCase(statName))
+					defaultValue = 1.0D;
+				if("sight".equalsIgnoreCase(statName))
+					defaultValue = 1.0D;
+				difficultyMultipliers.put((difficultyName + "-" + statName).toUpperCase(), config.getDouble("Difficulty Multipliers", difficultyName + " " + statName, defaultValue));
+			}
+			difficultyIndex++;
+		}
+
+		// Level:
+		config.setCategoryComment("Mob Level Multipliers", "Normally mobs are level 1, but Spawners can increase their level. Here you can adjust the percentage of each stat that is added per extra level. So by default at level 2 a mobs health is increased by 10%, at level 3 20% and so on.");
+		for(String statName : CreatureStats.STAT_NAMES) {
+			double levelValue = 0.01D;
+			if("health".equalsIgnoreCase(statName))
+				levelValue = 0.1D;
+			if("defense".equalsIgnoreCase(statName))
+				levelValue = 0.01D;
+			if("armor".equalsIgnoreCase(statName))
+				levelValue = 0D;
+			if("speed".equalsIgnoreCase(statName))
+				levelValue = 0.01D;
+			if("damage".equalsIgnoreCase(statName))
+				levelValue = 0.02D;
+			if("attackSpeed".equalsIgnoreCase(statName))
+				levelValue = 0.01D;
+			if("rangedSpeed".equalsIgnoreCase(statName))
+				levelValue = 0.01D;
+			if("effect".equalsIgnoreCase(statName))
+				levelValue = 0.02D;
+			if("pierce".equalsIgnoreCase(statName))
+				levelValue = 0.02D;
+			if("sight".equalsIgnoreCase(statName))
+				levelValue = 0D;
+			levelMultipliers.put(statName.toUpperCase(), config.getDouble("Mob Level Multipliers", statName, levelValue));
+		}
 	}
 
 
@@ -76,11 +124,7 @@ public class CreatureManager extends JSONLoader {
 			if(!this.loadedGroups.contains(groupInfo)) {
 				this.loadedGroups.add(groupInfo);
 			}
-			this.oldCreatures = new HashMap<>(this.creatures);
-			this.creatures.clear();
-			this.creatureClassMap.clear();
 			this.loadAllJson(groupInfo, "Creature", "creatures", "name", false);
-			this.oldCreatures.clear();
 			LycanitesMobs.printDebug("Creature", "Complete! " + this.creatures.size() + " JSON Creature Info Loaded In Total.");
 		}
 		catch(Exception e) {
@@ -94,14 +138,13 @@ public class CreatureManager extends JSONLoader {
 		CreatureInfo creatureInfo = new CreatureInfo(groupInfo);
 		creatureInfo.loadFromJSON(json);
 		if(creatureInfo.name == null) {
-			LycanitesMobs.printWarning("", "Unable to load " + name + " json due to missing name.");
+			LycanitesMobs.printWarning("", "[Creature] Unable to load " + name + " json due to missing name.");
 			return;
 		}
 
-
 		// Already Exists:
-		if(this.oldCreatures.containsKey(creatureInfo.name)) {
-			creatureInfo = this.oldCreatures.get(creatureInfo.name);
+		if(this.creatures.containsKey(creatureInfo.name)) {
+			creatureInfo = this.creatures.get(creatureInfo.name);
 			creatureInfo.loadFromJSON(json);
 		}
 
@@ -114,6 +157,7 @@ public class CreatureManager extends JSONLoader {
 	 * Initialises all creatures. Called after all creatures are loaded.
 	 */
 	public void initAll() {
+		LycanitesMobs.printDebug("Creature", "Initialising all " + this.creatures.size() + " creatures...");
 		SpawnerMobRegistry.SPAWNER_MOB_REGISTRIES.clear();
 		for(CreatureInfo creature : this.creatures.values()) {
 			creature.init();
@@ -124,8 +168,11 @@ public class CreatureManager extends JSONLoader {
 	/**
 	 * Registers all creatures. Can only be called once and during post init.
 	 */
-	public void registerAll() {
+	public void registerAll(GroupInfo group) {
+		LycanitesMobs.printDebug("Creature", "Registering " + this.creatures.size() + " creatures from the group " + group.name + "...");
 		for(CreatureInfo creature : this.creatures.values()) {
+			if(creature.group != group)
+				continue;
 			creature.register();
 		}
 	}

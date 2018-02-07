@@ -8,15 +8,16 @@ import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorBlizzard;
 import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorFrostweb;
 import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorIcefire;
 import com.lycanitesmobs.arcticmobs.dispenser.DispenserBehaviorTundra;
-import com.lycanitesmobs.arcticmobs.entity.*;
+import com.lycanitesmobs.arcticmobs.entity.EntityBlizzard;
+import com.lycanitesmobs.arcticmobs.entity.EntityFrostweb;
+import com.lycanitesmobs.arcticmobs.entity.EntityIcefireball;
+import com.lycanitesmobs.arcticmobs.entity.EntityTundra;
 import com.lycanitesmobs.arcticmobs.item.*;
 import com.lycanitesmobs.arcticmobs.worldgen.WorldGeneratorArctic;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import net.minecraft.block.BlockDispenser;
@@ -143,49 +144,6 @@ public class ArcticMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("arcticspawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
-
-		newMob = new MobInfo(group, "frostweaver", EntityFrostweaver.class, 0xAADDFF, 0x226699)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("light", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "yeti", EntityYeti.class, 0xEEEEFF, 0x000099)
-				.setPeaceful(true).setSummonCost(2).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
-				.setSpawnWeight(10).setAreaLimit(5).setGroupLimits(1, 4).setLightDark(true, false).setDungeonWeight(0);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "wendigo", EntityWendigo.class, 0xCCCCFF, 0x0055FF)
-				.setPeaceful(false).setSummonCost(8).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("keppel", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, OOZE").setBlockCost(16)
-				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "arix", EntityArix.class, 0xDDDDFF, 0x9999FF)
-				.setPeaceful(false).setTameable(true).setSummonCost(2).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("SKY, OOZE").setBlockCost(16)
-				.setSpawnWeight(8).setAreaLimit(3).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "serpix", EntitySerpix.class, 0xCCEEFF, 0x0000BB)
-				.setPeaceful(false).setTameable(true).setSummonCost(8).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST, OOZE").setBlockCost(32)
-				.setSpawnWeight(4).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "maug", EntityMaug.class, 0xc9cccd, 0x52504e)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("russet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(4).setAreaLimit(5).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
 
 		// Projectiles
 		ObjectManager.addProjectile("frostweb", EntityFrostweb.class, ObjectManager.getItem("frostwebcharge"), new DispenserBehaviorFrostweb());

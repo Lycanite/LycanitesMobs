@@ -1,12 +1,10 @@
 package com.lycanitesmobs.desertmobs.entity;
 
-import com.lycanitesmobs.api.IGroupPrey;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupPredator;
+import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,13 +14,10 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals, IGroupAlpha {
 	
@@ -34,12 +29,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 5;
         this.hasAttackSound = true;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 2.2F;
         this.attackTime = 10;
         this.setupMob();
     }
@@ -49,7 +39,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(10).setLongMemory(false));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -62,24 +52,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPredator.class));
         this.targetTasks.addTask(4, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("joustmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("joustmeatcooked"))).setMinAmount(3).setMaxAmount(7));
-	}
 	
 	
 	// ==================================================
@@ -120,14 +92,17 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
    	// ==================================================
     @Override
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
-    	if(type.equals("cactus")) return false;
+    	if(type.equals("cactus"))
+    		return false;
     	return super.isDamageTypeApplicable(type, source, damage);
     }
     
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
+        if(potionEffect.getPotion() == MobEffects.HUNGER)
+        	return false;
+        if(potionEffect.getPotion() == MobEffects.WEAKNESS)
+        	return false;
         return super.isPotionApplicable(potionEffect);
     }
     
@@ -137,7 +112,7 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
     // ==================================================
     // ========== Create Child ==========
 	@Override
-	public EntityCreatureAgeable createChild(EntityCreatureAgeable partener) {
+	public EntityCreatureAgeable createChild(EntityCreatureAgeable partner) {
 		return new EntityJoust(this.getEntityWorld());
 	}
 }

@@ -26,6 +26,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
@@ -66,7 +68,9 @@ import java.util.*;
 
 public abstract class EntityCreatureBase extends EntityLiving {
     public static Boolean ENABLE_HITAREAS = false;
-    
+	public static final IAttribute DEFENSE = (new RangedAttribute(null, "generic.defense", 4.0D, 0.0D, 1024.0D)).setShouldWatch(true);
+	public static final IAttribute RANGED_SPEED = (new RangedAttribute(null, "generic.rangedSpeed", 4.0D, 0.0D, 1024.0D)).setShouldWatch(true);
+
 	// Core:
 	/** The Creature Info used by this creature. **/
 	public CreatureInfo creatureInfo;
@@ -116,13 +120,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// Stats:
 	/** The level of this mob, higher levels increase the stat multipliers by a small amount. **/
 	protected int level = 1;
-	/** The defense rating of this mob. This is how much damage it can withstand.
-	 * For example, a damage of 4 with a defense of 1 will result in a new damage of 3.
-	 * Defense stat multipliers are applied to this value too, nor whole results are rounded.
-	**/
-	public int defense = 0;
-    /** How much experience this mob drops (overridden to 0 if it is a minion). **/
-	public int experience = 5;
     /** Which attack phase this mob is on. This will be replaced with a better system for boss mobs. **/
 	public byte attackPhase = 0;
     /** How many attack phases this mob has. This will be replaced with a better system for boss mobs. **/
@@ -149,8 +146,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public float damageLimit = 0;
 	
 	// Abilities:
-    /** If true, this mob is to be treated as a boss. Boss mobs gain some defensive abilities. **/
-    public boolean boss = false;
     /** The battle range of this boss mob, anything out of this range cannot harm the boss. This will also affect other things related to the boss. **/
     public int bossRange = 60;
 	/** Whether or not this mob is hostile by default. Use isHostile() when check if this mob is hostile. **/
@@ -305,9 +300,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The inventory object of the creature, this is used for managing and using the creature's inventory. **/
 	public InventoryCreature inventory;
     /** A collection of drops which are used when randomly drop items on death. **/
-    public List<MobDrop> drops = new ArrayList<>();
+    public List<ItemDrop> drops = new ArrayList<>();
 	/** A collection of drops to be stored in NBT data. **/
-	public List<MobDrop> savedDrops = new ArrayList<>();
+	public List<ItemDrop> savedDrops = new ArrayList<>();
     
     // Override AI:
     public EntityAITargetAttack aiTargetPlayer = new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class);
@@ -320,11 +315,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public EntityCreatureBase(World world) {
         super(world);
 
-        // Info:
-		this.creatureInfo = CreatureManager.getInstance().getCreature(this.getClass());
-		this.creatureStats = new CreatureStats(this);
-
-        // Size: TODO Use CreatureInfo Width and Height
+        // Size:
+		this.setWidth = (float)this.creatureInfo.width;
+		this.setDepth = (float)this.creatureInfo.width;
+		this.setHeight = (float)this.creatureInfo.height;
         this.width = this.setWidth;
         this.height = this.setHeight;
 
@@ -361,6 +355,48 @@ public abstract class EntityCreatureBase extends EntityLiving {
             groundNavigator.setCanSwim(true);
         }
     }
+
+	// ========== Attributes and Stats ==========
+	/** Creates and sets all the entity attributes with default values. **/
+	@Override
+	protected void applyEntityAttributes() {
+		this.creatureInfo = CreatureManager.getInstance().getCreature(this.getClass());
+		this.creatureStats = new CreatureStats(this);
+		this.extraMobBehaviour = new ExtraMobBehaviour(this);
+		this.directNavigator = new DirectNavigator(this);
+
+		super.applyEntityAttributes();
+		this.getAttributeMap().registerAttribute(DEFENSE);
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+		this.getAttributeMap().registerAttribute(RANGED_SPEED);
+
+		this.applyStats();
+	}
+
+	/**
+	 * Loads this entity's stats.
+	 */
+	public void applyStats() {
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.creatureStats.getHealth());
+		this.getEntityAttribute(DEFENSE).setBaseValue(this.creatureStats.getDefense());
+		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(this.creatureStats.getArmor());
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.creatureStats.getSpeed());
+		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(this.creatureStats.getKnockbackResistance());
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.creatureStats.getSight());
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.creatureStats.getDamage());
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(this.creatureStats.getAttackSpeed());
+		this.getEntityAttribute(RANGED_SPEED).setBaseValue(this.creatureStats.getRangedSpeed());
+	}
+
+	/**
+	 * Called when this entity needs to reload its stats. Should be called when the subspecies, level, etc of this creature changes.
+	 */
+	public void refreshStats() {
+		this.applyStats();
+		this.setHealth((float)this.creatureStats.getHealth());
+		this.refreshBossHealthName();
+	}
     
     // ========== Setup ==========
     /** This should be called by the specific mob entity and set the default starting values. **/
@@ -374,15 +410,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         // Stats:
         this.stepHeight = 0.5F;
-        this.experienceValue = this.experience;
+        this.experienceValue = this.creatureInfo.experience;
         this.inventory = new InventoryCreature(this.getName(), this);
-		this.experienceValue = this.experience;
 
         // Drops:
         this.loadItemDrops();
 		ItemEquipmentPart itemEquipmentPart = ItemEquipmentPart.MOB_PART_DROPS.get(this.creatureInfo.getEntityId());
 		if(itemEquipmentPart != null) {
-			this.drops.add(new MobDrop(new ItemStack(itemEquipmentPart), itemEquipmentPart.dropChance).setMaxAmount(1));
+			this.drops.add(new ItemDrop(new ItemStack(itemEquipmentPart), itemEquipmentPart.dropChance).setMaxAmount(1));
 		}
         
         // Fire Immunity:
@@ -392,38 +427,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Item Drops ==========
     /** Loads all default item drops, will be ignored if the Enable Default Drops config setting for this mob is set to false, should be overridden to add drops. **/
     public void loadItemDrops() {
-		for(MobDrop drop : this.creatureInfo.drops) {
-			MobDrop newDrop = new MobDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);
+		for(ItemDrop drop : this.creatureInfo.drops) {
+			ItemDrop newDrop = new ItemDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);
 			this.drops.add (newDrop);
 		}
 	}
 
     /** Adds a saved item drop to this creature instance where it will be read/written from/to NBT Data. **/
-    public void addSavedItemDrop(MobDrop mobDrop) {
-    	this.drops.add(mobDrop);
-    	this.savedDrops.add(mobDrop);
+    public void addSavedItemDrop(ItemDrop itemDrop) {
+    	this.drops.add(itemDrop);
+    	this.savedDrops.add(itemDrop);
 	}
-    
-    // ========== Attributes ==========
-    /** Creates and sets all the entity attributes with default values. **/
-    @Override
-    protected void applyEntityAttributes() {
-		this.extraMobBehaviour = new ExtraMobBehaviour(this);
-		this.directNavigator = new DirectNavigator(this);
-		super.applyEntityAttributes();
 
-		// Register Attributes:
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.creatureStats.getHealth());
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(this.creatureStats.getArmor());
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(this.creatureStats.getSpeed());
-		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(this.creatureStats.getKnockbackResistance());
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.creatureStats.getSight());
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(this.creatureStats.getDamage());
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).setBaseValue(4 * this.creatureStats.getHaste());
-    }
 	
 	// ========== Init ==========
     /** Initiates the entity setting all the values to be watched by the datawatcher. **/
@@ -748,7 +763,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return true;
     	if(!this.creatureInfo.creatureSpawn.despawnNatural)
     		return false;
-        if(this.boss || this.getSubspeciesIndex() >= 3)
+        if(this.creatureInfo.boss || this.getSubspeciesIndex() >= 3)
             return false;
     	if(this.isPersistant() || this.getLeashed() || (this.hasCustomName() && "".equals(this.spawnEventType)))
     		return false;
@@ -862,7 +877,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Boss ==========
     /** Returns whether or not this mob is a boss. **/
     public boolean isBoss() {
-        return this.boss;
+        return this.creatureInfo.boss;
     }
 
     @Override
@@ -1012,7 +1027,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 
 	// ==================================================
-	//            Stat Multipliers and Boosts
+	//                       Stats
 	// ==================================================
 	/** Returns the level of this mob, higher levels have higher stats. **/
 	public int getLevel() {
@@ -1043,8 +1058,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	/** Sets the level of this mob, higher levels have higher stats. **/
 	public void setLevel(int level) {
 		this.level = level;
-		this.refreshHealth();
 		this.dataManager.set(LEVEL, level);
+		this.refreshStats();
 	}
 
 	/** Increases the level of this mob, higher levels have higher stats. **/
@@ -1052,44 +1067,23 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		this.setLevel(this.level + level);
 	}
 
-    /** Returns the shared multiplier for all stats based on difficulty and mob level. **/
-	public double getStatMultiplier(String stat) {
-        if(this.getEntityWorld() == null || this.getEntityWorld().getDifficulty() == null)
-            return CreatureManager.getInstance().difficultyMultipliers.get("NORMAL" + "-" + stat.toUpperCase());
-		EnumDifficulty difficulty = this.getEntityWorld().getDifficulty();
-		String difficultyName = "Easy";
-		if(difficulty.getDifficultyId() >= 3)
-			difficultyName = "Hard";
-		else if(difficulty == EnumDifficulty.NORMAL)
-			difficultyName = "Normal";
-		double difficultyMultiplier = CreatureManager.getInstance().difficultyMultipliers.get(difficultyName.toUpperCase() + "-" + stat.toUpperCase());
-		double subspeciesMultiplier = 1;
-		if(this.getSubspeciesIndex() > 0 && this.getOwner() == null) {
-			if(Subspecies.statMultipliers.containsKey(this.getSubspecies().type.toUpperCase() + "-" + stat.toUpperCase()))
-			subspeciesMultiplier = Subspecies.statMultipliers.get(this.getSubspecies().type.toUpperCase() + "-" + stat.toUpperCase());
-		}
-		double levelMultiplier = 1 + (((double)this.getLevel() - 1) * CreatureManager.getInstance().levelMultipliers.get(stat.toUpperCase()));
-		return difficultyMultiplier * subspeciesMultiplier * levelMultiplier;
-	}
 
-    // ========= Health ==========
+    // ========= Attack Speeds ==========
 	/**
-	 * Reevaluates this entity's max health based on stats and then resets this entity's health to max
+	 * Returns the cooldown time in ticks between melee attacks.
+	 * @return Melee attack cooldown ticks.
 	 */
-	public void refreshHealth() {
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.creatureStats.getHealth());
-		this.setHealth((float)this.creatureStats.getHealth());
+	public int getMeleeCooldown() {
+		return Math.round((float)(1.0D / this.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).getAttributeValue() * 20.0D));
 	}
 
-    // ========= Haste ==========
-    /** When given a base delay (in ticks) this will return the scaled delay with difficulty and other modifiers taken into account
-     * ticks - The base duration in ticks between actions (such as between ranged attacks).
-    **/
-    public int getHaste(int ticks) {
-    	double ticksScale = 1 / this.creatureStats.getHaste();
-    	ticks = Math.round((float)ticks * (float)ticksScale);
-		return Math.max(0, ticks);
-    }
+	/**
+	 * Returns the cooldown time in ticks between ranged attacks.
+	 * @return Ranged attack cooldown ticks.
+	 */
+	public int getRangedCooldown() {
+		return Math.round((float)(1.0D / this.getEntityAttribute(RANGED_SPEED).getAttributeValue() * 20.0D));
+	}
 
     // ========= Effect ==========
     /** When given a base time (in seconds) this will return the scaled time with difficulty and other modifiers taken into account
@@ -1098,27 +1092,47 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public int getEffectDuration(int seconds) {
 		return Math.round(((float)seconds * (float)(this.creatureStats.getEffect())) * 20);
     }
-    /** When given a base effect strngth value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account
+    /** When given a base effect strength value such as a life drain amount, this will return the scaled value with difficulty and other modifiers taken into account
      * value - The base effect strength.
      **/
-    public float getEffectStrength(float value) {
+    public int getEffectStrength(float value) {
         return Math.round((value * (float)(this.creatureStats.getEffect())));
     }
 
-    // ========= Pierce ==========
-    /** Returns the base armor piercing value. This should really be left unchanged. **/
-    public double getPierceBase() {
-    	return 5;
-    }
 
-    /** Returns the calculated armor piercing value. Cannot be less than 1 where all damage will pierce. **/
-    public double getPierceValue() {
-        if(this.creatureStats.getPierce() == 0)
-            return 100;
-    	double value = this.getPierceBase();
-    	value *= 1 / this.creatureStats.getPierce();
-    	return Math.max(1.0D, value);
-    }
+	// ==================================================
+	//                    Subspecies
+	// ==================================================
+	/** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
+	public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
+		this.subspecies = this.creatureInfo.getSubspecies(subspeciesIndex);
+		float scaledExp = this.creatureInfo.experience;
+		if(subspeciesIndex == 1 || subspeciesIndex == 2)
+			scaledExp = Math.round((float)(this.creatureInfo.experience * Subspecies.uncommonExperienceScale));
+		else if(subspeciesIndex >= 3)
+			scaledExp = Math.round((float)(this.creatureInfo.experience * Subspecies.rareExperienceScale));
+		this.experienceValue = Math.round(scaledExp);
+		if(subspeciesIndex == 3) {
+			this.damageLimit = 40;
+		}
+
+		this.refreshStats();
+	}
+
+	/** Gets the subspecies of this mob, will return null if this is a base species mob. **/
+	public Subspecies getSubspecies() {
+		return this.subspecies;
+	}
+
+	/** Gets the subspecies index of this mob.
+	 * 0 = Base Subspecies
+	 * 1/2 = Uncommon Species
+	 * 3+ = Rare Species
+	 * Most mobs have 2 uncommon subspecies, some have rare subspecies.
+	 * **/
+	public int getSubspeciesIndex() {
+		return this.getSubspecies() != null ? this.getSubspecies().index : 0;
+	}
 
 
     // ==================================================
@@ -1141,42 +1155,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.battlePhase = phase;
         this.refreshBossHealthName();
         this.playPhaseSound();
-    }
-
-
-    // ==================================================
-  	//                    Subspecies
-  	// ==================================================
-    /** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
-    public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
-    	this.subspecies = this.creatureInfo.getSubspecies(subspeciesIndex);
-        float scaledExp = this.experience;
-        if(subspeciesIndex == 1 || subspeciesIndex == 2)
-            scaledExp = Math.round((float)(this.experience * Subspecies.uncommonExperienceScale));
-        else if(subspeciesIndex >= 3)
-            scaledExp = Math.round((float)(this.experience * Subspecies.rareExperienceScale));
-        this.experienceValue = Math.round(scaledExp);
-    	if(subspeciesIndex == 3) {
-			this.damageLimit = 40;
-		}
-
-		this.refreshHealth();
-        this.refreshBossHealthName();
-    }
-
-    /** Gets the subspecies of this mob, will return null if this is a base species mob. **/
-    public Subspecies getSubspecies() {
-    	return this.subspecies;
-    }
-
-    /** Gets the subspecies index of this mob.
-     * 0 = Base Subspecies
-     * 1/2 = Uncommon Species
-     * 3+ = Rare Species
-     * Most mobs have 2 uncommon subspecies, some have rare subspecies.
-     * **/
-    public int getSubspeciesIndex() {
-    	return this.getSubspecies() != null ? this.getSubspecies().index : 0;
     }
 
 
@@ -1718,7 +1696,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 targetInWater = this.getMasterTarget().isInWater();
             if(!targetInWater) {
                 IBlockState blockState = this.getEntityWorld().getBlockState(this.getPosition().up());
-                if (blockState == null || blockState.getBlock().isAir(blockState, this.getEntityWorld(), this.getPosition().up())) {
+                if (blockState.getBlock().isAir(blockState, this.getEntityWorld(), this.getPosition().up())) {
                     return false;
                 }
             }
@@ -1864,7 +1842,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     protected void updateLeashedState() {
         super.updateLeashedState();
-        if(this.getLeashed() && this.getLeashedToEntity() != null && this.getLeashedToEntity().getEntityWorld() == this.getEntityWorld()) {
+        if(this.getLeashed() && this.getLeashedToEntity().getEntityWorld() == this.getEntityWorld()) {
             Entity entity = this.getLeashedToEntity();
             this.setHome((int)entity.posX, (int)entity.posY, (int)entity.posZ, 5);
             float distance = this.getDistanceToEntity(entity);
@@ -1938,7 +1916,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Used when setting the movement speed of this mob, called by AI classes before movement and is given a speed modifier, a local speed modifier is also applied here. **/
     @Override
     public void setAIMoveSpeed(float speed) {
-        super.setAIMoveSpeed((speed * this.getAISpeedModifier()) * (float)this.creatureStats.getSpeed());
+        super.setAIMoveSpeed(speed * this.getAISpeedModifier());
     }
     
     // ========== Movement Speed Modifier ==========
@@ -2114,10 +2092,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(y <= 0)
             return 0;
         IBlockState startBlock = this.getEntityWorld().getBlockState(pos);
-        if(startBlock == null || startBlock.getBlock().isAir(startBlock, this.getEntityWorld(), pos)) {
+        if(startBlock.getBlock().isAir(startBlock, this.getEntityWorld(), pos)) {
             for(int possibleGroundY = Math.max(0, y - 1); possibleGroundY >= 0; possibleGroundY--) {
                 IBlockState possibleGroundBlock = this.getEntityWorld().getBlockState(new BlockPos(pos.getX(), possibleGroundY, pos.getZ()));
-                if(possibleGroundBlock == null || possibleGroundBlock.getBlock().isAir(possibleGroundBlock, this.getEntityWorld(), new BlockPos(pos.getX(), possibleGroundY, pos.getZ())))
+                if(possibleGroundBlock.getBlock().isAir(possibleGroundBlock, this.getEntityWorld(), new BlockPos(pos.getX(), possibleGroundY, pos.getZ())))
                     y = possibleGroundY;
                 else
                     break;
@@ -2137,10 +2115,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return yMax;
 
         IBlockState startBlock = this.getEntityWorld().getBlockState(pos);
-        if(startBlock == null || startBlock.getBlock().isAir(startBlock, this.getEntityWorld(), pos)) {
+        if(startBlock.getBlock().isAir(startBlock, this.getEntityWorld(), pos)) {
             for(int possibleAirY = Math.min(yMax, y + 1); possibleAirY <= yMax; possibleAirY++) {
                 IBlockState possibleGroundBlock = this.getEntityWorld().getBlockState(new BlockPos(pos.getX(), possibleAirY, pos.getZ()));
-                if(possibleGroundBlock == null || possibleGroundBlock.getBlock().isAir(possibleGroundBlock, this.getEntityWorld(), new BlockPos(pos.getX(), possibleAirY, pos.getZ())))
+                if(possibleGroundBlock.getBlock().isAir(possibleGroundBlock, this.getEntityWorld(), new BlockPos(pos.getX(), possibleAirY, pos.getZ())))
                     y = possibleAirY;
                 else
                     break;
@@ -2163,13 +2141,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
         int yLimit = 24;
         yMax = Math.min(yMax, y + yLimit);
         IBlockState startBlock = this.getEntityWorld().getBlockState(pos);
-        if(startBlock != null && startBlock.getMaterial() == Material.WATER) {
+        if(startBlock.getMaterial() == Material.WATER) {
             int possibleSurfaceY = y;
             for(possibleSurfaceY += 1; possibleSurfaceY <= yMax; possibleSurfaceY++) {
                 IBlockState possibleSurfaceBlock = this.getEntityWorld().getBlockState(new BlockPos(pos.getX(), possibleSurfaceY, pos.getZ()));
-                if(possibleSurfaceBlock != null && possibleSurfaceBlock.getBlock().isAir(possibleSurfaceBlock, this.getEntityWorld(), new BlockPos(pos.getX(), possibleSurfaceY, pos.getZ())))
+                if(possibleSurfaceBlock.getBlock().isAir(possibleSurfaceBlock, this.getEntityWorld(), new BlockPos(pos.getX(), possibleSurfaceY, pos.getZ())))
                     return possibleSurfaceY;
-                else if(possibleSurfaceBlock == null || possibleSurfaceBlock.getMaterial() != Material.WATER)
+                else if(possibleSurfaceBlock.getMaterial() != Material.WATER)
                     return possibleSurfaceY - 1;
             }
             return Math.max(possibleSurfaceY - 1, y);
@@ -2188,7 +2166,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         height *= (float)this.sizeScale;
         super.setSize(width, height);
         this.hitAreas = null;
-        if(!this.getEntityWorld().isRemote && this.getNavigator() != null && this.getNavigator().getNodeProcessor() != null && this.getNavigator().getNodeProcessor() instanceof ICreatureNodeProcessor) {
+        if(!this.getEntityWorld().isRemote && this.getNavigator() != null && this.getNavigator().getNodeProcessor() instanceof ICreatureNodeProcessor) {
             ((ICreatureNodeProcessor) this.getNavigator().getNodeProcessor()).updateEntitySize(this);
         }
     }
@@ -2331,7 +2309,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			LycanitesMobs.printWarning("", "Unable to create a projectile from the class: " + projectileClass);
 		}
 		if(projectile == null) {
-			return projectile;
+			return null;
 		}
 
 		projectile.posX += offset.x;
@@ -2362,7 +2340,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 		if(projectile.getLaunchSound() != null) {
 			this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-			this.getEntityWorld().spawnEntity(projectile);
 		}
 
 		return projectile;
@@ -2401,12 +2378,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
         //}
         
         boolean attackSuccess;
-        float pierceDamage = 1 + (float)Math.floor(damage / this.getPierceValue());
+        double pierceDamage = this.creatureStats.getPierce();
         if(damage <= pierceDamage)
         	attackSuccess = target.attackEntityFrom(this.getDamageSource(null).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
         else {
         	int hurtResistantTimeBefore = target.hurtResistantTime;
-        	target.attackEntityFrom(this.getDamageSource(null).setDamageBypassesArmor().setDamageIsAbsolute(), pierceDamage);
+        	target.attackEntityFrom(this.getDamageSource(null).setDamageBypassesArmor().setDamageIsAbsolute(), (float)pierceDamage);
         	target.hurtResistantTime = hurtResistantTimeBefore;
     		damage -= pierceDamage;
         	attackSuccess = target.attackEntityFrom(this.getDamageSource(null), damage);
@@ -2439,7 +2416,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /**
      * Returns the damage source to be used by this mob when dealing damage.
      * @param nestedDamageSource This can be null or can be a passed damage source for all kinds of use, mainly for minion damage sources. This will override the damage source for EntityBase+Ageable.
-     * @return
+     * @return The damage source to use.
      */
      public DamageSource getDamageSource(EntityDamageSource nestedDamageSource) {
          if(nestedDamageSource != null)
@@ -2688,8 +2665,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         angle = Math.toRadians(angle);
     	double xAmount = -Math.sin(angle);
     	double zAmount = Math.cos(angle);
-        BlockPos pos = new BlockPos(x + (distance * xAmount), y, z + (distance * zAmount));
-        return pos;
+        return new BlockPos(x + (distance * xAmount), y, z + (distance * zAmount));
     }
 
     /** Returns the XYZ in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
@@ -2697,8 +2673,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         angle = Math.toRadians(angle);
         double xAmount = -Math.sin(angle);
         double zAmount = Math.cos(angle);
-        Vec3d pos = new Vec3d(x + (distance * xAmount), y, z + (distance * zAmount));
-        return pos;
+        return new Vec3d(x + (distance * xAmount), y, z + (distance * zAmount));
     }
     
     
@@ -2782,9 +2757,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     /** Returns how high above attack targets this mob should fly when chasing. **/
     public double getFlightOffset() {
-        if(!this.isFlying())
+        /*if(!this.isFlying())
             return 0;
-        return 0.25D;
+        return 0.25D;*/
+        return 0D;
     }
     /** Returns true if this mob is currently flying. **/
     public boolean isCurrentlyFlying() { return this.isFlying(); }
@@ -2812,7 +2788,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void setStealth(float setStealth) {
     	setStealth = Math.min(setStealth, 1);
     	setStealth = Math.max(setStealth, 0);
-    	if(this.getEntityWorld() != null && !this.getEntityWorld().isRemote)
+    	if(!this.getEntityWorld().isRemote)
     		this.dataManager.set(STEALTH, setStealth);
     }
 
@@ -2852,7 +2828,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	        if(collided)
                 climbing = (byte)(climbing | 1);
 	        else climbing &= -2;
-	        this.dataManager.set(CLIMBING, Byte.valueOf(climbing));
+	        this.dataManager.set(CLIMBING, climbing);
     	}
     }
 
@@ -2967,14 +2943,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
 				for (int h = 0; h <= Math.ceil(this.height); h++) {
 					BlockPos breakPos = new BlockPos(x + w, y + h, z + d);
 					IBlockState blockState = this.getEntityWorld().getBlockState(breakPos);
-					if (blockState != null) {
-						float hardness = blockState.getBlockHardness(this.getEntityWorld(), breakPos);
-						Material material = blockState.getMaterial();
-						if (hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.WATER && material != Material.LAVA) {
-							this.getEntityWorld().destroyBlock(breakPos, drop);
-							if(player != null && !(w == 0 && h == 0 && d == 0)) {
-								SpawnerEventListener.getInstance().onBlockBreak(this.getEntityWorld(), breakPos, blockState, player, chain);
-							}
+					float hardness = blockState.getBlockHardness(this.getEntityWorld(), breakPos);
+					Material material = blockState.getMaterial();
+					if (hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.WATER && material != Material.LAVA) {
+						this.getEntityWorld().destroyBlock(breakPos, drop);
+						if(player != null && !(w == 0 && h == 0 && d == 0)) {
+							SpawnerEventListener.getInstance().onBlockBreak(this.getEntityWorld(), breakPos, blockState, player, chain);
 						}
 					}
 				}
@@ -2986,9 +2960,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			for(int d = -((int)Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++)
 				for(int h = 0; h <= Math.ceil(this.height); h++) {
 					IBlockState blockState = this.getEntityWorld().getBlockState(new BlockPos(x + w, y + h, z + d));
-					if(blockState != null) {
-						if(blockClass.isInstance(blockState.getBlock()))
-							this.getEntityWorld().destroyBlock(new BlockPos(x + w, y + h, z + d), drop);
+					if(blockClass.isInstance(blockState.getBlock())) {
+						this.getEntityWorld().destroyBlock(new BlockPos(x + w, y + h, z + d), drop);
 					}
 				}
 	}
@@ -3022,17 +2995,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	else if(this.getSubspeciesIndex() > 0)
     		subspeciesScale = Subspecies.uncommonDropScale;
 
-    	for(MobDrop mobDrop : this.drops) {
-            if(mobDrop.subspeciesID >= 0 && mobDrop.subspeciesID != this.getSubspeciesIndex())
+    	for(ItemDrop itemDrop : this.drops) {
+            if(itemDrop.subspeciesID >= 0 && itemDrop.subspeciesID != this.getSubspeciesIndex())
                 continue;
-    		int quantity = mobDrop.getQuantity(this.rand, lootLevel);
-            if(mobDrop.subspeciesID < 0)
+    		int quantity = itemDrop.getQuantity(this.rand, lootLevel);
+            if(itemDrop.subspeciesID < 0)
                 quantity *= subspeciesScale;
     		if(this.extraMobBehaviour != null && this.extraMobBehaviour.itemDropMultiplierOverride != 1)
     			quantity = Math.round((float)quantity * (float)this.extraMobBehaviour.itemDropMultiplierOverride);
     		ItemStack dropStack = null;
     		if(quantity > 0)
-    			dropStack = mobDrop.getItemStack(this, quantity);
+    			dropStack = itemDrop.getItemStack(this, quantity);
     		if(dropStack != null)
     			this.dropItem(dropStack);
     	}
@@ -3051,7 +3024,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The vanilla item drop method, overridden to make use of the EntityItemCustom class. I recommend using dropItem() instead. **/
     @Override
     public EntityItem entityDropItem(ItemStack itemStack, float heightOffset) {
-        if(itemStack.getCount() != 0 && itemStack.getItem() != null) {
+        if(itemStack.getCount() != 0) {
             EntityItemCustom entityItem = new EntityItemCustom(this.getEntityWorld(), this.posX, this.posY + (double)heightOffset, this.posZ, itemStack);
             entityItem.setPickupDelay(10);
             this.applyDropEffects(entityItem);
@@ -3152,7 +3125,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Interact Commands ==========
     /** Gets a map of all possible interact events with the key being the priority, lower is better. **/
     public HashMap<Integer, String> getInteractCommands(EntityPlayer player, ItemStack itemStack) {
-    	HashMap<Integer, String> commands = new HashMap<Integer, String>();
+    	HashMap<Integer, String> commands = new HashMap<>();
     	
     	// Item Commands:
     	if(itemStack != null) {
@@ -3163,7 +3136,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		// Name Tag:
     		if(itemStack.getItem() == Items.NAME_TAG) {
     			if(this.canNameTag(player))
-    				return new HashMap<Integer, String>(); // Cancels all commands so that vanilla can take care of name tagging.
+    				return new HashMap<>(); // Cancels all commands so that vanilla can take care of name tagging.
     			else
     				commands.put(CMD_PRIOR.ITEM_USE.id, "Name Tag"); // Calls nothing and therefore cancels name tagging.
     		}
@@ -3691,7 +3664,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			NBTTagList nbtDropList = nbtTagCompound.getTagList("Drops", 10);
 			for(int i = 0; i < nbtDropList.tagCount(); i++) {
 				NBTTagCompound dropNBT = nbtDropList.getCompoundTagAt(i);
-				MobDrop drop = new MobDrop(dropNBT);
+				ItemDrop drop = new ItemDrop(dropNBT);
 				this.addSavedItemDrop(drop);
 			}
 		}
@@ -3755,7 +3728,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         super.writeEntityToNBT(nbtTagCompound);
         this.inventory.writeToNBT(nbtTagCompound);
 		NBTTagList nbtDropList = new NBTTagList();
-        for(MobDrop drop : this.savedDrops) {
+        for(ItemDrop drop : this.savedDrops) {
 			NBTTagCompound dropNBT = new NBTTagCompound();
 			dropNBT = drop.writeToNBT(dropNBT);
 			nbtDropList.appendTag(dropNBT);

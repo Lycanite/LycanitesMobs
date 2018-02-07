@@ -29,7 +29,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.reiver",
+			"mobId": "elementalmobs:reiver",
 			"weight": 8
 		}
 	]

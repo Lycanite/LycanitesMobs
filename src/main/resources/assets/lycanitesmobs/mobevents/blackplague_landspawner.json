@@ -31,11 +31,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.geist",
+			"mobId": "shadowmobs:geist",
 			"weight": 8
 		},
 		{
-			"mobId": "swampmobs.ghoulzombie",
+			"mobId": "swampmobs:ghoulzombie",
 			"weight": 4
 		}
 	]

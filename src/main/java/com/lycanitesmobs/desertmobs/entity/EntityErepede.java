@@ -1,13 +1,12 @@
 package com.lycanitesmobs.desertmobs.entity;
 
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,16 +16,12 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityErepede extends EntityCreatureRideable implements IGroupPredator {
 	
@@ -40,12 +35,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
-        this.experience = 5;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.5F;
         this.attackTime = 10;
         this.setupMob();
         
@@ -61,7 +51,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("erepedetreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(6.0F));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(6.0F));
         this.tasks.addTask(6, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(9, new EntityAIBeg(this));
@@ -72,35 +62,15 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        if(MobInfo.predatorsAttackAnimals) {
-            if(ObjectManager.getMob("Joust") != null)
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
+            if(CreatureManager.getInstance().getCreature("Joust") != null)
                 this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
-            if(ObjectManager.getMob("JoustAlpha") != null)
+            if(CreatureManager.getInstance().getCreature("JoustAlpha") != null)
                 this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
         }
 
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 0D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("MudshotCharge")), 0.25F));
-	}
 	
 	
     // ==================================================

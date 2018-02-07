@@ -7,21 +7,15 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupPrey {
 	private int gorgomiteSwarmLimit = 10;
@@ -34,15 +28,12 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 0;
-        this.experience = 3;
         this.hasAttackSound = true;
-        
         this.setWidth = 0.9F;
         this.setHeight = 0.9F;
         this.setupMob();
         
-        this.gorgomiteSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Gorgomite Swarm Limit", this.gorgomiteSwarmLimit, "Limits how many Gorgomites there can be when swarming.");
+        this.gorgomiteSwarmLimit = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Gorgomite Swarm Limit", this.gorgomiteSwarmLimit, "Limits how many Gorgomites there can be when swarming.");
     }
 
     // ========== Init AI ==========
@@ -51,10 +42,11 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIAvoid(this).setNearSpeed(2.0D).setFarSpeed(1.5D).setNearDistance(5.0D).setFarDistance(10.0D));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
@@ -62,27 +54,6 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupAlpha.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.SANDSTONE), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.STONE), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 0.5F));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.1F));
-	}
 	
 	
     // ==================================================

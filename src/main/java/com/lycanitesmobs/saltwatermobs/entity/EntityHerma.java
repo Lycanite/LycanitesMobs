@@ -3,7 +3,6 @@ package com.lycanitesmobs.saltwatermobs.entity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -12,14 +11,11 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityHerma extends EntityCreatureTameable implements IMob {
 
@@ -33,17 +29,12 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 3;
-        this.experience = 7;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 0.9F;
         this.setupMob();
     }
 
@@ -66,27 +57,6 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setRange(6D));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setRange(8D));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH), 1).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 1), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 1)).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 2), 0.1F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 3), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     

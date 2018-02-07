@@ -180,6 +180,11 @@ public class CreatureSpawn {
 	 * Registers this mob to vanilla spawners and dungeons. Can only be done during startup.
 	 */
 	public void register(CreatureInfo creatureInfo) {
+		// Load Biomes:
+		if(this.biomes == null) {
+			this.biomes = JSONHelper.getJsonBiomes(this.biomeTags);
+		}
+
 		// Add Vanilla Spawns:
 		if(!CreatureManager.getInstance().spawnConfig.disableAllSpawning) {
 			if(this.enabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {

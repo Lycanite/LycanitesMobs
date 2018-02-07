@@ -6,8 +6,7 @@ import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,8 +14,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -25,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityShade extends EntityCreatureRideable implements IGroupPredator, IGroupHunter, IGroupShadow {
@@ -38,14 +34,9 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 3;
-        this.experience = 10;
         this.hasAttackSound = true;
         this.hasJumpSound = true;
         this.canGrow = false;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 2.8F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -59,7 +50,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         this.tasks.addTask(0, new EntityAISwimming(this));
         //this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("shadetreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(6, new EntityAIAttackMelee(this).setSpeed(1.5D).setRate(40));
+        this.tasks.addTask(6, new EntityAIAttackMelee(this).setSpeed(1.5D));
         this.tasks.addTask(7, new EntityAIWander(this).setSpeed(1.0D));
         this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -68,7 +59,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityCow.class).setTameTargetting(true));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPig.class).setTameTargetting(true));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntitySheep.class).setTameTargetting(true));
@@ -76,31 +67,12 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityPigZombie.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(7, new EntityAITargetOwnerThreats(this));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 60D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 0.5D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 1F).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.75F).setMaxAmount(5));
     }
 
 

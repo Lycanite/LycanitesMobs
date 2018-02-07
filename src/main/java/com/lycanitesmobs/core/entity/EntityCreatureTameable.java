@@ -452,7 +452,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             this.dataManager.set(TAMED, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
         }
         this.setAlwaysRenderNameTag(setTamed);
-        this.refreshHealth();
+        this.refreshStats();
     }
     
     public boolean isTamingItem(ItemStack itemstack) {

@@ -53,15 +53,15 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.grue",
+			"mobId": "elementalmobs:grue",
 			"weight": 8
 		},
 		{
-			"mobId": "shadowmobs.darkling",
+			"mobId": "shadowmobs:darkling",
 			"weight": 2
 		},
 		{
-			"mobId": "shadowmobs.shade",
+			"mobId": "shadowmobs:shade",
 			"weight": 1
 		}
 	],

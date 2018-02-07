@@ -31,15 +31,15 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "infernomobs.ignibus",
+			"mobId": "infernomobs:ignibus",
 			"weight": 2
 		},
 		{
-			"mobId": "plainsmobs.morock",
+			"mobId": "plainsmobs:morock",
 			"weight": 8
 		},
 		{
-			"mobId": "saltwatermobs.quetzodracl",
+			"mobId": "saltwatermobs:quetzodracl",
 			"weight": 8
 		}
 	]

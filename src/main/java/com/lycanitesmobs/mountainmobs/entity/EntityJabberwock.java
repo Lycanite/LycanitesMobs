@@ -2,25 +2,20 @@ package com.lycanitesmobs.mountainmobs.entity;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityJabberwock extends EntityCreatureTameable implements IMob {
     
@@ -32,14 +27,10 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.experience = 5;
         this.hasAttackSound = true;
 
         this.canGrow = false;
         this.babySpawnChance = 0.01D;
-        
-        this.setWidth = 0.6F;
-        this.setHeight = 1.9F;
         this.setupMob();
     }
 
@@ -53,7 +44,7 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         }
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIBreakDoor(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setRate(20));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this));
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIMoveVillage(this));
@@ -67,25 +58,6 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 1).setMinAmount(1).setMaxAmount(2));
-	}
 	
 	
     // ==================================================
@@ -167,7 +139,7 @@ public class EntityJabberwock extends EntityCreatureTameable implements IMob {
 
         String textureName = this.getTextureName() + "_rudolph";
         if(AssetManager.getTexture(textureName) == null)
-            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+            AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
         return AssetManager.getTexture(textureName);
     }
 }

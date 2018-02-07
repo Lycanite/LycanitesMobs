@@ -1,26 +1,22 @@
 package com.lycanitesmobs.saltwatermobs.entity;
 
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 
@@ -34,17 +30,12 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 7;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
 
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 0.9F;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.setupMob();
@@ -68,25 +59,6 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("IkaMeatRaw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("IkaMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     

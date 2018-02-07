@@ -6,7 +6,6 @@ import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupWater;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
@@ -31,13 +30,8 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -48,7 +42,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(100).setRange(14.0F).setMinChaseDistance(5.0F));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(5.0F));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -63,24 +57,6 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
         this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.22D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("AquaPulseCharge")), 0.25F).setMaxAmount(3));
-	}
 	
 	
     // ==================================================
@@ -187,7 +163,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
     // ========== Get Interact Commands ==========
     @Override
     public HashMap<Integer, String> getInteractCommands(EntityPlayer player, ItemStack itemStack) {
-        HashMap<Integer, String> commands = new HashMap<Integer, String>();
+        HashMap<Integer, String> commands = new HashMap<>();
         commands.putAll(super.getInteractCommands(player, itemStack));
 
         if(itemStack != null) {

@@ -6,21 +6,17 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
 	EntityAIAttackRanged aiAttackRanged;
@@ -35,12 +31,7 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
-        
-        this.setWidth = 0.6F;
-        this.setHeight = 0.9F;
         this.setupMob();
     }
 
@@ -51,10 +42,10 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("quillbeasttreat"))).setTemptDistanceMin(4.0D));
 
-        this.aiAttackMelee = new EntityAIAttackMelee(this).setRate(10).setLongMemory(true).setEnabled(false);
+        this.aiAttackMelee = new EntityAIAttackMelee(this).setLongMemory(true).setEnabled(false);
         this.tasks.addTask(2, this.aiAttackMelee);
 
-        this.aiAttackRanged = new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(30).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1);
+        this.aiAttackRanged = new EntityAIAttackRanged(this).setSpeed(1.0D).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1);
         this.tasks.addTask(2, this.aiAttackRanged);
 
         this.aiAvoid = new EntityAIAvoid(this).setNearSpeed(1.5D).setFarSpeed(1.3D).setNearDistance(5.0D).setFarDistance(9.0D);
@@ -77,25 +68,6 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(5, new EntityAITargetAvoid(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("quill")), 0.75F));
-        this.drops.add(new MobDrop(new ItemStack(Items.LEATHER), 0.75F).setMinAmount(1).setMaxAmount(3));
-	}
 	
 	
     // ==================================================

@@ -1,19 +1,17 @@
 package com.lycanitesmobs.infernomobs.entity;
 
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
@@ -22,8 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.HashMap;
 
 public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, IGroupAnimal, IGroupFire {
 
@@ -37,8 +33,6 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.isLavaCreature = true;
@@ -46,9 +40,6 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
 
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
-
-        this.setWidth = 1.8F;
-        this.setHeight = 0.8F;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
         this.setupMob();
@@ -73,25 +64,6 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("CephignisMeatCooked")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("CephignisMeatCooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM, 1, 0), 0.25F).setMinAmount(1).setMaxAmount(2));
     }
     
     

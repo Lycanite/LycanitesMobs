@@ -2,12 +2,11 @@ package com.lycanitesmobs.arcticmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,7 +18,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -29,7 +27,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntitySerpix extends EntityCreatureTameable implements IGroupPredator, IGroupIce, IGroupHeavy {
@@ -42,18 +39,11 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 3;
-        this.experience = 10;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
-
         this.babySpawnChance = 0.25D;
         this.growthTime = -120000;
-        
-        this.setWidth = 6.8F;
-        this.setDepth = 6.8F;
-        this.setHeight = 1.8F;
         this.setupMob();
         this.hitAreaWidthScale = 1.5F;
     }
@@ -67,7 +57,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("serpixtreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(8.0F));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.5D).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(9, new EntityAIBeg(this));
 
@@ -81,33 +71,12 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityBlaze.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityMagmaCube.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.5D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.SNOWBALL), 1).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("blizzardcharge")), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
-	}
 
 
     // ==================================================
@@ -135,7 +104,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
     @Override
     public void rangedAttack(Entity target, float range) {
         // Type:
-        List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
+        List<EntityProjectileRapidFire> projectiles = new ArrayList<>();
 
         EntityProjectileRapidFire projectileEntry = new EntityProjectileRapidFire(EntityBlizzard.class, this.getEntityWorld(), this, 15, 3);
         projectiles.add(projectileEntry);

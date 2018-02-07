@@ -43,6 +43,7 @@ public class ModelArgus extends ModelTemplateElemental {
 		super.addCustomLayers(renderer);
 		LayerEffect layer = new LayerEffect(renderer, "flash");
 		layer.glow = true;
+		layer.additive = true;
 		renderer.addLayer(layer);
 	}
 

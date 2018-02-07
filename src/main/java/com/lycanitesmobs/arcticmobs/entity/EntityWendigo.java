@@ -1,12 +1,11 @@
 package com.lycanitesmobs.arcticmobs.entity;
 
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupIce;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -17,15 +16,12 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce {
 
@@ -39,14 +35,9 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 3;
-        this.experience = 10;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
-        
-        this.setWidth = 1F;
-        this.setHeight = 4.5F;
         this.setupMob();
     }
 
@@ -55,39 +46,18 @@ public class EntityWendigo extends EntityCreatureBase implements IMob, IGroupIce
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this).setSink(true));
-        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(40).setRange(16.0F).setMinChaseDistance(8.0F));
+        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(1.0D).setRange(16.0F).setMinChaseDistance(8.0F));
         this.wanderAI = new EntityAIWander(this);
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(ObjectManager.getMob("reiver")));
+
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityBlaze.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityMagmaCube.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.16D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.SNOW), 0.5F).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.PACKED_ICE), 0.25F).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("frostyfur")), 0.75F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("tundracharge")), 0.75F));
-	}
     
     
     // ==================================================

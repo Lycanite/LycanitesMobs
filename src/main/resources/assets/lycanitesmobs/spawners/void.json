@@ -28,7 +28,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.spectre",
+			"mobId": "elementalmobs:spectre",
 			"weight": 8
 		}
 	]

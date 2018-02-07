@@ -3,7 +3,6 @@ package com.lycanitesmobs.freshwatermobs.entity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.block.Block;
@@ -18,8 +17,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-
 public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 
     // ==================================================
@@ -30,17 +27,12 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 4;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
 
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 0.8F;
         this.setupMob();
     }
 
@@ -60,25 +52,6 @@ public class EntitySilex extends EntityCreatureAgeable implements IAnimals, IGro
         //this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("silexmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("silexmeatcooked"))).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 4), 1).setMinAmount(2).setMaxAmount(4));
     }
 
 	

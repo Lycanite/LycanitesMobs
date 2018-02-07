@@ -8,7 +8,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.info.ItemDrop;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -75,7 +75,7 @@ public class MobSpawn {
 	protected int mobLevel = 0;
 
 	/** A list of item drops to add to a mob spawned by this MobSpawn. **/
-	protected List<MobDrop> mobDrops = new ArrayList<>();
+	protected List<ItemDrop> mobDrops = new ArrayList<>();
 
 	/** For dungeon spawning, if 0 or above this is the minimum level of the dungeon (how far down/up) for this mob to show up in. Default -1. **/
 	public int dungeonLevelMin = -1;
@@ -175,9 +175,9 @@ public class MobSpawn {
 		if(json.has("mobDrops")) {
 			JsonArray mobDropEntries = json.getAsJsonArray("mobDrops");
 			for(JsonElement mobDropJson : mobDropEntries) {
-				MobDrop mobDrop = MobDrop.createFromJSON(mobDropJson.getAsJsonObject());
-				if(mobDrop != null) {
-					this.mobDrops.add(mobDrop);
+				ItemDrop itemDrop = ItemDrop.createFromJSON(mobDropJson.getAsJsonObject());
+				if(itemDrop != null) {
+					this.mobDrops.add(itemDrop);
 				}
 			}
 		}
@@ -398,8 +398,8 @@ public class MobSpawn {
 			if(this.temporary > -1) {
 				entityCreature.setTemporary(this.temporary);
 			}
-			for(MobDrop mobDrop : this.mobDrops) {
-				entityCreature.addSavedItemDrop(mobDrop);
+			for(ItemDrop itemDrop : this.mobDrops) {
+				entityCreature.addSavedItemDrop(itemDrop);
 			}
 			entityCreature.firstSpawn = firstSpawn;
 		}

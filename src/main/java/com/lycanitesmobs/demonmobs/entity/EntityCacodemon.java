@@ -4,7 +4,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import com.lycanitesmobs.elementalmobs.entity.EntityWraith;
 import net.minecraft.entity.Entity;
@@ -13,7 +13,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -21,8 +20,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.HashMap;
 
 public class EntityCacodemon extends EntityCreatureRideable implements IGroupDemon {
     
@@ -34,16 +31,9 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = false;
-        
-        this.setWidth = 1.9F;
-        this.setHeight = 1.9F;
-        
         this.justAttackedTime = 20;
         this.setupMob();
-
         this.stepHeight = 1.0F;
         this.hitAreaWidthScale = 1.5F;
     }
@@ -55,7 +45,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(5, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("cacodemontreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(6, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
+        this.tasks.addTask(6, new EntityAIAttackRanged(this).setSpeed(0.25D).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
         this.tasks.addTask(7, new EntityAIFollowParent(this));
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(9, new EntityAIBeg(this));
@@ -70,28 +60,6 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityGhast.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 40D);
-		baseAttributes.put("attackDamage", 0D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.GHAST_TEAR), 1F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("demoniclightningcharge")), 0.75F));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("soulstonedemonic")), 1).setMinAmount(1).setSubspecies(3));
-	}
 
     // ========== Size ==========
     @Override
@@ -139,8 +107,8 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
             return;
 
         // Spawn Minions:
-        if(ObjectManager.getMob("wraith") != null) {
-            if (this.nearbyCreatureCount(ObjectManager.getMob("wraith"), 64D) < 10) {
+        if(CreatureManager.getInstance().getCreature("wraith").enabled) {
+            if (this.nearbyCreatureCount(CreatureManager.getInstance().getCreature("wraith").entityClass, 64D) < 10) {
                 float random = this.rand.nextFloat();
                 if (random <= 0.1F)
                     this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
@@ -190,8 +158,8 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     public boolean canAttackClass(Class targetClass) {
         if(targetClass.isAssignableFrom(EntityTrite.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))
             return false;
-        if(ObjectManager.getMob("wraith") != null) {
-            if (targetClass.isAssignableFrom(ObjectManager.getMob("wraith")))
+        if(CreatureManager.getInstance().getCreature("wraith") != null) {
+            if (targetClass.isAssignableFrom(CreatureManager.getInstance().getCreature("wraith").entityClass))
                 return false;
         }
         return super.canAttackClass(targetClass);

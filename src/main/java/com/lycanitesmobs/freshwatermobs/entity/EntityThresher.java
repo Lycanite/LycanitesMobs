@@ -6,8 +6,7 @@ import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -20,7 +19,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
@@ -28,8 +26,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityThresher extends EntityCreatureRideable implements IMob, IGroupPredator, IGroupHeavy {
 
@@ -48,17 +44,12 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 4;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0D;
         this.canGrow = true;
-
-        this.setWidth = 8F;
-        this.setHeight = 8F;
         this.setupMob();
         this.hitAreaWidthScale = 2F;
         this.hitAreaHeightScale = 1F;
@@ -66,7 +57,7 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
         // Stats:
         this.entityCollisionReduction = 0.9F;
 
-        this.whirlpoolRange = ConfigBase.getConfig(this.group, "general").getInt("Features", "Thresher Whirlpool Range", this.whirlpoolRange, "The range (in blocks) of the Thresher's whirlpool pull effect, set to 0 to disable, note that the Roa is nearly 10 blocks in size itself which the range must cover.");
+        this.whirlpoolRange = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Thresher Whirlpool Range", this.whirlpoolRange, "The range (in blocks) of the Thresher's whirlpool pull effect, set to 0 to disable, note that the Roa is nearly 10 blocks in size itself which the range must cover.");
     }
 
     // ========== Init AI ==========
@@ -89,33 +80,12 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntitySquid.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 80D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 1D);
-		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH), 1F).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 3)).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.75F).setMaxAmount(3));
     }
     
     

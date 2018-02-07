@@ -6,9 +6,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.Submod;
 import com.lycanitesmobs.core.dispenser.DispenserBehaviorMobEggCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.item.ItemCustomFood;
 import com.lycanitesmobs.core.item.ItemTreat;
 import com.lycanitesmobs.junglemobs.block.BlockPoopCloud;
@@ -16,7 +14,7 @@ import com.lycanitesmobs.junglemobs.block.BlockPropolis;
 import com.lycanitesmobs.junglemobs.block.BlockQuickWeb;
 import com.lycanitesmobs.junglemobs.block.BlockVeswax;
 import com.lycanitesmobs.junglemobs.dispenser.DispenserBehaviorPoop;
-import com.lycanitesmobs.junglemobs.entity.*;
+import com.lycanitesmobs.junglemobs.entity.EntityPoop;
 import com.lycanitesmobs.junglemobs.item.ItemJungleEgg;
 import com.lycanitesmobs.junglemobs.item.ItemPoopCharge;
 import com.lycanitesmobs.junglemobs.item.ItemScepterPoop;
@@ -122,71 +120,6 @@ public class JungleMobs extends Submod {
 	public void createEntities() {
 		// Mobs:
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(ObjectManager.getItem("junglespawn"), new DispenserBehaviorMobEggCustom());
-		MobInfo newMob;
-
-		newMob = new MobInfo(group, "geken", EntityGeken.class, 0x00AA00, 0xFFFF00)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("keppel", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(8).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "uvaraptor", EntityUvaraptor.class, 0x00FF33, 0xFF00FF)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("violet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "concapede", EntityConcapedeHead.class, 0x111144, 0xDD0000)
-				.setPeaceful(true).setSummonCost(2).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL").setDespawn(false)
-				.setSpawnWeight(18).setAreaLimit(10).setGroupLimits(1, 1).setLightDark(true, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "concapedesegment", EntityConcapedeSegment.class, 0x000022, 0x990000)
-				.setPeaceful(true).setSummonCost(1).setDungeonLevel(-1)
-				.addSubspecies(new Subspecies("azure", "uncommon")).addSubspecies(new Subspecies("verdant", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("CREATURE, ANIMAL")
-				.setSpawnWeight(0).setAreaLimit(0).setGroupLimits(0, 0).setLightDark(false, false).setEnabled(false);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "tarantula", EntityTarantula.class, 0x008800, 0xDD0000)
-				.setPeaceful(false).setSummonable(true).setSummonCost(2).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("russet", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 2).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "conba", EntityConba.class, 0x665500, 0xCC99BB)
-				.setPeaceful(false).setSummonCost(2).setDungeonLevel(0)
-				.addSubspecies(new Subspecies("violet", "uncommon")).addSubspecies(new Subspecies("dark", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "vespid", EntityVespid.class, 0x112200, 0x998800)
-				.setPeaceful(false).setSummonCost(2).setDungeonLevel(2)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(10).setAreaLimit(10).setGroupLimits(1, 6).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "vespidqueen", EntityVespidQueen.class, 0x223300, 0xFFCC00)
-				.setPeaceful(false).setSummonCost(2).setDungeonLevel(3)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("ashen", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(1).setAreaLimit(1).setGroupLimits(1, 1).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
-		newMob = new MobInfo(group, "dawon", EntityDawon.class, 0x49e554, 0x030601)
-				.setPeaceful(false).setTameable(true).setSummonCost(4).setDungeonLevel(1)
-				.addSubspecies(new Subspecies("scarlet", "uncommon")).addSubspecies(new Subspecies("azure", "uncommon"));
-		newMob.spawnInfo.setSpawnTypes("MONSTER, BEAST")
-				.setSpawnWeight(6).setAreaLimit(10).setGroupLimits(1, 3).setLightDark(false, true);
-		ObjectManager.addMob(newMob);
-
 
 		// Projectiles:
 		ObjectManager.addProjectile("poop", EntityPoop.class, ObjectManager.getItem("poopcharge"), new DispenserBehaviorPoop());

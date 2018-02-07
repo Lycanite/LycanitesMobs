@@ -1,27 +1,19 @@
 package com.lycanitesmobs.desertmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-
 public class EntityClink extends EntityCreatureTameable implements IMob {
-	
-	private EntityAIAttackRanged rangedAttackAI;
     
     // ==================================================
  	//                    Constructor
@@ -31,12 +23,7 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.6F;
-        this.setHeight = 1.8F;
         this.setupMob();
         
         // Stats:
@@ -49,8 +36,7 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setRange(14.0F).setMinChaseDistance(4.0F);
-        this.tasks.addTask(2, rangedAttackAI);
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(4.0F));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIWander(this));
@@ -63,25 +49,6 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 0D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("throwingscythe")), 1).setMinAmount(2).setMaxAmount(7));
-        this.drops.add(new MobDrop(new ItemStack(Items.IRON_INGOT), 0.1F).setMinAmount(1).setMaxAmount(3));
-	}
     
     
     // ==================================================
@@ -111,15 +78,23 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
         this.getEntityWorld().spawnEntity(projectile);
-        
-        // Update Phase:
-        this.nextAttackPhase();
-        if(this.getAttackPhase() == 2)
-        	this.rangedAttackAI.setRate(60);
-        else
-        	this.rangedAttackAI.setRate(10);
+
         super.rangedAttack(target, range);
     }
+
+    @Override
+	public int getMeleeCooldown() {
+    	if(this.getAttackPhase() == 2)
+    		return super.getMeleeCooldown() * 3;
+		return super.getMeleeCooldown();
+	}
+
+	@Override
+	public int getRangedCooldown() {
+		if(this.getAttackPhase() == 2)
+			return super.getRangedCooldown() * 3;
+		return super.getRangedCooldown();
+	}
     
     
     // ==================================================

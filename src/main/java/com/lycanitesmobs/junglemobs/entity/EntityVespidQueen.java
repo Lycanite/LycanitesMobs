@@ -1,14 +1,13 @@
 package com.lycanitesmobs.junglemobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IGroupPrey;
-import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
+import com.lycanitesmobs.api.IGroupPrey;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,9 +19,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -31,7 +28,6 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IGroupPredator {
@@ -62,12 +58,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 1;
-        this.experience = 5;
         this.hasAttackSound = true;
-        
-        this.setWidth = 1.6F;
-        this.setHeight = 1.9F;
         this.solidCollision = true;
         this.setupMob();
         
@@ -77,8 +68,8 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
         this.stepHeight = 1.0F;
         this.justAttackedTime = (short)(10);
         
-        this.vespidQueenSwarmLimit = ConfigBase.getConfig(this.group, "general").getInt("Features", "Vespid Queen Swarm Limit", this.vespidQueenSwarmLimit, "Limits how many Vespid drones a Queen can have before she will no longer spawn babies in hives.");
-        this.vespidHiveBuilding = ConfigBase.getConfig(this.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
+        this.vespidQueenSwarmLimit = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Vespid Queen Swarm Limit", this.vespidQueenSwarmLimit, "Limits how many Vespid drones a Queen can have before she will no longer spawn babies in hives.");
+        this.vespidHiveBuilding = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
     }
 
     // ========== Init AI ==========
@@ -86,7 +77,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(10).setLongMemory(true));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(7, new EntityAIStayByHome(this));
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(1200));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -101,26 +92,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 24D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(8));
-	}
+
 	
 	// ==================================================
   	//                       Spawning

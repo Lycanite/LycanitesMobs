@@ -32,7 +32,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.zephyr",
+			"mobId": "elementalmobs:zephyr",
 			"weight": 8
 		}
 	]

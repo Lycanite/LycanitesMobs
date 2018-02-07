@@ -1,17 +1,6 @@
 package com.lycanitesmobs.core.info;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.config.ConfigSpawning;
-import com.lycanitesmobs.core.config.ConfigSpawning.SpawnDimensionSet;
-import com.lycanitesmobs.core.config.ConfigSpawning.SpawnTypeSet;
-import com.lycanitesmobs.core.spawner.SpawnerMobRegistry;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Biomes;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.DungeonHooks;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 

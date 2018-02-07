@@ -27,11 +27,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.spriggan",
+			"mobId": "elementalmobs:spriggan",
 			"weight": 8
 		},
 		{
-			"mobId": "swampmobs.triffid",
+			"mobId": "swampmobs:triffid",
 			"weight": 2
 		}
 	]

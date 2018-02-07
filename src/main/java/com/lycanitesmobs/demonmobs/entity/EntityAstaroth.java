@@ -2,24 +2,19 @@ package com.lycanitesmobs.demonmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
-import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobInfo;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDemon {
     
@@ -31,12 +26,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
-        this.defense = 2;
-        this.experience = 15;
         this.hasAttackSound = false;
-        
-        this.setWidth = 3.5F;
-        this.setHeight = 2.0F;
         this.solidCollision = false;
         this.setupMob();
         this.hitAreaWidthScale = 1.5F;
@@ -47,7 +37,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(5).setRange(40.0F).setMinChaseDistance(16.0F).setChaseTime(-1));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(1.0D).setRange(40.0F).setMinChaseDistance(16.0F).setChaseTime(-1));
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -55,26 +45,6 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
         this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 40D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 40D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.IRON_INGOT), 1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.REDSTONE), 1).setMinAmount(3).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("devilstarcharge")), 0.5F));
-	}
 
 
     // ==================================================
@@ -145,7 +115,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
    	// ==================================================
 	@Override
 	public void onDeath(DamageSource par1DamageSource) {
-        if(!this.getEntityWorld().isRemote && MobInfo.getFromName("trite").mobEnabled) {
+        if(!this.getEntityWorld().isRemote && CreatureManager.getInstance().getCreature("trite").enabled) {
             int j = 2 + this.rand.nextInt(5) + getEntityWorld().getDifficulty().getDifficultyId() - 1;
             for(int k = 0; k < j; ++k) {
                 float f = ((float)(k % 2) - 0.5F) * this.width / 4.0F;

@@ -1,13 +1,12 @@
 package com.lycanitesmobs.core.item;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -104,17 +103,17 @@ public class ItemWinterGift extends ItemBase {
                 if (entity instanceof EntityCreatureBase) {
                     EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
 					entityCreature.addLevel(world.rand.nextInt(10));
-                    if (entityCreature.mobInfo.getEntityID().equals("wildkin"))
+                    if (entityCreature.creatureInfo.getName().equals("wildkin"))
                         entityCreature.setCustomNameTag("Gooderness");
-                    else if (entityCreature.mobInfo.getEntityID().equals("jabberwock"))
+                    else if (entityCreature.creatureInfo.getName().equals("jabberwock"))
                         entityCreature.setCustomNameTag("Rudolph");
-                    else if (entityCreature.mobInfo.getEntityID().equals("ent"))
+                    else if (entityCreature.creatureInfo.getName().equals("ent"))
                         entityCreature.setCustomNameTag("Salty Tree");
-                    else if (entityCreature.mobInfo.getEntityID().equals("treant"))
+                    else if (entityCreature.creatureInfo.getName().equals("treant"))
                         entityCreature.setCustomNameTag("Salty Tree");
-                    else if (entityCreature.mobInfo.getEntityID().equals("phantom"))
+                    else if (entityCreature.creatureInfo.getName().equals("phantom"))
                         entityCreature.setCustomNameTag("Satan Claws");
-                    else if(entityCreature.mobInfo.getEntityID().equals("behemoth"))
+                    else if(entityCreature.creatureInfo.getName().equals("behemoth"))
                         entityCreature.setCustomNameTag("Krampus");
                 }
 

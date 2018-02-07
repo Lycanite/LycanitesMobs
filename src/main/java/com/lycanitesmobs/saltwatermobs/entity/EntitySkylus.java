@@ -7,8 +7,7 @@ import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,15 +17,11 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroupPredator {
 	
@@ -41,17 +36,12 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 7;
         this.spawnsOnLand = false;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
-        
-        this.setWidth = 1.5F;
-        this.setHeight = 1.6F;
         this.setupMob();
 
         // Stats:
@@ -79,31 +69,11 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class).setPackHuntingScale(1, 3));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(1, 3));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.16D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 32D);
-		baseAttributes.put("attackDamage", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 0), 1).setMinAmount(1).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_SHARD, 1), 0.5F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.125F).setMaxAmount(1));
     }
     
     
@@ -220,14 +190,6 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
         }
         
         return true;
-    }
-    
-	// ========== Attack Haste Modifier ==========
-    @Override
-    public double getHasteMultiplier() {
-    	if(this.getHealth() > (this.getMaxHealth() / 2)) // Slower with shell.
-    		return 0.25F;
-    	return 1.0F;
     }
     
     

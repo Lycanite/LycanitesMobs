@@ -1,12 +1,11 @@
 package com.lycanitesmobs.shadowmobs.entity;
 
-import com.lycanitesmobs.core.config.ConfigBase;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupShadow;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -15,16 +14,12 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupShadow {
 
@@ -38,18 +33,13 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
         this.spreadFire = true;
 
         this.canGrow = false;
         this.babySpawnChance = 0.01D;
 
-        this.geistShadowfireDeath = ConfigBase.getConfig(this.group, "general").getBool("Features", "Geist Shadowfire Death", this.geistShadowfireDeath, "Set to false to disable Geists from bursting into Shadowfire oh death.");
-
-        this.setWidth = 0.6F;
-        this.setHeight = 2.4F;
+        this.geistShadowfireDeath = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Geist Shadowfire Death", this.geistShadowfireDeath, "Set to false to disable Geists from bursting into Shadowfire oh death.");
         this.setupMob();
     }
 
@@ -74,26 +64,6 @@ public class EntityGeist extends EntityCreatureAgeable implements IMob, IGroupSh
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.3D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.ROTTEN_FLESH), 1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 0.25F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("geistliver")), 1F).setMaxAmount(3));
-	}
     
     
     // ==================================================

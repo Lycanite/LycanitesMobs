@@ -1,15 +1,13 @@
 package com.lycanitesmobs.junglemobs.entity;
 
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.EntityAISwimming;
 import com.lycanitesmobs.core.entity.ai.EntityAITargetRevenge;
 import com.lycanitesmobs.core.entity.ai.EntityAIWander;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.info.CreatureSpawnConfig;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.ai.EntityAIFollowParent;
 import net.minecraft.block.Block;
@@ -20,7 +18,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +27,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -49,16 +45,11 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 0;
-        this.experience = 3;
         this.hasAttackSound = true;
         this.hasStepSound = false;
 
         this.canGrow = true;
         this.babySpawnChance = 0D;
-        
-        this.setWidth = 0.5F;
-        this.setHeight = 0.9F;
         this.isHostileByDefault = false;
         this.setupMob();
     }
@@ -72,25 +63,6 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityConcapedeHead.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("concapedemeatraw")), 1).setMinAmount(2).setMaxAmount(3).setBurningDrop(new ItemStack(ObjectManager.getItem("concapedemeatcooked"))));
-        this.drops.add(new MobDrop(new ItemStack(Items.STRING), 0.25F).setMinAmount(1).setMaxAmount(2));
-	}
 
     // ==================================================
     //                      Spawning
@@ -99,7 +71,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     /** Second stage checks for spawning, this check is ignored if there is a valid monster spawner nearby. **/
     @Override
     public boolean environmentSpawnCheck(World world, BlockPos pos) {
-    	if(this.getNearbyEntities(EntityConcapedeHead.class, null, CreatureSpawnConfig.spawnLimitRange).size() <= 0)
+    	if(this.getNearbyEntities(EntityConcapedeHead.class, null, CreatureManager.getInstance().spawnConfig.spawnLimitRange).size() <= 0)
     		return false;
     	return super.environmentSpawnCheck(world, pos);
     }
@@ -108,7 +80,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     @Override
     public void getRandomSubspecies() {
     	if(this.subspecies == null && !this.hasParent()) {
-    		this.subspecies = this.mobInfo.getRandomSubspecies(this);
+    		this.subspecies = this.creatureInfo.getRandomSubspecies(this);
     		if(this.subspecies != null)
     			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + this.subspecies.getTitle());
     		else

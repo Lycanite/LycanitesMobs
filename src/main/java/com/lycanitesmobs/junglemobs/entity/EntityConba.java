@@ -1,12 +1,10 @@
 package com.lycanitesmobs.junglemobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupHunter;
+import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.api.IGroupAlpha;
-import com.lycanitesmobs.api.IGroupPredator;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,9 +12,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -24,8 +20,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityConba extends EntityCreatureTameable implements IMob {
 	EntityAIAttackRanged aiAttackRanged;
@@ -42,12 +36,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
-        
-        this.setWidth = 0.6F;
-        this.setHeight = 0.9F;
         this.setupMob();
     }
 
@@ -57,10 +46,10 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
 
-        this.aiAttackMelee = new EntityAIAttackMelee(this).setRate(10).setLongMemory(true).setEnabled(false);
+        this.aiAttackMelee = new EntityAIAttackMelee(this).setLongMemory(true).setEnabled(false);
         this.tasks.addTask(2, this.aiAttackMelee);
 
-        this.aiAttackRanged = new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(30).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1);
+        this.aiAttackRanged = new EntityAIAttackRanged(this).setSpeed(1.0D).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1);
         this.tasks.addTask(2, this.aiAttackRanged);
 
         this.aiAvoid = new EntityAIAvoid(this).setNearSpeed(1.5D).setFarSpeed(1.3D).setNearDistance(5.0D).setFarDistance(9.0D);
@@ -71,6 +60,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
@@ -83,25 +73,6 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
     
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.26D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.DYE, 1, 3), 1).setMinAmount(1).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("poopcharge")), 0.75F));
-	}
-    
     
     // ==================================================
     //                       Name
@@ -113,7 +84,7 @@ public class EntityConba extends EntityCreatureTameable implements IMob {
 		if(this.vespidInfection) {
 			String entityName = EntityList.getEntityString(this);
 	    	if(entityName != null)
-	    		infection = I18n.translateToLocal("entity." + this.group.filename + "." + entityName + ".infected") + " ";
+	    		infection = I18n.translateToLocal("entity." + this.creatureInfo.group.filename + "." + entityName + ".infected") + " ";
 		}
     	return infection + super.getSpeciesName();
     }

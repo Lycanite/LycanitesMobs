@@ -27,7 +27,6 @@ public class EntityFear extends EntityCreatureBase {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.experience = 0;
         this.hasStepSound = false;
         this.hasAttackSound = false;
         this.spreadFire = false;
@@ -58,18 +57,6 @@ public class EntityFear extends EntityCreatureBase {
 
         // Fire Immunity:
         this.isImmuneToFire = true;
-    }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.38D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
     }
 	
 	// ========== Default Drops ==========

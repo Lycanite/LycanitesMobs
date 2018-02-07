@@ -4,7 +4,6 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
@@ -17,9 +16,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +24,6 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupPredator {
@@ -42,12 +38,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 1.5F;
         this.setupMob();
 
         this.canGrow = true;
@@ -56,7 +47,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         this.stepHeight = 1.0F;
         this.justAttackedTime = (short)(10);
         
-        this.vespidHiveBuilding = ConfigBase.getConfig(this.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
+        this.vespidHiveBuilding = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
     }
 
     // ========== Init AI ==========
@@ -64,13 +55,14 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(10).setLongMemory(true));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(true));
         this.aiPlaceBlock = new EntityAIPlaceBlock(this).setMaxDistance(128D).setSpeed(3D);
         this.tasks.addTask(4, this.aiPlaceBlock);
         this.tasks.addTask(5, new EntityAIFollowMaster(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(20));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(1, new EntityAITargetMasterAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true).setHelpClasses(EntityVespidQueen.class));
         this.targetTasks.addTask(3, new EntityAITargetMaster(this).setTargetClass(EntityVespidQueen.class).setRange(64.0D));
@@ -80,26 +72,6 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 5D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0D);
-		baseAttributes.put("followRange", 24D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.CLAY_BALL), 0.5F).setMaxAmount(16));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("propolis")), 0.5F).setMaxAmount(4));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getBlock("veswax")), 0.5F).setMaxAmount(4));
-	}
 	
 	// ==================================================
   	//                       Spawning

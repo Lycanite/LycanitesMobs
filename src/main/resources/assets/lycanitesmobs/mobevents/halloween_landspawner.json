@@ -31,33 +31,33 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "forestmobs.ent",
+			"mobId": "forestmobs:ent",
 			"weight": 8,
 			"mobNameTag": "Twisted Ent"
 		},
 		{
-			"mobId": "forestmobs.treant",
+			"mobId": "forestmobs:treant",
 			"weight": 4,
 			"mobNameTag": "Wicked Treant"
 		},
 		{
-			"mobId": "demonmobs.belph",
+			"mobId": "demonmobs:belph",
 			"weight": 8
 		},
 		{
-			"mobId": "demonmobs.behemoth",
+			"mobId": "demonmobs:behemoth",
 			"weight": 4
 		},
 		{
-			"mobId": "swampmobs.triffid",
+			"mobId": "swampmobs:triffid",
 			"weight": 8
 		},
 		{
-			"mobId": "swampmobs.ghoulzombie",
+			"mobId": "swampmobs:ghoulzombie",
 			"weight": 8
 		},
 		{
-			"mobId": "desertmobs.cryptzombie",
+			"mobId": "desertmobs:cryptzombie",
 			"weight": 8
 		}
 	]

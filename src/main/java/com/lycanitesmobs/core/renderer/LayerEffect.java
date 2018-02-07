@@ -16,6 +16,7 @@ public class LayerEffect extends LayerBase {
 
 	public String textureSuffix = "effect";
 	public boolean glow = false;
+	public boolean additive = false;
 
     // ==================================================
     //                   Constructor
@@ -55,7 +56,8 @@ public class LayerEffect extends LayerBase {
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
 		}
 		GL11.glEnable(GL11.GL_BLEND);
-		OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_ALPHA, 1, 0);
+    	if(this.additive)
+			OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_ALPHA, 1, 0);
 	}
 
 	@Override

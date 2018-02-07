@@ -31,7 +31,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.geonach",
+			"mobId": "elementalmobs:geonach",
 			"weight": 8
 		}
 	]

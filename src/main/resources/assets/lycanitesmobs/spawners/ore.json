@@ -29,11 +29,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.geonach",
+			"mobId": "elementalmobs:geonach",
 			"weight": 8
 		},
 		{
-			"mobId": "desertmobs.gorgomite",
+			"mobId": "desertmobs:gorgomite",
 			"weight": 2
 		}
 	]

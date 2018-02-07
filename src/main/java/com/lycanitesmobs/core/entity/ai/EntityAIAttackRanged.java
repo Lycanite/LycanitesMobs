@@ -15,8 +15,6 @@ public class EntityAIAttackRanged extends EntityAIBase {
 
     // Properties
     private int attackTime;
-    private int attackTimeClose = 20;
-    private int attackTimeFar = 20;
 
     private int attackStamina = 0;
     private int attackStaminaMax = 0;
@@ -63,17 +61,6 @@ public class EntityAIAttackRanged extends EntityAIBase {
     public EntityAIAttackRanged setCheckSight(boolean setCheckSight) {
     	this.checkSight = setCheckSight;
     	return this;
-    }
-    public EntityAIAttackRanged setRateClose(int rate) {
-    	this.attackTimeClose = rate;
-    	return this;
-    }
-    public EntityAIAttackRanged setRateFar(int rate) {
-    	this.attackTimeFar = rate;
-    	return this;
-    }
-    public EntityAIAttackRanged setRate(int rate) {
-    	return this.setRateClose(rate).setRateFar(rate);
     }
     
     // ========== Stamina ==========
@@ -250,17 +237,10 @@ public class EntityAIAttackRanged extends EntityAIBase {
 	            	outerRangeFactor = 1.0F;
 	
 	            this.host.rangedAttack(this.attackTarget, outerRangeFactor);
-	            if(rangeFactor > 0.5F)
-	            	this.attackTime = this.host.getHaste(this.attackTimeFar);
-	            else
-	            	this.attackTime = this.host.getHaste(this.attackTimeClose);
+	            this.attackTime = this.host.getRangedCooldown();
 	        }
 	        else if(this.attackTime < 0) {
-	        	rangeFactor = MathHelper.sqrt(distance) / this.range;
-	            if(rangeFactor > 0.5F)
-	            	this.attackTime = this.host.getHaste(this.attackTimeFar);
-	            else
-	            	this.attackTime = this.host.getHaste(this.attackTimeClose);
+				this.attackTime = this.host.getRangedCooldown();
 	        }
         }
     }

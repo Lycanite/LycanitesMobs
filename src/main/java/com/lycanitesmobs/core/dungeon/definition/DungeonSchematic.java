@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.helpers.JSONHelper;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.info.ItemDrop;
 import com.lycanitesmobs.core.spawner.MobSpawn;
 import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import net.minecraft.item.ItemStack;
@@ -72,7 +72,7 @@ public class DungeonSchematic {
 	public Map<Integer, List<String>> lootTables = new HashMap<>();
 
 	/** A list of item drops to add to loot chests. **/
-	public List<MobDrop> loot = new ArrayList<>();
+	public List<ItemDrop> loot = new ArrayList<>();
 
 
     /** Loads this Dungeon Theme from the provided JSON data. **/
@@ -123,7 +123,7 @@ public class DungeonSchematic {
 
 		// Biomes:
 		if(json.has("biomes"))
-			this.biomes = JSONHelper.getJsonBiomes(json.get("biomes").getAsJsonArray());
+			this.biomes = JSONHelper.getJsonBiomes(JSONHelper.getJsonStrings(json.get("biomes").getAsJsonArray()));
 
 		// Themes:
 		if(json.has("themes")) {
@@ -210,9 +210,9 @@ public class DungeonSchematic {
 		if(json.has("loot")) {
 			JsonArray lootEntries = json.getAsJsonArray("loot");
 			for(JsonElement mobDropJson : lootEntries) {
-				MobDrop mobDrop = MobDrop.createFromJSON(mobDropJson.getAsJsonObject());
-				if(mobDrop != null) {
-					this.loot.add(mobDrop);
+				ItemDrop itemDrop = ItemDrop.createFromJSON(mobDropJson.getAsJsonObject());
+				if(itemDrop != null) {
+					this.loot.add(itemDrop);
 				}
 			}
 		}
@@ -456,18 +456,18 @@ public class DungeonSchematic {
 	 */
 	public List<ItemStack> getRandomLoot(Random random) {
 		List<ItemStack> loot = new ArrayList<>();
-		for(MobDrop mobDrop : this.loot) {
-			if(mobDrop.chance <= 0) {
+		for(ItemDrop itemDrop : this.loot) {
+			if(itemDrop.chance <= 0) {
 				continue;
 			}
-			boolean addLoot = mobDrop.chance >= 1;
+			boolean addLoot = itemDrop.chance >= 1;
 			if(!addLoot) {
-				addLoot = mobDrop.chance <= random.nextDouble();
+				addLoot = itemDrop.chance <= random.nextDouble();
 			}
 			if(addLoot) {
-				int quantity = mobDrop.getQuantity(random, 0);
+				int quantity = itemDrop.getQuantity(random, 0);
 				if(quantity > 0) {
-					loot.add(new ItemStack(mobDrop.itemStack.getItem(), mobDrop.itemStack.getMetadata(), quantity));
+					loot.add(new ItemStack(itemDrop.itemStack.getItem(), itemDrop.itemStack.getMetadata(), quantity));
 				}
 			}
 		}

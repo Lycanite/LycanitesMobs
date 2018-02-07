@@ -5,7 +5,6 @@ import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.ExtendedEntity;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,15 +13,12 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy {
 
@@ -39,17 +35,12 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 7;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = true;
 
         this.babySpawnChance = 0D;
         this.canGrow = true;
-
-        this.setWidth = 3F;
-        this.setHeight = 10F;
         this.setupMob();
         this.hitAreaWidthScale = 1.5f;
         this.hitAreaHeightScale = 1;
@@ -83,27 +74,6 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 40D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH), 1F).setBurningDrop(new ItemStack(Items.COOKED_FISH)).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.FISH, 1, 3), 0.5F).setBurningDrop(new ItemStack(Items.COOKED_FISH, 1, 3)).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.25F).setMaxAmount(1));
-	}
 	
 	
     // ==================================================
@@ -135,7 +105,7 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
                     this.attackEntityAsMob(this.getPickupEntity(), 0.5F);
                     if(this.getPickupEntity() instanceof EntityLivingBase) {
                         if(ObjectManager.getPotionEffect("penetration") != null)
-                            ((EntityLivingBase)this.getPickupEntity()).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(5), 1));
+                            this.getPickupEntity().addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(5), 1));
                     }
                 }
             }

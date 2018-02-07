@@ -5,22 +5,17 @@ import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityTremor extends EntityCreatureTameable implements IMob, IGroupRock {
 
@@ -36,15 +31,10 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 20;
         this.hasAttackSound = true;
 
-		this.tremorExplosionStrength = ConfigBase.getConfig(this.group, "general").getInt("Features", "Tremor Explosion Strength", this.tremorExplosionStrength, "Controls the strength of a Tremor's explosion when attacking, set to -1 to disable completely.");
-
-		this.setWidth = 0.8F;
-        this.setHeight = 1.8F;
-        this.setupMob();
+		this.tremorExplosionStrength = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Tremor Explosion Strength", this.tremorExplosionStrength, "Controls the strength of a Tremor's explosion when attacking, set to -1 to disable completely.");
+		this.setupMob();
 
         this.stepHeight = 1.0F;
     }
@@ -54,7 +44,7 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.meleeAttackAI = new EntityAIAttackMelee(this).setRate(20).setLongMemory(true);
+        this.meleeAttackAI = new EntityAIAttackMelee(this).setLongMemory(true);
         this.tasks.addTask(2, meleeAttackAI);
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
@@ -69,27 +59,6 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.3D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 1F).setMinAmount(4).setMaxAmount(8));
-		this.drops.add(new MobDrop(new ItemStack(Items.FIREWORK_CHARGE), 0.25F).setMinAmount(1).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 1F).setMinAmount(1).setMaxAmount(4));
-		this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_ROD), 0.75F).setMinAmount(1).setMaxAmount(2));
-	}
 
     // ========== Set Size ==========
     @Override

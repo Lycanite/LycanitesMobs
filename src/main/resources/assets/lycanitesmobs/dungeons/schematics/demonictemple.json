@@ -46,41 +46,41 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "demonmobs.belph",
+			"mobId": "demonmobs:belph",
 			"weight": 14
 		},
 		{
-			"mobId": "elementalmobs.wraith",
+			"mobId": "elementalmobs:wraith",
 			"weight": 8,
 			"dungeonLevelMin": "0"
 		},
 		{
-			"mobId": "demonmobs.behemoth",
+			"mobId": "demonmobs:behemoth",
 			"weight": 4,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "demonmobs.pinky",
+			"mobId": "demonmobs:pinky",
 			"weight": 4,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "demonmobs.trite",
+			"mobId": "demonmobs:trite",
 			"weight": 14,
 			"dungeonLevelMin": "1"
 		},
 		{
-			"mobId": "demonmobs.astaroth",
+			"mobId": "demonmobs:astaroth",
 			"weight": 1,
 			"dungeonLevelMin": "2"
 		},
 		{
-			"mobId": "demonmobs.cacodemon",
+			"mobId": "demonmobs:cacodemon",
 			"weight": 1,
 			"dungeonLevelMin": "2"
 		},
 		{
-			"mobId": "demonmobs.behemoth",
+			"mobId": "demonmobs:behemoth",
 			"weight": 1,
 			"subspecies": 0,
 			"mobNameTag": "Baron of Hell",
@@ -97,7 +97,7 @@
 			]
 		},
 		{
-			"mobId": "demonmobs.astaroth",
+			"mobId": "demonmobs:astaroth",
 			"weight": 1,
 			"subspecies": 0,
 			"mobNameTag": "Arachnotron",
@@ -114,7 +114,7 @@
 			]
 		},
 		{
-			"mobId": "demonmobs.cacodemon",
+			"mobId": "demonmobs:cacodemon",
 			"weight": 1,
 			"subspecies": 3,
 			"mobNameTag": "Pain Elemental",

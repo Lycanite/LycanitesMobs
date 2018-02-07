@@ -1,11 +1,10 @@
 package com.lycanitesmobs.swampmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
+import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,14 +15,11 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGroupAnimal {
 	
@@ -35,15 +31,10 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = true;
 
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
-        
-        this.setWidth = 0.9F;
-        this.setHeight = 2.2F;
         this.attackTime = 10;
         this.fleeHealthPercent = 1.0F;
         this.isHostileByDefault = false;
@@ -63,30 +54,11 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(1, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
         this.targetTasks.addTask(3, new EntityAITargetAvoid(this).setTargetClass(IGroupPredator.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0.25D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("aspidmeatraw")), 1).setBurningDrop(new ItemStack(ObjectManager.getItem("aspidmeatcooked"))).setMinAmount(2).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Items.SLIME_BALL), 0.25F));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("poisongland")), 0.25F));
-	}
 	
 	
     // ==================================================

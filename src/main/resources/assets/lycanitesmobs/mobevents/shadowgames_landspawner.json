@@ -31,11 +31,11 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.darkling",
+			"mobId": "shadowmobs:darkling",
 			"weight": 8
 		},
 		{
-			"mobId": "shadowmobs.shade",
+			"mobId": "shadowmobs:shade",
 			"weight": 2
 		}
 	]

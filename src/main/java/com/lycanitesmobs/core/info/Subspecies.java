@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.info;
 
 
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.CreatureStats;
 import net.minecraft.util.text.translation.I18n;
 
 import java.util.HashMap;
@@ -60,29 +61,29 @@ public class Subspecies {
         commonWeights.put("uncommon", config.getInt("Mob Variations", "Subspecies Uncommon Weight", commonWeights.get("uncommon"), "The weight of uncommon subspecies (such as Azure, Verdant, Scarlet, etc)."));
         commonWeights.put("rare", config.getInt("Mob Variations", "Subspecies Rare Weight", commonWeights.get("rare"), "The weight of rare subspecies (such as Lunar or Celestial)."));
 
-        // Stats:
-        String[] statNames = new String[] {"Health", "Defense", "Speed", "Damage", "Haste", "Effect", "Pierce"};
-
         // Difficulty:
-        String[] subspeciesNames = new String[] {"Uncommon", "Rare"};
+        String[] subspeciesNames = new String[] {"uncommon", "rare"};
 		statMultipliers = new HashMap<>();
         config.setCategoryComment("Subspecies Multipliers", "Here you can scale the stats of every mob on a per subspecies basis.");
         for(String subspeciesName : subspeciesNames) {
-            for(String statName : statNames) {
+            for(String statName : CreatureStats.STAT_NAMES) {
                 double defaultValue = 1.0;
-				if("Uncommon".equals(subspeciesName)) {
-					if("Health".equals(statName)) {
+				if("uncommon".equals(subspeciesName)) {
+					if("health".equals(statName)) {
 						defaultValue = 2;
 					}
 				}
-                if("Rare".equals(subspeciesName)) {
-					if("Health".equals(statName)) {
+                if("rare".equals(subspeciesName)) {
+					if("health".equals(statName)) {
 						defaultValue = 10;
 					}
-					else if("Haste".equals(statName)) {
-						defaultValue = 4;
+					else if("attackSpeed".equals(statName)) {
+						defaultValue = 2;
 					}
-					else if("Effect".equals(statName)) {
+					else if("rangedSpeed".equals(statName)) {
+						defaultValue = 2;
+					}
+					else if("effect".equals(statName)) {
 						defaultValue = 2;
 					}
 				}

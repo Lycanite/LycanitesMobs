@@ -1,13 +1,11 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
@@ -18,10 +16,8 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
@@ -29,8 +25,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-
-import java.util.HashMap;
 
 public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGroupPlant {
 	
@@ -45,8 +39,6 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 10;
         this.hasAttackSound = false;
         
         this.setWidth = 0.8F;
@@ -54,7 +46,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        this.farmingRate = ConfigBase.getConfig(this.group, "general").getInt("Features", "Spriggan Minion Crop Boosting", this.farmingRate, "Sets the rate in ticks (20 ticks = 1 second) that a Spriggan will boost nearby crops. Each boost will usually cause the crop to grow one stage.");
+        this.farmingRate = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Spriggan Minion Crop Boosting", this.farmingRate, "Sets the rate in ticks (20 ticks = 1 second) that a Spriggan will boost nearby crops. Each boost will usually cause the crop to grow one stage.");
     }
 
     // ========== Init AI ==========
@@ -64,7 +56,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
-        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(10).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F);
+        this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F);
         this.tasks.addTask(5, rangedAttackAI);
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -78,30 +70,6 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-        HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-        baseAttributes.put("maxHealth", 15D);
-        baseAttributes.put("movementSpeed", 0.20D);
-        baseAttributes.put("knockbackResistance", 0.0D);
-        baseAttributes.put("followRange", 16D);
-        baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL, 1, 1)));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.VINE), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
-		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("immunizer")), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("lifedraincharge")), 0.25F).setMaxAmount(1));
-	}
 
 
     // ==================================================
@@ -136,7 +104,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	        		for(int z = (int)this.posZ - farmingRange; z <= (int)this.posZ + farmingRange; z++) {
                         BlockPos pos = new BlockPos(x, y, z);
 	        			Block farmingBlock = this.getEntityWorld().getBlockState(pos).getBlock();
-	        			if(farmingBlock != null && farmingBlock instanceof IPlantable && farmingBlock instanceof IGrowable && farmingBlock != Blocks.TALLGRASS && farmingBlock != Blocks.DOUBLE_PLANT) {
+	        			if(farmingBlock instanceof IPlantable && farmingBlock instanceof IGrowable && farmingBlock != Blocks.TALLGRASS && farmingBlock != Blocks.DOUBLE_PLANT) {
 	        				
 		        			// Boost Crops Every X Seconds:
 		        			if(!this.getEntityWorld().isRemote && this.farmingTick % (currentFarmingRate) == 0) {

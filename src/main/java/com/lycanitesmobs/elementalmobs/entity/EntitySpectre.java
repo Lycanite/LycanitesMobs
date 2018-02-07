@@ -6,25 +6,19 @@ import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntitySpectre extends EntityCreatureTameable implements IMob, IGroupShadow, IGroupHeavy {
 
@@ -43,13 +37,8 @@ public class EntitySpectre extends EntityCreatureTameable implements IMob, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 1;
-        this.experience = 5;
         this.hasAttackSound = true;
         this.spawnsInWater = true;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.9F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -61,12 +50,13 @@ public class EntitySpectre extends EntityCreatureTameable implements IMob, IGrou
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this).setRate(20).setLongMemory(true));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(true));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -74,28 +64,6 @@ public class EntitySpectre extends EntityCreatureTameable implements IMob, IGrou
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 30D);
-		baseAttributes.put("movementSpeed", 0.32D);
-		baseAttributes.put("knockbackResistance", 0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 3D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_PEARL), 1F).setMaxAmount(3));
-		this.drops.add(new MobDrop(new ItemStack(Items.ENDER_EYE), 0.5F).setMaxAmount(1));
-		this.drops.add(new MobDrop(new ItemStack(Items.CHORUS_FRUIT), 0.5F).setMaxAmount(10));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
-		this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
-	}
 
     // ========== Set Size ==========
     @Override

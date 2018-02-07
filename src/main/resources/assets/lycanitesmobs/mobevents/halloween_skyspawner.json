@@ -31,25 +31,25 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs.wraith",
+			"mobId": "elementalmobs:wraith",
 			"weight": 8,
 			"mobNameTag": "Lost Soul"
 		},
 		{
-			"mobId": "demonmobs.cacodemon",
+			"mobId": "demonmobs:cacodemon",
 			"weight": 4
 		},
 		{
-			"mobId": "infernomobs.afrit",
+			"mobId": "infernomobs:afrit",
 			"weight": 8
 		},
 		{
-			"mobId": "elementalmobs.grue",
+			"mobId": "elementalmobs:grue",
 			"weight": 8,
 			"mobNameTag": "Shadow Clown"
 		},
 		{
-			"mobId": "shadowmobs.epion",
+			"mobId": "shadowmobs:epion",
 			"weight": 8,
 			"mobNameTag": "Vampire Bat"
 		}

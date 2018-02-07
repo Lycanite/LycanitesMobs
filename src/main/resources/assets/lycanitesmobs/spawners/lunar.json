@@ -33,7 +33,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "shadowmobs.epion"
+			"mobId": "shadowmobs:epion"
 		}
 	]
 }

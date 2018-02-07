@@ -5,7 +5,6 @@ import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -14,17 +13,12 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityTriffid extends EntityCreatureTameable implements IMob, IGroupPlant {
 
@@ -36,17 +30,12 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 4;
-        this.experience = 10;
         this.spawnsUnderground = false;
         this.hasAttackSound = true;
         this.spreadFire = true;
 
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
-        
-        this.setWidth = 1.8F;
-        this.setHeight = 2.8F;
         this.setupMob();
     }
 
@@ -55,7 +44,7 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(40));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
         this.tasks.addTask(4, new EntityAIAttackMelee(this));
         this.tasks.addTask(5, this.aiSit);
         this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
@@ -70,30 +59,6 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 60D);
-		baseAttributes.put("movementSpeed", 0.16D);
-		baseAttributes.put("knockbackResistance", 0.5D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 6D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Blocks.LOG, 1, 0), 1).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.STICK), 0.5F).setMaxAmount(6).setBurningDrop(new ItemStack(Items.COAL)));
-        this.drops.add(new MobDrop(new ItemStack(Items.WHEAT_SEEDS), 0.1F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.PUMPKIN_SEEDS), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.MELON_SEEDS), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.RED_MUSHROOM), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.BROWN_MUSHROOM), 0.05F).setMaxAmount(1));
-	}
 	
 	
     // ==================================================

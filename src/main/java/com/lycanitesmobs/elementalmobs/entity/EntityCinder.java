@@ -6,15 +6,12 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -24,7 +21,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityCinder extends EntityCreatureTameable implements IMob, IGroupFire, IFusable {
@@ -39,13 +35,8 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.spawnsInBlock = false;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.6F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -56,7 +47,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     protected void initEntityAI() {
         super.initEntityAI();
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(3.0F));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(12.0F).setMinChaseDistance(3.0F));
         this.tasks.addTask(6, this.aiSit);
         this.tasks.addTask(7, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -75,26 +66,6 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
 		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 0.5F));
-        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_ROD), 0.1F));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("EmberCharge")), 0.25F));
-	}
     
     
     // ==================================================

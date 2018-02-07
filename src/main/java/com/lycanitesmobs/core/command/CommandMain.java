@@ -240,7 +240,7 @@ public class CommandMain implements ICommand {
 					return;
 				}
 
-				beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.name, 1));
+				beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.getName(), 1));
 				beastiary.sendAddedMessage(creatureInfo);
 				return;
 			}
@@ -248,7 +248,7 @@ public class CommandMain implements ICommand {
 			// Add:
 			if("complete".equalsIgnoreCase(args[1])) {
 				for(CreatureInfo creatureInfo : CreatureManager.getInstance().creatures.values()) {
-					beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.name, 1));
+					beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.getName(), 1));
 				}
 				beastiary.sendAllToClient();
 				reply = I18n.translateToLocal("lyc.command.beastiary.complete");

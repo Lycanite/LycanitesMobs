@@ -2,14 +2,13 @@ package com.lycanitesmobs.plainsmobs.entity;
 
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupHunter;
+import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.api.IGroupPredator;
-import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -17,15 +16,12 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityKobold extends EntityCreatureTameable implements IMob, IGroupPrey {
@@ -36,19 +32,15 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
  	// ==================================================
     public EntityKobold(World world) {
         super(world);
-        this.torchGreifing = ConfigBase.getConfig(this.group, "general").getBool("Features", "Kobold Torch Griefing", this.torchGreifing, "Set to false to stop Kobolds from stealing torches.");
+        this.torchGreifing = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Kobold Torch Griefing", this.torchGreifing, "Set to false to stop Kobolds from stealing torches.");
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.experience = 5;
         this.hasAttackSound = true;
         this.spreadFire = false;
 
         this.canGrow = false;
         this.babySpawnChance = 0.1D;
-        
-        this.setWidth = 0.5F;
-        this.setHeight = 0.9F;
         this.setupMob();
     }
 
@@ -68,6 +60,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -80,28 +73,6 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
         this.targetTasks.addTask(5, new EntityAITargetAvoid(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 10D);
-		baseAttributes.put("movementSpeed", 0.28D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 2D);
-        baseAttributes.put("attackSpeed", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 0.25F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Items.IRON_INGOT), 0.05F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.GOLD_NUGGET), 0.025F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD), 0.01F).setMaxAmount(1));
-	}
 	
 	
 	// ==================================================
@@ -170,7 +141,7 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
     
     @Override
     public boolean canPickupItems() {
-    	return ConfigBase.getConfig(this.group, "general").getBool("Features", "Kobold Thievery", true, "Set to false to prevent Kobold from collecting items.");
+    	return ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Kobold Thievery", true, "Set to false to prevent Kobold from collecting items.");
     }
     
     

@@ -6,8 +6,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,14 +17,11 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityGorger extends EntityCreatureTameable implements IGroupPredator, IGroupFire, IGroupHeavy {
 
@@ -37,18 +33,12 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 3;
-        this.experience = 10;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.hasAttackSound = false;
 
         this.babySpawnChance = 0.25D;
         this.growthTime = -120000;
-        
-        this.setWidth = 6.8F;
-        this.setDepth = 6.8F;
-        this.setHeight = 1.8F;
         this.setupMob();
         this.hitAreaWidthScale = 1.5F;
     }
@@ -62,7 +52,7 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("gorgertreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(1.0D).setRate(100).setRange(16.0F).setMinChaseDistance(8.0F));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(1.0D).setRange(16.0F).setMinChaseDistance(8.0F));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(9, new EntityAIBeg(this));
 
@@ -75,35 +65,12 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.5D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 1.0F).setMaxAmount(16));
-        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM), 0.75F).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 0.5F).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("magmacharge")), 1F));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
-	}
 
 
     // ==================================================

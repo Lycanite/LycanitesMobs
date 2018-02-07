@@ -10,7 +10,7 @@ public class RenderFactoryCreature<T extends Entity> implements IRenderFactory {
     protected String entityID;
 
     public RenderFactoryCreature(CreatureInfo creatureInfo) {
-        this.entityID = creatureInfo.getEntityId();
+        this.entityID = creatureInfo.getName();
     }
 
     @Override

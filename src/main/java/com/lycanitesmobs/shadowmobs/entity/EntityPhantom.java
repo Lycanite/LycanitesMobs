@@ -5,16 +5,12 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -22,8 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityPhantom extends EntityCreatureTameable implements IMob, IGroupShadow {
     
@@ -35,12 +29,7 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
-        this.defense = 0;
-        this.experience = 5;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
         this.setupMob();
         
         // No Block Collision
@@ -52,12 +41,13 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(40).setRange(14.0F).setMinChaseDistance(0.75F).setCheckSight(false));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(0.75F).setCheckSight(false));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
@@ -65,27 +55,6 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 15D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.0D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 1D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1.0F).setMaxAmount(5));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.OBSIDIAN), 0.5F).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.SKULL, 1, 1), 0.25F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("SpectralboltCharge")), 0.25F).setMaxAmount(3));
-	}
 	
 	
     // ==================================================
@@ -185,11 +154,11 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     	if(this.hasAttackTarget()) {
     		if(this.getAttackTarget() instanceof EntityPlayer)
     			if("Jbams".equals(((EntityPlayer)this.getAttackTarget()).getName())) // JonBams special sound!
-    				return AssetManager.getSound(this.mobInfo.name + "_say_jon");
+    				return AssetManager.getSound(this.creatureInfo.getName() + "_say_jon");
     	}
         if(this.isTamed() && this.getOwner() != null) {
             if("JBams".equals(this.getOwnerName()))
-                return AssetManager.getSound(this.mobInfo.name + "_say_jon");
+                return AssetManager.getSound(this.creatureInfo.getName() + "_say_jon");
         }
     	return super.getAmbientSound();
     }
@@ -205,7 +174,7 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
 
         String textureName = this.getTextureName() + "_satanclaws";
         if(AssetManager.getTexture(textureName) == null)
-            AssetManager.addTexture(textureName, this.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+            AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
         return AssetManager.getTexture(textureName);
     }
 }

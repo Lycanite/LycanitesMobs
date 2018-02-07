@@ -5,7 +5,6 @@ import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,14 +13,11 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityMorock extends EntityCreatureRideable implements IMob, IGroupHunter {
 
@@ -38,13 +34,8 @@ public class EntityMorock extends EntityCreatureRideable implements IMob, IGroup
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 7;
         this.hasAttackSound = true;
         this.flySoundSpeed = 20;
-        
-        this.setWidth = 2.8F;
-        this.setHeight = 1.8F;
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -71,28 +62,6 @@ public class EntityMorock extends EntityCreatureRideable implements IMob, IGroup
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<>();
-		baseAttributes.put("maxHealth", 120D);
-		baseAttributes.put("movementSpeed", 0.42D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 48D);
-		baseAttributes.put("attackDamage", 2D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.BONE), 1F).setMinAmount(3).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_SHARD, 1), 1F).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new MobDrop(new ItemStack(Items.PRISMARINE_CRYSTALS, 1), 0.75F).setMinAmount(3).setMaxAmount(6));
-        this.drops.add(new MobDrop(new ItemStack(Items.DIAMOND, 1), 0.1F).setMaxAmount(1));
-        this.drops.add(new MobDrop(new ItemStack(Items.EMERALD, 1), 0.2F).setMinAmount(1).setMaxAmount(3));
-	}
 	
 	
     // ==================================================

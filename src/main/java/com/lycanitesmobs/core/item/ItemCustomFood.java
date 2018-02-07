@@ -1,12 +1,11 @@
 package com.lycanitesmobs.core.item;
 
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.info.ItemInfo;
 import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.ItemInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;

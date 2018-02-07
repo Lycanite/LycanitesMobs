@@ -2,12 +2,11 @@ package com.lycanitesmobs.desertmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
+import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -15,14 +14,11 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-
-import java.util.HashMap;
 
 public class EntityCrusk extends EntityCreatureTameable implements IGroupPredator, IGroupHeavy {
     
@@ -34,16 +30,9 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         
         // Setup:
         this.attribute = EnumCreatureAttribute.ARTHROPOD;
-        this.defense = 3;
-        this.experience = 10;
         this.hasAttackSound = true;
-
         this.babySpawnChance = 0.25D;
         this.growthTime = -120000;
-        
-        this.setWidth = 5.8F;
-        this.setDepth = 5.8F;
-        this.setHeight = 1.8F;
         this.setupMob();
         this.hitAreaWidthScale = 1.5F;
     }
@@ -57,8 +46,8 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAIFollowOwner(this).setStrayDistance(8).setLostDistance(32));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("crusktreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false).setRate(60));
-        this.tasks.addTask(6, new EntityAIAttackMelee(this).setRate(30));
+        this.tasks.addTask(5, new EntityAIAttackMelee(this).setTargetClass(EntityPlayer.class).setLongMemory(false));
+        this.tasks.addTask(6, new EntityAIAttackMelee(this));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(9, new EntityAIBeg(this));
 
@@ -69,33 +58,12 @@ public class EntityCrusk extends EntityCreatureTameable implements IGroupPredato
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 40D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 0.5D);
-		baseAttributes.put("followRange", 16D);
-		baseAttributes.put("attackDamage", 4D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.CLAY_BALL), 1).setMinAmount(6).setMaxAmount(12));
-        this.drops.add(new MobDrop(new ItemStack(Items.FLINT), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.IRON_ORE), 0.5F).setMinAmount(2).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Blocks.GOLD_ORE), 0.25F).setMinAmount(1).setMaxAmount(2));
-	}
     
     
     // ==================================================

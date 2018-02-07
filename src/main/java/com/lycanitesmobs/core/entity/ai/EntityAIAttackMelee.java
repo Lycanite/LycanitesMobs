@@ -20,7 +20,6 @@ public class EntityAIAttackMelee extends EntityAIBase {
     private Class targetClass;
     private boolean longMemory = true;
     private int attackTime;
-    private int attackTimeMax = 20;
     private double attackRange = 0.5D;
     private float maxChaseDistance = 40.0F;
     private double damage = 1.0D;
@@ -57,10 +56,6 @@ public class EntityAIAttackMelee extends EntityAIBase {
     }
     public EntityAIAttackMelee setLongMemory(boolean setMemory) {
     	this.longMemory = setMemory;
-    	return this;
-    }
-    public EntityAIAttackMelee setRate(int setRate) {
-    	this.attackTimeMax = setRate;
     	return this;
     }
     public EntityAIAttackMelee setRange(double range) {
@@ -108,7 +103,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
 
             // Set Direct Target:
         	else
-        		return this.host.directNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)attackTarget.posY + this.host.getFlightOffset(), (int)attackTarget.posZ), speed);
+        		return this.host.directNavigator.setTargetPosition(new BlockPos((int)attackTarget.posX, (int)attackTarget.posY + this.host.getFlightOffset(), (int)attackTarget.posZ), this.speed);
         }
         return true;
     }
@@ -170,10 +165,10 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	        
 	        // Path To Target:
         	if(!this.host.useDirectNavigator()) {
-        		this.host.getNavigator().tryMoveToXYZ(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ, this.speed);
+        		this.host.getNavigator().tryMoveToXYZ(attackTarget.posX, attackTarget.getEntityBoundingBox().minY + this.host.getFlightOffset(), attackTarget.posZ, this.speed);
 	            if(this.host.getNavigator().getPath() != null) {
 	                PathPoint finalPathPoint = this.host.getNavigator().getPath().getFinalPathPoint();
-	                if(finalPathPoint != null && attackTarget.getDistance(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
+	                if(finalPathPoint != null && attackTarget.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
 	                    failedPathFindingPenalty = 0;
 	                else
 	                    failedPathFindingPenalty += failedPathFindingPenaltyMax;
@@ -189,10 +184,9 @@ public class EntityAIAttackMelee extends EntityAIBase {
         }
         
         // Damage Target:
-        this.attackTime = Math.max(this.attackTime - 1, 0);
-        if(this.host.getDistance(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ) <= this.attackRange + this.host.width + attackTarget.width) {
-            if(this.attackTime <= 0) {
-                this.attackTime = Math.round((float)this.attackTimeMax + ((float)this.attackTimeMax - ((float)this.attackTimeMax * (float)this.host.creatureStats.getHaste())));
+        if(this.host.getDistanceSq(attackTarget.posX, attackTarget.getEntityBoundingBox().minY + this.host.getFlightOffset(), attackTarget.posZ) <= this.getAttackRange(attackTarget)) {
+            if(--this.attackTime <= 0) {
+                this.attackTime = this.host.getMeleeCooldown();
                 if(this.host.getHeldItemMainhand() != null)
                     this.host.swingArm(EnumHand.MAIN_HAND);
                 this.host.meleeAttack(attackTarget, damage);
@@ -208,4 +202,13 @@ public class EntityAIAttackMelee extends EntityAIBase {
             this.host.rotationYaw = this.host.rotationYaw + f;
         }
     }
+
+	/**
+	 * Returns the required attack range.
+	 * @param attackTarget The entity to attack.
+	 * @return The maximum attack range.
+	 */
+	protected double getAttackRange(EntityLivingBase attackTarget) {
+		return this.attackRange + 0.5D + (this.host.width * 2.0F * this.host.width * 2.0F + attackTarget.width);
+	}
 }

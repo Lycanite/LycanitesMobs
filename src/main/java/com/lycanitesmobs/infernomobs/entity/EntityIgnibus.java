@@ -5,8 +5,7 @@ import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.EntityProjectileRapidFire;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.MobDrop;
-import com.lycanitesmobs.core.info.MobInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +14,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -28,7 +26,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire, IGroupHeavy {
@@ -44,16 +41,11 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 0;
-        this.experience = 5;
         this.spawnsOnLand = true;
         this.spawnsInWater = true;
         this.isLavaCreature = true;
         this.flySoundSpeed = 20;
         this.hasAttackSound = false;
-        
-        this.setWidth = 5.9F;
-        this.setHeight = 8.9F;
         
         this.justAttackedTime = 20;
         this.setupMob();
@@ -70,7 +62,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ignibustreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRate(20).setStaminaTime(100).setRange(20.0F).setMinChaseDistance(10.0F));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(20.0F).setMinChaseDistance(10.0F));
         this.tasks.addTask(7, new EntityAIFollowParent(this));
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(9, new EntityAIBeg(this));
@@ -87,35 +79,12 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPlant.class));
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class));
-        if(MobInfo.predatorsAttackAnimals) {
+        if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupAnimal.class));
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class));
         }
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 400D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 40D);
-		baseAttributes.put("attackDamage", 0D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 1F).setMinAmount(4).setMaxAmount(16));
-        this.drops.add(new MobDrop(new ItemStack(Items.COAL), 10F).setMaxAmount(40));
-        this.drops.add(new MobDrop(new ItemStack(Items.MAGMA_CREAM), 4F).setMaxAmount(8));
-        this.drops.add(new MobDrop(new ItemStack(Items.BLAZE_POWDER), 10F).setMaxAmount(20));
-        this.drops.add(new MobDrop(new ItemStack(Items.GOLD_NUGGET), 1F).setMinAmount(10).setMaxAmount(40));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("scorchfirecharge")), 1F).setMinAmount(1).setMaxAmount(3));
-	}
 
     // ========== Size ==========
     @Override

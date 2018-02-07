@@ -1,16 +1,14 @@
 package com.lycanitesmobs.mountainmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.ObjectLists;
-import com.lycanitesmobs.core.entity.EntityCreatureRideable;
-import com.lycanitesmobs.core.info.MobDrop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -22,7 +20,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class EntityBeholder extends EntityCreatureRideable {
@@ -35,12 +32,7 @@ public class EntityBeholder extends EntityCreatureRideable {
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
-        this.defense = 2;
-        this.experience = 5;
         this.hasAttackSound = false;
-        
-        this.setWidth = 3.9F;
-        this.setHeight = 3.9F;
         
         this.justAttackedTime = 20;
         this.solidCollision = true;
@@ -55,7 +47,7 @@ public class EntityBeholder extends EntityCreatureRideable {
         super.initEntityAI();
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("beholdertreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRate(80).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
+        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
         this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -67,28 +59,6 @@ public class EntityBeholder extends EntityCreatureRideable {
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
-    
-    // ========== Stats ==========
-	@Override
-	protected void applyEntityAttributes() {
-		HashMap<String, Double> baseAttributes = new HashMap<String, Double>();
-		baseAttributes.put("maxHealth", 20D);
-		baseAttributes.put("movementSpeed", 0.24D);
-		baseAttributes.put("knockbackResistance", 1.0D);
-		baseAttributes.put("followRange", 40D);
-		baseAttributes.put("attackDamage", 0D);
-        super.applyEntityAttributes(baseAttributes);
-    }
-	
-	// ========== Default Drops ==========
-	@Override
-	public void loadItemDrops() {
-        this.drops.add(new MobDrop(new ItemStack(Items.GHAST_TEAR), 0.25F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.GUNPOWDER), 0.5F).setMinAmount(1).setMaxAmount(3));
-        this.drops.add(new MobDrop(new ItemStack(Items.GLOWSTONE_DUST), 0.5F).setMinAmount(4).setMaxAmount(16));
-        this.drops.add(new MobDrop(new ItemStack(Items.ENDER_EYE), 0.25F).setMinAmount(1).setMaxAmount(2));
-        this.drops.add(new MobDrop(new ItemStack(ObjectManager.getItem("arcanelaserstormcharge")), 0.25F));
-	}
 
 
     // ==================================================

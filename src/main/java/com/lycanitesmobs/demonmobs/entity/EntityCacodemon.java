@@ -17,6 +17,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -167,27 +168,9 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
 
 	// ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
-    	// Type:
-    	EntityDemonicBlast projectile = new EntityDemonicBlast(this.getEntityWorld(), this);
-        projectile.setProjectileScale(2f);
-    	
-    	// Y Offset:
-    	projectile.posY -= this.height * 0.5D;
-    	
-    	// Set Velocities:
-        double d0 = target.posX - this.posX;
-        double d1 = target.posY - projectile.posY;
-        double d2 = target.posZ - this.posZ;
-        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.1F;
-        float velocity = 0.5F;
-        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 0.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.getEntityWorld().spawnEntity(projectile);
-
-        super.rangedAttack(target, range);
+    public void attackRanged(Entity target, float range) {
+        this.fireProjectile(EntityDemonicBlast.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+        super.attackRanged(target, range);
     }
     
     
@@ -199,16 +182,6 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     	if(entity instanceof EntityCacodemon)
     		return false;
     	return super.isDamageEntityApplicable(entity);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WITHER)
-            return false;
-        if(ObjectManager.getPotionEffect("decay") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
     
     @Override

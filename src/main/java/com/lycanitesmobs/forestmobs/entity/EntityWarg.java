@@ -179,24 +179,6 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
             this.leapedAbilityQueued = true;
     }
 
-
-    // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
-            return false;
-
-        // Effect:
-        if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("paralysis") != null) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("paralysis"), this.getEffectDuration(2), 0));
-        }
-
-        return true;
-    }
-
     
     // ==================================================
     //                   Mount Ability
@@ -247,15 +229,6 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

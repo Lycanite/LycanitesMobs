@@ -139,15 +139,6 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("penetration")) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }
@@ -172,7 +163,7 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
     // ========== Ranged Attack ==========
     EntityWaterJet projectile = null;
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
         // Update Laser:
         if(this.projectile != null && this.projectile.isEntityAlive()) {
             this.projectile.setTime(20);
@@ -191,6 +182,8 @@ public class EntityIoray extends EntityCreatureRideable implements IMob, IGroupP
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             this.getEntityWorld().spawnEntity(projectile);
         }
+
+        super.attackRanged(target, range);
     }
 
 

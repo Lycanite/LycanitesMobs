@@ -143,17 +143,6 @@ public class EntityKobold extends EntityCreatureTameable implements IMob, IGroup
     public boolean canPickupItems() {
     	return ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Kobold Thievery", true, "Set to false to prevent Kobold from collecting items.");
     }
-    
-    
-    // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
 	
 	
 	// ==================================================

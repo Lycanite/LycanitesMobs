@@ -87,8 +87,9 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
     
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
     	this.fireProjectile(EntityFrostbolt.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+        super.attackRanged(target, range);
     }
     
     
@@ -112,13 +113,6 @@ public class EntityReiver extends EntityCreatureTameable implements IMob, IGroup
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("ooze")) return false;
         return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
-        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

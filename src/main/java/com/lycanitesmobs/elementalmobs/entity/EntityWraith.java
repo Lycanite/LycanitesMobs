@@ -102,20 +102,6 @@ public class EntityWraith extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                     Attacks
     // ==================================================
-	// ========== Melee Attack ==========
-	@Override
-	public boolean meleeAttack(Entity target, double damageScale) {
-		if(!super.meleeAttack(target, damageScale))
-			return false;
-
-		// Decay:
-		if(ObjectManager.getPotionEffect("decay") != null) {
-			((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
-		}
-
-		return true;
-	}
-
     public void chargeAttack() {
         this.leap(5, this.rotationPitch);
         this.detonateTimer = 10;
@@ -156,16 +142,6 @@ public class EntityWraith extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-		if(potionEffect.getPotion() == MobEffects.WITHER)
-			return false;
-		if(ObjectManager.getPotionEffect("decay") != null)
-			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
     @Override
     public boolean canBurn() { return false; }
     

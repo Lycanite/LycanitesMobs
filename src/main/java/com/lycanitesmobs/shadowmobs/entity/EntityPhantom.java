@@ -17,6 +17,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityPhantom extends EntityCreatureTameable implements IMob, IGroupShadow {
@@ -78,29 +79,9 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     // ==================================================
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
-    	// Type:
-    	EntitySpectralbolt projectile = new EntitySpectralbolt(this.getEntityWorld(), this);
-        projectile.setProjectileScale(0.5f);
-    	
-    	// Y Offset:
-    	projectile.posY -= this.height / 4;
-    	
-    	// Accuracy:
-    	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);
-    	
-    	// Set Velocities:
-        double d0 = target.posX - this.posX + accuracy;
-        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
-        double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-        float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.getEntityWorld().spawnEntity(projectile);
-        super.rangedAttack(target, range);
+    public void attackRanged(Entity target, float range) {
+        this.fireProjectile(EntitySpectralbolt.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+        super.attackRanged(target, range);
     }
     
     
@@ -129,15 +110,6 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("inWall")) return false;
     	return super.isDamageTypeApplicable(type, source, damage);
-    }
-    
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        if(ObjectManager.getPotionEffect("Fear") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
 
     /** Returns true if this mob should be damaged by the sun. **/

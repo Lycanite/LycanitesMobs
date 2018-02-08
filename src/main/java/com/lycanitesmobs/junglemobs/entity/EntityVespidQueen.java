@@ -82,6 +82,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(1200));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(1, new EntityAITargetMasterAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityConba.class));
         this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVespidQueen.class));
@@ -364,23 +365,15 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(target instanceof EntityConba) {
-    		((EntityConba)target).vespidInfection = true;
-    		return true;
-    	}
-    	
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effect:
-        if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 16;
-            if(target instanceof EntityPlayer)
-            	effectSeconds /= 2;
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(effectSeconds), 0));
-        }
-        
+    public boolean attackMelee(Entity target, double damageScale) {
+		if(!super.attackMelee(target, damageScale))
+			return false;
+
+		if(target instanceof EntityConba) {
+			((EntityConba)target).vespidInfection = true;
+			return true;
+		}
+
         return true;
     }
     
@@ -419,13 +412,6 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("inWall")) return false;

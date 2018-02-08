@@ -78,23 +78,6 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
         }
     }
     
-    // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-
-        // Effect:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(20), 1));
-        }
-        
-        return true;
-    }
-    
     
     // ==================================================
    	//                    Taking Damage
@@ -127,13 +110,6 @@ public class EntityTriffid extends EntityCreatureTameable implements IMob, IGrou
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

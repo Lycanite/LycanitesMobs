@@ -164,8 +164,8 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
 
         if(target instanceof EntityLivingBase && this.getControllingPassenger() == null) {
@@ -235,19 +235,6 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return false; }
-    
-    
-    // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS)
-            return false;
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE)
-            return false;
-        return super.isPotionApplicable(potionEffect);
-    }
 
 
     // ==================================================

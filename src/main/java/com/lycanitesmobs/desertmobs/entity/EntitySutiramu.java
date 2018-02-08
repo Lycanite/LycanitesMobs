@@ -61,36 +61,11 @@ public class EntitySutiramu extends EntityCreatureTameable implements IMob, IGro
             this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityAnimal.class).setPackHuntingScale(2, 1));
         }
     }
-
-
-    // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-
-    	// Hunger:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.HUNGER, this.getEffectDuration(7), 0));
-        }
-
-        return true;
-    }
     
     
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-
     @Override
     public boolean canBurn() { return false; }
 	

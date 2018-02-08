@@ -215,7 +215,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
 
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
         // Type:
         List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
 
@@ -275,21 +275,13 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
             this.getEntityWorld().spawnEntity(projectile);
         }
 
-        super.rangedAttack(target, range);
+        super.attackRanged(target, range);
     }
     
     
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-
     @Override
     public boolean canBurn() { return false; }
 

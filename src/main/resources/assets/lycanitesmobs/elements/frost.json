@@ -1,6 +1,7 @@
 {
 	"name": "frost",
 	"loadDefault": true,
+	"canFreeze": false,
 	"buffs": [
 		"lycanitesmobs:freezeaura"
 	],

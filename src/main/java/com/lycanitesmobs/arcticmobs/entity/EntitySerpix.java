@@ -102,7 +102,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
     // ==================================================
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
         // Type:
         List<EntityProjectileRapidFire> projectiles = new ArrayList<>();
 
@@ -157,7 +157,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
             this.getEntityWorld().spawnEntity(projectile);
         }
 
-        super.rangedAttack(target, range);
+        super.attackRanged(target, range);
     }
     
     
@@ -219,13 +219,6 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
     	if(type.equals("cactus")) return false;
     	if(type.equals("inWall")) return false;
     	return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
-        return super.isPotionApplicable(potionEffect);
     }
 	
 	

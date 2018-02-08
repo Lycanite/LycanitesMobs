@@ -176,24 +176,6 @@ public class EntityMaug extends EntityCreatureRideable implements IGroupPredator
             this.leapedAbilityQueued = true;
     }
 
-
-    // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
-            return false;
-
-        // Effect:
-        if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("weight") != null) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(4), 0));
-        }
-
-        return true;
-    }
-
     
     // ==================================================
     //                   Mount Ability
@@ -249,13 +231,6 @@ public class EntityMaug extends EntityCreatureRideable implements IGroupPredator
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("ooze")) return false;
         return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
-        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

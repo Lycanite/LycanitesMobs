@@ -142,14 +142,9 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
    	// ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+        if(!super.attackMelee(target, damageScale))
         	return false;
-
-		// Decay:
-		if(ObjectManager.getPotionEffect("decay") != null) {
-			((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
-		}
         
     	// Breed:
     	if(target instanceof EntityCow || target instanceof EntityPig || target instanceof EntitySheep || target instanceof EntityHorse || target instanceof EntityLlama)
@@ -211,16 +206,6 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-		if(potionEffect.getPotion() == MobEffects.WITHER)
-			return false;
-		if(ObjectManager.getPotionEffect("decay") != null)
-			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-
     @Override
     public boolean canBurn() {
         return false;

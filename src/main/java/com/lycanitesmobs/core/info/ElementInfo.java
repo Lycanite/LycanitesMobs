@@ -15,7 +15,7 @@ import java.util.List;
 public class ElementInfo {
 
 	/** The name of this element. **/
-	public String name;
+	public String name = "default";
 
 	/** The names of elements that make up this elements, used by compound elements. **/
 	protected List<String> componentNames = new ArrayList<>();
@@ -120,9 +120,15 @@ public class ElementInfo {
 	 * @return True if the effect can be applied.
 	 */
 	public boolean isEffectApplicable(PotionEffect effect) {
-		if(this.debuffs.isEmpty())
-			return true;
-		return !this.debuffs.contains(effect.getPotion().getRegistryName().toString());
+		if(this.debuffs.contains(effect.getPotion().getRegistryName().toString())) {
+			return false;
+		}
+		for(ElementInfo element : this.components) {
+			if(!element.isEffectApplicable(effect)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 
@@ -131,7 +137,15 @@ public class ElementInfo {
 	 * @return True if can burn.
 	 */
 	public boolean canBurn() {
-		return this.canBurn;
+		if(!this.canBurn) {
+			return false;
+		}
+		for(ElementInfo element : this.components) {
+			if(!element.canBurn()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 
@@ -140,6 +154,14 @@ public class ElementInfo {
 	 * @return True if can burn.
 	 */
 	public boolean canFreeze() {
-		return this.canFreeze;
+		if(!this.canFreeze) {
+			return false;
+		}
+		for(ElementInfo element : this.components) {
+			if(!element.canFreeze()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -83,20 +83,6 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
-	// ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Poison:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 0));
-        }
-
-        return true;
-    }
-
 	@Override
 	public int getMeleeCooldown() {
 		if(this.getAttackPhase() == 2)
@@ -122,13 +108,6 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

@@ -62,20 +62,6 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Hunger:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.HUNGER, this.getEffectDuration(7), 0));
-        }
-        
-        return true;
-    }
-    
     // ========== On Kill ==========
     @Override
     public void onKillEntity(EntityLivingBase entityLivingBase) {
@@ -101,17 +87,6 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
             this.getEntityWorld().spawnEntity(entityzombievillager);
             this.getEntityWorld().playEvent(null, 1016, entityzombievillager.getPosition(), 0);
         }
-    }
-    
-    
-    // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        return super.isPotionApplicable(potionEffect);
     }
 	
 	

@@ -10,6 +10,8 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -147,6 +149,16 @@ public class PotionEffects {
 			}
 		}
 
+		// Smited
+		PotionBase smited = ObjectManager.getPotionEffect("smited");
+		if(instability != null && !entity.getEntityWorld().isRemote) {
+			if(!invulnerable && entity.isPotionActive(smited)) {
+				if(entity.getEntityWorld().canBlockSeeSky(entity.getPosition())) {
+					entity.setFire(4);
+				}
+			}
+		}
+
 
 		// ========== Buffs ==========
 		// Swiftswimming
@@ -247,6 +259,31 @@ public class PotionEffects {
 		if(weight != null) {
 			if(entity.isPotionActive(weight)) {
 				if(event.isCancelable()) event.setCanceled(true);
+			}
+		}
+	}
+
+
+	// ==================================================
+	//               Living Attack Event
+	// ==================================================
+	@SubscribeEvent
+	public void onLivingAttack(LivingAttackEvent event) {
+		if(event.isCancelable() && event.isCanceled())
+			return;
+
+		if(event.getEntityLiving() == null)
+			return;
+
+		// ========== Debuffs ==========
+		// Lifeleak
+		PotionBase lifeleak = ObjectManager.getPotionEffect("lifeleak");
+		if(lifeleak != null && !event.getEntityLiving().getEntityWorld().isRemote) {
+			if(event.getEntityLiving().isPotionActive(lifeleak)) {
+				if (event.isCancelable()) {
+					event.setCanceled(true);
+				}
+				event.getEntityLiving().heal(event.getAmount());
 			}
 		}
 	}
@@ -355,6 +392,30 @@ public class PotionEffects {
 		PotionBase insomnia = ObjectManager.getPotionEffect("insomnia");
 		if(insomnia != null && player.isPotionActive(insomnia)) {
 			event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+		}
+	}
+
+
+	// ==================================================
+	//               Item Use Event
+	// ==================================================
+	@SubscribeEvent
+	public void onLivingUseItem(LivingEntityUseItemEvent event) {
+		if(event.isCancelable() && event.isCanceled())
+			return;
+
+		if(event.getEntityLiving() == null)
+			return;
+
+		// ========== Debuffs ==========
+		// Aphagia
+		PotionBase aphagia = ObjectManager.getPotionEffect("aphagia");
+		if(aphagia != null && !event.getEntityLiving().getEntityWorld().isRemote) {
+			if(event.getEntityLiving().isPotionActive(aphagia)) {
+				if(event.isCancelable()) {
+					event.setCanceled(true);
+				}
+			}
 		}
 	}
 

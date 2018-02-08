@@ -93,8 +93,8 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
     	
     	// Leech:
@@ -136,15 +136,6 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

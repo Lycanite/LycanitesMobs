@@ -16,6 +16,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
@@ -91,7 +92,7 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
     // ==================================================
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
         for(int i = -2; i < 12; i++) {
             // Type:
             EntityQuill projectile = new EntityQuill(this.getEntityWorld(), this);
@@ -116,18 +117,7 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
             this.getEntityWorld().spawnEntity(projectile);
         }
 
-        super.rangedAttack(target, range);
-    }
-    
-    
-    // ==================================================
-    //                     Immunities
-    // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
+        super.attackRanged(target, range);
     }
 
 

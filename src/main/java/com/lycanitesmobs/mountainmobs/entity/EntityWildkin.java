@@ -75,34 +75,8 @@ public class EntityWildkin extends EntityCreatureTameable implements IMob {
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
-            return false;
-
-        // Damage Effect:
-        if(target instanceof EntityLivingBase) {
-            if(ObjectManager.getPotionEffect("weight") != null)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(5), 0));
-        }
-        return true;
-    }
-    
-    
-    // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

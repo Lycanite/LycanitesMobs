@@ -81,22 +81,11 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
     // ==================================================
     // ========== Ranged Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	boolean success = super.meleeAttack(target, damageScale);
+    public boolean attackMelee(Entity target, double damageScale) {
+    	boolean success = super.attackMelee(target, damageScale);
     	if(success)
     		this.nextAttackPhase();
     	return success;
-    }
-    
-    
-    // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
     }
 	
 	

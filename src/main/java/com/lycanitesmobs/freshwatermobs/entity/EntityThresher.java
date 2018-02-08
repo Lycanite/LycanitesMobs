@@ -226,15 +226,6 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Paralysis")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }

@@ -119,17 +119,6 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
     
     
     // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    
-    // ==================================================
     //                     Breeding
     // ==================================================
     // ========== Create Child ==========

@@ -90,24 +90,6 @@ public class EntityDawon extends EntityCreatureTameable implements IAnimals, IGr
             }
         }
     }
-	
-	
-	// ==================================================
-   	//                      Attacks
-   	// ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
-        	return false;
-
-        // Poison:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(5), 0));
-        }
-    	
-        return true;
-    }
 
 
     // ==================================================
@@ -126,13 +108,6 @@ public class EntityDawon extends EntityCreatureTameable implements IAnimals, IGr
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-
     @Override
     public float getFallResistance() {
         return 100;

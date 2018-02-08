@@ -10,7 +10,7 @@ public class PotionBase extends Potion {
 	public PotionBase(String name, boolean badEffect, int color) {
 		super(badEffect, color);
 		this.setRegistryName(LycanitesMobs.modid, name);
-		this.setPotionName(name);
+		this.setPotionName("effect." + name);
 	}
 	
 	

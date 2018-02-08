@@ -66,25 +66,6 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effects:
-        if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.HUNGER, this.getEffectDuration(7), 0));
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, this.getEffectDuration(7), 0));
-        }
-        
-        return true;
-    }
-    
-    
-    // ==================================================
   	//                     Abilities
   	// ==================================================
     @Override
@@ -104,12 +85,5 @@ public class EntityManticore extends EntityCreatureTameable implements IMob, IGr
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("cactus")) return false;
     	return super.isDamageTypeApplicable(type, source, damage);
-    }
-    
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.HUNGER) return false;
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        return super.isPotionApplicable(potionEffect);
     }
 }

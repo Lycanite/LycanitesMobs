@@ -19,6 +19,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityTroll extends EntityCreatureTameable implements IMob {
@@ -128,31 +129,11 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
     //                      Attacks
     // ==================================================
 	// ========== Ranged Attack ==========
-    @Override
-    public void rangedAttack(Entity target, float range) {
-    	// Type:
-        EntityProjectileBase projectile = new EntityBoulderBlast(this.getEntityWorld(), this);
-        projectile.setProjectileScale(6f);
-    	
-    	// Y Offset:
-    	projectile.posY -= this.height / 4;
-    	
-    	// Accuracy:
-    	float accuracy = 3.0F * (this.getRNG().nextFloat() - 0.5F);
-    	
-    	// Set Velocities:
-        double d0 = target.posX - this.posX + accuracy;
-        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
-        double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-        float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.getEntityWorld().spawnEntity(projectile);
-        super.rangedAttack(target, range);
-    }
+	@Override
+	public void attackRanged(Entity target, float range) {
+		this.fireProjectile(EntityBoulderBlast.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+		super.attackRanged(target, range);
+	}
     
     
     // ==================================================
@@ -189,14 +170,6 @@ public class EntityTroll extends EntityCreatureTameable implements IMob {
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 50;

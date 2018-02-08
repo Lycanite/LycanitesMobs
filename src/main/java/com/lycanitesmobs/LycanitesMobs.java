@@ -144,13 +144,13 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("rage", config, true, 0xFF4400, 4, 0, false);
 			ObjectManager.addPotionEffect("weight", config, true, 0x000022, 1, 0, false);
 			ObjectManager.addPotionEffect("fear", config, false, 0x220022, 5, 1, false);
-			ObjectManager.addPotionEffect("decay", config, true, 0x110033, 1, 2, false);
+			ObjectManager.addPotionEffect("decay", config, true, 0x110033, 2, 1, false);
 			ObjectManager.addPotionEffect("insomnia", config, true, 0x002222, 5, 1, false);
 			ObjectManager.addPotionEffect("instability", config, true, 0x004422, 5, 1, false);
-			ObjectManager.addPotionEffect("lifeleak", config, true, 0x0055FF, 5, 1, false);
-			ObjectManager.addPotionEffect("plague", config, true, 0x220066, 5, 1, false);
-			ObjectManager.addPotionEffect("aphagia", config, true, 0xFFDDDD, 5, 1, false);
-			ObjectManager.addPotionEffect("smited", config, true, 0xDDDDFF, 5, 1, false);
+			ObjectManager.addPotionEffect("lifeleak", config, true, 0x0055FF, 5, 0, false);
+			ObjectManager.addPotionEffect("plague", config, true, 0x220066, 0, 6, false);
+			ObjectManager.addPotionEffect("aphagia", config, true, 0xFFDDDD, 3, 0, false);
+			ObjectManager.addPotionEffect("smited", config, true, 0xDDDDFF, 1, 1, false);
 
 			ObjectManager.addPotionEffect("leech", config, false, 0x00FF99, 7, 0, true);
 			ObjectManager.addPotionEffect("swiftswimming", config, false, 0x0000FF, 0, 2, true);
@@ -158,10 +158,10 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("rejuvenation", config, false, 0x99FFBB, 7, 2, true);
 			ObjectManager.addPotionEffect("immunization", config, false, 0x66FFBB, 7, 2, true);
 			ObjectManager.addPotionEffect("cleansed", config, false, 0x66BBFF, 6, 1, true);
-			ObjectManager.addPotionEffect("heataura", config, false, 0x996600, 5, 1, true);
-			ObjectManager.addPotionEffect("staticaura", config, false, 0xFFBB55, 5, 1, true);
-			ObjectManager.addPotionEffect("freezeaura", config, false, 0x55BBFF, 5, 1, true);
-			ObjectManager.addPotionEffect("envenom", config, false, 0x44DD66, 5, 1, true);
+			ObjectManager.addPotionEffect("heataura", config, false, 0x996600, 7, 1, true); // TODO Implement
+			ObjectManager.addPotionEffect("staticaura", config, false, 0xFFBB55, 6, 1, true); // TODO Implement
+			ObjectManager.addPotionEffect("freezeaura", config, false, 0x55BBFF, 6, 1, true); // TODO Implement
+			ObjectManager.addPotionEffect("envenom", config, false, 0x44DD66, 4, 0, true); // TODO Implement
 
 			MinecraftForge.EVENT_BUS.register(new PotionEffects());
 		}

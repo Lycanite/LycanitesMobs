@@ -172,24 +172,6 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
             this.leapedAbilityQueued = true;
     }
 
-
-    // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
-            return false;
-
-        // Effect:
-        if(target instanceof EntityLivingBase && this.leapedAbilityReady) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, this.getEffectDuration(2), 0));
-        }
-
-        return true;
-    }
-
     
     // ==================================================
     //                   Mount Ability
@@ -240,13 +222,6 @@ public class EntityFeradon extends EntityCreatureRideable implements IGroupPreda
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS) return false;
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

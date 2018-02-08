@@ -124,25 +124,6 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effects:
-        if(target instanceof EntityLivingBase) {
-			if(ObjectManager.getPotionEffect("instability") != null)
-				((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("instability"), this.getEffectDuration(10), 0));
-		}
-        
-        return true;
-    }
-    
-    
-    // ==================================================
   	//                     Abilities
   	// ==================================================
     @Override
@@ -165,13 +146,6 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("inWall")) return false;
         return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("instability") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("instability")) return false;
-        return super.isPotionApplicable(potionEffect);
     }
 
     @Override

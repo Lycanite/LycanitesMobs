@@ -14,6 +14,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDemon {
@@ -86,27 +87,9 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
     
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
-    	// Type:
-    	EntityDevilstar projectile = new EntityDevilstar(this.getEntityWorld(), this);
-        projectile.setProjectileScale(1f);
-    	
-    	// Y Offset:
-    	projectile.posY -= this.height * 0.35D;
-    	
-    	// Set Velocities:
-        double distanceX = target.posX - this.posX;
-        double distanceY = target.posY - (target.height * 0.25D) - projectile.posY;
-        double distanceZ = target.posZ - this.posZ;
-        float distanceXZ = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ) * 0.1F;
-        float velocity = 1.2F;
-        projectile.setThrowableHeading(distanceX, distanceY + (double)distanceXZ, distanceZ, velocity, 0.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.getEntityWorld().spawnEntity(projectile);
-
-        super.rangedAttack(target, range);
+    public void attackRanged(Entity target, float range) {
+        this.fireProjectile(EntityDevilstar.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+        super.attackRanged(target, range);
     }
 	
 	
@@ -136,16 +119,6 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WITHER)
-            return false;
-        if(ObjectManager.getPotionEffect("decay") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
     @Override
     public boolean canBurn() { return false; }
 }

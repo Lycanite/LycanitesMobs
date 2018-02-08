@@ -174,24 +174,6 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
             this.leapedAbilityQueued = true;
     }
 
-
-    // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
-            return false;
-
-        // Effect:
-        if(target instanceof EntityLivingBase && this.leapedAbilityReady && ObjectManager.getPotionEffect("weight") != null) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(4), 0));
-        }
-
-        return true;
-    }
-
     
     // ==================================================
     //                   Mount Ability
@@ -243,14 +225,6 @@ public class EntityBarghest extends EntityCreatureRideable implements IGroupPred
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

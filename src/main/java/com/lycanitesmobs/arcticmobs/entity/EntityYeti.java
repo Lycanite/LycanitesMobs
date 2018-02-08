@@ -116,24 +116,6 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effect:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(8), 0));
-        }
-        
-        return true;
-    }
-    
-    
-    // ==================================================
    	//                     Immunities
    	// ==================================================
     @Override

@@ -118,7 +118,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
                 if(this.getLatchTarget().isEntityAlive() && !this.isInWater()) {
                     if (this.updateTick % 40 == 0) {
                         float damage = this.getAttackDamage(1);
-                        if (this.meleeAttack(this.getLatchTarget(), damage))
+                        if (this.attackMelee(this.getLatchTarget(), damage))
                             this.heal(damage * 2);
                     }
                 }
@@ -198,7 +198,7 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
 
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
+    public boolean attackMelee(Entity target, double damageScale) {
         // Disable Knockback:
         double targetKnockbackResistance = 0;
         if(target instanceof EntityLivingBase) {
@@ -207,17 +207,12 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
         }
 
         // Melee Attack:
-    	if(!super.meleeAttack(target, damageScale))
+    	if(!super.attackMelee(target, damageScale))
     		return false;
 
         // Restore Knockback:
         if(target instanceof EntityLivingBase)
             ((EntityLivingBase)target).getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(targetKnockbackResistance);
-
-		// Decay:
-		if(ObjectManager.getPotionEffect("decay") != null) {
-			((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
-		}
     	
     	// Latch:
         if(!this.hasLatchTarget() && target instanceof EntityLivingBase && !this.isInWater()) {
@@ -274,17 +269,6 @@ public class EntityDarkling extends EntityCreatureTameable implements IMob, IGro
         if(type.equals("inWall"))
             return false;
         return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        if(ObjectManager.getPotionEffect("Fear") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
-        if(ObjectManager.getPotionEffect("decay") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
 
     @Override

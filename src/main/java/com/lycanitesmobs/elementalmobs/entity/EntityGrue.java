@@ -157,8 +157,8 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
     	
     	// Leech:
@@ -183,13 +183,6 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 		    	this.heal(leeching);
     		}
     	}
-    	
-    	// Effects:
-        if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(7), 0));
-			if(ObjectManager.getPotionEffect("decay") != null)
-				((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
-		}
         
         return true;
     }
@@ -218,17 +211,6 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("inWall")) return false;
         return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        if(ObjectManager.getPotionEffect("fear") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("fear")) return false;
-		if(ObjectManager.getPotionEffect("decay") != null)
-			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
     
     /** Returns true if this mob should be damaged by the sun. **/

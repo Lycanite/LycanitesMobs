@@ -151,17 +151,9 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
-    	
-    	// Effects:
-        if(target instanceof EntityLivingBase) {
-        	if(this.getAttackPhase() == 2 && ObjectManager.getPotionEffect("weight") != null)
-        		((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("weight"), this.getEffectDuration(7), 0));
-        	else
-        		((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(7), 0));
-        }
 
         // Silverfish Extermination:
         if(target instanceof EntitySilverfish) {
@@ -203,16 +195,6 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if(type.equals("cactus") || type.equals("inWall")) return false;
     	    return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-		if(ObjectManager.getPotionEffect("Penetration") != null)
-			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        return super.isPotionApplicable(potionEffect);
     }
     
     @Override

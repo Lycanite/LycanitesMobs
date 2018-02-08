@@ -90,27 +90,6 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-	// ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effect:
-        if(target instanceof EntityLivingBase) {
-            byte effectSeconds = 8;
-            if(target instanceof EntityPlayer)
-            	effectSeconds /= 2;
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(effectSeconds), 0));
-        }
-        
-        return true;
-    }
-    
-    
-    // ==================================================
   	//                     Abilities
   	// ==================================================
     @Override
@@ -135,13 +114,6 @@ public class EntityTarantula extends EntityCreatureTameable implements IMob {
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

@@ -30,6 +30,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -428,30 +429,9 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
-    	// Type:
-    	EntityProjectileBase projectile = new EntityDevilGatling(this.getEntityWorld(), this);
-        projectile.setProjectileScale(4f);
-    	
-    	// Y Offset:
-        BlockPos offset = this.getFacingPosition(this, 13, this.getRotationYawHead() - this.rotationYaw);
-        projectile.posX = offset.getX();
-        projectile.posY = offset.getY() + (this.height * 0.2D);
-        projectile.posZ = offset.getZ();
-    	
-    	// Set Velocities:
-        double d0 = target.posX - projectile.posX;
-        double d1 = target.posY - (target.height * 0.25D) - projectile.posY;
-        double d2 = target.posZ - projectile.posZ;
-        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.1F;
-        float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double) f1, d2, velocity, 0.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), this.getSoundVolume(), 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.getEntityWorld().spawnEntity(projectile);
-
-        super.rangedAttack(target, range);
+    public void attackRanged(Entity target, float range) {
+        this.fireProjectile(EntityDevilGatling.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+        super.attackRanged(target, range);
     }
 
     // ========== Devilstars ==========
@@ -528,16 +508,6 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         if(this.isBlocking())
             return true;
         return super.isEntityInvulnerable(source);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.WITHER)
-            return false;
-        if(ObjectManager.getPotionEffect("decay") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
     
     @Override

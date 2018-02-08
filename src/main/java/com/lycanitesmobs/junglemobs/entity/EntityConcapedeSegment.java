@@ -265,13 +265,6 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     	if(type.equals("inWall")) return false;
     	return super.isDamageTypeApplicable(type, source, damage);
     }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
     
     @Override
     public float getFallResistance() {

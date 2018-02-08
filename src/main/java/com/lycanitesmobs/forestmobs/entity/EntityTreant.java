@@ -98,19 +98,13 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
     
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
     	
     	// Leech:
     	float leeching = this.getEffectStrength(this.getAttackDamage(damageScale));
     	this.heal(leeching);
-    	
-    	// Paralysis:
-    	if(target instanceof EntityLivingBase && this.rand.nextFloat() >= 0.5F) {
-    		if(ObjectManager.getPotionEffect("Paralysis") != null)
-    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis"), this.getEffectDuration(2), 0));
-         }
         
         return true;
     }
@@ -147,15 +141,6 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
     @Override
     public float getFallResistance() {
     	return 100;

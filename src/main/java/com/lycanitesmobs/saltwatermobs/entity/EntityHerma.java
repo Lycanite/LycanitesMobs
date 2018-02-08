@@ -51,6 +51,7 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
         this.tasks.addTask(6, wanderAI);
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
@@ -112,15 +113,6 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-        
-        return true;
-    }
-    
     // ========== Is Aggressive ==========
     @Override
     public boolean isAggressive() {
@@ -133,14 +125,6 @@ public class EntityHerma extends EntityCreatureTameable implements IMob {
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public boolean canBreatheUnderwater() {
         return true;

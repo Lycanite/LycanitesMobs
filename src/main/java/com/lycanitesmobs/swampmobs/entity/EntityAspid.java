@@ -109,35 +109,6 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effect:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(8), 0));
-        }
-        
-        return true;
-    }
-    
-    
-    // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    
-    // ==================================================
     //                     Breeding
     // ==================================================
     // ========== Create Child ==========

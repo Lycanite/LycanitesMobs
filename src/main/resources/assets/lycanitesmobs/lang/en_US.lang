@@ -319,31 +319,31 @@ stat.portal.description=Summoning portals are only able to maintain the presence
 #
 # ========== Potion Effects ==========
 # Debuff:
-potion.paralysis=Paralysis
-potion.penetration=Penetration
-potion.recklessness=Recklessness
-potion.rage=Rage
-potion.weight=Weight
-potion.fear=Fear
-potion.decay=Decay
-potion.insomnia=Insomnia
-potion.instability=Instability
-potion.lifeleak=Lifeleak
-potion.plague=Plague
-potion.aphagia=Aphagia
-potion.smited=Smited
+effect.paralysis=Paralysis
+effect.penetration=Penetration
+effect.recklessness=Recklessness
+effect.rage=Rage
+effect.weight=Weight
+effect.fear=Fear
+effect.decay=Decay
+effect.insomnia=Insomnia
+effect.instability=Instability
+effect.lifeleak=Lifeleak
+effect.plague=Plague
+effect.aphagia=Aphagia
+effect.smited=Smited
 #
 # Buffs:
-potion.leech=Leech
-potion.swiftswimming=Swiftswimming
-potion.fallresist=Fall Resistance
-potion.rejuvenation=Rejuvenation
-potion.immunization=Immunization
-potion.cleansed=Cleansed
-potion.heataura=Heat Aura
-potion.staticaura=Static Aura
-potion.freezeaura=Freeze Aura
-potion.envenom=Envenom
+effect.leech=Leech
+effect.swiftswimming=Swiftswimming
+effect.fallresist=Fall Resistance
+effect.rejuvenation=Rejuvenation
+effect.immunization=Immunization
+effect.cleansed=Cleansed
+effect.heataura=Heat Aura
+effect.staticaura=Static Aura
+effect.freezeaura=Freeze Aura
+effect.envenom=Envenom
 #
 #
 #

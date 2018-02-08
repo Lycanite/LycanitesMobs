@@ -193,13 +193,13 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
 
+        // Pickup:
         if(target instanceof EntityLivingBase && this.getControllingPassenger() == null) {
             EntityLivingBase entityLivingBase = (EntityLivingBase)target;
-            // Pickup:
             if (this.canPickupEntity(entityLivingBase)) {
                 this.pickupEntity(entityLivingBase);
             }
@@ -252,14 +252,6 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-
     @Override
     public float getFallResistance() {
         return 100;

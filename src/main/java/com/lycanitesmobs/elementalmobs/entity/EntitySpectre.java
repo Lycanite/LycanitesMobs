@@ -187,17 +187,6 @@ public class EntitySpectre extends EntityCreatureTameable implements IMob, IGrou
     }
 
     @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        if(ObjectManager.getPotionEffect("fear") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("fear")) return false;
-		if(ObjectManager.getPotionEffect("decay") != null)
-			if(potionEffect.getPotion() == ObjectManager.getPotionEffect("decay")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-
-    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }

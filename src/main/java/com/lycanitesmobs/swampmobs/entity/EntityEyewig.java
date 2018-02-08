@@ -128,24 +128,10 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
     //                      Attacks
     // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effect:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(8), 0));
-        }
-        
-        return true;
-    }
-
     // ========== Ranged Attack ==========
     EntityPoisonRay projectile = null;
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
     	// Update Laser:
     	if(this.projectile != null && this.projectile.isEntityAlive()) {
     		this.projectile.setTime(20);
@@ -163,6 +149,8 @@ public class EntityEyewig extends EntityCreatureRideable {
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 	        this.getEntityWorld().spawnEntity(projectile);
     	}
+
+    	super.attackRanged(target, range);
     }
     
     
@@ -198,13 +186,6 @@ public class EntityEyewig extends EntityCreatureRideable {
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public float getFallResistance() {
     	return 10;

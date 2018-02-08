@@ -141,14 +141,6 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         if(type.equals("inWall")) return false;
             return super.isDamageTypeApplicable(type, source, damage);
     }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
     
     @Override
     public boolean canBurn() { return false; }

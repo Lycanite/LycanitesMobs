@@ -1,6 +1,7 @@
 package com.lycanitesmobs.swampmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.PotionBase;
 import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -78,7 +79,8 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
         
         // Lurker Blind Stalking:
         if(this.getAttackTarget() != null) {
-        	if(this.getAttackTarget().isPotionActive(MobEffects.BLINDNESS))
+        	PotionBase stalkingEffect = ObjectManager.getPotionEffect("plague");
+        	if(stalkingEffect != null && this.getAttackTarget().isPotionActive(stalkingEffect))
         		this.setAvoidTarget(this.getAttackTarget());
         	else
         		this.setAvoidTarget(null);
@@ -97,25 +99,6 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effect:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(8), 1));
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(8), 0));
-        }
-        
-        return true;
-    }
-    
-    
-    // ==================================================
    	//                     Stealth
    	// ==================================================
     @Override
@@ -129,8 +112,11 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 	    			if(itemstack != null && isTamingItem(itemstack))
 	    				return false;
 	    		}
-	    		if(!this.getAttackTarget().isPotionActive(MobEffects.BLINDNESS))
-	    			return false;
+				PotionBase stalkingEffect = ObjectManager.getPotionEffect("plague");
+	    		if(stalkingEffect != null) {
+					if(!this.getAttackTarget().isPotionActive(stalkingEffect))
+						return false;
+				}
 	    		if(this.getDistanceSqToEntity(this.getAttackTarget()) < (5.0D * 5.0D))
 	    			return false;
 	    	}
@@ -174,17 +160,6 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
     // ==================================================
     public int getNoBagSize() { return 0; }
     public int getBagSize() { return 5; }
-    
-    
-    // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
     
     
     // ==================================================

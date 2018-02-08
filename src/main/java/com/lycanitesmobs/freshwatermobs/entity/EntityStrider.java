@@ -255,17 +255,13 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+        if(!super.attackMelee(target, damageScale))
             return false;
 
+        // Pickup:
         if(target instanceof EntityLivingBase) {
             EntityLivingBase entityLivingBase = (EntityLivingBase)target;
-            // Effect:
-            if (ObjectManager.getPotionEffect("penetration") != null)
-                entityLivingBase.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("penetration"), this.getEffectDuration(8), 1));
-
-            // Pickup:
             if (this.canPickupEntity(entityLivingBase) && this.canEntityBeSeen(target)) {
                 this.pickupEntity(entityLivingBase);
                 this.pickupCooldown = 100;
@@ -292,15 +288,6 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Paralysis")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public boolean canBreatheUnderwater() {
         return true;

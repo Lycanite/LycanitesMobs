@@ -132,21 +132,6 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
     
     
     // ==================================================
-    //                      Attacks
-    // ==================================================
-	// ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Damage Effect:
-    	target.setFire(this.getEffectDuration(5) / 20);
-        return true;
-    }
-    
-    
-    // ==================================================
    	//                      Death
    	// ==================================================
     @Override
@@ -175,14 +160,6 @@ public class EntityKhalk extends EntityCreatureTameable implements IMob, IGroupF
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
     @Override
     public boolean canBurn() { return false; }
     

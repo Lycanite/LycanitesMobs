@@ -216,14 +216,6 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE) return false;
-        if(ObjectManager.getPotionEffect("weight") != null)
-        	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    @Override
     public float getFallResistance() {
     	return 50;
     }

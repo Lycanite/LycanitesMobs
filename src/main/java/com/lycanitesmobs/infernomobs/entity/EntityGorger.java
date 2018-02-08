@@ -96,7 +96,7 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
     // ==================================================
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
         // Type:
         EntityProjectileBase projectile = new EntityMagma(this.getEntityWorld(), this);
         projectile.setProjectileScale(2f);
@@ -128,7 +128,7 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
             this.getEntityWorld().spawnEntity(projectile);
         }
 
-        super.rangedAttack(target, range);
+        super.attackRanged(target, range);
     }
     
     
@@ -184,14 +184,6 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
     	if(type.equals("cactus")) return false;
     	if(type.equals("inWall")) return false;
     	return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
 
     @Override

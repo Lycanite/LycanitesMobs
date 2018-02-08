@@ -1421,8 +1421,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
                     }
                     shouldBurn = false;
                 }
-                if(shouldBurn)
-                    this.setFire(8);
+                if(shouldBurn) {
+					this.setFire(8);
+				}
             }
         }
 
@@ -2284,7 +2285,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Melee ==========
     /** Used to make this entity perform a melee attack on the target entity with the given damage scale. **/
     public boolean attackMelee(Entity target, double damageScale) {
-    	boolean success = true;
     	if(this.attackEntityAsMob(target, damageScale)) {
     		
     		// Spread Fire:
@@ -2295,10 +2295,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			if(target instanceof EntityLivingBase && this.creatureStats.getAmplifier() >= 0) {
 				this.creatureInfo.element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
 			}
-        	
+
+			this.setJustAttacked();
+			return true;
     	}
-    	this.setJustAttacked();
-    	return success;
+
+    	return false;
     }
 
     // ========== Ranged ==========

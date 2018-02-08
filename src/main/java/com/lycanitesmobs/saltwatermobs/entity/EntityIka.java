@@ -145,14 +145,6 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         if(type.equals("inWall")) return false;
         return super.isDamageTypeApplicable(type, source, damage);
     }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
     
     @Override
     public boolean canBreatheUnderwater() {

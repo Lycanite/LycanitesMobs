@@ -106,7 +106,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
     	// Type:
     	List<EntityProjectileRapidFire> projectiles = new ArrayList<EntityProjectileRapidFire>();
     	
@@ -159,7 +159,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 	        this.getEntityWorld().spawnEntity(projectile);
     	}
     	
-        super.rangedAttack(target, range);
+        super.attackRanged(target, range);
     }
     
     
@@ -194,14 +194,6 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 		}*/
 		return super.isDamageTypeApplicable(type, source, damage);
 	}
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
     
     @Override
     public boolean canBurn() { return false; }

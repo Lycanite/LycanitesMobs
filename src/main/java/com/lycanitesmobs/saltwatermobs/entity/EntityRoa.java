@@ -238,14 +238,6 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-    	if(ObjectManager.getPotionEffect("weight") != null)
-        	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    @Override
     public boolean canBreatheUnderwater() {
         return true;
     }

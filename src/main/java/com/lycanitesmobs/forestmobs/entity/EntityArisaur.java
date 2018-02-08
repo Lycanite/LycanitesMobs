@@ -83,19 +83,6 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
     
     
     // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-        	if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
-    
-    // ==================================================
     //                     Breeding
     // ==================================================
     // ========== Create Child ==========

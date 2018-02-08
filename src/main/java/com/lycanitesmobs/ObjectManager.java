@@ -148,7 +148,7 @@ public class ObjectManager {
 			return null;
 		}
 
-        PotionBase potion = new PotionBase("potion." + name, isBad, color);
+        PotionBase potion = new PotionBase(name, isBad, color);
 		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);
 		ObjectLists.addEffect(goodEffect ? "buffs" : "debuffs", potion);
@@ -272,7 +272,9 @@ public class ObjectManager {
 
     // ========== Potions ==========
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
-        event.getRegistry().registerAll(potionEffects.values().toArray(new Potion[potionEffects.size()]));
+        for(PotionBase potion : potionEffects.values()) {
+        	event.getRegistry().register(potion);
+		}
     }
 
 	// ========== Entities ==========

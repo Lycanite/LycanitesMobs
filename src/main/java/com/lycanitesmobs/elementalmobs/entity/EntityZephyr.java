@@ -1,17 +1,14 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupElectric;
 import com.lycanitesmobs.api.IGroupWater;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -51,25 +48,6 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-    }
-	
-	
-	// ==================================================
-    //                       Attacks
-    // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Paralysis:
-    	if(target instanceof EntityLivingBase && this.getRNG().nextFloat() >= 0.75F) {
-    		if(ObjectManager.getPotionEffect("Paralysis") != null)
-    			((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("paralysis"), this.getEffectDuration(2), 0));
-         }
-        
-        return true;
     }
 	
 	
@@ -131,16 +109,6 @@ public class EntityZephyr extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     //                     Immunities
     // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("Penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Penetration")) return false;
-        if(ObjectManager.getPotionEffect("Paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Paralysis")) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    // ========== Damage ==========
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
     	if("lightning".equalsIgnoreCase(type))

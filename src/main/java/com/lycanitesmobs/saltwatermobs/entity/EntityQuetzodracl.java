@@ -114,7 +114,7 @@ public class EntityQuetzodracl extends EntityCreatureRideable implements IMob, I
                 // Random Dropping:
                 if(this.hasPickupEntity()) {
                     if(this.updateTick % this.getMeleeCooldown() == 0) {
-                        this.meleeAttack(this.getPickupEntity(), 1);
+                        this.attackMelee(this.getPickupEntity(), 1);
                     }
                     ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(this.getPickupEntity());
                     if(extendedEntity != null)
@@ -196,13 +196,13 @@ public class EntityQuetzodracl extends EntityCreatureRideable implements IMob, I
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
 
+        // Pickup:
         if(target instanceof EntityLivingBase && this.getControllingPassenger() == null) {
             EntityLivingBase entityLivingBase = (EntityLivingBase)target;
-            // Pickup:
             if (this.canPickupEntity(entityLivingBase)) {
                 this.pickupEntity(entityLivingBase);
             }
@@ -255,14 +255,6 @@ public class EntityQuetzodracl extends EntityCreatureRideable implements IMob, I
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-
     @Override
     public float getFallResistance() {
         return 100;

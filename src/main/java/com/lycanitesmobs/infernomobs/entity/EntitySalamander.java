@@ -153,17 +153,6 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
     // ==================================================
     //                      Attacks
     // ==================================================
-	// ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Damage Effect:
-    	target.setFire(this.getEffectDuration(5) / 20);
-        return true;
-    }
-
     // ========== Special Attack ==========
     public void specialAttack() {
         // Firey Burst:
@@ -258,14 +247,6 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("penetration") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("penetration")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-    
     @Override
     public boolean canBurn() { return false; }
     

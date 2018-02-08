@@ -172,19 +172,14 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
-    	
-    	// Effect:
+
+        // Pickup:
         if(target instanceof EntityLivingBase) {
             EntityLivingBase entityLivingBase = (EntityLivingBase)target;
-
-            // Blindness:
-            entityLivingBase.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, this.getEffectDuration(5), 1));
-
-            // Pickup:
-            if (this.canPickupEntity(entityLivingBase)) {
+            if(this.canPickupEntity(entityLivingBase)) {
                 this.pickupEntity(entityLivingBase);
             }
         }
@@ -196,14 +191,6 @@ public class EntitySkylus extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     @Override
     public boolean canBreatheUnderwater() {
         return true;

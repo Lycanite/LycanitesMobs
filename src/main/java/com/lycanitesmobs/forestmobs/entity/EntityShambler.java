@@ -55,6 +55,7 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
         this.tasks.addTask(10, new EntityAIBeg(this));
         this.tasks.addTask(11, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(12, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpClasses(EntityTreant.class));
@@ -88,19 +89,13 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
     	
     	// Leech:
     	float leeching = this.getEffectStrength(this.getAttackDamage(damageScale) / 2);
     	this.heal(leeching);
-
-        // Paralysis:
-        if(target instanceof EntityLivingBase && this.rand.nextFloat() >= 0.5F) {
-            if(ObjectManager.getPotionEffect("Paralysis") != null)
-                ((EntityLivingBase)target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Paralysis"), this.getEffectDuration(2), 0));
-        }
         
         return true;
     }
@@ -131,19 +126,6 @@ public class EntityShambler extends EntityCreatureTameable implements IMob, IGro
                 return 2.0F;
         }
         return super.getDamageModifier(damageSrc);
-    }
-    
-    
-    // ==================================================
-   	//                     Immunities
-   	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
 	
 	

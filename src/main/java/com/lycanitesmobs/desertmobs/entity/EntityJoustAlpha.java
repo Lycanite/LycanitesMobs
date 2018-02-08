@@ -97,15 +97,6 @@ public class EntityJoustAlpha extends EntityCreatureAgeable implements IAnimals,
     	return super.isDamageTypeApplicable(type, source, damage);
     }
     
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.HUNGER)
-        	return false;
-        if(potionEffect.getPotion() == MobEffects.WEAKNESS)
-        	return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
     
     // ==================================================
     //                     Breeding

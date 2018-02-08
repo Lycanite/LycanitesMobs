@@ -61,20 +61,6 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-
-        // Effect:
-        if(target instanceof EntityLivingBase) {
-            ((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.POISON, this.getEffectDuration(5), 1));
-        }
-        
-        return true;
-    }
-    
     // ========== On Kill ==========
     @Override
     public void onKillEntity(EntityLivingBase entityLivingBase) {
@@ -106,13 +92,6 @@ public class EntityGhoulZombie extends EntityCreatureAgeable implements IMob {
     // ==================================================
    	//                     Immunities
    	// ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-
     @Override
     public boolean daylightBurns() { return !this.isChild(); }
 	

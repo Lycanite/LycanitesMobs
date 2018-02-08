@@ -112,8 +112,8 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
     // ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+    	if(!super.attackMelee(target, damageScale))
     		return false;
     	
     	// Explosion:
@@ -154,17 +154,6 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
 		}
     	if(type.equals("cactus") || type.equals("inWall")) return false;
     	    return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.MINING_FATIGUE)
-        	return false;
-		if(potionEffect.getPotion() == MobEffects.WITHER)
-			return false;
-        if(ObjectManager.getPotionEffect("weight") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("weight")) return false;
-        return super.isPotionApplicable(potionEffect);
     }
 
 	@Override

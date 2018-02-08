@@ -168,13 +168,6 @@ public class EntityUvaraptor extends EntityCreatureRideable implements IGroupPre
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.POISON) return false;
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        return super.isPotionApplicable(potionEffect);
-    }
-    
-    @Override
     public float getFallResistance() {
     	return 100;
     }

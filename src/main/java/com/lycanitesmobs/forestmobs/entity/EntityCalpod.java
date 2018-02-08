@@ -140,15 +140,6 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
    	//                     Immunities
    	// ==================================================
     @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
-
-    @Override
     public float getFallResistance() {
         return 100;
     }

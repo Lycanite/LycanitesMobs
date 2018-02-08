@@ -121,8 +121,8 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
    	// ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+        if(!super.attackMelee(target, damageScale))
         	return false;
 
         // Leech:
@@ -201,15 +201,6 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(type.equals("inWall")) return false;
         return super.isDamageTypeApplicable(type, source, damage);
-    }
-
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        if(ObjectManager.getPotionEffect("Fear") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
     }
 
     @Override

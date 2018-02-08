@@ -42,6 +42,7 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
         this.tasks.addTask(6, new EntityAIWander(this).setSpeed(1.0D).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
+
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
@@ -77,23 +78,6 @@ public class EntityTrite extends EntityCreatureBase implements IMob, IGroupDemon
     	if(targetClass.isAssignableFrom(EntityCacodemon.class) || targetClass.isAssignableFrom(EntityAstaroth.class) || targetClass.isAssignableFrom(EntityAsmodeus.class))
     		return false;
         return super.canAttackClass(targetClass);
-    }
-    
-    // ========== Melee Attack ==========
-    @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-    	if(!super.meleeAttack(target, damageScale))
-    		return false;
-    	
-    	// Effects:
-        if(target instanceof EntityLivingBase) {
-        	((EntityLivingBase)target).addPotionEffect(new PotionEffect(MobEffects.WITHER, this.getEffectDuration(5), 0));
-			if(ObjectManager.getPotionEffect("decay") != null) {
-				((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
-			}
-		}
-        
-        return true;
     }
     
     

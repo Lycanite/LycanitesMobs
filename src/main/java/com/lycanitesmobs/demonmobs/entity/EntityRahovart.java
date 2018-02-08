@@ -29,6 +29,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -186,7 +187,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             for(EntityPlayer target : this.playerTargets) {
                 if(target.capabilities.isCreativeMode || target.isSpectator())
                     continue;
-                this.rangedAttack(target, 1F);
+                this.attackRanged(target, 1F);
                 if(CreatureManager.getInstance().config.bossAntiFlight > 0 && target.posY > this.posY + CreatureManager.getInstance().config.bossAntiFlight + 1) {
                     for(int i = 0; i < 3; i++) {
                         EntityWraith minion = new EntityWraith(this.getEntityWorld());
@@ -199,7 +200,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
             // Primary Target
             if(this.hasAttackTarget()) {
-                this.rangedAttack(this.getAttackTarget(), 1F);
+                this.attackRanged(this.getAttackTarget(), 1F);
             }
         }
     }
@@ -498,31 +499,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     
     // ========== Ranged Attack ==========
     @Override
-    public void rangedAttack(Entity target, float range) {
-    	// Type:
-    	EntityHellfireball projectile = new EntityHellfireball(this.getEntityWorld(), this);
-        projectile.setProjectileScale(8f);
-        if(!(target instanceof EntityPlayer))
-            projectile.setBaseDamage(20);
-    	
-    	// Y Offset:
-    	projectile.posY -= this.height * 0.25F;
-    	
-    	// Accuracy:
-    	float accuracy = 1.0F * (this.getRNG().nextFloat() - 0.5F);
-    	
-    	// Set Velocities:
-        double d0 = target.posX - this.posX + accuracy;
-        double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - projectile.posY + accuracy;
-        double d2 = target.posZ - this.posZ + accuracy;
-        float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-        float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
-        
-        // Launch:
-        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.getEntityWorld().spawnEntity(projectile);
-        super.rangedAttack(target, range);
+    public void attackRanged(Entity target, float range) {
+        this.fireProjectile(EntityHellfireball.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 8f, 1F);
+        super.attackRanged(target, range);
     }
 
     // ========== Hellfire Wave ==========

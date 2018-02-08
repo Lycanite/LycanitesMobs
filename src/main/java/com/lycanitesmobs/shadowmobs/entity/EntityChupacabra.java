@@ -76,8 +76,8 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
    	// ==================================================
     // ========== Melee Attack ==========
     @Override
-    public boolean meleeAttack(Entity target, double damageScale) {
-        if(!super.meleeAttack(target, damageScale))
+    public boolean attackMelee(Entity target, double damageScale) {
+        if(!super.attackMelee(target, damageScale))
         	return false;
         
     	// Breed:
@@ -87,13 +87,6 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
         // Leech:
         float leeching = this.getEffectStrength(this.getAttackDamage(damageScale) / 2);
         this.heal(leeching);
-
-		// Decay:
-		if(target instanceof EntityLivingBase) {
-			if(ObjectManager.getPotionEffect("decay") != null) {
-				((EntityLivingBase) target).addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(20), 1));
-			}
-		}
     	
         return true;
     }
@@ -118,19 +111,6 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     // ==================================================
     public int getNoBagSize() { return 0; }
     public int getBagSize() { return 5; }
-    
-    
-    // ==================================================
-    //                     Immunities
-    // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.BLINDNESS) return false;
-        if(ObjectManager.getPotionEffect("Fear") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("Fear")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
     
     
     // ==================================================

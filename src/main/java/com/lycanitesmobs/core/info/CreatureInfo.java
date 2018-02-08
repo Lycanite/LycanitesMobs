@@ -24,6 +24,7 @@ import java.util.List;
 
 /** Contains various information about a creature from default spawn information to stats, etc. **/
 public class CreatureInfo {
+	public static ElementInfo DEFAULT_ELEMENT = new ElementInfo();
 
 	// Core Info:
 	/** The name of this mob. Lowercase, no space, used for language entries and for generating the entity id, etc. Required. **/
@@ -130,6 +131,7 @@ public class CreatureInfo {
 	public CreatureInfo(GroupInfo group) {
 		this.group = group;
 		this.creatureSpawn = new CreatureSpawn();
+		this.element = DEFAULT_ELEMENT;
 	}
 
 

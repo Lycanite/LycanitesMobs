@@ -151,7 +151,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     // ========== Ranged Attack ==========
     EntityLifeDrain projectile = null;
     @Override
-    public void rangedAttack(Entity target, float range) {
+    public void attackRanged(Entity target, float range) {
     	// Update Laser:
     	if(this.projectile != null && this.projectile.isEntityAlive()) {
     		this.projectile.setTime(20);
@@ -169,6 +169,8 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
 	        this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 	        this.getEntityWorld().spawnEntity(projectile);
     	}
+
+    	super.attackRanged(target, range);
     }
     
     
@@ -218,17 +220,4 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
     // ==================================================
     public int getNoBagSize() { return 0; }
     public int getBagSize() { return 5; }
-
-
-    // ==================================================
-    //                     Immunities
-    // ==================================================
-    @Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if(potionEffect.getPotion() == MobEffects.SLOWNESS) return false;
-        if(ObjectManager.getPotionEffect("paralysis") != null)
-            if(potionEffect.getPotion() == ObjectManager.getPotionEffect("paralysis")) return false;
-        super.isPotionApplicable(potionEffect);
-        return true;
-    }
 }

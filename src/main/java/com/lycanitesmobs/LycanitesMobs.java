@@ -52,7 +52,7 @@ public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String versionNumber = "1.19.0.0";
+	public static final String versionNumber = "1.19.0.1";
 	public static final String versionMC = "1.12.2";
 	public static final String version = versionNumber + " - MC " + versionMC;
 	public static final String website = "http://lycanitesmobs.com";
@@ -148,7 +148,7 @@ public class LycanitesMobs {
 			ObjectManager.addPotionEffect("insomnia", config, true, 0x002222, 5, 1, false);
 			ObjectManager.addPotionEffect("instability", config, true, 0x004422, 5, 1, false);
 			ObjectManager.addPotionEffect("lifeleak", config, true, 0x0055FF, 5, 0, false);
-			ObjectManager.addPotionEffect("plague", config, true, 0x220066, 0, 6, false);
+			ObjectManager.addPotionEffect("plague", config, true, 0x220066, 6, 0, false);
 			ObjectManager.addPotionEffect("aphagia", config, true, 0xFFDDDD, 3, 0, false);
 			ObjectManager.addPotionEffect("smited", config, true, 0xDDDDFF, 1, 1, false);
 

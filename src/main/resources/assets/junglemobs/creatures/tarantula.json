@@ -32,13 +32,13 @@
 	"damage": 2,
 	"attackSpeed": 1,
 	"rangedSpeed": 1,
-	"effect": 1,
+	"effect": 5,
 	"amplifier": 0,
 	"pierce": 1,
 	"sight": 16,
 	"knockbackResistance": 0,
-	"eggBackColor": "#665500",
-	"eggForeColor": "#CC99BB",
+	"eggBackColor": "#1e5015",
+	"eggForeColor": "#66be60",
 	"subspecies": [
 		{
 			"index": 1,

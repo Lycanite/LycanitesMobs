@@ -31,7 +31,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.health;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -60,7 +60,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.defense;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -82,7 +82,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.armor;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -104,7 +104,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.speed / 100;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -126,7 +126,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.damage;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -148,7 +148,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.attackSpeed;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -170,7 +170,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.rangedSpeed;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -192,7 +192,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.effect;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -214,7 +214,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.amplifier;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 		}
@@ -232,7 +232,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.pierce;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 			if(entity.extraMobBehaviour != null) {
@@ -254,7 +254,7 @@ public class CreatureStats {
 		double statValue = this.entity.creatureInfo.sight;
 
 		// Wild:
-		if(this.entity.getOwner() != null) {
+		if(this.entity.getOwner() == null) {
 			statValue *= this.getDifficultyMultiplier(statName);
 			statValue *= this.getSubspeciesMultiplier(statName);
 		}

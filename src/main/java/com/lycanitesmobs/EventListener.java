@@ -448,7 +448,7 @@ public class EventListener {
 					event.getLeft().add("Level: " + mouseOverCreature.getLevel());
 					event.getLeft().add("Size: " + mouseOverCreature.sizeScale);
 					event.getLeft().add("");
-					event.getLeft().add("Health: " + mouseOverCreature.getHealth() + "/" + mouseOverCreature.getMaxHealth());
+					event.getLeft().add("Health: " + mouseOverCreature.getHealth() + "/" + mouseOverCreature.getMaxHealth() + " Fresh: " + mouseOverCreature.creatureStats.getHealth());
 					event.getLeft().add("Speed: " + mouseOverCreature.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() + "/" + mouseOverCreature.creatureStats.getSpeed());
 					event.getLeft().add("");
 					event.getLeft().add("Defense: " + mouseOverCreature.creatureStats.getDefense());
@@ -459,7 +459,7 @@ public class EventListener {
 					event.getLeft().add("Ranged Speed: " + mouseOverCreature.creatureStats.getRangedSpeed());
 					event.getLeft().add("Pierce: " + mouseOverCreature.creatureStats.getPierce());
 					event.getLeft().add("");
-					event.getLeft().add("Effect Duration: " + mouseOverCreature.creatureStats.getEffect());
+					event.getLeft().add("Effect Duration: x" + mouseOverCreature.creatureStats.getEffect());
 					event.getLeft().add("Effect Amplifier: " + mouseOverCreature.creatureStats.getAmplifier());
 				}
 			}

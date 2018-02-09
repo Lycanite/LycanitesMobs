@@ -433,7 +433,7 @@ public class EntityProjectileBase extends EntityThrowable {
      **/
      public int getEffectDuration(int seconds) {
     	 if(this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase)
-    		 return ((EntityCreatureBase)this.getThrower()).getEffectDuration(seconds);
+    		 return Math.round((float)((EntityCreatureBase)this.getThrower()).getEffectDuration(seconds) / 5);
     	 return seconds * 20;
      }
 

@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.info;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;

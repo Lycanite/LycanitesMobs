@@ -130,8 +130,8 @@ public class PotionEffects {
 				entity.addPotionEffect(new PotionEffect(MobEffects.POISON, poisonDuration, poisonAmplifier));
 
 				// Spread:
-				if(entity.getEntityWorld().getTotalWorldTime() % 40 == 0) {
-					List aoeTargets = this.getNearbyEntities(entity, EntityLivingBase.class, null, 6);
+				if(entity.getEntityWorld().getTotalWorldTime() % 20 == 0) {
+					List aoeTargets = this.getNearbyEntities(entity, EntityLivingBase.class, null, 10);
 					for(Object entityObj : aoeTargets) {
 						EntityLivingBase target = (EntityLivingBase)entityObj;
 						if(target != entity && !entity.isOnSameTeam(target)) {

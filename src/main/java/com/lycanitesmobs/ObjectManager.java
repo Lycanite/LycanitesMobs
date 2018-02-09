@@ -149,7 +149,6 @@ public class ObjectManager {
 		}
 
         PotionBase potion = new PotionBase(name, isBad, color);
-		potion.setIconIndex(iconX, iconY);
 		potionEffects.put(name, potion);
 		ObjectLists.addEffect(goodEffect ? "buffs" : "debuffs", potion);
 

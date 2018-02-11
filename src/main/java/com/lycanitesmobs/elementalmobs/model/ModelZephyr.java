@@ -2,14 +2,23 @@ package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.ModelObjOld;
+import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
+import com.lycanitesmobs.core.renderer.LayerBase;
+import com.lycanitesmobs.core.renderer.LayerEffect;
+import com.lycanitesmobs.core.renderer.LayerGlow;
+import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+
+import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
-public class ModelZephyr extends ModelObjOld {
+public class ModelZephyr extends ModelTemplateElemental {
 
 	// ==================================================
   	//                    Constructors
@@ -22,22 +31,23 @@ public class ModelZephyr extends ModelObjOld {
     	// Load Model:
     	this.initModel("zephyr", ElementalMobs.instance.group, "entity/zephyr");
     	
-
-
-    	
-    	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.2F, 0.3F);
-    	setPartCenter("body", 0F, 1.2F, 0.3F);
-    	setPartCenter("armleft", 0.2F, 1.1F, 0F);
-    	setPartCenter("armright", -0.2F, 1.1F, 0F);
-    	
-    	setPartCenter("effect01", 0F, 0.8F, 0F);
-    	setPartCenter("effect02", 0F, 0.8F, 0F);
-    	
     	// Trophy:
         this.trophyScale = 1.2F;
         this.trophyOffset = new float[] {0.0F, -0.2F, 0.2F};
     }
+
+
+	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerGlow(renderer));
+		renderer.addLayer(new LayerEffect(renderer, "pulse01", true, true, true));
+		renderer.addLayer(new LayerEffect(renderer, "pulse02", true, true, true));
+		renderer.addLayer(new LayerEffect(renderer, "pulse03", true, true, true));
+	}
     
     
     // ==================================================
@@ -45,52 +55,63 @@ public class ModelZephyr extends ModelObjOld {
    	// ==================================================
     @Override
     public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
-    	super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
-    	float pi = (float)Math.PI;
-    	float posX = 0F;
-    	float posY = 0F;
-    	float posZ = 0F;
-    	float angleX = 0F;
-    	float angleY = 0F;
-    	float angleZ = 0F;
-    	float rotation = 0F;
-    	float rotX = 0F;
-    	float rotY = 0F;
-    	float rotZ = 0F;
-    	
-    	// Idle:
-    	if(partName.equals("armleft")) {
-	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-    	if(partName.equals("armright")) {
-	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F + 0.05F);
-	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-		float bob = -MathHelper.sin(loop * 0.1F) * 0.3F;
-		posY += bob;
-    	
-    	// Effects:
-    	if(partName.equals("effect01"))
-    		rotY += loop * 16;
-    	if(partName.equals("effect02")) {
-    		rotY += loop * 20;
-    		if(Math.floor(loop) % 2 == 0) {
-    			this.scale(0, 0, 0);
-    		}
-    	}
-				
-		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("armleft"))
-	    		rotate(0.0F, -25.0F, 0.0F);
-	    	if(partName.equals("armright"))
-	    		rotate(0.0F, 25.0F, 0.0F);
+		if("effectouter".equals(partName) || "effectinner".equals(partName)) {
+			this.rotate(-15, 0, 0);
 		}
-		
-    	// Apply Animations:
-    	rotate(rotation, angleX, angleY, angleZ);
-    	rotate(rotX, rotY, rotZ);
-    	translate(posX, posY, posZ);
+
+		if(partName.equals("armeffectleft") || partName.equals("armeffectright")) {
+			float angleX = 35f;
+			float angleY = -45f;
+			float angleZ = 140f;
+			if(partName.equals("armeffectright")) {
+				angleX = -angleX;
+			}
+			this.angle(loop * 50F, angleX, angleY, angleZ);
+		}
+
+		super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
     }
+
+
+	// ==================================================
+	//                Get Part Color
+	// ==================================================
+	/** Returns the coloring to be used for this part and layer. **/
+	public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
+		if(layer == null) {
+			return super.getPartColor(partName, entity, layer, trophy, loop);
+		}
+
+		float alphaSpeed = 15;
+		if("pulse02".equals(layer.name)) {
+			alphaSpeed = 20;
+			loop += 50;
+		}
+		if("pulse03".equals(layer.name)) {
+			alphaSpeed = 25;
+			loop += 100;
+		}
+		float alpha = loop * alphaSpeed % 360;
+		return new Vector4f(1, 1, 1, ((float)Math.cos(Math.toRadians(alpha)) / 2) + 0.5f);
+	}
+
+
+	// ==================================================
+	//                      Visuals
+	// ==================================================
+	@Override
+	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
+		super.onRenderStart(layer, partName, entity, renderAsTrophy);
+		if(layer == null)
+			return;
+		GL11.glEnable(GL11.GL_BLEND);
+	}
+
+	@Override
+	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
+		super.onRenderFinish(layer, partName, entity, renderAsTrophy);
+		if(layer == null)
+			return;
+		GL11.glDisable(GL11.GL_BLEND);
+	}
 }

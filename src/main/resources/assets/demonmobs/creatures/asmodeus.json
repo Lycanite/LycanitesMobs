@@ -12,7 +12,7 @@
 		"ignoreBiome": false,
 		"biomes": ["nether"],
 		"spawnWeight": 1,
-		"dungeonWeight": 200,
+		"dungeonWeight": 0,
 		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
 		"spawnGroupMax": 3,

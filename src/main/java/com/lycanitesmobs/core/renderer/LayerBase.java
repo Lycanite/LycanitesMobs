@@ -15,12 +15,14 @@ import javax.vecmath.Vector4f;
 @SideOnly(Side.CLIENT)
 public class LayerBase implements LayerRenderer<EntityCreatureBase> {
     public RenderCreature renderer;
+    public String name;
 
     // ==================================================
     //                   Constructor
     // ==================================================
     public LayerBase(RenderCreature renderer) {
         this.renderer = renderer;
+        this.name = "Layer";
     }
 
 

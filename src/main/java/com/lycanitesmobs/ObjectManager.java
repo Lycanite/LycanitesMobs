@@ -143,7 +143,7 @@ public class ObjectManager {
     }
 
     // ========== Potion Effect ==========
-	public static PotionBase addPotionEffect(String name, ConfigBase config, boolean isBad, int color, int iconX, int iconY, boolean goodEffect) {
+	public static PotionBase addPotionEffect(String name, ConfigBase config, boolean isBad, int color, boolean goodEffect) {
 		if(!config.getBool("Effects", name + " enabled", true, "Set to false to disable this potion effect.")) {
 			return null;
 		}

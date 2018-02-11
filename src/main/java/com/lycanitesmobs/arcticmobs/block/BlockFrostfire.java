@@ -1,15 +1,15 @@
 package com.lycanitesmobs.arcticmobs.block;
 
-import com.lycanitesmobs.arcticmobs.ArcticMobs;
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.arcticmobs.ArcticMobs;
 import com.lycanitesmobs.core.block.BlockFireBase;
+import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
@@ -123,11 +123,11 @@ public class BlockFrostfire extends BlockFireBase {
 
         PotionEffect effectSlowness = new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0);
         PotionEffect effectHunger = new PotionEffect(MobEffects.HUNGER, 5 * 20, 0); // No applied, used to check for immunity only.
-        if(entity instanceof EntityLivingBase) {
-            EntityLivingBase entityLiving = (EntityLivingBase)entity;
-            if(!entityLiving.isPotionApplicable(effectSlowness) && !entityLiving.isPotionApplicable(effectHunger))
+        if(entity instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+            if(!entityCreature.creatureInfo.element.canFreeze())
                 return; // Entities immune to both are normally arctic mobs.
-            entityLiving.addPotionEffect(effectSlowness);
+            entityCreature.addPotionEffect(effectSlowness);
         }
 
         entity.attackEntityFrom(DamageSource.MAGIC, 2);

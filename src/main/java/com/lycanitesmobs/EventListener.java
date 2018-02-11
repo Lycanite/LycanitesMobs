@@ -459,8 +459,8 @@ public class EventListener {
 					event.getLeft().add("Ranged Speed: " + mouseOverCreature.creatureStats.getRangedSpeed());
 					event.getLeft().add("Pierce: " + mouseOverCreature.creatureStats.getPierce());
 					event.getLeft().add("");
-					event.getLeft().add("Effect Duration: x" + mouseOverCreature.creatureStats.getEffect());
-					event.getLeft().add("Effect Amplifier: " + mouseOverCreature.creatureStats.getAmplifier());
+					event.getLeft().add("Effect Duration: " + mouseOverCreature.creatureStats.getEffect() + " Base Seconds");
+					event.getLeft().add("Effect Amplifier: x" + mouseOverCreature.creatureStats.getAmplifier());
 				}
 			}
 		}

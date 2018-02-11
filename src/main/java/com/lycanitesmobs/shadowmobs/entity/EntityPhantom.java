@@ -125,11 +125,11 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
     protected SoundEvent getAmbientSound() {
     	if(this.hasAttackTarget()) {
     		if(this.getAttackTarget() instanceof EntityPlayer)
-    			if("Jbams".equals(((EntityPlayer)this.getAttackTarget()).getName())) // JonBams special sound!
+    			if("jbams".equalsIgnoreCase((this.getAttackTarget()).getName())) // JonBams special sound!
     				return AssetManager.getSound(this.creatureInfo.getName() + "_say_jon");
     	}
         if(this.isTamed() && this.getOwner() != null) {
-            if("JBams".equals(this.getOwnerName()))
+            if("jbams".equalsIgnoreCase(this.getOwnerName()))
                 return AssetManager.getSound(this.creatureInfo.getName() + "_say_jon");
         }
     	return super.getAmbientSound();

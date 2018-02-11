@@ -171,6 +171,7 @@ public class CreatureSpawn {
 	/** Initialises this Creature Spawn Info, should be called after pre-init and when reloading. **/
 	public void init(CreatureInfo creatureInfo) {
 		for(String spawner : this.spawners) {
+			LycanitesMobs.printDebug("Creature", "Adding " + creatureInfo.getName() + " to " + spawner + " global spawn list.");
 			SpawnerMobRegistry.createSpawn(creatureInfo, spawner);
 		}
 	}

@@ -17,14 +17,25 @@ public class LayerEffect extends LayerBase {
 	public String textureSuffix = "effect";
 	public boolean glow = false;
 	public boolean additive = false;
+	public boolean subspecies = true;
 
     // ==================================================
     //                   Constructor
     // ==================================================
     public LayerEffect(RenderCreature renderer, String textureSuffix) {
         super(renderer);
+        this.name = textureSuffix;
         this.textureSuffix = textureSuffix;
     }
+
+	public LayerEffect(RenderCreature renderer, String textureSuffix, boolean glow, boolean additive, boolean subspecies) {
+		super(renderer);
+		this.name = textureSuffix;
+		this.textureSuffix = textureSuffix;
+		this.glow = glow;
+		this.additive = additive;
+		this.subspecies = subspecies;
+	}
 
 
     // ==================================================
@@ -38,7 +49,7 @@ public class LayerEffect extends LayerBase {
     @Override
     public ResourceLocation getLayerTexture(EntityCreatureBase entity) {
 		String textureName = entity.getTextureName();
-		if(entity.getSubspecies() != null) {
+		if(this.subspecies && entity.getSubspecies() != null) {
 			textureName += "_" + entity.getSubspecies().name;
 		}
 		textureName += "_" + this.textureSuffix;
@@ -57,7 +68,7 @@ public class LayerEffect extends LayerBase {
 		}
 		GL11.glEnable(GL11.GL_BLEND);
     	if(this.additive)
-			OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_SRC_ALPHA, 1, 0);
+			OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 	}
 
 	@Override

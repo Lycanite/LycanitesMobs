@@ -1594,8 +1594,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
         else {
         	if(this.sizeScale != this.getFloatFromDataManager(SIZE)) {
-        		this.sizeScale = this.getFloatFromDataManager(SIZE);
-        		this.updateSize();
+        		this.setSizeScale(this.getFloatFromDataManager(SIZE));
         	}
         }
 
@@ -2193,6 +2192,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Sets the size scale and updates the mobs size. **/
 	public void setSizeScale(double scale) {
+		if("beholder".equalsIgnoreCase(this.creatureInfo.getName()))
+			LycanitesMobs.printDebug("", "Updating Size: " + this.creatureInfo.getName() + " from: " + this.sizeScale + " to scale: " + scale);
 		this.sizeScale = scale;
         this.updateSize();
     }
@@ -3705,8 +3706,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
     	
     	if(nbtTagCompound.hasKey("Size")) {
-    		this.sizeScale = nbtTagCompound.getDouble("Size");
-    		this.updateSize();
+    		this.setSizeScale(nbtTagCompound.getDouble("Size"));
     	}
 
 		if(nbtTagCompound.hasKey("MobLevel")) {

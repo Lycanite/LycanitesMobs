@@ -166,7 +166,7 @@ public class CreatureManager extends JSONLoader {
 
 
 	/**
-	 * Registers all creatures. Can only be called once and during post init.
+	 * Registers all creatures. Can only be called once and during init.
 	 */
 	public void registerAll(GroupInfo group) {
 		LycanitesMobs.printDebug("Creature", "Registering " + this.creatures.size() + " creatures from the group " + group.name + "...");

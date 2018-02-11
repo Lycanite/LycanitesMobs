@@ -12,7 +12,7 @@
 		"ignoreBiome": false,
 		"biomes": ["all", "-ocean", "-beach"],
 		"spawnWeight": 1,
-		"dungeonWeight": 200,
+		"dungeonWeight": 0,
 		"spawnAreaLimit": 1,
 		"spawnGroupMin": 1,
 		"spawnGroupMax": 1,

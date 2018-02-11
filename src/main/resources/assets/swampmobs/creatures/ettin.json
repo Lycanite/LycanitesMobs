@@ -28,7 +28,7 @@
 	"health": 30,
 	"defense": 2,
 	"armor": 0,
-	"speed": 28,
+	"speed": 20,
 	"damage": 6,
 	"attackSpeed": 0.5,
 	"rangedSpeed": 1,

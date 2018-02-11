@@ -24,9 +24,12 @@ public class SpawnerMobRegistry {
 	 **/
 	public static Collection<MobSpawn> getMobSpawns(String spawnerName) {
 		LycanitesMobs.printDebug("JSONSpawner", "Getting Global Mobs For Spawner: " + spawnerName);
-		if(SPAWNER_MOB_REGISTRIES.containsKey(spawnerName.toUpperCase())) {
-			return SPAWNER_MOB_REGISTRIES.get(spawnerName.toUpperCase()).mobSpawns.values();
+		if(SPAWNER_MOB_REGISTRIES.containsKey(spawnerName.toLowerCase())) {
+			Collection<MobSpawn> mobs = SPAWNER_MOB_REGISTRIES.get(spawnerName.toLowerCase()).mobSpawns.values();
+			LycanitesMobs.printDebug("JSONSpawner", "Found " + mobs.size() + " Global Mobs For Spawner: " + spawnerName);
+			return mobs;
 		}
+		LycanitesMobs.printDebug("JSONSpawner", "No Global Mobs Found For Spawner: " + spawnerName);
 		return null;
 	}
 
@@ -52,6 +55,8 @@ public class SpawnerMobRegistry {
 		if(!SPAWNER_MOB_REGISTRIES.get(spawnerName).addMobSpawn(mobSpawn)) {
 			LycanitesMobs.printWarning("", "Tried to create a duplicate global MobSpawn for " + creatureInfo.getName() + " in Spawner: " + spawnerName + "!");
 		}
+
+		LycanitesMobs.printDebug("JSONSpawner", "Added " + creatureInfo.getName() + " to " + spawnerName + " global spawn list.");
 	}
 
 

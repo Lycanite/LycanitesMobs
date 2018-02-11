@@ -256,7 +256,7 @@ public class CreatureInfo {
 
 
 	/**
-	 * Registers this creature to vanilla and custom entity lists. Must be called after init and only during game startup adn only by its own submod.
+	 * Registers this creature to vanilla and custom entity lists. Must be called after init and only during game startup and only by its own submod.
 	 */
 	public void register() {
 		if(this.dummy)

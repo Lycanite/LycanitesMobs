@@ -151,11 +151,20 @@ public class PotionEffects {
 
 		// Smited
 		PotionBase smited = ObjectManager.getPotionEffect("smited");
-		if(instability != null && !entity.getEntityWorld().isRemote) {
-			if(!invulnerable && entity.isPotionActive(smited)) {
-				if(entity.getEntityWorld().canBlockSeeSky(entity.getPosition())) {
+		if(smited != null && !entity.getEntityWorld().isRemote) {
+			if(!invulnerable && entity.isPotionActive(smited) && entity.getEntityWorld().getTotalWorldTime() % 20 == 0) {
+				float brightness = entity.getBrightness();
+				if(brightness > 0.5F && entity.getEntityWorld().canBlockSeeSky(entity.getPosition())) {
 					entity.setFire(4);
 				}
+			}
+		}
+
+		// Smouldering
+		PotionBase smouldering = ObjectManager.getPotionEffect("smouldering");
+		if(smouldering != null && !entity.getEntityWorld().isRemote) {
+			if(!invulnerable && entity.isPotionActive(smouldering) && entity.getEntityWorld().getTotalWorldTime() % 20 == 0) {
+				entity.setFire(4 + (4 * entity.getActivePotionEffect(smouldering).getAmplifier()));
 			}
 		}
 

@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.pets;
 
 import com.lycanitesmobs.ExtendedPlayer;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.info.CreatureInfo;

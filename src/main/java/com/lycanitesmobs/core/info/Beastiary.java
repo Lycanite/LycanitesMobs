@@ -1,8 +1,8 @@
 package com.lycanitesmobs.core.info;
 
+import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.network.MessageBeastiary;
 import com.lycanitesmobs.core.network.MessageCreatureKnowledge;
 import com.lycanitesmobs.core.pets.SummonSet;
@@ -84,7 +84,7 @@ public class Beastiary {
     //                     Summoning
     // ==================================================
 	public Map<Integer, String> getSummonableList() {
-		Map<Integer, String> minionList = new HashMap<Integer, String>();
+		Map<Integer, String> minionList = new HashMap<>();
 		int minionIndex = 0;
 		for(String minionName : this.creatureKnowledgeList.keySet()) {
 			if(SummonSet.isSummonableCreature(minionName)) {

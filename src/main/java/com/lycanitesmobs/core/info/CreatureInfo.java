@@ -385,7 +385,7 @@ public class CreatureInfo {
 	 * @return True if creature is summonable.
 	 */
 	public boolean isSummonable() {
-		return this.summonable && this.entityClass.isAssignableFrom(EntityCreatureTameable.class);
+		return this.summonable && EntityCreatureTameable.class.isAssignableFrom(this.entityClass);
 	}
 
 
@@ -394,7 +394,7 @@ public class CreatureInfo {
 	 * @return True if creature is tameable.
 	 */
 	public boolean isTameable() {
-		return this.tameable && this.entityClass.isAssignableFrom(EntityCreatureTameable.class);
+		return this.tameable && EntityCreatureTameable.class.isAssignableFrom(this.entityClass);
 	}
 
 
@@ -403,7 +403,7 @@ public class CreatureInfo {
 	 * @return True if creature is mountable.
 	 */
 	public boolean isMountable() {
-		return this.mountable;
+		return this.mountable && EntityCreatureRideable.class.isAssignableFrom(this.entityClass);
 	}
 
 

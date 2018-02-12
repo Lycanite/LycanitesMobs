@@ -1,6 +1,7 @@
 {
 	"name": "phase",
 	"loadDefault": true,
+	"debuffDurationMultiplier": 0.5,
 	"buffs": [
 		"minecraft:speed"
 	],

@@ -156,7 +156,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
     // ========== Ranged Attack ==========
     @Override
     public void attackRanged(Entity target, float range) {
-        this.fireProjectile(EntityScorchfireball.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+        this.fireProjectile(EntityScorchfireball.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 6F);
         super.attackRanged(target, range);
     }
     

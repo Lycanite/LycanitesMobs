@@ -1,6 +1,7 @@
 {
 	"name": "void",
 	"loadDefault": true,
+	"debuffDurationMultiplier": 2,
 	"buffs": [
 		"lycanitesmobs:leech"
 	],

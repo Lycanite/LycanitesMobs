@@ -242,7 +242,7 @@ public class EntityProjectileBase extends EntityThrowable {
 						world.destroyBlock(blockPos, false);
 					}
 					else {
-            			collided = true;
+            			collided = false;
 					}
 				}
 				else {

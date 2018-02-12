@@ -1,6 +1,7 @@
 {
 	"name": "crystal",
 	"loadDefault": true,
+	"debuffDurationMultiplier": 2,
 	"buffs": [
 		"minecraft:saturation"
 	],

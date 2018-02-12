@@ -54,9 +54,14 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-        this.creatureName = packet.readString(256);
-        this.completion = packet.readDouble();
-        LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
+		try {
+			this.creatureName = packet.readString(256);
+			this.completion = packet.readDouble();
+		}
+		catch(Exception e) {
+			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
+			e.printStackTrace();
+		}
 	}
 	
 	

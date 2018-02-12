@@ -57,7 +57,7 @@ public class EntityMudshot extends EntityProjectileBase {
     // ========== Gravity ==========
     @Override
     protected float getGravityVelocity() {
-        return 0.01F;
+        return 0.001F;
     }
     
     

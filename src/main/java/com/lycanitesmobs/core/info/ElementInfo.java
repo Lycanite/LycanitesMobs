@@ -33,6 +33,12 @@ public class ElementInfo {
 	/** A list of detrimental potion effects that this element can inflict as well as grant immunity to. **/
 	public List<String> debuffs = new ArrayList<>();
 
+	/** A multiplier applied to any buffs caused by this element. **/
+	public double buffDurationMultiplier = 1;
+
+	/** A multiplier applied to any debuffs caused by this element. **/
+	public double debuffDurationMultiplier = 1;
+
 	/** Whether creatures of this element are able to burn by default. Some creatures will override this with their own settings. **/
 	public boolean canBurn = true;
 
@@ -57,6 +63,12 @@ public class ElementInfo {
 
 		if(json.has("debuffs"))
 			this.debuffs = JSONHelper.getJsonStrings(json.get("debuffs").getAsJsonArray());
+
+		if(json.has("buffDurationMultiplier"))
+			this.buffDurationMultiplier = json.get("buffDurationMultiplier").getAsDouble();
+
+		if(json.has("debuffDurationMultiplier"))
+			this.debuffDurationMultiplier = json.get("debuffDurationMultiplier").getAsDouble();
 
 		if(json.has("canBurn"))
 			this.canBurn = json.get("canBurn").getAsBoolean();
@@ -86,6 +98,7 @@ public class ElementInfo {
 	 * @param amplifier The amplifier of the buffs.
 	 */
 	public void buffEntity(EntityLivingBase targetEntity, int duration, int amplifier) {
+		duration = Math.round((float)duration * (float)this.buffDurationMultiplier);
 		for(String buff : this.buffs) {
 			Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(buff));
 			if(potion != null) {
@@ -102,6 +115,7 @@ public class ElementInfo {
 	 * @param amplifier The amplifier of the debuffs.
 	 */
 	public void debuffEntity(EntityLivingBase targetEntity, int duration, int amplifier) {
+		duration = Math.round((float)duration * (float)this.debuffDurationMultiplier);
 		for(String debuff : this.debuffs) {
 			if("burning".equalsIgnoreCase(debuff)) {
 				targetEntity.setFire(duration * 20);

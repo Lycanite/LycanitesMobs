@@ -63,7 +63,7 @@ public class BlockScorchfire extends BlockFireBase {
     		if(((EntityItem)entity).getItem().getItem() == ObjectManager.getItem("scorchfirecharge"))
     			return;
 
-        if(ObjectManager.getPotionEffect("penetration") != null) {
+        /**if(ObjectManager.getPotionEffect("penetration") != null) {
             PotionEffect effectPenetration = new PotionEffect(ObjectManager.getPotionEffect("penetration"), 5 * 20, 0);
             if(entity instanceof EntityLivingBase) {
                 EntityLivingBase entityLiving = (EntityLivingBase)entity;
@@ -71,7 +71,7 @@ public class BlockScorchfire extends BlockFireBase {
                     return;
                 entityLiving.addPotionEffect(effectPenetration);
             }
-        }
+        }**/
 
 		if(entity.isImmuneToFire())
 			return;

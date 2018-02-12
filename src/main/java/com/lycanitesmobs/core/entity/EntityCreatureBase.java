@@ -2382,7 +2382,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			targetZ = newY + this.posZ;
 
 			distanceX = targetX - this.posX;
-			distanceY = target.posY + (target.height * 0.5D) - projectile.posY;
+			distanceY = target.getEntityBoundingBox().minY + (target.height * 0.25D) - projectile.posY;
 			distanceZ = targetZ - this.posZ;
 		}
 

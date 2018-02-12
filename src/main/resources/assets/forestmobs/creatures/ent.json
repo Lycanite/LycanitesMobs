@@ -33,7 +33,7 @@
 	"attackSpeed": 0.5,
 	"rangedSpeed": 1,
 	"effect": 5,
-	"amplifier": 0,
+	"amplifier": -1,
 	"pierce": 1,
 	"sight": 16,
 	"knockbackResistance": 0,

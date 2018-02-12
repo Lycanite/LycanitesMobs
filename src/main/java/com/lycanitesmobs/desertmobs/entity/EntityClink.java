@@ -67,15 +67,15 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
     @Override
 	public int getMeleeCooldown() {
     	if(this.getAttackPhase() == 2)
-    		return super.getMeleeCooldown() * 3;
-		return super.getMeleeCooldown();
+    		return super.getMeleeCooldown();
+		return Math.round((float)super.getMeleeCooldown() / 6);
 	}
 
 	@Override
 	public int getRangedCooldown() {
 		if(this.getAttackPhase() == 2)
-			return super.getRangedCooldown() * 3;
-		return super.getRangedCooldown();
+			return super.getRangedCooldown();
+		return Math.round((float)super.getRangedCooldown() / 6);
 	}
     
     

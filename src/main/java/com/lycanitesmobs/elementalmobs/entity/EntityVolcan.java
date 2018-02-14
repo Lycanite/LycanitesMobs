@@ -101,7 +101,7 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
         super.onLivingUpdate();
 
 		// Burning Aura Attack:
-		if(!this.getEntityWorld().isRemote && ++this.updateTick % 40 == 0) {
+		if(!this.getEntityWorld().isRemote && this.updateTick % 40 == 0) {
 			List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
 			for(Object entityObj : aoeTargets) {
 				EntityLivingBase target = (EntityLivingBase)entityObj;

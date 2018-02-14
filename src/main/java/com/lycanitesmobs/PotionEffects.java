@@ -284,15 +284,24 @@ public class PotionEffects {
 		if(event.getEntityLiving() == null)
 			return;
 
+		EntityLivingBase target = event.getEntityLiving();
+		EntityLivingBase attacker = null;
+		if(event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityLivingBase) {
+			attacker = (EntityLivingBase) event.getSource().getTrueSource();
+		}
+		if(attacker == null) {
+			return;
+		}
+
 		// ========== Debuffs ==========
 		// Lifeleak
 		PotionBase lifeleak = ObjectManager.getPotionEffect("lifeleak");
 		if(lifeleak != null && !event.getEntityLiving().getEntityWorld().isRemote) {
-			if(event.getEntityLiving().isPotionActive(lifeleak)) {
+			if(attacker.isPotionActive(lifeleak)) {
 				if (event.isCancelable()) {
 					event.setCanceled(true);
 				}
-				event.getEntityLiving().heal(event.getAmount());
+				target.heal(event.getAmount());
 			}
 		}
 	}
@@ -373,7 +382,7 @@ public class PotionEffects {
 		PotionBase rejuvenation = ObjectManager.getPotionEffect("rejuvenation");
 		if(rejuvenation != null) {
 			if(entity.isPotionActive(rejuvenation)) {
-				event.setAmount(event.getAmount() * (2 * (1 + entity.getActivePotionEffect(rejuvenation).getAmplifier())));
+				event.setAmount((float)Math.ceil(event.getAmount() * (2 * (1 + entity.getActivePotionEffect(rejuvenation).getAmplifier()))));
 			}
 		}
 
@@ -381,7 +390,7 @@ public class PotionEffects {
 		PotionBase decay = ObjectManager.getPotionEffect("decay");
 		if(decay != null) {
 			if(entity.isPotionActive(decay)) {
-				event.setAmount(event.getAmount() / (2 * (1 + entity.getActivePotionEffect(decay).getAmplifier())));
+				event.setAmount((float)Math.floor(event.getAmount() / (2 * (1 + entity.getActivePotionEffect(decay).getAmplifier()))));
 			}
 		}
 	}

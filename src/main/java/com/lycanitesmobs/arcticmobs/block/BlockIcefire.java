@@ -5,6 +5,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.arcticmobs.ArcticMobs;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -121,11 +122,14 @@ public class BlockIcefire extends BlockFireBase {
             entity.extinguish();
 
         PotionEffect effectSlowness = new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0);
-        PotionEffect effectHunger = new PotionEffect(MobEffects.HUNGER, 5 * 20, 0); // No applied, used to check for immunity only.
+        if(entity instanceof EntityCreatureBase) {
+            EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+            if(!entityCreature.creatureInfo.element.canFreeze())
+                return;
+            entityCreature.addPotionEffect(effectSlowness);
+        }
         if(entity instanceof EntityLivingBase) {
             EntityLivingBase entityLiving = (EntityLivingBase)entity;
-            if(!entityLiving.isPotionApplicable(effectSlowness) && !entityLiving.isPotionApplicable(effectHunger))
-                return; // Entities immune to both are normally arctic mobs.
             entityLiving.addPotionEffect(effectSlowness);
         }
 

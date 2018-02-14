@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "-0.014",
+    "centerY": "1.126",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "ArmRight",
+    "parent": "Body",
+    "centerX": "-0.14",
+    "centerY": "1.202",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "WingLeftBottom",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.2",
+    "centerZ": "-0.12"
+  },
+  {
+    "name": "WingRightBottom",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.2",
+    "centerZ": "-0.12"
+  },
+  {
+    "name": "WingRightTop",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.2",
+    "centerZ": "-0.12"
+  },
+  {
+    "name": "ArmLeft",
+    "parent": "Body",
+    "centerX": "0.14",
+    "centerY": "1.202",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "WingLeftTop",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.2",
+    "centerZ": "-0.12"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "-0.014",
+    "centerY": "1.322",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "HairRight",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.644",
+    "centerZ": "0.04"
+  },
+  {
+    "name": "HairLeft",
+    "parent": "Head",
+    "centerX": "-0.0",
+    "centerY": "1.644",
+    "centerZ": "-0.0"
+  }
+]

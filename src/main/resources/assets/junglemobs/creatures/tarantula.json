@@ -42,12 +42,12 @@
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "violet",
+			"name": "scarlet",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "dark",
+			"name": "russet",
 			"type": "uncommon"
 		}
 	],

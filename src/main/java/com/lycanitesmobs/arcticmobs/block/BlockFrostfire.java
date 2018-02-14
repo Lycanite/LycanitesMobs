@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
@@ -122,12 +123,15 @@ public class BlockFrostfire extends BlockFireBase {
             entity.extinguish();
 
         PotionEffect effectSlowness = new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0);
-        PotionEffect effectHunger = new PotionEffect(MobEffects.HUNGER, 5 * 20, 0); // No applied, used to check for immunity only.
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
             if(!entityCreature.creatureInfo.element.canFreeze())
-                return; // Entities immune to both are normally arctic mobs.
+                return;
             entityCreature.addPotionEffect(effectSlowness);
+        }
+        if(entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLiving = (EntityLivingBase)entity;
+            entityLiving.addPotionEffect(effectSlowness);
         }
 
         entity.attackEntityFrom(DamageSource.MAGIC, 2);

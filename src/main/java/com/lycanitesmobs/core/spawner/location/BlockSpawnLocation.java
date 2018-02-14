@@ -26,6 +26,9 @@ public class BlockSpawnLocation extends SpawnLocation {
 	/** If true positions that can't see the sky are allowed. **/
 	public boolean underground = true;
 
+	/** The minimum amount of blocks that must be found in an area for the location to return any positions. Default -1 (ignore). **/
+	public int blockCost = -1;
+
 
 	@Override
 	public void loadFromJSON(JsonObject json) {
@@ -41,6 +44,9 @@ public class BlockSpawnLocation extends SpawnLocation {
 
 		if(json.has("underground"))
 			this.underground = json.get("underground").getAsBoolean();
+
+		if(json.has("blockCost"))
+			this.blockCost = json.get("blockCost").getAsInt();
 
 		super.loadFromJSON(json);
 	}
@@ -71,9 +77,6 @@ public class BlockSpawnLocation extends SpawnLocation {
 				for(int z = triggerPos.getZ() - this.rangeMax.getZ(); z <= triggerPos.getZ() + this.rangeMax.getZ(); z++) {
 					BlockPos spawnPos = new BlockPos(x, y, z);
 					IBlockState blockState = world.getBlockState(spawnPos);
-					if(blockState == null) {
-						continue;
-					}
 
 					// Ignore Flowing Liquids:
 					if(blockState.getBlock() instanceof IFluidBlock) {
@@ -96,16 +99,19 @@ public class BlockSpawnLocation extends SpawnLocation {
 			}
         }
 
+        // Block Cost:
+		if(this.blockCost > 0) {
+			if (spawnPositions.size() < this.blockCost) {
+				return new ArrayList<>();
+			}
+		}
+
         return this.sortSpawnPositions(spawnPositions, world, triggerPos);
     }
 
 	/** Returns if the provided block position is valid. **/
     public boolean isValidBlock(World world, BlockPos blockPos) {
     	Block block = world.getBlockState(blockPos).getBlock();
-    	if(block == null) {
-    		return false;
-		}
-
 		if(!this.surface || !this.underground) {
 			if(world.canSeeSky(blockPos)) {
 				if(!this.surface) {

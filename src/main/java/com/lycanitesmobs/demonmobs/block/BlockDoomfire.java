@@ -11,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -61,13 +62,16 @@ public class BlockDoomfire extends BlockFireBase {
         super.onEntityCollidedWithBlock(world, pos, state, entity);
 
         if(entity instanceof EntityLivingBase) {
-            PotionEffect effect = new PotionEffect(ObjectManager.getPotionEffect("decay"), 5 * 20, 0);
-            EntityLivingBase entityLiving = (EntityLivingBase)entity;
-            if(entityLiving.isPotionApplicable(effect))
-                entityLiving.addPotionEffect(effect);
+			Potion decay = ObjectManager.getPotionEffect("decay");
+            if(decay != null) {
+                PotionEffect effect = new PotionEffect(decay, 5 * 20, 0);
+                EntityLivingBase entityLiving = (EntityLivingBase) entity;
+                if (entityLiving.isPotionApplicable(effect))
+                    entityLiving.addPotionEffect(effect);
+            }
         }
 
-        if(entity instanceof EntityItem && ((EntityItem)entity).getItem() != null)
+        if(entity instanceof EntityItem)
             if(((EntityItem)entity).getItem().getItem() == ObjectManager.getItem("hellfirecharge"))
                 return;
 

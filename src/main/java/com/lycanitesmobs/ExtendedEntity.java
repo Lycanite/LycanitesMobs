@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 
 import javax.vecmath.Vector3d;
 import java.util.HashMap;
@@ -106,7 +107,7 @@ public class ExtendedEntity implements IExtendedEntity {
             return;
 
         // Force Remove Entity:
-        if (this.entity.getEntityWorld() != null && !this.entity.getEntityWorld().isRemote && FORCE_REMOVE_ENTITY_IDS != null && FORCE_REMOVE_ENTITY_IDS.length > 0 && !this.forceRemoveChecked) {
+        if (!this.entity.getEntityWorld().isRemote && FORCE_REMOVE_ENTITY_IDS != null && FORCE_REMOVE_ENTITY_IDS.length > 0 && !this.forceRemoveChecked) {
             LycanitesMobs.printDebug("ForceRemoveEntity", "Forced entity removal, checking: " + this.entity.getName());
             for (String forceRemoveID : FORCE_REMOVE_ENTITY_IDS) {
                 if (forceRemoveID.equalsIgnoreCase(this.entity.getName())) {
@@ -120,14 +121,12 @@ public class ExtendedEntity implements IExtendedEntity {
             this.entity.setDead();
 
         // Safe Position:
-        if(this.entity.getEntityWorld() != null) {
-            if (this.lastSafePos == null) {
-                this.lastSafePos = new Vector3d(this.entity.posX, this.entity.posY, this.entity.posZ);
-            }
-            if (!this.entity.getEntityWorld().getBlockState(this.entity.getPosition()).getMaterial().isSolid()) {
-                this.lastSafePos.set(Math.floor(this.entity.posX) + 0.5D, this.entity.getPosition().getY(), Math.floor(this.entity.posZ) + 0.5D);
-            }
-        }
+		if (this.lastSafePos == null) {
+			this.lastSafePos = new Vector3d(this.entity.posX, this.entity.posY, this.entity.posZ);
+		}
+		if (!this.entity.getEntityWorld().getBlockState(this.entity.getPosition()).getMaterial().isSolid()) {
+			this.lastSafePos.set(Math.floor(this.entity.posX) + 0.5D, this.entity.getPosition().getY(), Math.floor(this.entity.posZ) + 0.5D);
+		}
 
         // Fear Entity:
         if (this.fearEntity != null && !this.fearEntity.isEntityAlive())
@@ -153,49 +152,48 @@ public class ExtendedEntity implements IExtendedEntity {
     //                 Picked Up By Entity
     // ==================================================
     public void updatePickedUpByEntity() {
-        if(this.pickedUpByEntity == null || this.entity.getEntityWorld() == null)
+        if(this.pickedUpByEntity == null)
             return;
 
         // Check:
-        if(!this.pickedUpByEntity.isEntityAlive()) {
-            this.setPickedUpByEntity(null);
-            return;
-        }
-        if(this.pickedUpByEntity instanceof EntityLivingBase) {
-            if(((EntityLivingBase)this.pickedUpByEntity).getHealth() <= 0) {
-                this.setPickedUpByEntity(null);
-                return;
-            }
-        }
-        if(ObjectManager.getPotionEffect("weight") != null) {
-            if(this.entity.isPotionActive(ObjectManager.getPotionEffect("weight"))) {
-                this.setPickedUpByEntity(null);
-                return;
-            }
-        }
-        if(this.entity.getDistanceSqToEntity(this.pickedUpByEntity) > 32D) {
-            this.setPickedUpByEntity(null);
-            return;
-        }
+		if(!this.entity.getEntityWorld().isRemote) {
+			if (!this.pickedUpByEntity.isEntityAlive()) {
+				this.setPickedUpByEntity(null);
+				return;
+			}
+			if (this.pickedUpByEntity instanceof EntityLivingBase) {
+				if (((EntityLivingBase) this.pickedUpByEntity).getHealth() <= 0) {
+					this.setPickedUpByEntity(null);
+					return;
+				}
+			}
+			Potion weight = ObjectManager.getPotionEffect("weight");
+			if (weight != null) {
+				if (this.entity.isPotionActive(weight)) {
+					this.setPickedUpByEntity(null);
+					return;
+				}
+			}
+			if (this.entity.getDistanceSqToEntity(this.pickedUpByEntity) > 32D) {
+				this.setPickedUpByEntity(null);
+				return;
+			}
+		}
 
         // Movement:
-        double[] pickupOffset = this.getPickedUpOffset();
-        this.entity.setPosition(this.pickedUpByEntity.posX + pickupOffset[0], this.pickedUpByEntity.posY + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
-        this.entity.motionX = this.pickedUpByEntity.motionX;
-        this.entity.motionY = this.pickedUpByEntity.motionY;
-        this.entity.motionZ = this.pickedUpByEntity.motionZ;
-        this.entity.fallDistance = 0;
-        if (!this.entity.getEntityWorld().isRemote && this.entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer)this.entity;
-            player.capabilities.allowFlying = true;
-            this.entity.noClip = true;
-        }
-        if (!this.entity.isEntityAlive())
-            this.setPickedUpByEntity(null);
-        if (this.entity instanceof EntityLivingBase) {
-            if (this.entity.getHealth() <= 0)
-                this.setPickedUpByEntity(null);
-        }
+		if(this.pickedUpByEntity != null) {
+			double[] pickupOffset = this.getPickedUpOffset();
+			this.entity.setPosition(this.pickedUpByEntity.posX + pickupOffset[0], this.pickedUpByEntity.posY + pickupOffset[1], this.pickedUpByEntity.posZ + pickupOffset[2]);
+			this.entity.motionX = this.pickedUpByEntity.motionX;
+			this.entity.motionY = this.pickedUpByEntity.motionY;
+			this.entity.motionZ = this.pickedUpByEntity.motionZ;
+			this.entity.fallDistance = 0;
+			if (!this.entity.getEntityWorld().isRemote && this.entity instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) this.entity;
+				player.capabilities.allowFlying = true;
+				this.entity.noClip = true;
+			}
+		}
     }
 
 	public void setPickedUpByEntity(Entity pickedUpByEntity) {

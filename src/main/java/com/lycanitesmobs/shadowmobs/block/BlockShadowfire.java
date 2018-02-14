@@ -93,7 +93,7 @@ public class BlockShadowfire extends BlockFireBase {
             effectDecay = new PotionEffect(ObjectManager.getPotionEffect("decay"), 5 * 20, 0);
         if(entity instanceof EntityLivingBase) {
             EntityLivingBase entityLiving = (EntityLivingBase)entity;
-            if(!entityLiving.isPotionApplicable(effectBlindness) && (effectDecay == null || !entityLiving.isPotionApplicable(effectDecay)))
+            if(!entityLiving.isPotionApplicable(effectBlindness) || (effectDecay == null && !entityLiving.isPotionApplicable(effectDecay)))
                 return;
             entityLiving.addPotionEffect(effectBlindness);
             if(effectDecay != null)

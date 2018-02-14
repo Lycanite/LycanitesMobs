@@ -32,8 +32,8 @@
 	"damage": 6,
 	"attackSpeed": 0.5,
 	"rangedSpeed": 1,
-	"effect": 5,
-	"amplifier": 0,
+	"effect": 15,
+	"amplifier": 1,
 	"pierce": 1,
 	"sight": 16,
 	"knockbackResistance": 1,
@@ -51,7 +51,7 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "arbour",
+	"element": "poison",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,

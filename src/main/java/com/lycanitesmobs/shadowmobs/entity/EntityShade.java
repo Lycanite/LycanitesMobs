@@ -139,19 +139,16 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     public void specialAttack() {
         // Horrific Howl:
         double distance = 5.0D;
-        List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(distance, distance, distance), new Predicate<EntityLivingBase>() {
-            @Override
-            public boolean apply(EntityLivingBase possibleTarget) {
-                if(!possibleTarget.isEntityAlive()
-                        || possibleTarget == EntityShade.this
-                        || EntityShade.this.isRidingOrBeingRiddenBy(possibleTarget)
-                        || EntityShade.this.isOnSameTeam(possibleTarget)
-                        || !EntityShade.this.canAttackClass(possibleTarget.getClass())
-                        || !EntityShade.this.canAttackEntity(possibleTarget))
-                    return false;
-                return true;
-            }
-        });
+        List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(distance, distance, distance), possibleTarget -> {
+			if(!possibleTarget.isEntityAlive()
+					|| possibleTarget == EntityShade.this
+					|| EntityShade.this.isRidingOrBeingRiddenBy(possibleTarget)
+					|| EntityShade.this.isOnSameTeam(possibleTarget)
+					|| !EntityShade.this.canAttackClass(possibleTarget.getClass())
+					|| !EntityShade.this.canAttackEntity(possibleTarget))
+				return false;
+			return true;
+		});
         if(!possibleTargets.isEmpty()) {
             for(EntityLivingBase possibleTarget : possibleTargets) {
                 boolean doDamage = true;

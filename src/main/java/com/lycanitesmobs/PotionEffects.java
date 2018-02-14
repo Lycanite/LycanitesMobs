@@ -2,13 +2,16 @@ package com.lycanitesmobs;
 
 import com.google.common.base.Predicate;
 import com.lycanitesmobs.core.entity.EntityFear;
+import com.lycanitesmobs.core.network.MessageEntityVelocity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
+import net.minecraft.network.play.server.SPacketEntityVelocity;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -108,9 +111,26 @@ public class PotionEffects {
 			if(!invulnerable && entity.isPotionActive(instability)) {
 				if(entity.getEntityWorld().rand.nextDouble() <= 0.1) {
 					double strength = 1 + entity.getActivePotionEffect(instability).getAmplifier();
-					entity.motionX = strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
-					entity.motionY = strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
-					entity.motionZ = strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
+					entity.motionX += strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
+					entity.motionY += strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
+					entity.motionZ += strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D);
+					try {
+						if (entity instanceof EntityPlayerMP) {
+							EntityPlayerMP player = (EntityPlayerMP) entity;
+							player.connection.sendPacket(new SPacketEntityVelocity(entity));
+							MessageEntityVelocity messageEntityVelocity = new MessageEntityVelocity(
+									player,
+									strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D),
+									strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D),
+									strength * (entity.getEntityWorld().rand.nextDouble() - 0.5D)
+							);
+							LycanitesMobs.packetHandler.sendToPlayer(messageEntityVelocity, player);
+						}
+					}
+					catch(Exception e) {
+						LycanitesMobs.printWarning("", "Failed to create and send a network packet for instability velocity!");
+						e.printStackTrace();
+					}
 				}
 			}
 		}

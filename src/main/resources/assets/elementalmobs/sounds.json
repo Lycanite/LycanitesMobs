@@ -67,21 +67,21 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/djinn/say", "stream": false}]
     },
-    "entity.djinn.hurt": {
+    "entity.nymph.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/hurt", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/hurt", "stream": false}]
     },
-    "entity.djinn.death": {
+    "entity.nymph.death": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/death", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/death", "stream": false}]
     },
-    "entity.djinn.beg": {
+    "entity.nymph.beg": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/beg", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/beg", "stream": false}]
     },
-    "entity.djinn.tame": {
+    "entity.nymph.tame": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/tame", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/tame", "stream": false}]
     },
     "entity.argus.say": {
         "category": "hostile",
@@ -182,6 +182,26 @@
     "entity.grue.jump": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/grue/jump", "stream": false}]
+    },
+    "entity.nymph.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/nymph/say", "stream": false}]
+    },
+    "entity.djinn.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/hurt", "stream": false}]
+    },
+    "entity.djinn.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/death", "stream": false}]
+    },
+    "entity.djinn.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/beg", "stream": false}]
+    },
+    "entity.djinn.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/djinn/tame", "stream": false}]
     },
 	"entity.spriggan.say": {
         "category": "hostile",
@@ -303,8 +323,12 @@
         "category": "ambient",
         "sounds": [{"name": "elementalmobs:projectile/lifedrain", "stream": false}]
     },
+    "projectile.faebolt": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/faebolt", "stream": false}]
+    },
     "projectile.frostbolt": {
         "category": "ambient",
-	"sounds": [{"name": "elementalmobs:projectile/frostbolt", "stream": false}]
+        "sounds": [{"name": "elementalmobs:projectile/frostbolt", "stream": false}]
     }
 }

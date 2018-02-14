@@ -36,7 +36,10 @@ public class Beastiary {
 	}
 
 	public void addToKnowledgeList(CreatureKnowledge newKnowledge) {
-		if(CreatureManager.getInstance().getCreature(newKnowledge.creatureName) == null)
+		CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(newKnowledge.creatureName);
+		if(creatureInfo == null)
+			return;
+		if(creatureInfo.dummy)
 			return;
 		this.creatureKnowledgeList.put(newKnowledge.creatureName, newKnowledge);
 	}

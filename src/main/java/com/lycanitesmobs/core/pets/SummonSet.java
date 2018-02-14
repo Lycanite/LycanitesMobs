@@ -35,6 +35,8 @@ public class SummonSet {
 		CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(creatureName);
 		if(creatureInfo == null)
 			return false;
+		if(creatureInfo.dummy)
+			return false;
 		return creatureInfo.isSummonable();
 	}
 	

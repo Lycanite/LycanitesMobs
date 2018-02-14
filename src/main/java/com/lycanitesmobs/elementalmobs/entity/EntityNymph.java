@@ -73,7 +73,7 @@ public class EntityNymph extends EntityCreatureTameable implements IMob, IGroupP
 
 		if(!this.getEntityWorld().isRemote) {
 			// Healing Aura:
-			if(this.healingRate > 0) {
+			if(this.healingRate > 0 && !this.isPetType("familiar")) {
 				if (this.updateTick % this.healingRate == 0) {
 					List aoeTargets = this.getNearbyEntities(EntityLivingBase.class, null, 4);
 					for (Object entityObj : aoeTargets) {
@@ -95,13 +95,19 @@ public class EntityNymph extends EntityCreatureTameable implements IMob, IGroupP
 
         /*/ Particles:
         if(this.getEntityWorld().isRemote)
-            for(int i = 0; i < 2; ++i) {
+            for(int i = 0; i < 1; ++i) {
                 this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
                         this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
                         this.posY + this.rand.nextDouble() * (double) this.height,
                         this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
                         0.0D, 0.0D, 0.0D,
-                        Blocks.TALLGRASS.getStateId(Blocks.YELLOW_FLOWER.getDefaultState()));
+                        Blocks.RED_FLOWER.getStateId(Blocks.RED_FLOWER.getStateFromMeta(2)));
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
+						this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						this.posY + this.rand.nextDouble() * (double) this.height,
+						this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						0.0D, 0.0D, 0.0D,
+						Blocks.RED_FLOWER.getStateId(Blocks.RED_FLOWER.getStateFromMeta(8)));
             }*/
     }
 

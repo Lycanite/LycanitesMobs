@@ -38,7 +38,7 @@ public class EntityFaeBolt extends EntityProjectileBase {
     
     // ========== Setup Projectile ==========
     public void setup() {
-    	this.entityName = "feabolt";
+    	this.entityName = "faebolt";
     	this.group = ElementalMobs.instance.group;
     	this.setBaseDamage(0);
     	this.setProjectileScale(4F);

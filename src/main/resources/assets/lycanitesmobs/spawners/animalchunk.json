@@ -28,8 +28,7 @@
 			"rangeMax": [14, 128, 14],
 			"sorting": "random",
 			"limit": 32,
-			"solidGround": true,
-			"surface": true
+			"solidGround": true
 		}
 	]
 }

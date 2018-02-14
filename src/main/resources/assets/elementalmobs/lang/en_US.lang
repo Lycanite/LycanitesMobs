@@ -141,5 +141,7 @@ item.lifedrainscepter.name=Life Drain Scepter
 item.lifedrainscepter.description=Mid Damage, Laser, Drains Health
 item.frostboltcharge.name=Frostbolt Charge
 item.frostboltcharge.description=Use to fire a bolt of ice. Can also be fired from a dispenser.
+item.faeboltcharge.name=Faebolt Charge
+item.faeboltcharge.description=Use to fire a bolt of fae energy, this deals no damage but applies the lifeleak debuff converting all damage dealt into healing. Can also be fired from a dispenser.
 item.wraithsigil.name=Wraith Sigil
 item.wraithsigil.description=This skull is full to the brim with evil Wraiths! Use to fire a wave of angry Wraiths forwards towards your victim! Results can be explosive!

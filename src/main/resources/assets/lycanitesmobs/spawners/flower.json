@@ -1,18 +1,18 @@
 {
-	"name": "fire",
+	"name": "flower",
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
-	"mobCountMin": 8,
+	"mobCountMin": 1,
 	"ignoreDimensions": true,
 	"ignoreBiomes": true,
-	"ignoreLightLevel": true,
+	"ignoreLightLevel": false,
 	"conditions": [],
 	"triggers": [
 		{
 			"type": "tick",
 			"chance": 0.5,
-			"tickRate": 400
+			"tickRate": 800
 		}
 	],
 	"locations": [
@@ -20,9 +20,12 @@
 			"type": "block",
 			"rangeMin": [16, 0, 16],
 			"rangeMax": [32, 32, 32],
+			"surface": true,
+			"underground": false,
 			"sorting": "random",
 			"blocks": [
-				"minecraft:fire"
+				"minecraft:red_flower",
+				"minecraft:yellow_flower"
 			],
 			"blockCost": 8,
 			"listType": "whitelist"
@@ -30,7 +33,7 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs:cinder",
+			"mobId": "elementalmobs:nymph",
 			"weight": 8
 		}
 	]

@@ -26,7 +26,7 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 	// ==================================================
 	public MessageBeastiary() {}
 	public MessageBeastiary(Beastiary beastiary) {
-		this.entryAmount = beastiary.creatureKnowledgeList.size();
+		this.entryAmount = Math.min(201, beastiary.creatureKnowledgeList.size());
 		if(this.entryAmount > 0) {
 			this.creatureNames = new String[this.entryAmount];
 			this.completions = new double[this.entryAmount];
@@ -75,12 +75,15 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
-        this.entryAmount = packet.readInt();
+        this.entryAmount = Math.min(200, packet.readInt());
+        if(this.entryAmount == 200) {
+        	LycanitesMobs.printWarning("", "Received 200 or more creature entries, something went wrong with the Beastiary packet! Addition entries will be skipped to prevent OOM!");
+		}
         if(this.entryAmount > 0) {
             this.creatureNames = new String[this.entryAmount];
             this.completions = new double[this.entryAmount];
             for(int i = 0; i < this.entryAmount; i++) {
-                this.creatureNames[i] = packet.readString(256);
+                this.creatureNames[i] = packet.readString(32767);
                 this.completions[i] = packet.readDouble();
             }
         }

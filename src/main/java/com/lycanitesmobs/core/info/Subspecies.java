@@ -75,7 +75,7 @@ public class Subspecies {
 				}
                 if("rare".equals(subspeciesName)) {
 					if("health".equals(statName)) {
-						defaultValue = 10;
+						defaultValue = 20;
 					}
 					else if("attackSpeed".equals(statName)) {
 						defaultValue = 2;

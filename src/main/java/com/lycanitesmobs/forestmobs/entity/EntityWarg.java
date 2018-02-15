@@ -95,7 +95,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         	}
         }
 
-        // Leap Landing Paralysis:
+        // Leap Landing Poison:
         if(this.leapedAbilityQueued && !this.onGround && !this.getEntityWorld().isRemote) {
             this.leapedAbilityQueued = false;
             this.leapedAbilityReady = true;
@@ -103,20 +103,17 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         if(this.leapedAbilityReady && this.onGround && !this.getEntityWorld().isRemote) {
             this.leapedAbilityReady = false;
             double distance = 4.0D;
-            List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(distance, distance, distance), new Predicate<EntityLivingBase>() {
-                @Override
-                public boolean apply(EntityLivingBase possibleTarget) {
-                    if (!possibleTarget.isEntityAlive()
-                            || possibleTarget == EntityWarg.this
-                            || EntityWarg.this.isRidingOrBeingRiddenBy(possibleTarget)
-                            || EntityWarg.this.isOnSameTeam(possibleTarget)
-                            || !EntityWarg.this.canAttackClass(possibleTarget.getClass())
-                            || !EntityWarg.this.canAttackEntity(possibleTarget))
-                        return false;
+            List<EntityLivingBase> possibleTargets = this.getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(distance, distance, distance), possibleTarget -> {
+				if (!possibleTarget.isEntityAlive()
+						|| possibleTarget == EntityWarg.this
+						|| EntityWarg.this.isRidingOrBeingRiddenBy(possibleTarget)
+						|| EntityWarg.this.isOnSameTeam(possibleTarget)
+						|| !EntityWarg.this.canAttackClass(possibleTarget.getClass())
+						|| !EntityWarg.this.canAttackEntity(possibleTarget))
+					return false;
 
-                    return true;
-                }
-            });
+				return true;
+			});
             if(!possibleTargets.isEmpty()) {
                 for(EntityLivingBase possibleTarget : possibleTargets) {
                     boolean doDamage = true;
@@ -126,23 +123,12 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                         }
                     }
                     if(doDamage) {
-                        if (ObjectManager.getPotionEffect("paralysis") != null)
-                            possibleTarget.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("paralysis"), this.getEffectDuration(5), 1));
-                        else
-                            possibleTarget.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 10 * 20, 0));
+                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.POISON, 10 * 20, 0));
                     }
                 }
             }
             this.playAttackSound();
         }
-    }
-
-    @Override
-    public void riderEffects(EntityLivingBase rider) {
-    	if(rider.isPotionActive(MobEffects.SLOWNESS))
-    		rider.removePotionEffect(MobEffects.SLOWNESS);
-    	if(rider.isPotionActive(ObjectManager.getPotionEffect("paralysis")))
-    		rider.removePotionEffect(ObjectManager.getPotionEffect("paralysis"));
     }
 
 	

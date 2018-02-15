@@ -106,7 +106,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     }
     
     public void riderEffects(EntityLivingBase rider) {
-        if(!rider.canBreatheUnderwater() && rider.isInWater())
+        if(!rider.canBreatheUnderwater() && this.canBreatheUnderwater() && rider.isInWater())
             rider.setAir(300);
     }
 
@@ -355,7 +355,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     	if(command.equals("Mount")) {
     		this.playMountSound();
             this.clearMovement();
-            this.setAttackTarget((EntityLivingBase)null);
+            this.setAttackTarget(null);
             this.mount(player);
     	}
     	

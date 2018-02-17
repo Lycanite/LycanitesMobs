@@ -48,14 +48,7 @@ public class LayerEffect extends LayerBase {
 
     @Override
     public ResourceLocation getLayerTexture(EntityCreatureBase entity) {
-		String textureName = entity.getTextureName();
-		if(this.subspecies && entity.getSubspecies() != null) {
-			textureName += "_" + entity.getSubspecies().name;
-		}
-		textureName += "_" + this.textureSuffix;
-		if(AssetManager.getTexture(textureName) == null)
-			AssetManager.addTexture(textureName, entity.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
-		return AssetManager.getTexture(textureName);
+		return entity.getTexture(this.textureSuffix);
     }
 
 	@Override

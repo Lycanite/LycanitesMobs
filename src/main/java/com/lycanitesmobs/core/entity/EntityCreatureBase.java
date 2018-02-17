@@ -998,11 +998,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Get Random Subspecies ==========
     public void getRandomSubspecies() {
     	if(this.subspecies == null && !this.isMinion()) {
-    		this.subspecies = this.creatureInfo.getRandomSubspecies(this, this.spawnedRare);
-    		if(this.subspecies != null)
-    			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + this.subspecies.getTitle());
-    		else
-    			LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to base species.");
+    		Subspecies randomSubspecies = this.creatureInfo.getRandomSubspecies(this, this.spawnedRare);
+    		if(randomSubspecies != null) {
+				LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + randomSubspecies.getTitle());
+				this.setSubspecies(randomSubspecies.index, true);
+			}
+    		else {
+				LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to base species.");
+				this.setSubspecies(0, true);
+			}
     	}
     }
 
@@ -1120,14 +1124,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	/** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
 	public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
 		this.subspecies = this.creatureInfo.getSubspecies(subspeciesIndex);
-		float scaledExp = this.creatureInfo.experience;
-		if(subspeciesIndex == 1 || subspeciesIndex == 2)
-			scaledExp = Math.round((float)(this.creatureInfo.experience * Subspecies.uncommonExperienceScale));
-		else if(subspeciesIndex >= 3)
-			scaledExp = Math.round((float)(this.creatureInfo.experience * Subspecies.rareExperienceScale));
-		this.experienceValue = Math.round(scaledExp);
-		if(subspeciesIndex == 3) {
-			this.damageLimit = 40;
+
+		if(this.subspecies != null) {
+			float scaledExp = this.creatureInfo.experience;
+			if ("uncommon".equals(this.subspecies.type))
+				scaledExp = Math.round((float) (this.creatureInfo.experience * Subspecies.uncommonExperienceScale));
+			else if ("rare".equals(this.subspecies.type))
+				scaledExp = Math.round((float) (this.creatureInfo.experience * Subspecies.rareExperienceScale));
+			this.experienceValue = Math.round(scaledExp);
+			if ("rare".equals(this.subspecies.type)) {
+				this.damageLimit = 40;
+			}
 		}
 
 		this.refreshStats();
@@ -3812,14 +3819,22 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ==================================================
     /** Returns this creature's main texture. Also checks for for subspecies. **/
     public ResourceLocation getTexture() {
-        String textureName = this.getTextureName();
-        if(this.getSubspecies() != null) {
-            textureName += "_" + this.getSubspecies().name;
-        }
-    	if(AssetManager.getTexture(textureName) == null)
-    		AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
-    	return AssetManager.getTexture(textureName);
+        return this.getTexture("");
     }
+
+	/** Returns this creature's main texture. Also checks for for subspecies. **/
+	public ResourceLocation getTexture(String suffix) {
+		String textureName = this.getTextureName();
+		if(this.getSubspecies() != null) {
+			textureName += "_" + this.getSubspecies().name;
+		}
+		if(!"".equals(suffix)) {
+			textureName += "_" + suffix;
+		}
+		if(AssetManager.getTexture(textureName) == null)
+			AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
+		return AssetManager.getTexture(textureName);
+	}
 
     /** Returns this creature's equipment texture. **/
     public ResourceLocation getEquipmentTexture(String equipmentName) {

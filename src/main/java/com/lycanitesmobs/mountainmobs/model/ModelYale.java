@@ -5,6 +5,7 @@ import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.mountainmobs.MountainMobs;
 import com.lycanitesmobs.mountainmobs.renderer.LayerYaleWool;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -124,4 +125,11 @@ public class ModelYale extends ModelObjOld {
     	this.rotate(rotX, rotY, rotZ);
     	this.translate(posX, posY, posZ);
     }
+
+    @Override
+	public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
+    	if("fur".equals(partName))
+    		return false;
+		return super.canBaseRenderPart(partName, entity, trophy);
+	}
 }

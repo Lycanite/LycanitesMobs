@@ -190,6 +190,11 @@ public class EntityEyewig extends EntityCreatureRideable {
     public float getFallResistance() {
     	return 10;
     }
+
+	@Override
+	public boolean canBreatheUnderwater() {
+		return true;
+	}
     
     
     // ==================================================

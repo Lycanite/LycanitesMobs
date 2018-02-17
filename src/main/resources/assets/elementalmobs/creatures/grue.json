@@ -9,7 +9,7 @@
 		"disableSubspecies": false,
 		"dimensionIds": [],
 		"dimensionListType": "blacklist",
-		"ignoreBiome": false,
+		"ignoreBiome": true,
 		"biomes": [],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,

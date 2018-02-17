@@ -111,14 +111,14 @@ public class ElementInfo {
 	/**
 	 * Applies debuffs to the target entity based on this element.
 	 * @param targetEntity The entity to debuffs.
-	 * @param duration The duration of the debuffs.
+	 * @param duration The duration (in seconds) of the debuffs.
 	 * @param amplifier The amplifier of the debuffs.
 	 */
 	public void debuffEntity(EntityLivingBase targetEntity, int duration, int amplifier) {
 		duration = Math.round((float)duration * (float)this.debuffDurationMultiplier);
 		for(String debuff : this.debuffs) {
 			if("burning".equalsIgnoreCase(debuff)) {
-				targetEntity.setFire(duration * 20);
+				targetEntity.setFire(duration);
 				continue;
 			}
 			Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(debuff));
@@ -135,6 +135,9 @@ public class ElementInfo {
 	 * @return True if the effect can be applied.
 	 */
 	public boolean isEffectApplicable(PotionEffect effect) {
+		if(effect == null || effect.getPotion().getRegistryName() == null) {
+			return false;
+		}
 		if(this.debuffs.contains(effect.getPotion().getRegistryName().toString())) {
 			return false;
 		}

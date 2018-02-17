@@ -92,7 +92,6 @@ public class BlockFluidOoze extends BlockFluidBase {
             // Effects:
             if(entity instanceof EntityLivingBase) {
                 ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0));
-                ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, 5 * 20, 0));
             }
         }
 		super.onEntityCollidedWithBlock(world, pos, state, entity);

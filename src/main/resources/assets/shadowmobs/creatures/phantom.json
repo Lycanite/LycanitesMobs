@@ -51,7 +51,7 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "void",
+	"element": "phase",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,

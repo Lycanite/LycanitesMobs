@@ -51,7 +51,7 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "nether",
+	"element": "void",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,

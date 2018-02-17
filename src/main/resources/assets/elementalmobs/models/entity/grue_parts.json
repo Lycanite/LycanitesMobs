@@ -1,0 +1,107 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "ArmRight",
+    "parent": "Body",
+    "centerX": "-0.2",
+    "centerY": "1.2",
+    "centerZ": "0.1"
+  },
+  {
+    "name": "FingerRight02",
+    "parent": "ArmRight",
+    "centerX": "-1.1",
+    "centerY": "1.3",
+    "centerZ": "1.2"
+  },
+  {
+    "name": "FingerRight03",
+    "parent": "ArmRight",
+    "centerX": "-1.008",
+    "centerY": "1.288",
+    "centerZ": "1.177"
+  },
+  {
+    "name": "FingerRight04",
+    "parent": "ArmRight",
+    "centerX": "-0.925",
+    "centerY": "1.271",
+    "centerZ": "1.147"
+  },
+  {
+    "name": "FingerRight01",
+    "parent": "ArmRight",
+    "centerX": "-1.19",
+    "centerY": "1.277",
+    "centerZ": "1.204"
+  },
+  {
+    "name": "CloakRight",
+    "parent": "Body",
+    "centerX": "0.05",
+    "centerY": "1.44",
+    "centerZ": "-0.2"
+  },
+  {
+    "name": "CloakLeft",
+    "parent": "Body",
+    "centerX": "-0.05",
+    "centerY": "1.44",
+    "centerZ": "-0.2"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.586",
+    "centerZ": "0.606"
+  },
+  {
+    "name": "Mouth",
+    "parent": "Head",
+    "centerX": "-0.0",
+    "centerY": "1.412",
+    "centerZ": "0.51"
+  },
+  {
+    "name": "ArmLeft",
+    "parent": "Body",
+    "centerX": "0.2",
+    "centerY": "1.2",
+    "centerZ": "0.1"
+  },
+  {
+    "name": "FingerLeft01",
+    "parent": "ArmLeft",
+    "centerX": "1.19",
+    "centerY": "1.277",
+    "centerZ": "1.204"
+  },
+  {
+    "name": "FingerLeft04",
+    "parent": "ArmLeft",
+    "centerX": "0.925",
+    "centerY": "1.271",
+    "centerZ": "1.147"
+  },
+  {
+    "name": "FingerLeft03",
+    "parent": "ArmLeft",
+    "centerX": "1.008",
+    "centerY": "1.288",
+    "centerZ": "1.177"
+  },
+  {
+    "name": "FingerLeft02",
+    "parent": "ArmLeft",
+    "centerX": "1.1",
+    "centerY": "1.3",
+    "centerZ": "1.2"
+  }
+]

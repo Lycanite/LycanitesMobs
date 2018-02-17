@@ -10,7 +10,7 @@
 		"dimensionIds": [],
 		"dimensionListType": "blacklist",
 		"ignoreBiome": false,
-		"biomes": ["spooky"],
+		"biomes": ["spooky", "end"],
 		"spawnWeight": 10,
 		"dungeonWeight": 200,
 		"spawnAreaLimit": 5,

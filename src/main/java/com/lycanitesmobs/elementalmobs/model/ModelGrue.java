@@ -1,15 +1,22 @@
 package com.lycanitesmobs.elementalmobs.model;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelObjOld;
+import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
+import com.lycanitesmobs.core.renderer.LayerBase;
+import com.lycanitesmobs.core.renderer.LayerEffect;
+import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Vector2f;
+
 @SideOnly(Side.CLIENT)
-public class ModelGrue extends ModelObjOld {
+public class ModelGrue extends ModelTemplateElemental {
 	
 	// ==================================================
   	//                    Constructors
@@ -22,22 +29,20 @@ public class ModelGrue extends ModelObjOld {
     	// Load Model:
     	this.initModel("grue", ElementalMobs.instance.group, "entity/grue");
     	
-
-
-    	
-    	// Set Rotation Centers:
-    	setPartCenter("head", 0F, 1.5F, 0.4F);
-    	setPartCenter("mouth", 0F, 1.3F, 0.5F);
-    	setPartCenter("body", 0F, 1.0F, 0F);
-    	setPartCenter("armleft", 0.2F, 1.1F, 0F);
-    	setPartCenter("armright", -0.2F, 1.1F, 0.2F);
-    	
-    	setPartCenter("effect01", 0F, 0.8F, 0F);
-    	
     	// Trophy:
         this.trophyScale = 0.8F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
+
+
+	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerEffect(renderer, "cloak", false, false, true));
+	}
     
     
     // ==================================================
@@ -47,59 +52,57 @@ public class ModelGrue extends ModelObjOld {
     @Override
     public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
     	super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
-    	float pi = (float)Math.PI;
-    	float posX = 0F;
-    	float posY = 0F;
-    	float posZ = 0F;
-    	float angleX = 0F;
-    	float angleY = 0F;
-    	float angleZ = 0F;
-    	float rotation = 0F;
-    	float rotX = 0F;
-    	float rotY = 0F;
-    	float rotZ = 0F;
-    	
-    	// Looking (Mouth):
-    	if(partName.equals("mouth")) {
-    		this.centerPartToPart("mouth", "head");
-    		if(!lockHeadX)
-    			this.rotate((float)Math.toDegrees(lookX / (180F / (float)Math.PI)), 0, 0);
-    		if(!lockHeadY)
-    			this.rotate(0, (float)Math.toDegrees(lookY / (180F / (float)Math.PI)), 0);
-    		this.uncenterPartToPart("mouth", "head");
-    	}
-    	
-    	// Idle:
-    	if(partName.equals("mouth")) {
-    		this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.1F) * 0.1F - 0.1F), 0.0F, 0.0F);
-    	}
-    	if(partName.equals("armleft")) {
-	        rotZ -= Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
-	        rotX -= Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-    	if(partName.equals("armright")) {
-	        rotZ += Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
-	        rotX += Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F);
-    	}
-		float bob = -MathHelper.sin(loop * 0.1F) * 0.3F;
-		posY += bob;
-		
-    	// Effects:
-    	if(partName.equals("effect01")) {
-    		rotY += loop * 8;
-    	}
-				
-		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
-	    	if(partName.equals("armleft") && ((EntityCreatureBase)entity).getAttackPhase() == 2)
-	    		rotate(0.0F, -25.0F, 0.0F);
-	    	if(partName.equals("armright") && ((EntityCreatureBase)entity).getAttackPhase() != 2)
-	    		rotate(0.0F, 25.0F, 0.0F);
+
+    	// Mouth:
+		if(partName.equals("mouth")) {
+			this.rotate(10F, 0, 0);
 		}
 		
-    	// Apply Animations:
-    	rotate(rotation, angleX, angleY, angleZ);
-    	rotate(rotX, rotY, rotZ);
-    	translate(posX, posY, posZ);
+    	// Fingers:
+		else if(partName.equals("fingerleft01") || partName.equals("fingerright01")) {
+			this.rotate((float)Math.toDegrees(MathHelper.cos(loop * 0.2F) * 0.2F - 0.2F), 0, 0);
+    	}
+		else if(partName.equals("fingerleft02") || partName.equals("fingerright02")) {
+			this.rotate((float)Math.toDegrees(MathHelper.cos((loop + 20) * 0.2F) * 0.2F - 0.2F), 0, 0);
+		}
+		else if(partName.equals("fingerleft03") || partName.equals("fingerright03")) {
+			this.rotate((float)Math.toDegrees(MathHelper.cos((loop + 40) * 0.2F) * 0.2F - 0.2F), 0, 0);
+		}
+		else if(partName.equals("fingerleft04") || partName.equals("fingerright04")) {
+			this.rotate((float)Math.toDegrees(MathHelper.cos((loop + 60) * 0.2F) * 0.2F - 0.2F), 0, 0);
+		}
     }
+
+
+	// ==================================================
+	//                Can Render Part
+	// ==================================================
+	/** Returns true if the part can be rendered on the base layer. **/
+	@Override
+	public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
+		if(partName.contains("cloak")) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+		if(layer != null && "cloak".equals(layer.name)) {
+			return partName.contains("cloak");
+		}
+		return super.canRenderPart(partName, entity, layer, trophy);
+	}
+
+
+	// ==================================================
+	//              Get Part Texture Offset
+	// ==================================================
+	@Override
+	public Vector2f getPartTextureOffset(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
+		if(layer != null && "cloak".equals(layer.name)) {
+			return new Vector2f(0, loop);
+		}
+		return super.getPartTextureOffset(partName, entity, layer, trophy, loop);
+	}
 }

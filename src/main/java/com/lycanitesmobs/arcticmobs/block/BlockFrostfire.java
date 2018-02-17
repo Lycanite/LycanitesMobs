@@ -116,7 +116,7 @@ public class BlockFrostfire extends BlockFireBase {
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         super.onEntityCollidedWithBlock(world, pos, state, entity);
 
-        if(entity instanceof EntityItem) // Icefire shouldn't destroy items.
+        if(entity instanceof EntityItem) // Frost shouldn't destroy items.
             return;
 
         if(entity.isBurning())

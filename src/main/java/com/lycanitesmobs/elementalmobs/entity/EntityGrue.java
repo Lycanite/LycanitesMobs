@@ -1,6 +1,7 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -225,12 +226,15 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     // ==================================================
     //                       Visuals
     // ==================================================
-    /** Returns this creature's main texture. Also checks for for subspecies. **/
-    public ResourceLocation getTexture() {
+    @Override
+    public ResourceLocation getTexture(String suffix) {
         if(!"Shadow Clown".equals(this.getCustomNameTag()))
-            return super.getTexture();
+            return super.getTexture(suffix);
 
         String textureName = this.getTextureName() + "_shadowclown";
+		if(!"".equals(suffix)) {
+			textureName += "_" + suffix;
+		}
         if(AssetManager.getTexture(textureName) == null)
             AssetManager.addTexture(textureName, this.creatureInfo.group, "textures/entity/" + textureName.toLowerCase() + ".png");
         return AssetManager.getTexture(textureName);

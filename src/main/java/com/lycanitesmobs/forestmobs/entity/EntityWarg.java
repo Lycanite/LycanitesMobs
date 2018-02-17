@@ -1,6 +1,5 @@
 package com.lycanitesmobs.forestmobs.entity;
 
-import com.google.common.base.Predicate;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
@@ -95,7 +94,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
         	}
         }
 
-        // Leap Landing Poison:
+        // Leap Landing Effect:
         if(this.leapedAbilityQueued && !this.onGround && !this.getEntityWorld().isRemote) {
             this.leapedAbilityQueued = false;
             this.leapedAbilityReady = true;
@@ -123,7 +122,7 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                         }
                     }
                     if(doDamage) {
-                        possibleTarget.addPotionEffect(new PotionEffect(MobEffects.POISON, 10 * 20, 0));
+                        this.creatureInfo.element.debuffEntity(possibleTarget, this.getEffectDuration(1), this.getEffectAmplifier(1));
                     }
                 }
             }

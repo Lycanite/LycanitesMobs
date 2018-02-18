@@ -110,9 +110,14 @@ public class EntityAITargetMaster extends EntityAITarget {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
-    	this.target = null;
-        if(this.host.updateTick % 20 != 0 && this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0)
-            return false;
+		if (this.host.updateTick % 20 != 0) {
+			return false;
+		}
+		if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0) {
+			return false;
+		}
+
+		this.target = null;
         
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D;

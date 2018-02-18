@@ -93,16 +93,20 @@ public class EntityAITargetAvoid extends EntityAITarget {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
-        // Check for other avoid target AIs:
+		if (this.host.updateTick % 20 != 0) {
+			return false;
+		}
+		if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0) {
+			return false;
+		}
+
+		// Check for other avoid target AIs:
         EntityLivingBase avoidTarget = this.getTarget();
         if(avoidTarget != null && !this.isValidTarget(avoidTarget)) {
             return false;
         }
 
     	this.target = null;
-    	
-        if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0)
-            return false;
         
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D;

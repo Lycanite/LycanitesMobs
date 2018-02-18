@@ -108,6 +108,10 @@ public class EntityAITargetParent extends EntityAITarget {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
+		if (this.host.updateTick % 20 != 0) {
+			return false;
+		}
+
     	this.target = null;
     	if(this.host.getGrowingAge() >= 0) {
     		this.host.setParentTarget(null);

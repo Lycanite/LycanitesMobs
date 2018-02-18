@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IGroupAlpha;
@@ -9,7 +10,17 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 public class EntityAITargetAttack extends EntityAITarget {
 	// Targets:
@@ -174,13 +185,26 @@ public class EntityAITargetAttack extends EntityAITarget {
   	// ==================================================
     @Override
     public boolean shouldExecute() {
-    	this.target = null;
-    	
-    	if(!this.host.isAggressive() || this.host.hasFixateTarget())
-    		return false;
-    	
-        if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0)
-            return false;
+		if(!this.host.isAggressive() || this.host.hasFixateTarget()) {
+			return false;
+		}
+
+    	if(this.targetClass == EntityPlayer.class) {
+			if (this.host.updateTick % 10 != 0) {
+				return false;
+			}
+		}
+		else {
+			if (this.host.updateTick % 40 != 0) {
+				return false;
+			}
+		}
+		if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0) {
+			return false;
+		}
+
+
+		this.target = null;
         
         double distance = this.getTargetDistance();
         double heightDistance = 4.0D + this.host.height;
@@ -192,4 +216,30 @@ public class EntityAITargetAttack extends EntityAITarget {
 
         return this.target != null;
     }
+
+
+	// ==================================================
+	//                  Get New Target
+	// ==================================================
+	@Override
+	public EntityLivingBase getNewTarget(double rangeX, double rangeY, double rangeZ) {
+		// Faster Player Targeting:
+		if(this.targetClass == EntityPlayer.class) {
+			EntityLivingBase newTarget = null;
+			try {
+				List<EntityPlayer> possibleTargets = this.host.getEntityWorld().getPlayers(EntityPlayer.class, this.targetSelector);
+				if (possibleTargets.isEmpty())
+					return null;
+				Collections.sort(possibleTargets, this.nearestSorter);
+				newTarget = possibleTargets.get(0);
+			}
+			catch (Exception e) {
+				LycanitesMobs.printWarning("", "An exception occurred when player target selecting, this has been skipped to prevent a crash.");
+				e.printStackTrace();
+			}
+			return newTarget;
+		}
+
+		return super.getNewTarget(rangeX, rangeY, rangeZ);
+	}
 }

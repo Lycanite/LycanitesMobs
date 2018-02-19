@@ -217,9 +217,15 @@ public class CreatureSpawn {
 	 * @return True if allowed, false if disallowed.
 	 */
 	public boolean isAllowedDimension(World world) {
+		// Default:
 		if(world == null || world.provider == null || this.dimensionIds.length == 0) {
 			LycanitesMobs.printDebug("MobSpawns", "No world or dimension spawn settings were found, defaulting to valid.");
 			return true;
+		}
+
+		// Global Check:
+		if(!CreatureManager.getInstance().spawnConfig.isAllowedGlobal(world)) {
+			return false;
 		}
 
 		// Check IDs:

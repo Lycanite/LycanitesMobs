@@ -273,7 +273,7 @@ public class SpawnerEventListener {
 		IBlockState blockState = event.getState();
 
         for(BlockSpawnTrigger spawnTrigger : this.blockSpawnTriggers) {
-            spawnTrigger.onBlockHarvest(world, player, blockPos, blockState, 0);
+            spawnTrigger.onBlockHarvest(world, player, blockPos, blockState, 0, event.getFortuneLevel(), event.isSilkTouching());
         }
 	}
 

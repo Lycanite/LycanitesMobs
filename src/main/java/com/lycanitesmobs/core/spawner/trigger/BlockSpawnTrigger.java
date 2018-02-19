@@ -41,6 +41,15 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 	/** Determines if the block materials list is a blacklist or whitelist. **/
 	public String blockMaterialsListType = "whitelist";
 
+	/** How to react to blocks broken with or without silk touch. Can be: "ignore", "require" or "deny". Default: "ignore". **/
+	public String silkTouch = "ignore";
+
+	/** The minimum fortune that the harvester must have. Default: -1 (ignore) **/
+	public double fortuneMin = -1;
+
+	/** The maximum fortune that the harvester must have. Default: -1 (ignore) **/
+	public double fortuneMax = -1;
+
 
 	/** Constructor **/
 	public BlockSpawnTrigger(Spawner spawner) {
@@ -71,6 +80,15 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 		if(json.has("blockMaterialsListType"))
 			this.blockMaterialsListType = json.get("blockMaterialsListType").getAsString();
 
+		if(json.has("silkTouch"))
+			this.silkTouch = json.get("silkTouch").getAsString();
+
+		if(json.has("fortuneMin"))
+			this.fortuneMin = json.get("fortuneMin").getAsInt();
+
+		if(json.has("fortuneMax"))
+			this.fortuneMax = json.get("fortuneMax").getAsInt();
+
 		super.loadFromJSON(json);
 	}
 
@@ -85,10 +103,25 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 
 
 	/** Called every time a block is harvested. **/
-	public void onBlockHarvest(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain) {
+	public void onBlockHarvest(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain, int fortune, boolean silkTouch) {
 		if(!this.onHarvest) {
 			return;
 		}
+
+		if(this.fortuneMin >= 0 && fortune < this.fortuneMin) {
+			return;
+		}
+		if(this.fortuneMax > this.fortuneMin && fortune > this.fortuneMax) {
+			return;
+		}
+
+		if(silkTouch && "deny".equals(this.silkTouch)) {
+			return;
+		}
+		if(!silkTouch && "require".equals(this.silkTouch)) {
+			return;
+		}
+
 		this.onBlockTriggered(world, player, breakPos, blockState, chain);
 	}
 

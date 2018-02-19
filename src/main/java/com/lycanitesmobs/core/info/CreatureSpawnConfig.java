@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.info;
 
 import com.lycanitesmobs.core.config.ConfigBase;
+import net.minecraft.world.World;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -52,5 +53,30 @@ public class CreatureSpawnConfig {
 		config.setCategoryComment("Dungeon Features", "Here you can set special features used in dungeon generation.");
 		this.disableDungeonSpawners = config.getBool("Dungeon Features", "Disable Dungeon Spawners", this.disableDungeonSpawners, "If true, newly generated dungeons wont create spawners with mobs from this mod.");
 		this.dungeonSpawnerWeightScale = config.getDouble("Dungeon Features", "Dungeon Spawner Weight Scale", this.dungeonSpawnerWeightScale, "Scales the weight of dungeons using spawners from this mod. For example, you can half the chances all dungeons having spawners with mobs from this mod in them by setting this to 0.5.");
+	}
+
+
+	public boolean isAllowedGlobal(World world) {
+		if(this.disableAllSpawning) {
+			return false;
+		}
+
+		if(this.dimensionList.length > 0) {
+			boolean inDimensionList = false;
+			for (int dimensionId : this.dimensionList) {
+				if (dimensionId == world.provider.getDimension()) {
+					inDimensionList = true;
+					break;
+				}
+			}
+			if (inDimensionList && !this.dimensionListWhitelist) {
+				return false;
+			}
+			if (!inDimensionList && this.dimensionListWhitelist) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

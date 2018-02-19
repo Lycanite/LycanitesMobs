@@ -74,7 +74,7 @@ public class EntityDevilstar extends EntityProjectileBase {
 	@Override
 	public boolean entityLivingCollision(EntityLivingBase entityLiving) {
 		if(ObjectManager.getPotionEffect("decay") != null) {
-			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(5), 0));
+			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(60), 0));
 		}
 		return true;
 	}

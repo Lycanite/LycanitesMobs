@@ -53,7 +53,7 @@
 	],
 	"element": "chaos",
 	"peaceful": false,
-	"summonable": false,
+	"summonable": true,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,

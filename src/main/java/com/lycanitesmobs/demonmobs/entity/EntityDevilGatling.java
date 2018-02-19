@@ -102,7 +102,7 @@ public class EntityDevilGatling extends EntityProjectileBase {
         }
 
 		if(ObjectManager.getPotionEffect("decay") != null) {
-			target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(600), 0));
+			target.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(60), 0));
 		}
     }
     

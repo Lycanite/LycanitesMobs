@@ -2199,8 +2199,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Sets the size scale and updates the mobs size. **/
 	public void setSizeScale(double scale) {
-		if("beholder".equalsIgnoreCase(this.creatureInfo.getName()))
-			LycanitesMobs.printDebug("", "Updating Size: " + this.creatureInfo.getName() + " from: " + this.sizeScale + " to scale: " + scale);
 		this.sizeScale = scale;
         this.updateSize();
     }

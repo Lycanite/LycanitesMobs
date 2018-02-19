@@ -201,24 +201,9 @@ public class MobSpawn {
 	 * @param forceIgnoreDimension If true, the dimension check is ignored.
 	 **/
 	public boolean canSpawn(World world, int blockCount, List<Biome> biomes, boolean forceIgnoreDimension) {
-		// Global Blocks:
-		if(CreatureManager.getInstance().spawnConfig.disableAllSpawning) {
+		// Global Check:
+		if(!CreatureManager.getInstance().spawnConfig.isAllowedGlobal(world)) {
 			return false;
-		}
-		if(CreatureManager.getInstance().spawnConfig.dimensionList.length > 0) {
-			boolean inDimensionList = false;
-			for (int dimensionId : CreatureManager.getInstance().spawnConfig.dimensionList) {
-				if (dimensionId == world.provider.getDimension()) {
-					inDimensionList = true;
-					break;
-				}
-			}
-			if (inDimensionList && !CreatureManager.getInstance().spawnConfig.dimensionListWhitelist) {
-				return false;
-			}
-			if (!inDimensionList && CreatureManager.getInstance().spawnConfig.dimensionListWhitelist) {
-				return false;
-			}
 		}
 
 		// CreatureInfo Enabled:

@@ -51,11 +51,12 @@ public class EntityDoomfireball extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+        super.entityLivingCollision(entityLiving);
     	if(!entityLiving.isImmuneToFire()) {
             entityLiving.setFire(this.getEffectDuration(5) / 20);
         }
         if(ObjectManager.getPotionEffect("decay") != null) {
-            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(600), 0));
+            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(60), 0));
         }
     	return true;
     }

@@ -56,7 +56,7 @@ public class EntityHellfireball extends EntityProjectileBase {
     		entityLiving.setFire(this.getEffectDuration(10) / 20);
         }
         if(ObjectManager.getPotionEffect("decay") != null) {
-            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(600), 0));
+            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("decay"), this.getEffectDuration(60), 0));
         }
     	return true;
     }

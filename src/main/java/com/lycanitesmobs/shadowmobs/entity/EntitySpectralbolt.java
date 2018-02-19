@@ -51,7 +51,7 @@ public class EntitySpectralbolt extends EntityProjectileBase {
 			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("fear"), this.getEffectDuration(2), 0));
 		}
 		if(ObjectManager.getPotionEffect("insomnia") != null) {
-			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("insomnia"), this.getEffectDuration(600), 0));
+			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("insomnia"), this.getEffectDuration(60), 0));
 		}
     	return true;
     }

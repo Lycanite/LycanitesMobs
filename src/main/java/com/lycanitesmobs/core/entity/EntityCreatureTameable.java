@@ -487,8 +487,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	 * @param player
 	 */
 	public void setPlayerOwner(EntityPlayer player) {
-        this.setPlayerOwner();
-        this.setOwnerId(player.getUniqueID());
+		if(player == null) {
+			return;
+		}
+        this.setPlayerOwner(player.getUniqueID());
     }
 
     public void setPlayerOwner(UUID playerUUID) {

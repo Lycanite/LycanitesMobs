@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "0.9",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Core",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "0.9",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "ShieldUpperLeft01",
+    "parent": "Core",
+    "centerX": "0.0",
+    "centerY": "1.26",
+    "centerZ": "0.69"
+  },
+  {
+    "name": "ShieldLowerLeft01",
+    "parent": "ShieldUpperLeft01",
+    "centerX": "0.271",
+    "centerY": "1.065",
+    "centerZ": "0.69"
+  },
+  {
+    "name": "ShieldUpperLeft02",
+    "parent": "Core",
+    "centerX": "-0.0",
+    "centerY": "1.26",
+    "centerZ": "-0.69"
+  },
+  {
+    "name": "ShieldLowerLeft02",
+    "parent": "ShieldUpperLeft02",
+    "centerX": "-0.271",
+    "centerY": "1.065",
+    "centerZ": "-0.69"
+  },
+  {
+    "name": "ShieldUpperRight01",
+    "parent": "Core",
+    "centerX": "-0.0",
+    "centerY": "1.26",
+    "centerZ": "0.69"
+  },
+  {
+    "name": "ShieldLowerRight01",
+    "parent": "ShieldUpperRight01",
+    "centerX": "-0.271",
+    "centerY": "1.065",
+    "centerZ": "0.69"
+  },
+  {
+    "name": "ShieldUpperRight02",
+    "parent": "Core",
+    "centerX": "0.0",
+    "centerY": "1.26",
+    "centerZ": "-0.69"
+  },
+  {
+    "name": "ShieldLowerRight02",
+    "parent": "ShieldUpperRight02",
+    "centerX": "0.271",
+    "centerY": "1.065",
+    "centerZ": "-0.69"
+  },
+  {
+    "name": "Shoulders",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "0.9",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.2",
+    "centerZ": "0.105"
+  },
+  {
+    "name": "Helm",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.5",
+    "centerZ": "0.105"
+  }
+]

@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.renderer;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -59,19 +60,23 @@ public class LayerEffect extends LayerBase {
 			int k = i / 65536;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
 		}
-		GL11.glEnable(GL11.GL_BLEND);
-    	if(this.additive)
-			OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-	}
-
-	@Override
-	public void onRenderFinish(String partName, Entity entity, boolean trophy) {
-		if(this.glow) {
+		else {
 			int i = entity.getBrightnessForRender();
 			int j = i % 65536;
 			int k = i / 65536;
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
 		}
-		GL11.glDisable(GL11.GL_BLEND);
+    	if(this.additive) {
+			GL11.glEnable(GL11.GL_BLEND);
+			//OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+		}
+	}
+
+	@Override
+	public void onRenderFinish(String partName, Entity entity, boolean trophy) {
+		if(this.additive) {
+			GL11.glDisable(GL11.GL_BLEND);
+			//OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+		}
 	}
 }

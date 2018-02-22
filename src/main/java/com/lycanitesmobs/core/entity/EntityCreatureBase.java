@@ -2218,8 +2218,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public boolean canAttackClass(Class targetClass) {
 		if(!CreatureManager.getInstance().config.mobsAttackVillagers && targetClass == EntityVillager.class)
 			return false;
-        if(this.isBlocking() && !this.canAttackWhileBlocking())
-            return false;
 		return true;
 	}
 
@@ -2291,6 +2289,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Melee ==========
     /** Used to make this entity perform a melee attack on the target entity with the given damage scale. **/
     public boolean attackMelee(Entity target, double damageScale) {
+    	if(this.isBlocking() && !this.canAttackWhileBlocking()) {
+    		return false;
+		}
+
     	if(this.attackEntityAsMob(target, damageScale)) {
     		
     		// Spread Fire:
@@ -2312,7 +2314,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Ranged ==========
     /** Used to make this entity fire a ranged attack at the target entity, range is also passed which can be used. **/
     public void attackRanged(Entity target, float range) {
-    	this.setJustAttacked();
+		if(this.isBlocking() && !this.canAttackWhileBlocking()) {
+			return;
+		}
+
+		this.setJustAttacked();
     }
 
 	/**

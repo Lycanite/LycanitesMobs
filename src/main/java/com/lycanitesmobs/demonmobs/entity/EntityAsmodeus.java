@@ -1,5 +1,6 @@
 package com.lycanitesmobs.demonmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
@@ -430,7 +431,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Ranged Attack ==========
     @Override
     public void attackRanged(Entity target, float range) {
-        this.fireProjectile(EntityDevilGatling.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+        EntityProjectileBase projectileBase = this.fireProjectile(EntityDevilGatling.class, target, range, 0, new Vec3d(0, 8, 0), 1.2f, 2f, 1F);
         super.attackRanged(target, range);
     }
 

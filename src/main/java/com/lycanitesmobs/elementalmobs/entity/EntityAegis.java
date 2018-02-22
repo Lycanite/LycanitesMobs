@@ -1,48 +1,51 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
 import com.lycanitesmobs.api.IFusable;
+import com.lycanitesmobs.api.IGroupRock;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import net.minecraft.block.state.IBlockState;
+import com.lycanitesmobs.core.info.ObjectLists;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EntityArgus extends EntityCreatureTameable implements IMob, IFusable {
-
-	private int teleportTime = 60;
+public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupRock, IFusable {
 
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityArgus(World par1World) {
-        super(par1World);
+    public EntityAegis(World world) {
+        super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.hasAttackSound = true;
-        this.spawnsInWater = true;
+        
         this.setupMob();
 
         this.stepHeight = 1.0F;
-
-        this.justAttackedTime = 40;
     }
 
     // ========== Init AI ==========
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
+        this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.tasks.addTask(2, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(true));
-        this.tasks.addTask(4, this.aiSit);
-        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(true));
+        this.tasks.addTask(3, this.aiSit);
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -51,7 +54,6 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
 		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
@@ -82,40 +84,15 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
-        // Random Target Teleporting:
-        if(!this.getEntityWorld().isRemote && this.hasAttackTarget()) {
-	        if(this.teleportTime-- <= 0) {
-	        	this.teleportTime = 20 + this.getRNG().nextInt(20);
-        		this.playJumpSound();
-        		BlockPos teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 3D, 0);
-        		if(this.canTeleportTo(this.getEntityWorld(), teleportPosition)
-        		&& this.canTeleportTo(this.getEntityWorld(), new BlockPos(teleportPosition.getX(), teleportPosition.getY() + 1, teleportPosition.getZ())))
-                    this.setPosition(teleportPosition.getX(), teleportPosition.getY(), teleportPosition.getZ());
-        		else if(this.canTeleportTo(this.getEntityWorld(), teleportPosition)
-                && this.canTeleportTo(this.getEntityWorld(), teleportPosition))
-                    this.setPosition(this.getAttackTarget().posX, this.getAttackTarget().posY, this.getAttackTarget().posZ);
-	        }
-        }
-        
-        // Particles:
-        if(this.getEntityWorld().isRemote)
-	        for(int i = 0; i < 2; ++i) {
-	            this.getEntityWorld().spawnParticle(EnumParticleTypes.SUSPENDED_DEPTH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-	        }
-    }
 
-    public boolean canTeleportTo(World world, BlockPos pos) {
-        IBlockState blockState = this.getEntityWorld().getBlockState(pos);
-        if(blockState.getBlock() == null)
-            return false;
-        if(blockState.isNormalCube())
-            return false;
-        if(this.getSubspeciesIndex() >= 3)
-            return true;
-        if(this.testLightLevel(pos) > 1)
-            return false;
-        return true;
+        if(!this.getEntityWorld().isRemote) {
+			if (this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")){
+				// TODO Village Defense! :O
+			}
+			if(!this.hasAttackTarget()) {
+				this.setBlocking();
+			}
+		}
     }
     
     
@@ -126,28 +103,44 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
     public boolean isFlying() { return true; }
 
     @Override
-    public boolean isStrongSwimmer() { return true; }
+	public boolean canAttackWhileBlocking() {
+		return false;
+	}
     
     
     // ==================================================
     //                     Pet Control
     // ==================================================
     public boolean petControlsEnabled() { return true; }
-    
+
     
     // ==================================================
    	//                     Immunities
    	// ==================================================
     @Override
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
-        if(type.equals("inWall")) return false;
-        return super.isDamageTypeApplicable(type, source, damage);
+    	if(type.equals("cactus") || type.equals("inWall"))
+    		return false;
+		return super.isDamageTypeApplicable(type, source, damage);
     }
 
-    @Override
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+
+	// ==================================================
+	//                   Taking Damage
+	// ==================================================
+	// ========== On Damage ==========
+	/** Called when this mob has received damage. Here a random blocking chance is applied. **/
+	@Override
+	public void onDamage(DamageSource damageSrc, float damage) {
+		if(this.getRNG().nextDouble() > 0.75D && this.getHealth() / this.getMaxHealth() > 0.25F)
+			this.setBlocking();
+		super.onDamage(damageSrc, damage);
+	}
+
+	// ========== Blocking ==========
+	public void setBlocking() {
+		this.currentBlockingTime = this.blockingTime + this.getRNG().nextInt(this.blockingTime / 2);
+	}
 
 
 	// ==================================================
@@ -167,16 +160,10 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
 
 	@Override
 	public Class getFusionClass(IFusable fusable) {
-		if(fusable instanceof EntityCinder) {
-			return EntityGrue.class;
+		if(fusable instanceof EntityJengu) {
+			return EntityNymph.class;
 		}
-		if(fusable instanceof EntityGeonach) {
-			return EntityTremor.class;
-		}
-		if(fusable instanceof EntityDjinn) {
-			return EntityWraith.class;
-		}
-		if(fusable instanceof EntityAegis) {
+		if(fusable instanceof EntityArgus) {
 			return EntitySpectre.class;
 		}
 		return null;

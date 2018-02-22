@@ -444,6 +444,39 @@ public class ModelObj extends ModelCustom {
 
 
 	// ==================================================
+	//                   Shift Origin
+	// ==================================================
+
+	/**
+	 * Moves the animation origin to a different part origin.
+	 * @param fromPartName The part name to move the origin from.
+	 * @param toPartName The part name to move the origin to.
+	 */
+	public void shiftOrigin(String fromPartName,  String toPartName) {
+		ModelObjPart fromPart = this.animationParts.get(fromPartName);
+		ModelObjPart toPart = this.animationParts.get(toPartName);
+		float offsetX = toPart.centerX - fromPart.centerX;
+		float offsetY = toPart.centerY - fromPart.centerY;
+		float offsetZ = toPart.centerZ - fromPart.centerZ;
+		this.translate(offsetX, offsetY, offsetZ);
+	}
+
+	/**
+	 * Moves the animation origin back from a different part origin.
+	 * @param fromPartName The part name that the origin moved from.
+	 * @param toPartName The part name that the origin was moved to.
+	 */
+	public void shiftOriginBack(String fromPartName,  String toPartName) {
+		ModelObjPart fromPart = this.animationParts.get(fromPartName);
+		ModelObjPart toPart = this.animationParts.get(toPartName);
+		float offsetX = toPart.centerX - fromPart.centerX;
+		float offsetY = toPart.centerY - fromPart.centerY;
+		float offsetZ = toPart.centerZ - fromPart.centerZ;
+		this.translate(-offsetX, -offsetY, -offsetZ);
+	}
+
+
+	// ==================================================
 	//                  Rotate to Point
 	// ==================================================
 	public double rotateToPoint(double aTarget, double bTarget) {

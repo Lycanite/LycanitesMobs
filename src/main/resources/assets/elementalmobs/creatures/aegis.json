@@ -1,15 +1,15 @@
 {
-	"name": "jengu",
-	"class": "com.lycanitesmobs.elementalmobs.entity.EntityJengu",
+	"name": "aegis",
+	"class": "com.lycanitesmobs.elementalmobs.entity.EntityAegis",
 	"loadDefault": true,
 	"enabled": true,
 	"spawning": {
 		"enabled": true,
-		"spawners": ["water"],
+		"spawners": [],
 		"disableSubspecies": false,
 		"dimensionIds": [],
 		"dimensionListType": "blacklist",
-		"ignoreBiome": true,
+		"ignoreBiome": false,
 		"biomes": [],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
@@ -25,33 +25,33 @@
 	"width": 0.8,
 	"height": 1.6,
 	"experience": 10,
-	"health": 15,
-	"defense": 0,
+	"health": 20,
+	"defense": 3,
 	"armor": 0,
-	"speed": 22,
-	"damage": 2,
-	"attackSpeed": 1,
-	"rangedSpeed": 0.25,
+	"speed": 24,
+	"damage": 1,
+	"attackSpeed": 8,
+	"rangedSpeed": 1,
 	"effect": 5,
 	"amplifier": 0,
 	"pierce": 1,
 	"sight": 16,
-	"knockbackResistance": 0,
-	"eggBackColor": "#000099",
-	"eggForeColor": "#4444FF",
+	"knockbackResistance": 1,
+	"eggBackColor": "#37c8e3",
+	"eggForeColor": "#f1f0dc",
 	"subspecies": [
 		{
 			"index": 1,
-			"name": "light",
+			"name": "russet",
 			"type": "uncommon"
 		},
 		{
 			"index": 2,
-			"name": "keppel",
+			"name": "dark",
 			"type": "uncommon"
 		}
 	],
-	"element": "water",
+	"element": "order",
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,
@@ -60,10 +60,22 @@
 	"dungeonLevel": 1,
 	"drops": [
 		{
-			"item": "elementalmobs:aquapulsecharge",
+			"item": "minecraft:quartz",
+			"minAmount": 1,
+			"maxAmount": 8,
+			"chance": 0.75
+		},
+		{
+			"item": "minecraft:gold_ore",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.25
+			"chance": 0.1
+		},
+		{
+			"item": "lycanitesmobs:cleansingcrystal",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.01
 		}
 	],
 	"sizeScale": 1,

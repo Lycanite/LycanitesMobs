@@ -4,7 +4,7 @@ public class ModelObjAnimationFrame {
     /** The type of animation to do. Can be: angle, rotate, translate or scale. **/
     public String type;
     /** The amount to animate by, usually 1, but can be used to scale an animation and also used for the angle type. **/
-    public float amount = 1;
+    public float amount;
     /** The x amount this animation frame moves by. **/
     public float x;
     /** The y amount this animation frame moves by. **/

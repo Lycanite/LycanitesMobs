@@ -40,9 +40,9 @@ public class ModelReiver extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		renderer.addLayer(new LayerEffect(renderer, "pulse01", false, false, false));
-		renderer.addLayer(new LayerEffect(renderer, "pulse02", false, false, false));
-		renderer.addLayer(new LayerEffect(renderer, "pulse03", false, false, false));
+		renderer.addLayer(new LayerEffect(renderer, "pulse01", false, true, false));
+		renderer.addLayer(new LayerEffect(renderer, "pulse02", false, true, false));
+		renderer.addLayer(new LayerEffect(renderer, "pulse03", false, true, false));
 	}
     
     

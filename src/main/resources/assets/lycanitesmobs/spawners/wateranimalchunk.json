@@ -25,7 +25,7 @@
 		{
 			"type": "random",
 			"rangeMin": [0, 0, 0],
-			"rangeMax": [14, 128, 14],
+			"rangeMax": [7, 128, 7],
 			"sorting": "random",
 			"limit": 32,
 			"blocks": [

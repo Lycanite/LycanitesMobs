@@ -1,24 +1,18 @@
 package com.lycanitesmobs.core.entity.ai;
 
-import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.entity.EntityCreatureTameable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
-import net.minecraft.entity.monster.IMob;
 
-public class EntityAITargetOwnerThreats extends EntityAITarget {
-	// Properties:
-	private EntityCreatureTameable tamedHost;
-    
+public class EntityAITargetDefend extends EntityAITarget {
+	/** The entity class to defend. **/
+	protected Class<? extends EntityLivingBase> defendClass;
+
     // ==================================================
   	//                    Constructor
   	// ==================================================
-    public EntityAITargetOwnerThreats(EntityCreatureTameable setHost) {
+    public EntityAITargetDefend(EntityCreatureBase setHost, Class<? extends EntityLivingBase> defendClass) {
         super(setHost);
-    	this.tamedHost = setHost;
         this.setMutexBits(1);
     }
     
@@ -26,17 +20,17 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
     // ==================================================
   	//                  Set Properties
   	// ==================================================
-    public EntityAITargetOwnerThreats setSightCheck(boolean setSightCheck) {
+    public EntityAITargetDefend setSightCheck(boolean setSightCheck) {
     	this.checkSight = setSightCheck;
     	return this;
     }
     
-    public EntityAITargetOwnerThreats setOnlyNearby(boolean setNearby) {
+    public EntityAITargetDefend setOnlyNearby(boolean setNearby) {
     	this.nearbyOnly = setNearby;
     	return this;
     }
     
-    public EntityAITargetOwnerThreats setCantSeeTimeMax(int setCantSeeTimeMax) {
+    public EntityAITargetDefend setCantSeeTimeMax(int setCantSeeTimeMax) {
     	this.cantSeeTimeMax = setCantSeeTimeMax;
     	return this;
     }
@@ -46,10 +40,14 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
  	//                    Host Target
  	// ==================================================
     @Override
-    protected EntityLivingBase getTarget() { return this.host.getAttackTarget(); }
+    protected EntityLivingBase getTarget() {
+    	return this.host.getAttackTarget();
+    }
+
     @Override
-    protected void setTarget(EntityLivingBase newTarget) { this.host.setAttackTarget(newTarget); }
-    protected Entity getOwner() { return this.host.getOwner(); }
+    protected void setTarget(EntityLivingBase newTarget) {
+    	this.host.setAttackTarget(newTarget);
+    }
     
     
     // ==================================================
@@ -57,17 +55,19 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
  	// ==================================================
     @Override
     protected boolean isValidTarget(EntityLivingBase target) {
-    	// Owner Check:
-    	if(!this.tamedHost.isTamed())
-    		return false;
-    	
-    	// Passive Check:
-    	if(this.tamedHost.isPassive())
+
+		// Owner Check:
+		if(this.host.getOwner() != null)
 			return false;
-    	
+
     	// Aggressive Check:
     	if(!this.host.isAggressive())
             return false;
+
+    	// Has Target Check:
+		if(target.getRevengeTarget() == null) {
+			return false;
+		}
     	
     	// Ownable Checks:
         if(this.host instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() != null) {
@@ -78,16 +78,7 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
         }
 
         // Threat Check:
-        if(target instanceof IMob && !(target instanceof IEntityOwnable) && !(target instanceof EntityCreatureBase)) {
-            return true;
-        }
-        else if(target instanceof EntityCreatureBase && ((EntityCreatureBase)target).isHostile() && !(target instanceof IGroupAnimal)) {
-            return true;
-        }
-        else if(target instanceof EntityLiving && ((EntityLiving)target).getAttackTarget() == this.getOwner()) {
-            return true;
-        }
-        else if(target.getRevengeTarget() == this.getOwner()) {
+        if(this.defendClass.isAssignableFrom(target.getRevengeTarget().getClass())) {
             return true;
         }
         
@@ -103,12 +94,8 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
     	this.target = null;
     	
     	// Owner Check:
-    	if(!this.tamedHost.isTamed())
+    	if(this.host.getOwner() != null)
     		return false;
-    	
-    	// Passive Check:
-    	if(this.tamedHost.isPassive())
-			return false;
     	
     	// Aggressive Check:
     	if(!this.host.isAggressive())

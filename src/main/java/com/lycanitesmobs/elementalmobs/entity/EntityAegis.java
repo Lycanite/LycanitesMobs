@@ -9,10 +9,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFurnace;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.util.DamageSource;
@@ -52,7 +54,8 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
 		this.targetTasks.addTask(3, new EntityAIDefendVillage(this));
-        //this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+		this.targetTasks.addTask(4, new EntityAITargetDefend(this, EntityVillager.class));
+        //this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
 		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
@@ -108,6 +111,14 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
 			}
 		}
     }
+
+	@Override
+	public boolean canBeTargetedBy(EntityLivingBase entity) {
+		if(entity instanceof EntityIronGolem || entity instanceof EntityVillager) {
+			return false;
+		}
+		return super.canBeTargetedBy(entity);
+	}
     
     
     // ==================================================

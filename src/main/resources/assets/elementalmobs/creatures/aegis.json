@@ -35,7 +35,7 @@
 	"effect": 5,
 	"amplifier": 0,
 	"pierce": 1,
-	"sight": 16,
+	"sight": 24,
 	"knockbackResistance": 1,
 	"eggBackColor": "#37c8e3",
 	"eggForeColor": "#f1f0dc",

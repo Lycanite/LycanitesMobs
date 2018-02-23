@@ -13,6 +13,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.boss.EntityWither;
@@ -295,17 +296,20 @@ public class EventListener {
 		// Better Invisibility:
 		if(!event.getEntityLiving().isPotionActive(MobEffects.NIGHT_VISION)) {
 			if(targetEntity.isInvisible()) {
+				if(event.isCancelable())
+					event.setCanceled(true);
 				event.getEntityLiving().setRevengeTarget(null);
 				return;
 			}
 		}
 
-		// Wither Friendly:
-		if(event.getEntityLiving() instanceof EntityWither && targetEntity instanceof EntityCreatureBase) {
-			if(((EntityCreatureBase)targetEntity).hideFromWithers()) {
+		// Can Be Targeted:
+		if(event.getEntityLiving() instanceof EntityLiving && targetEntity instanceof EntityCreatureBase) {
+			if(!((EntityCreatureBase)targetEntity).canBeTargetedBy(event.getEntityLiving())) {
 				event.getEntityLiving().setRevengeTarget(null);
-				((EntityWither) event.getEntityLiving()).setAttackTarget(null);
-				return;
+				if(event.isCancelable())
+					event.setCanceled(true);
+				((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
 			}
 		}
 	}

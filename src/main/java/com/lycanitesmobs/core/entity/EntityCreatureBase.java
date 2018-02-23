@@ -2711,6 +2711,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		return false;
 	}
 
+	/**
+	 * Called when this creature is being targeted by the provided entity and returns if it should be.
+	 * @param entity The entity trying to target this entity.
+	 * @return True if this entity can be targeted.
+	 */
+	public boolean canBeTargetedBy(EntityLivingBase entity) {
+		return true;
+	}
+
     
     // ========== Get Facing Coords ==========
     /** Returns the BlockPos in front or behind this entity (using its rotation angle) with the given distance, use a negative distance for behind. **/
@@ -3551,11 +3560,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public float getFallResistance() {
     	return 0;
     }
-
-    /** Returns true if this mob should be ignored by Withers. **/
-    public boolean hideFromWithers() {
-    	return false;
-	}
     
     
     // ==================================================

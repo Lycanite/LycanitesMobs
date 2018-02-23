@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSwordBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,6 +43,7 @@ import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -424,6 +426,22 @@ public class EventListener {
         event.setFilledBucket(new ItemStack(bucket));
         event.setResult(Result.ALLOW);
     }
+
+
+	// ==================================================
+	//                 Break Block Event
+	// ==================================================
+	@SubscribeEvent
+	public void onBlockBreak(BlockEvent.BreakEvent event) {
+		if(event.getState() == null || event.getWorld() == null || event.getPlayer() == null || event.getWorld().isRemote || event.isCanceled()) {
+			return;
+		}
+		ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(event.getPlayer());
+		if(extendedPlayer == null) {
+			return;
+		}
+		extendedPlayer.setJustBrokenBlock(event.getState());
+	}
 
 
 	// ==================================================

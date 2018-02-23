@@ -12,6 +12,8 @@ import com.lycanitesmobs.core.pets.DonationFamiliars;
 import com.lycanitesmobs.core.pets.PetEntry;
 import com.lycanitesmobs.core.pets.PetManager;
 import com.lycanitesmobs.core.pets.SummonSet;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +42,10 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	
 	public long currentTick = 0;
 	public boolean needsFirstSync = true;
+	/** Set for a few seconds after a player breaks a block. **/
+	public IBlockState justBrokenBlock;
+	/** How many ticks left until the justBrokenBlock should be cleared. **/
+	protected int justBrokenClearTime;
 	
 	// Action Controls:
 	public byte controlStates = 0;
@@ -179,6 +185,11 @@ public class ExtendedPlayer implements IExtendedPlayer {
 
 		// Stats:
 		boolean sync = false;
+		if(this.justBrokenClearTime > 0) {
+			if(--this.justBrokenClearTime <= 0) {
+				this.justBrokenBlock = null;
+			}
+		}
 
 		// Spirit Stat Update:
 		this.spirit = Math.min(Math.max(this.spirit, 0), this.spiritMax - this.spiritReserved);
@@ -252,6 +263,15 @@ public class ExtendedPlayer implements IExtendedPlayer {
 		
 		this.currentTick++;
 		this.needsFirstSync = false;
+	}
+
+	/**
+	 * Sets the block that the player has just broken and resets the clear timer.
+	 * @param blockState The block state that the player has just broken.
+	 */
+	public void setJustBrokenBlock(IBlockState blockState) {
+		this.justBrokenBlock = blockState;
+		this.justBrokenClearTime = 60;
 	}
 	
 	

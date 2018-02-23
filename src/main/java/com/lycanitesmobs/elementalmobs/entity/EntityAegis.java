@@ -1,23 +1,21 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
+import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupRock;
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.core.info.ObjectLists;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.ContainerChest;
+import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
 public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupRock, IFusable {
@@ -53,7 +51,8 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
         this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+		this.targetTasks.addTask(3, new EntityAIDefendVillage(this));
+        //this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
 		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
@@ -86,8 +85,23 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
         super.onLivingUpdate();
 
         if(!this.getEntityWorld().isRemote) {
-			if (this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")){
-				// TODO Village Defense! :O
+			if (!this.hasAttackTarget() && !this.isPetType("familiar") && this.updateTick % 40 == 0){
+				// Monitor Nearest Player:
+				EntityPlayer player = this.getEntityWorld().getNearestAttackablePlayer(this, 64, 32);
+				ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+				if(player != null) {
+					if(player.openContainer != null && (player.openContainer instanceof ContainerChest || player.openContainer instanceof ContainerFurnace)) {
+						this.setAttackTarget(player);
+						this.setFixateTarget(player);
+					}
+					else if(extendedPlayer != null && extendedPlayer.justBrokenBlock != null) {
+						Block brokenBlock = extendedPlayer.justBrokenBlock.getBlock();
+						if(brokenBlock instanceof BlockChest || brokenBlock instanceof BlockDoor || brokenBlock instanceof BlockFurnace) {
+							this.setAttackTarget(player);
+							this.setFixateTarget(player);
+						}
+					}
+				}
 			}
 			if(!this.hasAttackTarget()) {
 				this.setBlocking();

@@ -1,0 +1,34 @@
+{
+	"name": "village",
+	"type": "spawner",
+	"enabled": true,
+	"loadDefault": true,
+	"mobCountMin": 8,
+	"ignoreBiomes": true,
+	"ignoreLightLevel": true,
+	"groupLimitRange": 64,
+	"conditions": [],
+	"triggers": [
+		{
+			"type": "tick",
+			"chance": 1,
+			"tickRate": 1200
+		}
+	],
+	"locations": [
+		{
+			"type": "village",
+			"rangeMin": [0, 0, 0],
+			"rangeMax": [16, 48, 16],
+			"sorting": "random",
+			"limit": 32,
+			"solidGround": true
+		}
+	],
+	"mobSpawns": [
+		{
+			"mobId": "elementalmobs:aegis",
+			"weight": 8
+		}
+	]
+}

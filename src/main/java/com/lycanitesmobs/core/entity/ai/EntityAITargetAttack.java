@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.entity.ai;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IGroupAlpha;
@@ -10,16 +9,8 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 public class EntityAITargetAttack extends EntityAITarget {

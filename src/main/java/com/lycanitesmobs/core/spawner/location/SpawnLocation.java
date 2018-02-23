@@ -17,10 +17,10 @@ import java.util.Random;
 public class SpawnLocation {
     /** Spawn Locations define where spawns will take place, how these work can vary based on the type of Spawn Trigger. **/
 
-    /** The minimum xyz distances in blocks from the central spawn position to spawn from. **/
+    /** The minimum xyz distances in blocks from the central spawn position to spawn from. Required. **/
     public Vec3i rangeMin = new Vec3i(0, 0, 0);
 
-    /** The maximum xyz distances in blocks from the central spawn position to spawn from. **/
+    /** The maximum xyz distances in blocks from the central spawn position to spawn from. Required. **/
     public Vec3i rangeMax = new Vec3i(0, 0, 0);
 
     /** The minimum allowed y height. **/
@@ -49,6 +49,9 @@ public class SpawnLocation {
 		}
 		else if("material".equalsIgnoreCase(type)) {
 			spawnLocation = new MaterialSpawnLocation();
+		}
+		else if("village".equalsIgnoreCase(type)) {
+			spawnLocation = new VillageSpawnLocation();
 		}
 
 		spawnLocation.loadFromJSON(json);

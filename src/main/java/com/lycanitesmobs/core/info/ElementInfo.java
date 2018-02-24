@@ -118,7 +118,7 @@ public class ElementInfo {
 		duration = Math.round((float)duration * (float)this.debuffDurationMultiplier);
 		for(String debuff : this.debuffs) {
 			if("burning".equalsIgnoreCase(debuff)) {
-				targetEntity.setFire(duration);
+				targetEntity.setFire(duration / 20);
 				continue;
 			}
 			Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(debuff));

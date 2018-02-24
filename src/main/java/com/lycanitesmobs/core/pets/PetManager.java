@@ -18,25 +18,25 @@ public class PetManager {
     /** The next ID to use when adding an entry to the main list. **/
     protected int nextID = 0;
     /** A list of all pet entries, useful for looking up everything summoned by an entity as well as ensuring that no entries are added as multiple types. **/
-    public Map<Integer, PetEntry> allEntries = new HashMap<Integer, PetEntry>();
+    public Map<Integer, PetEntry> allEntries = new HashMap<>();
     /** Pets are mobs that the player has tamed and then bound. They can be summoned and dismissed at will. Eg: Pet Lurker. **/
-    public List<PetEntry> pets = new ArrayList<PetEntry>();
+    public List<PetEntry> pets = new ArrayList<>();
     /** Mounts are mobs that the player has tamed and then bound. One can be summoned for riding at will, they will despawn if unmounted after a short while. Eg: Pet Ventoraptor. **/
-	public List<PetEntry> mounts = new ArrayList<PetEntry>();
+	public List<PetEntry> mounts = new ArrayList<>();
     /** Minions are mobs that the player has summoned. These are temporary. Eg: Summoned Cinder. **/
-	public List<PetEntry> minions = new ArrayList<PetEntry>();
+	public List<PetEntry> minions = new ArrayList<>();
     /** Guardians are mobs that are bound to equipment/effects that the player has. They are passively summoned and dismissed based on various conditions. Eg: Cyclone Armor Reiver. **/
-	public List<PetEntry> guardians = new ArrayList<PetEntry>();
+	public List<PetEntry> guardians = new ArrayList<>();
     /** Familiars are mobs that are bound to the player, they are similar to guardians but aren't dependant on any equipment/effects, etc. Eg: Donation Familiars. **/
-	public List<PetEntry> familiars = new ArrayList<PetEntry>();
+	public List<PetEntry> familiars = new ArrayList<>();
     // I might also add slaves for mobs that are temporarily under the host's control who can break free, etc instead of despawning.
 
     /** Newly added PetEntries that need to be synced to the client player. **/
-    public List<PetEntry> newEntries = new ArrayList<PetEntry>();
+    public List<PetEntry> newEntries = new ArrayList<>();
     /** PetEntries that need to be removed. **/
-    public List<PetEntry> removedEntries = new ArrayList<PetEntry>();
+    public List<PetEntry> removedEntries = new ArrayList<>();
     /** A map containing NBT Tag Compunds mapped to Unique Pet Entry Names. **/
-    public Map<String, NBTTagCompound> entryNBTs = new HashMap<String, NBTTagCompound>();
+    public Map<String, NBTTagCompound> entryNBTs = new HashMap<>();
 	
     // ==================================================
     //                     Constructor

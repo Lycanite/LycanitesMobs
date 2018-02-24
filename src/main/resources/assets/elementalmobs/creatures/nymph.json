@@ -146,6 +146,12 @@
 			"chance": 0.1
 		},
 		{
+			"item": "elementalmobs:faeboltcharge",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.25
+		},
+		{
 			"item": "lycanitesmobs:immunizer",
 			"minAmount": 1,
 			"maxAmount": 1,

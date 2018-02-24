@@ -78,7 +78,7 @@ public class ItemSoulstone extends ItemBase {
     	// Store Pet:
     	if(!player.getEntityWorld().isRemote) {
 			String petType = "pet";
-			if(entity instanceof EntityCreatureRideable) {
+			if(entityTameable.creatureInfo.isMountable()) {
 				petType = "mount";
 			}
 

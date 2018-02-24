@@ -66,7 +66,13 @@
 			"chance": 0.75
 		},
 		{
-			"item": "minecraft:gold_ore",
+			"item": "minecraft:gold_nugget",
+			"minAmount": 1,
+			"maxAmount": 2,
+			"chance": 0.25
+		},
+		{
+			"item": "minecraft:emerald",
 			"minAmount": 1,
 			"maxAmount": 1,
 			"chance": 0.1

@@ -58,9 +58,9 @@
 	],
 	"element": "nether",
 	"peaceful": false,
-	"summonable": true,
-	"tameable": false,
-	"mountable": false,
+	"summonable": false,
+	"tameable": true,
+	"mountable": true,
 	"summonCost": 2,
 	"dungeonLevel": 3,
 	"drops": [

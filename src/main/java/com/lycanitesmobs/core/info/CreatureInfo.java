@@ -300,7 +300,7 @@ public class CreatureInfo {
 			AssetManager.addSound(name + "_beg", group, "entity." + name + ".beg");
 		if(this.isTameable())
 			AssetManager.addSound(name + "_eat", group, "entity." + name + ".eat");
-		if(EntityCreatureRideable.class.isAssignableFrom(this.entityClass) && (this.isSummonable() || this.isTameable()))
+		if(this.isMountable())
 			AssetManager.addSound(name + "_mount", group, "entity." + name + ".mount");
 		if(this.isBoss())
 			AssetManager.addSound(name + "_phase", group, "entity." + name + ".phase");

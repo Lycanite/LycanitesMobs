@@ -21,7 +21,8 @@
 			"rangeMax": [32, 48, 32],
 			"sorting": "random",
 			"limit": 32,
-			"solidGround": false
+			"solidGround": false,
+			"underground": false
 		}
 	]
 }

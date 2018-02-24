@@ -194,6 +194,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public boolean forceNoDespawn = false;
     /** Can be set to true by custom spawners in rare cases. If true, this mob has a higher chance of being a subspecies. **/
     public boolean spawnedRare = false;
+    /** Set to true when this mob is spawned as a boss, this is used to make non-boss mobs behave like bosses. **/
+	public boolean spawnedAsBoss = false;
     
     // Movement:
     /** Whether the mob should use it's leash AI or not. **/
@@ -877,8 +879,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Boss ==========
     /** Returns whether or not this mob is a boss. **/
     public boolean isBoss() {
-        return this.creatureInfo.boss;
+        return this.isBossAlways() || this.spawnedAsBoss;
     }
+
+	/** Returns whether or not this mob is always a boss (any mob can be custom spawned as a boss but some mobs are always bosses). **/
+	public boolean isBossAlways() {
+		return this.creatureInfo.boss;
+	}
 
     @Override
     public boolean isNonBoss() {
@@ -3727,6 +3734,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		if(nbtTagCompound.hasKey("MobLevel")) {
 			this.setLevel(nbtTagCompound.getInteger("MobLevel"));
 		}
+
+		if(nbtTagCompound.hasKey("SpawnedAsBoss")) {
+			this.spawnedAsBoss = nbtTagCompound.getBoolean("SpawnedAsBoss");
+		}
     	
         super.readEntityFromNBT(nbtTagCompound);
         this.inventory.readFromNBT(nbtTagCompound);
@@ -3775,6 +3786,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         nbtTagCompound.setByte("Subspecies", (byte) this.getSubspeciesIndex());
     	nbtTagCompound.setDouble("Size", this.sizeScale);
 		nbtTagCompound.setInteger("MobLevel", this.getLevel());
+		nbtTagCompound.setBoolean("SpawnedAsBoss", this.spawnedAsBoss);
     	
     	if(this.hasHome()) {
     		BlockPos homePos = this.getHomePosition();
@@ -3898,7 +3910,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     // ========== Boss Info ==========
     public boolean showBossInfo() {
-        if(this.forceBossHealthBar || this.isBoss())
+        if(this.forceBossHealthBar || (this.isBoss() && this.isBossAlways()))
             return true;
         // Rare subspecies health bar:
         if(this.getSubspeciesIndex() >= 3)

@@ -87,6 +87,7 @@
 			"mobSizeScale": 2,
 			"naturalDespawn": "false",
 			"mobLevel": 30,
+			"spawnAsBoss": true,
 			"dungeonLevelMin": "0",
 			"dungeonLevelMax": "0",
 			"dungeonBoss": true,
@@ -104,6 +105,7 @@
 			"mobSizeScale": 2,
 			"naturalDespawn": "false",
 			"mobLevel": 50,
+			"spawnAsBoss": true,
 			"dungeonLevelMin": "1",
 			"dungeonLevelMax": "1",
 			"dungeonBoss": true,
@@ -119,6 +121,7 @@
 			"subspecies": 3,
 			"mobNameTag": "Pain Elemental",
 			"naturalDespawn": "false",
+			"spawnAsBoss": true,
 			"dungeonLevelMin": "2",
 			"dungeonBoss": true,
 			"mobDrops": [

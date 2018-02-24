@@ -84,19 +84,16 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
         super.onLivingUpdate();
         
         // Random Target Teleporting:
-        if(!this.getEntityWorld().isRemote && this.hasAttackTarget()) {
-	        if(this.teleportTime-- <= 0) {
-	        	this.teleportTime = 20 + this.getRNG().nextInt(20);
-        		this.playJumpSound();
-        		BlockPos teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 3D, 0);
-        		if(this.canTeleportTo(this.getEntityWorld(), teleportPosition)
-        		&& this.canTeleportTo(this.getEntityWorld(), new BlockPos(teleportPosition.getX(), teleportPosition.getY() + 1, teleportPosition.getZ())))
-                    this.setPosition(teleportPosition.getX(), teleportPosition.getY(), teleportPosition.getZ());
-        		else if(this.canTeleportTo(this.getEntityWorld(), teleportPosition)
-                && this.canTeleportTo(this.getEntityWorld(), teleportPosition))
-                    this.setPosition(this.getAttackTarget().posX, this.getAttackTarget().posY, this.getAttackTarget().posZ);
-	        }
-        }
+		if(!this.getEntityWorld().isRemote && this.hasAttackTarget()) {
+			if(this.teleportTime-- <= 0) {
+				this.teleportTime = 20 + this.getRNG().nextInt(20);
+				BlockPos teleportPosition = this.getFacingPosition(this.getAttackTarget(), -this.getAttackTarget().width - 1D, 0);
+				if(this.canTeleportTo(teleportPosition)) {
+					this.playJumpSound();
+					this.setPosition(teleportPosition.getX(), teleportPosition.getY(), teleportPosition.getZ());
+				}
+			}
+		}
         
         // Particles:
         if(this.getEntityWorld().isRemote)
@@ -105,18 +102,19 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
 	        }
     }
 
-    public boolean canTeleportTo(World world, BlockPos pos) {
-        IBlockState blockState = this.getEntityWorld().getBlockState(pos);
-        if(blockState.getBlock() == null)
-            return false;
-        if(blockState.isNormalCube())
-            return false;
-        if(this.getSubspeciesIndex() >= 3)
-            return true;
-        if(this.testLightLevel(pos) > 1)
-            return false;
-        return true;
-    }
+	/**
+	 * Checks if this entity can teleport to the provided block position.
+	 * @param pos The position to teleport to.
+	 * @return True if it's safe to teleport.
+	 */
+	public boolean canTeleportTo(BlockPos pos) {
+		for (int y = 0; y <= 1; y++) {
+			IBlockState blockState = this.getEntityWorld().getBlockState(pos.add(0, y, 0));
+			if (blockState.isNormalCube())
+				return false;
+		}
+		return true;
+	}
     
     
     // ==================================================

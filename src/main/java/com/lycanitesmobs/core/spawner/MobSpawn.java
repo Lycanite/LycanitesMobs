@@ -74,6 +74,9 @@ public class MobSpawn {
 	/** The level boost of the mob spawned, higher levels increase the stats by a small amount. This is added to the starting mob level (normally just 1). **/
 	protected int mobLevel = 0;
 
+	/** If true, this mob is to be treated like a boss taking less damage from other mobs, having a damage taken cap, etc. This does not show the boss health bar. Default: false. **/
+	public boolean spawnAsBoss = false;
+
 	/** A list of item drops to add to a mob spawned by this MobSpawn. **/
 	protected List<ItemDrop> mobDrops = new ArrayList<>();
 
@@ -171,6 +174,9 @@ public class MobSpawn {
 
 		if(json.has("mobLevel"))
 			this.mobLevel = json.get("mobLevel").getAsInt();
+
+		if(json.has("spawnAsBoss"))
+			this.spawnAsBoss = json.get("spawnAsBoss").getAsBoolean();
 
 		if(json.has("mobDrops")) {
 			JsonArray mobDropEntries = json.getAsJsonArray("mobDrops");
@@ -386,6 +392,8 @@ public class MobSpawn {
 			for(ItemDrop itemDrop : this.mobDrops) {
 				entityCreature.addSavedItemDrop(itemDrop);
 			}
+			entityCreature.spawnedAsBoss = this.spawnAsBoss;
+
 			entityCreature.firstSpawn = firstSpawn;
 		}
 	}

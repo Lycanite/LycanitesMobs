@@ -26,7 +26,7 @@ public class TreeBlockSpawnTrigger extends BlockSpawnTrigger {
 
 
 	@Override
-	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos) {
+	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos, int fortune) {
 		return this.isTreeLogBlock(blockState.getBlock(), world, blockPos) || this.isTreeLeavesBlock(blockState.getBlock(), world, blockPos);
 	}
 

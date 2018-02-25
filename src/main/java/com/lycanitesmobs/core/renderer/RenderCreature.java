@@ -99,15 +99,15 @@ public class RenderCreature extends RenderLiving<EntityCreatureBase> {
     * to interpolate, par3 is probably a float between 0.0 and 1.0 that tells us where "between" the two angles we are.
     * Example: par1 = 30, par2 = 50, par3 = 0.5, then return = 40
     */
-    public float interpolateRotation(float par1, float par2, float par3) {
-       float f3;
+	public float interpolateRotation(float par1, float par2, float par3) {
+		float f3;
 
-       for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F) {}
+		for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F) {}
 
-       while (f3 >= 180.0F) {
-           f3 -= 360.0F;
-       }
+		while (f3 >= 180.0F) {
+			f3 -= 360.0F;
+		}
 
-       return par1 + par3 * f3;
-   }
+		return par1 + par3 * f3;
+	}
 }

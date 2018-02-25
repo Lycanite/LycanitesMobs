@@ -219,7 +219,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 	// Client:
 	/** A list of player entities that need to have their GUI of this mob reopened on refresh. **/
-	public List<EntityPlayer> guiViewers = new ArrayList<EntityPlayer>();
+	public List<EntityPlayer> guiViewers = new ArrayList<>();
 	/** Counts from the guiRefreshTime down to 0 when a GUI refresh has been scheduled. **/
 	public int guiRefreshTick = 0;
 	/** The amount of ticks to wait before a GUI refresh. **/
@@ -3025,9 +3025,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 					float hardness = blockState.getBlockHardness(this.getEntityWorld(), breakPos);
 					Material material = blockState.getMaterial();
 					if (hardness >= 0 && strength >= hardness && strength >= blockState.getBlock().getExplosionResistance(this) && material != Material.WATER && material != Material.LAVA) {
-						this.getEntityWorld().destroyBlock(breakPos, drop);
-						if(player != null && !(w == 0 && h == 0 && d == 0)) {
+						// If a player is set this is from a spawner in which case don't destroy the central block.
+						if(player == null || !(w == 0 && h == 0 && d == 0)) {
 							SpawnerEventListener.getInstance().onBlockBreak(this.getEntityWorld(), breakPos, blockState, player, chain);
+							this.getEntityWorld().destroyBlock(breakPos, drop);
 						}
 					}
 				}
@@ -3829,9 +3830,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	// ==================================================
     // ========== Just Attacked Animation ==========
     /** Returns true if this creature should play it's attack animation. **/
-    public boolean justAttacked() { return justAttacked > 0; }
+    public boolean justAttacked() {
+    	return this.justAttacked > 0;
+    }
     /** Called when this mob has just attacked, triggers the attack animation. **/
-    public void setJustAttacked() { this.justAttacked = this.justAttackedTime; }
+    public void setJustAttacked() {
+    	this.justAttacked = this.justAttackedTime;
+    }
     
     
     // ==================================================

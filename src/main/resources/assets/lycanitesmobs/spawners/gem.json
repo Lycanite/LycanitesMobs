@@ -1,5 +1,5 @@
 {
-	"name": "ore",
+	"name": "gem",
 	"type": "spawner",
 	"enabled": true,
 	"loadDefault": true,
@@ -16,8 +16,8 @@
 		{
 			"type": "ore",
 			"onHarvest": false,
-			"ores": true,
-			"gems": false,
+			"ores": false,
+			"gems": true,
 			"chance": 0.02
 		}
 	],
@@ -31,12 +31,8 @@
 	],
 	"mobSpawns": [
 		{
-			"mobId": "elementalmobs:geonach",
+			"mobId": "elementalmobs:vapula",
 			"weight": 8
-		},
-		{
-			"mobId": "desertmobs:gorgomite",
-			"weight": 2
 		}
 	]
 }

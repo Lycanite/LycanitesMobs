@@ -1,7 +1,5 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -15,35 +13,34 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class EntityGeonach extends EntityCreatureTameable implements IMob, IGroupRock, IFusable {
-	
-	public int geonachBlockBreakRadius = 0;
+public class EntityVapula extends EntityCreatureTameable implements IMob, IGroupRock {
+
+	public int vapulaBlockBreakRadius = 0;
 	public float fireDamageAbsorbed = 0;
-    
+
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityGeonach(World world) {
+    public EntityVapula(World world) {
         super(world);
         
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.hasAttackSound = true;
         
-        this.geonachBlockBreakRadius = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Rare Geonach Block Break Radius", this.geonachBlockBreakRadius, "Controls how large the Celestial Geonach's block breaking radius is when it is charging towards its target. Set to -1 to disable. For their block breaking radius on spawn, see the ROCK spawn type features instead. Note that this is only for the extremely rare Geonach.");
+        this.vapulaBlockBreakRadius = ConfigBase.getConfig(this.creatureInfo.group, "general").getInt("Features", "Rare Vapula Block Break Radius", this.vapulaBlockBreakRadius, "Controls how large the Royal Vapula's block breaking radius is when it is charging towards its target. Set to -1 to disable.");
         this.setupMob();
 
         this.stepHeight = 1.0F;
-        this.attackPhaseMax = 3;
-        this.justAttackedTime = (short)(10);
+        this.attackPhaseMax = 8;
+        this.justAttackedTime = 60;
     }
 
     // ========== Init AI ==========
@@ -52,9 +49,10 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(true));
-        this.tasks.addTask(3, this.aiSit);
-        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
+		this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(2.0F));
+		this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(18.0F).setMinChaseDistance(10.0F));
+        this.tasks.addTask(4, this.aiSit);
+        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -106,33 +104,24 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 						this.leap(6.0F, 1.0D, this.getAttackTarget());
 					else
 						this.leap(6.0F, 0D, this.getAttackTarget());
-					if (this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.geonachBlockBreakRadius > -1 && !this.isTamed()) {
-						this.destroyArea((int) this.posX, (int) this.posY, (int) this.posZ, 10, true, this.geonachBlockBreakRadius);
+					if (this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.vapulaBlockBreakRadius > -1 && !this.isTamed()) {
+						this.destroyArea((int) this.posX, (int) this.posY, (int) this.posZ, 10, true, this.vapulaBlockBreakRadius);
 					}
-				}
-			}
-
-			// Environmental Transformation:
-			if(!this.isTamed()) {
-				if (this.updateTick % 40 == 0 && this.isInLava()) {
-					this.transform(EntityVolcan.class, null, false);
-				}
-				if (this.fireDamageAbsorbed >= 10) {
-					this.transform(EntityVolcan.class, null, false);
 				}
 			}
 		}
 
         // Particles:
-        if(this.getEntityWorld().isRemote)
-            for(int i = 0; i < 2; ++i) {
-                this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
-                        this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
-                        this.posY + this.rand.nextDouble() * (double) this.height,
-                        this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
-                        0.0D, 0.0D, 0.0D,
-                        Blocks.TALLGRASS.getStateId(Blocks.STONE.getDefaultState()));
-            }
+        if(this.getEntityWorld().isRemote) {
+			for (int i = 0; i < 2; ++i) {
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.BLOCK_CRACK,
+						this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						this.posY + this.rand.nextDouble() * (double) this.height,
+						this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+						0.0D, 0.0D, 0.0D,
+						Blocks.TALLGRASS.getStateId(Blocks.DIAMOND_BLOCK.getDefaultState()));
+			}
+		}
     }
 
 
@@ -162,22 +151,21 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
         if(target instanceof EntitySilverfish) {
             target.setDead();
         }
-
-		this.nextAttackPhase();
         return true;
     }
 
+	// ========== Ranged Attack ==========
 	@Override
-	public int getMeleeCooldown() {
-		if(this.getAttackPhase() == 2)
-			return super.getMeleeCooldown() * 3;
-		return super.getMeleeCooldown();
+	public void attackRanged(Entity target, float range) {
+		this.fireProjectile(EntityCrystalShard.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 1f, 1F);
+		this.nextAttackPhase();
+		super.attackRanged(target, range);
 	}
 
 	@Override
 	public int getRangedCooldown() {
-		if(this.getAttackPhase() == 2)
-			return super.getRangedCooldown() * 3;
+		if(this.getAttackPhase() < 7)
+			return super.getRangedCooldown() / 12;
 		return super.getRangedCooldown();
 	}
     
@@ -241,37 +229,4 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
     	// Geonach can now burn in order to heat up and transform into Volcans.
     	return true;
     }
-
-
-	// ==================================================
-	//                      Fusion
-	// ==================================================
-	protected IFusable fusionTarget;
-
-	@Override
-	public IFusable getFusionTarget() {
-		return this.fusionTarget;
-	}
-
-	@Override
-	public void setFusionTarget(IFusable fusionTarget) {
-		this.fusionTarget = fusionTarget;
-	}
-
-	@Override
-	public Class getFusionClass(IFusable fusable) {
-		if(fusable instanceof EntityCinder) {
-			return EntityVolcan.class;
-		}
-		if(fusable instanceof EntityJengu) {
-			return EntitySpriggan.class;
-		}
-		if(fusable instanceof EntityAegis) {
-			return EntityVapula.class;
-		}
-		if(fusable instanceof EntityArgus) {
-			return EntityTremor.class;
-		}
-		return null;
-	}
 }

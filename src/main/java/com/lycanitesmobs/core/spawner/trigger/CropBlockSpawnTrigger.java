@@ -25,7 +25,7 @@ public class CropBlockSpawnTrigger extends BlockSpawnTrigger {
 
 
 	@Override
-	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos) {
+	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos, int fortune) {
 		Block block = blockState.getBlock();
 		return block instanceof IPlantable || block instanceof BlockVine;
 	}

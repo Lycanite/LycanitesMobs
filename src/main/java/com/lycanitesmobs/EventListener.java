@@ -483,6 +483,8 @@ public class EventListener {
 					event.getLeft().add("");
 					event.getLeft().add("Effect Duration: " + mouseOverCreature.creatureStats.getEffect() + " Base Seconds");
 					event.getLeft().add("Effect Amplifier: x" + mouseOverCreature.creatureStats.getAmplifier());
+					event.getLeft().add("");
+					event.getLeft().add("Has Target: " + mouseOverCreature.hasAttackTarget());
 				}
 			}
 		}

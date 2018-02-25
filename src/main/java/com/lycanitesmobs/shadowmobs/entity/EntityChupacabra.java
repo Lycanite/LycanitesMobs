@@ -85,7 +85,7 @@ public class EntityChupacabra extends EntityCreatureTameable implements IAnimals
     		this.breed();
 
         // Leech:
-        float leeching = Math.max(1, this.getEffectStrength(this.getAttackDamage(damageScale)));
+        float leeching = Math.max(1, this.getAttackDamage(damageScale));
         this.heal(leeching);
     	
         return true;

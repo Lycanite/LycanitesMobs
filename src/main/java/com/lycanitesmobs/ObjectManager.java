@@ -2,6 +2,7 @@ package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.block.BlockSlabCustom;
 import com.lycanitesmobs.core.config.ConfigBase;
+import com.lycanitesmobs.core.entity.EntityProjectileModel;
 import com.lycanitesmobs.core.info.*;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSlabCustom;
@@ -50,6 +51,8 @@ public class ObjectManager {
 	public static Map<String, EntityListCustom> entityLists = new HashMap<>();
 	
 	public static Map<String, Class> projectiles = new HashMap<>();
+	/** A map of optional model projectile ids to use for each projectile class. **/
+	public static Map<Class, String> projectileModels = new HashMap<>();
 
     public static Map<String, DamageSource> damageSources = new HashMap<>();
 
@@ -167,6 +170,10 @@ public class ObjectManager {
 
         projectiles.put(name, entityClass);
         group.projectileClasses.add(entityClass);
+
+		if(EntityProjectileModel.class.isAssignableFrom(entityClass)) {
+			projectileModels.put(entityClass, name);
+		}
     }
 
 	public static void addProjectile(String name, Class entityClass) {

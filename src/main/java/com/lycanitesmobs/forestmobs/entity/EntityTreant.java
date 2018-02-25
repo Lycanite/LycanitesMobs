@@ -103,7 +103,7 @@ public class EntityTreant extends EntityCreatureBase implements IMob, IGroupPlan
     		return false;
     	
     	// Leech:
-    	float leeching = this.getEffectStrength(this.getAttackDamage(damageScale));
+		float leeching = Math.max(1, this.getAttackDamage(damageScale));
     	this.heal(leeching);
         
         return true;

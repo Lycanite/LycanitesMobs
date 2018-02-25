@@ -267,6 +267,30 @@
         "category": "hostile",
 		"sounds": [{"name": "elementalmobs:entity/reiver/beg", "stream": false}]
     },
+    "entity.vapula.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/vapula/say", "stream": false}]
+    },
+    "entity.vapula.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/vapula/hurt", "stream": false}]
+    },
+    "entity.vapula.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/vapula/death", "stream": false}]
+    },
+    "entity.vapula.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/vapula/attack", "stream": false}]
+    },
+    "entity.vapula.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/vapula/beg", "stream": false}]
+    },
+    "entity.vapula.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/vapula/tame", "stream": false}]
+    },
     "entity.tremor.say": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/tremor/say", "stream": false}]
@@ -350,6 +374,10 @@
     "projectile.faebolt": {
         "category": "ambient",
         "sounds": [{"name": "elementalmobs:projectile/faebolt", "stream": false}]
+    },
+    "projectile.crystalshard": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/crystalshard", "stream": false}]
     },
     "projectile.frostbolt": {
         "category": "ambient",

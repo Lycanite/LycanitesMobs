@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.model;
 import com.google.gson.*;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.modelloader.obj.ObjObject;
 import com.lycanitesmobs.core.modelloader.obj.TessellatorModel;
@@ -183,9 +184,6 @@ public class ModelObj extends ModelCustom {
      */
     @Override
     public void render(Entity entity, float time, float distance, float loop, float lookY, float lookX, float scale, LayerBase layer) {
-        if(!(entity instanceof EntityLiving))
-            return;
-
         // Assess Scale and Check if Trophy:
 		boolean renderAsTrophy = false;
 		if(scale < 0) {
@@ -193,10 +191,14 @@ public class ModelObj extends ModelCustom {
 			scale = -scale;
 		}
 		else {
-			scale *= 16;
 			if(entity instanceof EntityCreatureBase) {
+				scale *= 16;
                 scale *= ((EntityCreatureBase)entity).getRenderScale();
             }
+			else if(entity instanceof EntityProjectileBase) {
+				scale *= 4;
+				scale *= ((EntityProjectileBase)entity).getProjectileScale();
+			}
 		}
 
 		// Animation States:
@@ -213,7 +215,9 @@ public class ModelObj extends ModelCustom {
             	continue;
 
             // Animate:
-            this.animatePart(partName, (EntityLiving)entity, time, distance, loop, -lookY, lookX, scale);
+			if(entity instanceof EntityLiving) {
+				this.animatePart(partName, (EntityLiving) entity, time, distance, loop, -lookY, lookX, scale);
+			}
 
             // Trophy Positioning:
             if(renderAsTrophy) {

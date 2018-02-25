@@ -98,7 +98,7 @@ public class EntityEnt extends EntityCreatureTameable implements IMob, IGroupPla
     		return false;
     	
     	// Leech:
-    	float leeching = Math.max(1, this.getEffectStrength(this.getAttackDamage(damageScale)));
+    	float leeching = Math.max(1, this.getAttackDamage(damageScale));
     	this.heal(leeching);
         
         return true;

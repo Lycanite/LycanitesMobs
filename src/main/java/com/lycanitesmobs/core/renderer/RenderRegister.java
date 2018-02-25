@@ -23,11 +23,13 @@ public class RenderRegister {
         }
 
         // Projectiles:
-        for(Class projectileClass : this.groupInfo.projectileClasses)
+        for(Class projectileClass : this.groupInfo.projectileClasses) {
             RenderingRegistry.registerEntityRenderingHandler(projectileClass, new RenderFactoryProjectile<EntityProjectileBase>(projectileClass));
+        }
 
         // Specials:
-        for(Class specialClass : this.groupInfo.specialClasses)
+        for(Class specialClass : this.groupInfo.specialClasses) {
             RenderingRegistry.registerEntityRenderingHandler(specialClass, new RenderFactoryNone<EntityProjectileBase>(specialClass));
+        }
     }
 }

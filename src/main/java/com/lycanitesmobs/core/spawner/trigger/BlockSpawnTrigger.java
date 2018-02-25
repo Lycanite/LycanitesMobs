@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.spawner.trigger;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.spawner.Spawner;
 import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.block.Block;
@@ -98,7 +99,7 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 		if(!this.onBreak) {
 			return;
 		}
-		this.onBlockTriggered(world, player, breakPos, blockState, chain);
+		this.onBlockTriggered(world, player, breakPos, blockState, chain, 0);
 	}
 
 
@@ -122,7 +123,7 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 			return;
 		}
 
-		this.onBlockTriggered(world, player, breakPos, blockState, chain);
+		this.onBlockTriggered(world, player, breakPos, blockState, chain, fortune);
 	}
 
 
@@ -131,19 +132,19 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 		if(!this.onPlace) {
 			return;
 		}
-		this.onBlockTriggered(world, player, breakPos, blockState, chain);
+		this.onBlockTriggered(world, player, breakPos, blockState, chain, 0);
 	}
 
 
 	/** Called every time a player breaks a block. **/
-	public void onBlockTriggered(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain) {
+	public void onBlockTriggered(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain, int fortune) {
 		// Check Player:
 		if(this.playerOnly && (player == null || player instanceof FakePlayer)) {
 			return;
 		}
 
 		// Check Block:
-		if(!this.isTriggerBlock(blockState, world, breakPos)) {
+		if(!this.isTriggerBlock(blockState, world, breakPos, fortune)) {
 			return;
 		}
 
@@ -156,7 +157,7 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 	}
 
 	/** Returns true if the provided block is a match for this trigger. **/
-	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos) {
+	public boolean isTriggerBlock(IBlockState blockState, World world, BlockPos blockPos, int fortune) {
 		if(this.blocks.size() > 0) {
 			Block block = blockState.getBlock();
 			if (this.blocks.contains(block)) {

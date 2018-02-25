@@ -41,11 +41,11 @@ public class GroupInfo {
 
     // ========== Projectiles ==========
     /** A list of all Projectile Classes assigned to this group. **/
-    public List<Class> projectileClasses = new ArrayList<Class>();
+    public List<Class> projectileClasses = new ArrayList<>();
 
     // ========== Special Entities ==========
     /** A list of all Special Entities Classes assigned to this group (to be rendered invisible). **/
-    public List<Class> specialClasses = new ArrayList<Class>();
+    public List<Class> specialClasses = new ArrayList<>();
 	
 	// ========== Spawn Dimensions ==========
     /** A comma separated list of dimensions that mobs in this group spawn in. As read from the config **/

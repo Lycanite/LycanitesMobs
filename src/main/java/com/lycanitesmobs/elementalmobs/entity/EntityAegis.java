@@ -188,6 +188,9 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
 		if(fusable instanceof EntityJengu) {
 			return EntityNymph.class;
 		}
+		if(fusable instanceof EntityGeonach) {
+			return EntityVapula.class;
+		}
 		if(fusable instanceof EntityArgus) {
 			return EntitySpectre.class;
 		}

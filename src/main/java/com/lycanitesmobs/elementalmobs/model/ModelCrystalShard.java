@@ -54,8 +54,8 @@ public class ModelCrystalShard extends ModelTemplateElemental {
 	//                      Visuals
 	// ==================================================
 	@Override
-	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderStart(layer, partName, entity, renderAsTrophy);
+	public void onRenderStart(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		super.onRenderStart(layer, entity, renderAsTrophy);
 		int i = 15728880;
 		int j = i % 65536;
 		int k = i / 65536;
@@ -63,8 +63,8 @@ public class ModelCrystalShard extends ModelTemplateElemental {
 	}
 
 	@Override
-	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderFinish(layer, partName, entity, renderAsTrophy);
+	public void onRenderFinish(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		super.onRenderFinish(layer, entity, renderAsTrophy);
 		int i = entity.getBrightnessForRender();
 		int j = i % 65536;
 		int k = i / 65536;

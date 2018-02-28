@@ -3,6 +3,8 @@ package com.lycanitesmobs.elementalmobs.model;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
+import com.lycanitesmobs.core.renderer.LayerEffect;
+import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
@@ -32,6 +34,16 @@ public class ModelVapula extends ModelTemplateElemental {
 		this.trophyScale = 1.2F;
 		this.trophyOffset = new float[] {0.0F, 0.0F, -0.4F};
     }
+
+
+	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerEffect(renderer, "", true, false, true));
+	}
 
 
 	// ==================================================
@@ -119,28 +131,14 @@ public class ModelVapula extends ModelTemplateElemental {
 
 
 	// ==================================================
-	//                      Visuals
+	//                Can Render Part
 	// ==================================================
 	@Override
-	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderStart(layer, partName, entity, renderAsTrophy);
-		if(!this.isCrystal(partName))
-			return;
-		int i = 15728880;
-		int j = i % 65536;
-		int k = i / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
-	}
-
-	@Override
-	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderFinish(layer, partName, entity, renderAsTrophy);
-		if(!this.isCrystal(partName))
-			return;
-		int i = entity.getBrightnessForRender();
-		int j = i % 65536;
-		int k = i / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+		if(!this.isCrystal(partName)) {
+			return layer == null;
+		}
+		return layer instanceof LayerEffect;
 	}
 
 	protected boolean isCrystal(String partName) {

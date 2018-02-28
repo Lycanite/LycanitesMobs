@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.renderer;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,14 +45,12 @@ public class LayerShield extends LayerBase {
     }
 
     @Override
-    public void onRenderStart(String partName, Entity entity, boolean trophy) {
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_BLEND);
+    public void onRenderStart(Entity entity, boolean trophy) {
+        GlStateManager.enableCull();
     }
 
     @Override
-    public void onRenderFinish(String partName, Entity entity, boolean trophy) {
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_BLEND);
+    public void onRenderFinish(Entity entity, boolean trophy) {
+        GlStateManager.disableCull();
     }
 }

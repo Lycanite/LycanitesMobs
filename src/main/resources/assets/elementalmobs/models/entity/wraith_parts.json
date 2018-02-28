@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Head",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.005"
+  },
+  {
+    "name": "Fire",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.005"
+  },
+  {
+    "name": "Mouth",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "0.5",
+    "centerZ": "-0.305"
+  },
+  {
+    "name": "Skull",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "-0.005"
+  }
+]

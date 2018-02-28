@@ -39,6 +39,16 @@ public class ModelAegis extends ModelTemplateElemental {
 
 
 	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerEffect(renderer, "", true, false, true));
+	}
+
+
+	// ==================================================
 	//                 Animate Part
 	// ==================================================
 	float maxLeg = 0F;
@@ -111,28 +121,14 @@ public class ModelAegis extends ModelTemplateElemental {
 
 
 	// ==================================================
-	//                      Visuals
+	//                Can Render Part
 	// ==================================================
 	@Override
-	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderStart(layer, partName, entity, renderAsTrophy);
-		if(this.isArmorPart(partName))
-			return;
-		int i = 15728880;
-		int j = i % 65536;
-		int k = i / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
-	}
-
-	@Override
-	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderFinish(layer, partName, entity, renderAsTrophy);
-		if(this.isArmorPart(partName))
-			return;
-		int i = entity.getBrightnessForRender();
-		int j = i % 65536;
-		int k = i / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+		if(this.isArmorPart(partName)) {
+			return layer == null;
+		}
+		return layer instanceof LayerEffect;
 	}
 
 	protected boolean isArmorPart(String partName) {

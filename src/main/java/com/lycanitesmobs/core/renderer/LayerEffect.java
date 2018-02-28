@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.renderer;
 
-import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -15,7 +14,7 @@ import javax.vecmath.Vector4f;
 @SideOnly(Side.CLIENT)
 public class LayerEffect extends LayerBase {
 
-	public String textureSuffix = "effect";
+	public String textureSuffix;
 	public boolean glow = false;
 	public boolean additive = false;
 	public boolean subspecies = true;
@@ -53,30 +52,32 @@ public class LayerEffect extends LayerBase {
     }
 
 	@Override
-	public void onRenderStart(String partName, Entity entity, boolean trophy) {
-    	if(this.glow) {
-			int i = 15728880;
-			int j = i % 65536;
-			int k = i / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+	public void onRenderStart(Entity entity, boolean trophy) {
+		// Glow In Dark:
+		int i = entity.getBrightnessForRender();
+		if(this.glow) {
+			i = 15728880;
 		}
-		else {
-			int i = entity.getBrightnessForRender();
-			int j = i % 65536;
-			int k = i / 65536;
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
-		}
+		int j = i % 65536;
+		int k = i / 65536;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+
+		// Additive: TODO Get this working!
     	if(this.additive) {
-			GL11.glEnable(GL11.GL_BLEND);
 			//OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 		}
+
+		// Blend:
+		//GlStateManager.depthMask(false);
+		/*GlStateManager.disableAlpha();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);*/
 	}
 
 	@Override
-	public void onRenderFinish(String partName, Entity entity, boolean trophy) {
-		if(this.additive) {
-			GL11.glDisable(GL11.GL_BLEND);
-			//OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
-		}
+	public void onRenderFinish(Entity entity, boolean trophy) {
+		/*GlStateManager.disableBlend();
+		GlStateManager.enableAlpha();*/
+		//GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
 	}
 }

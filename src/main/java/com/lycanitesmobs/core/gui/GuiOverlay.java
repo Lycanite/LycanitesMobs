@@ -7,6 +7,7 @@ import com.lycanitesmobs.core.mobevent.MobEventPlayerClient;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
@@ -43,11 +44,11 @@ public class GuiOverlay extends GUIBase {
 		if(event.isCancelable() || event.getType() != ElementType.EXPERIENCE)
 	      return;
 
-        GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
+        GlStateManager.enableBlend();
+		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		
 		ScaledResolution scaledresolution = new ScaledResolution(this.mc);
 		int sWidth = scaledresolution.getScaledWidth();
@@ -57,12 +58,12 @@ public class GuiOverlay extends GUIBase {
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(player.getEntityWorld());
         if(worldExt != null) {
             for(MobEventPlayerClient mobEventPlayerClient : worldExt.clientMobEventPlayers.values()) {
-				GL11.glPushMatrix();
+				GlStateManager.pushMatrix();
 				mobEventPlayerClient.onGUIUpdate(this, sWidth, sHeight);
-				GL11.glPopMatrix();
+				GlStateManager.popMatrix();
 			}
             if(worldExt.clientWorldEventPlayer != null) {
-				GL11.glPushMatrix();
+				GlStateManager.pushMatrix();
 				worldExt.clientWorldEventPlayer.onGUIUpdate(this, sWidth, sHeight);
 				GL11.glPopMatrix();
 			}
@@ -142,7 +143,7 @@ public class GuiOverlay extends GUIBase {
 		else
 			this.mountMessageTime = this.mountMessageTimeMax;
 
-        GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 		this.mc.getTextureManager().bindTexture(ICONS);
 	}
 }

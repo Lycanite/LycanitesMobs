@@ -94,24 +94,4 @@ public class ModelZephyr extends ModelTemplateElemental {
 		float alpha = loop * alphaSpeed % 360;
 		return new Vector4f(1, 1, 1, ((float)Math.cos(Math.toRadians(alpha)) / 2) + 0.5f);
 	}
-
-
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-	@Override
-	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderStart(layer, partName, entity, renderAsTrophy);
-		if(layer == null)
-			return;
-		GL11.glEnable(GL11.GL_BLEND);
-	}
-
-	@Override
-	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderFinish(layer, partName, entity, renderAsTrophy);
-		if(layer == null)
-			return;
-		GL11.glDisable(GL11.GL_BLEND);
-	}
 }

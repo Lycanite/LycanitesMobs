@@ -4,6 +4,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.saltwatermobs.entity.EntityRoa;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,12 +56,8 @@ public class LayerRoa extends LayerBase {
     }
 
     @Override
-    public void onRenderStart(String partName, Entity entity, boolean trophy) {
-        GL11.glEnable(GL11.GL_BLEND);
-    }
+    public void onRenderStart(Entity entity, boolean trophy) {}
 
     @Override
-    public void onRenderFinish(String partName, Entity entity, boolean trophy) {
-        GL11.glDisable(GL11.GL_BLEND);
-    }
+    public void onRenderFinish(Entity entity, boolean trophy) {}
 }

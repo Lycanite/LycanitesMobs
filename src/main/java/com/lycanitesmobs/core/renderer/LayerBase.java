@@ -72,13 +72,13 @@ public class LayerBase implements LayerRenderer<EntityCreatureBase> {
         return new Vector2f(0, 0);
     }
 
-    /** Called just before a part is being rendered with this layer. **/
-    public void onRenderStart(String partName, Entity entity, boolean trophy) {
+    /** Called just before this layer is rendered. **/
+    public void onRenderStart(Entity entity, boolean trophy) {
 
     }
 
-	/** Called just after a part is being rendered with this layer. **/
-    public void onRenderFinish(String partName, Entity entity, boolean trophy) {
+	/** Called just after this layer is rendered. **/
+    public void onRenderFinish(Entity entity, boolean trophy) {
 
     }
 

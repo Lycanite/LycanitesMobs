@@ -41,7 +41,7 @@ public class ModelArgus extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		LayerEffect layer = new LayerEffect(renderer, "flash");
+		LayerEffect layer = new LayerEffect(renderer, "flash", true, true, true);
 		layer.glow = true;
 		layer.additive = true;
 		renderer.addLayer(layer);
@@ -89,25 +89,5 @@ public class ModelArgus extends ModelTemplateElemental {
 					0
 			);
 		}
-	}
-
-
-	// ==================================================
-	//                      Visuals
-	// ==================================================
-	@Override
-	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderStart(layer, partName, entity, renderAsTrophy);
-		if(!partName.contains("effect"))
-			return;
-		GL11.glEnable(GL11.GL_BLEND);
-	}
-
-	@Override
-	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
-		super.onRenderFinish(layer, partName, entity, renderAsTrophy);
-		if(!partName.contains("effect"))
-			return;
-		GL11.glDisable(GL11.GL_BLEND);
 	}
 }

@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.IOUtils;
+import org.lwjgl.opengl.GL11;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -236,7 +237,10 @@ public class ModelObj extends ModelCustom {
             }
     	}
 
-        // Render Parts:
+		// Render Start:
+		this.onRenderStart(layer, entity, renderAsTrophy);
+
+		// Render Parts:
         for(ObjObject part : this.wavefrontParts) {
             String partName = part.getName().toLowerCase();
             if(!this.canRenderPart(partName, entity, layer, renderAsTrophy))
@@ -248,7 +252,6 @@ public class ModelObj extends ModelCustom {
 
             // Begin Rendering Part:
             GlStateManager.pushMatrix();
-            GlStateManager.enableAlpha();
 
             // Apply Initial Offsets: (To Match Blender OBJ Export)
             this.animator.doAngle(modelXRotOffset, 1F, 0F, 0F);
@@ -272,29 +275,35 @@ public class ModelObj extends ModelCustom {
             this.currentAnimationPart.applyAnimationFrames(this.animator);
 
             // Render Part:
-			this.onRenderStart(layer, partName, entity, renderAsTrophy);
             this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, renderAsTrophy, loop), this.getPartTextureOffset(partName, entity, layer, renderAsTrophy, loop));
-			this.onRenderFinish(layer, partName, entity, renderAsTrophy);
-            GlStateManager.popMatrix();
+			GlStateManager.popMatrix();
         }
 
-        // Clear Animation Frames:
+		// Render Finish:
+		this.onRenderFinish(layer, entity, renderAsTrophy);
+
+		// Clear Animation Frames:
         for(ModelObjPart animationPart : this.animationParts.values()) {
             animationPart.animationFrames.clear();
         }
     }
 
-	/** Called just before a part is being rendered. **/
-	public void onRenderStart(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
+	/** Called just before a layer is rendered. **/
+	public void onRenderStart(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		//GlStateManager.disableAlpha();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		if(layer != null) {
-			layer.onRenderStart(partName, entity, renderAsTrophy);
+			layer.onRenderStart(entity, renderAsTrophy);
 		}
 	}
 
-	/** Called just after a part is being rendered. **/
-	public void onRenderFinish(LayerBase layer, String partName, Entity entity, boolean renderAsTrophy) {
+	/** Called just after a layer is rendered. **/
+	public void onRenderFinish(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		GlStateManager.disableBlend();
+		//GlStateManager.enableAlpha();
 		if(layer != null) {
-			layer.onRenderFinish(partName, entity, renderAsTrophy);
+			layer.onRenderFinish(entity, renderAsTrophy);
 		}
 	}
 

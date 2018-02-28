@@ -45,7 +45,7 @@ public class LayerGlow extends LayerBase {
     }
 
     @Override
-    public void onRenderStart(String partName, Entity entity, boolean trophy) {
+    public void onRenderStart(Entity entity, boolean trophy) {
 		int i = 15728880;
 		int j = i % 65536;
 		int k = i / 65536;
@@ -53,7 +53,7 @@ public class LayerGlow extends LayerBase {
     }
 
     @Override
-    public void onRenderFinish(String partName, Entity entity, boolean trophy) {
+    public void onRenderFinish(Entity entity, boolean trophy) {
 		int i = entity.getBrightnessForRender();
 		int j = i % 65536;
 		int k = i / 65536;

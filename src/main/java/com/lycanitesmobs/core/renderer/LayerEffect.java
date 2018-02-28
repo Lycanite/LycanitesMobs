@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.ARBTextureEnvCombine;
 import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector4f;
@@ -16,7 +17,13 @@ public class LayerEffect extends LayerBase {
 
 	public String textureSuffix;
 	public boolean glow = false;
-	public boolean additive = false;
+	public enum BLEND {
+		NORMAL(0), ADD(1), SUB(2);
+		public final int id;
+		BLEND(int value) { this.id = value; }
+		public int getValue() { return id; }
+	}
+	public int blending = 0;
 	public boolean subspecies = true;
 
     // ==================================================
@@ -28,12 +35,12 @@ public class LayerEffect extends LayerBase {
         this.textureSuffix = textureSuffix;
     }
 
-	public LayerEffect(RenderCreature renderer, String textureSuffix, boolean glow, boolean additive, boolean subspecies) {
+	public LayerEffect(RenderCreature renderer, String textureSuffix, boolean glow, int blending, boolean subspecies) {
 		super(renderer);
 		this.name = textureSuffix;
 		this.textureSuffix = textureSuffix;
 		this.glow = glow;
-		this.additive = additive;
+		this.blending = blending;
 		this.subspecies = subspecies;
 	}
 
@@ -63,21 +70,16 @@ public class LayerEffect extends LayerBase {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
 
 		// Additive: TODO Get this working!
-    	if(this.additive) {
-			//OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+    	if(this.blending == BLEND.ADD.id) {
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 		}
-
-		// Blend:
-		//GlStateManager.depthMask(false);
-		/*GlStateManager.disableAlpha();
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);*/
+		else if(this.blending == BLEND.SUB.id) {
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		}
 	}
 
 	@Override
 	public void onRenderFinish(Entity entity, boolean trophy) {
-		/*GlStateManager.disableBlend();
-		GlStateManager.enableAlpha();*/
-		//GlStateManager.alphaFunc(GL11.GL_GREATER, 0.003921569F);
+
 	}
 }

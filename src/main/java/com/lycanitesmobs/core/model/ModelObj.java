@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.modelloader.obj.TessellatorModel;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.JsonUtils;
@@ -293,6 +294,7 @@ public class ModelObj extends ModelCustom {
 		//GlStateManager.disableAlpha();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		//GlStateManager.clearColor(0, 0, 0, 0);
 		if(layer != null) {
 			layer.onRenderStart(entity, renderAsTrophy);
 		}

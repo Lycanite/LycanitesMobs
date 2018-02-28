@@ -96,7 +96,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         if(--this.repathTime <= 0) {
             // Set Path:
         	if(!this.host.useDirectNavigator()) {
-                this.pathToTarget = this.host.getNavigator().getPathToXYZ(attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ);
+                this.pathToTarget = this.host.getNavigator().getPathToEntityLiving(attackTarget);//attackTarget.posX, attackTarget.posY + this.host.getFlightOffset(), attackTarget.posZ);
 	            this.repathTime = 4 + this.host.getRNG().nextInt(7);
 	            return this.pathToTarget != null;
         	}
@@ -209,6 +209,10 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	 * @return The maximum attack range.
 	 */
 	protected double getAttackRange(EntityLivingBase attackTarget) {
-		return this.attackRange + 0.5D + (this.host.width * 2.0F * this.host.width * 2.0F + attackTarget.width);
+		double range = this.attackRange + 0.5D + (this.host.width * 2.0F * this.host.width * 2.0F + attackTarget.width);
+		if(this.host.isCurrentlyFlying()) {
+			range += 0.5D;
+		}
+		return range;
 	}
 }

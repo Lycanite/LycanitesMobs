@@ -2,6 +2,7 @@ package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
+import com.lycanitesmobs.core.renderer.LayerEffect;
 import com.lycanitesmobs.core.renderer.LayerGlow;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
@@ -42,34 +43,26 @@ public class ModelSpectre extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		renderer.addLayer(new LayerGlow(renderer));
+		renderer.addLayer(new LayerEffect(renderer, "glow", true, LayerEffect.BLEND.ADD.id, true));
+		renderer.addLayer(new LayerEffect(renderer, "", false, LayerEffect.BLEND.SUB.id, true));
 	}
 
 
 	// ==================================================
 	//                Can Render Part
 	// ==================================================
-	/** Returns true if the part can be rendered on the base layer. **/
-	@Override
-	public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
-		if("effect02".equals(partName) || "effect03".equals(partName)) {
-			if(entity instanceof EntitySpectre) {
-				return ((EntitySpectre)entity).canPull();
-			}
-			return false;
-		}
-		return true;
-	}
-
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+		if("effect01".equals(partName)) {
+			return layer != null && "".equals(layer.name);
+		}
 		if("effect02".equals(partName) || "effect03".equals(partName)) {
-			if(entity instanceof EntitySpectre) {
+			if(entity instanceof EntitySpectre && layer != null && "".equals(layer.name)) {
 				return ((EntitySpectre)entity).canPull();
 			}
 			return false;
 		}
-		return super.canRenderPart(partName, entity, layer, trophy);
+		return layer == null || "glow".equals(layer.name);
 	}
 
 

@@ -41,10 +41,7 @@ public class ModelArgus extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		LayerEffect layer = new LayerEffect(renderer, "flash", true, true, true);
-		layer.glow = true;
-		layer.additive = true;
-		renderer.addLayer(layer);
+		renderer.addLayer(new LayerEffect(renderer, "flash", true, LayerEffect.BLEND.ADD.id, true));
 	}
 
 
@@ -54,9 +51,9 @@ public class ModelArgus extends ModelTemplateElemental {
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
 		if(layer instanceof LayerEffect && entity instanceof EntityCreatureBase) {
-			return ((EntityCreatureBase)entity).justAttacked();
+			return ((EntityCreatureBase)entity).justAttacked(); // TODO Fix blending!
 		}
-		return super.canRenderPart(partName, entity, layer, trophy);
+		return true;
 	}
 
 
@@ -67,6 +64,7 @@ public class ModelArgus extends ModelTemplateElemental {
 	public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
 		super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
 
+		// Arms:
 		if(partName.contains("arm")) {
 			float rotX = (float)Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.05F) * 4;
 			float rotY = (float)Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F);
@@ -80,6 +78,7 @@ public class ModelArgus extends ModelTemplateElemental {
 			}
 		}
 
+		// Tail:
 		if(partName.contains("tail")) {
 			float tailSwipeX = 32F;
 			float tailSwipeY = 32F;

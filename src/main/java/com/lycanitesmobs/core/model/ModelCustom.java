@@ -23,7 +23,7 @@ import java.util.Map.Entry;
 public class ModelCustom extends ModelBase {
 	
 	// Initial Rotations:
-	public Map<ModelRenderer, float[]> initRotations = new HashMap<ModelRenderer, float[]>();
+	public Map<ModelRenderer, float[]> initRotations = new HashMap<>();
     
 	// ==================================================
   	//                    Constructors
@@ -118,14 +118,14 @@ public class ModelCustom extends ModelBase {
 	// ==================================================
 	//              Get Part Texture Offset
 	// ==================================================
-	/** Returns the coloring to be used for this part and layer. **/
+	/** Returns the texture offset to be used for this part and layer. **/
 	public Vector2f getPartTextureOffset(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
 		if(layer == null || !(entity instanceof EntityCreatureBase))
 			return this.getBaseTextureOffset(partName, entity, trophy, loop);
 		return layer.getTextureOffset(partName, (EntityCreatureBase)entity, trophy, loop);
 	}
 
-	/** Returns the coloring to be used for this part on the base layer. **/
+	/** Returns the texture offset to be used for this part on the base layer (for scrolling, etc). **/
 	public Vector2f getBaseTextureOffset(String partName, Entity entity, boolean trophy, float loop) {
 		return new Vector2f(0, 0);
 	}

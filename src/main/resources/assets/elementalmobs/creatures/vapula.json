@@ -75,20 +75,20 @@
 			"item": "minecraft:diamond",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.1
+			"chance": 0.05
 		},
 		{
 			"item": "minecraft:emerald",
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.25
+			"chance": 0.05
 		},
 		{
 			"item": "minecraft:dye",
 			"metadata": 4,
 			"minAmount": 4,
 			"maxAmount": 8,
-			"chance": 1
+			"chance": 0.25
 		},
 		{
 			"item": "lycanitesmobs:cleansingcrystal",

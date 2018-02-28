@@ -90,8 +90,8 @@ public class CreatureConfig {
 	 */
 	public void loadConfig(ConfigBase config) {
 		// Client GUI:
-		config.setCategoryComment("GUI", "Mostly client side settings that affect visuals such as mob names or inventory tabs, etc.");
-		this.subspeciesTags = config.getBool("GUI", "Subspecies Tags", this.subspeciesTags, "If true, all mobs that are a subspecies will always show their nametag.");
+		config.setCategoryComment("Client", "Mostly client side settings that affect visuals such as mob names or inventory tabs, etc.");
+		this.subspeciesTags = config.getBool("Client", "Subspecies Tags", this.subspeciesTags, "If true, all mobs that are a subspecies will always show their nametag.");
 
 		// Stats:
 		config.setCategoryComment("Base Starting Level", "The base starting level is the level every mob will start at. Mob Events, Special Spawners and other things will then add onto this base level.");

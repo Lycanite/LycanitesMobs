@@ -44,9 +44,9 @@ public class ModelZephyr extends ModelTemplateElemental {
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
 		renderer.addLayer(new LayerGlow(renderer));
-		renderer.addLayer(new LayerEffect(renderer, "pulse01", true, true, true));
-		renderer.addLayer(new LayerEffect(renderer, "pulse02", true, true, true));
-		renderer.addLayer(new LayerEffect(renderer, "pulse03", true, true, true));
+		renderer.addLayer(new LayerEffect(renderer, "pulse01", true, LayerEffect.BLEND.ADD.id, true));
+		renderer.addLayer(new LayerEffect(renderer, "pulse02", true, LayerEffect.BLEND.ADD.id, true));
+		renderer.addLayer(new LayerEffect(renderer, "pulse03", true, LayerEffect.BLEND.ADD.id, true));
 	}
     
     

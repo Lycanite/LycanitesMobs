@@ -1,10 +1,12 @@
 package com.lycanitesmobs.core.renderer;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.model.ModelCustom;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -15,6 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderCreature extends RenderLiving<EntityCreatureBase> {
+	public boolean multipass = true;
+
     private static final DynamicTexture textureBrightness = new DynamicTexture(16, 16);
 	
 	/** A color table for mobs that can be dyed or pet collars. Follows the same pattern as the vanilla sheep. */
@@ -25,11 +29,49 @@ public class RenderCreature extends RenderLiving<EntityCreatureBase> {
   	// ==================================================
     public RenderCreature(String entityID, RenderManager renderManager) {
     	super(renderManager, AssetManager.getModel(entityID), 0.5F);
+
         if(this.mainModel instanceof ModelCustom) {
             ModelCustom modelCustom = (ModelCustom)this.mainModel;
             modelCustom.addCustomLayers(this);
         }
+
+        this.multipass = LycanitesMobs.config.getBool("Client", "Model Multipass", this.multipass, "Set to false to disable multipass rendering. This renders model layers twice so that they can show each over through alpha textures, disable for performance on low end systems.");
     }
+
+
+	// ==================================================
+	//                     Render
+	// ==================================================
+
+	/**
+	 * Returns if this renderer should render multiple passes.
+	 * @return True for multi pass rendering.
+	 */
+	@Override
+	public boolean isMultipass() {
+		//return this.multipass;
+		return false; // Disabled as this doesn't have the desired effect.
+	}
+
+	@Override
+	public void doRender(EntityCreatureBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    	super.doRender(entity, x, y, z, entityYaw, partialTicks);
+	}
+
+	@Override
+	public void renderMultipass(EntityCreatureBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		//super.doRender(entity, x, y, z, entityYaw, partialTicks);
+	}
+
+	@Override
+	protected void renderModel(EntityCreatureBase entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.renderModel(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	}
+
+	@Override
+	protected void renderLayers(EntityCreatureBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.renderLayers(entity, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	}
     
     
     // ==================================================

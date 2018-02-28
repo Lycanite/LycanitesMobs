@@ -83,6 +83,7 @@ public class ModelNymph extends ModelTemplateElemental {
 	//                Get Part Color
 	// ==================================================
 	/** Returns the coloring to be used for this part and layer. **/
+	@Override
 	public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
 		if(layer == null) {
 			float glowSpeed = 40;

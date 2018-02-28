@@ -14,6 +14,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.vecmath.Vector2f;
+import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
 public class ModelGrue extends ModelTemplateElemental {
@@ -41,7 +42,7 @@ public class ModelGrue extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		renderer.addLayer(new LayerEffect(renderer, "cloak", false, false, true));
+		renderer.addLayer(new LayerEffect(renderer, "cloak", false, LayerEffect.BLEND.SUB.id, true));
 	}
     
     
@@ -88,10 +89,24 @@ public class ModelGrue extends ModelTemplateElemental {
 
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
-		if(layer != null && "cloak".equals(layer.name)) {
-			return partName.contains("cloak");
+		if(partName.contains("cloak")) {
+			return layer != null && "cloak".equals(layer.name);
 		}
-		return super.canRenderPart(partName, entity, layer, trophy);
+		return layer == null;
+	}
+
+
+	// ==================================================
+	//                Get Part Color
+	// ==================================================
+	/** Returns the coloring to be used for this part and layer. **/
+	@Override
+	public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
+		if(layer != null && "cloak".equals(layer.name)) {
+			return new Vector4f(1, 1, 1, 0.75f);
+		}
+
+		return super.getPartColor(partName, entity, layer, trophy, loop);
 	}
 
 

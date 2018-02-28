@@ -4,6 +4,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.LayerEffect;
+import com.lycanitesmobs.core.renderer.LayerScrolling;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -48,7 +50,9 @@ public class ModelWraith extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		renderer.addLayer(new LayerEffect(renderer, "skull", false, false, true));
+		renderer.addLayer(new LayerEffect(renderer, "overlay", true, LayerEffect.BLEND.NORMAL.id, true));
+		renderer.addLayer(new LayerEffect(renderer, "skull", false, LayerEffect.BLEND.NORMAL.id, true));
+		renderer.addLayer(new LayerScrolling(renderer, "", true, LayerEffect.BLEND.ADD.id, true, new Vec2f(-8, 0)));
 	}
 
 
@@ -63,8 +67,17 @@ public class ModelWraith extends ModelTemplateElemental {
 		if(entity instanceof EntityCreatureBase) {
 			EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
 			if (entityCreature.hasAttackTarget() && partName.equals("mouth")) {
-				this.rotate(-30 + (float)-Math.toDegrees(MathHelper.cos(loop) * 0.1F), 0.0F, 0.0F);
+				this.rotate(20 + (float)-Math.toDegrees(MathHelper.cos(loop) * 0.1F), 0.0F, 0.0F);
 			}
+		}
+
+		// Vibrate:
+		float vibration = loop * 2;
+		if("head".equals(partName)) {
+			this.translate(MathHelper.cos(vibration) * 0.01f, MathHelper.cos(vibration) * 0.01f, MathHelper.cos(vibration) * 0.01f);
+		}
+		else if("mouth".equals(partName)) {
+			this.rotate((float)-Math.toDegrees(MathHelper.cos(vibration) * 0.025F), 0.0F, 0.0F);
 		}
 	}
 
@@ -72,21 +85,15 @@ public class ModelWraith extends ModelTemplateElemental {
 	// ==================================================
 	//                Can Render Part
 	// ==================================================
-	/** Returns true if the part can be rendered on the base layer. **/
-	@Override
-	public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
-		if("head".equals(partName) || "fire".equals(partName)) {
-			return super.canBaseRenderPart(partName, entity, trophy);
-		}
-		return false;
-	}
-
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
-		if("head".equals(partName) || "fire".equals(partName)) {
-			return !(layer instanceof LayerEffect);
+		if("head".equals(partName)) {
+			return layer == null || "overlay".equals(layer.name);
 		}
-		return layer instanceof LayerEffect;
+		if("fire".equals(partName)) {
+			return layer != null && layer instanceof LayerScrolling;
+		}
+		return layer != null && "skull".equals(layer.name);
 	}
 
 
@@ -95,10 +102,7 @@ public class ModelWraith extends ModelTemplateElemental {
 	// ==================================================
 	@Override
 	public Vector2f getBaseTextureOffset(String partName, Entity entity, boolean trophy, float loop) {
-    	if("head".equals(partName) || "fire".equals(partName)) {
-			return new Vector2f(-loop * 8, 0);
-		}
-		return super.getBaseTextureOffset(partName, entity, trophy, loop);
+    	return new Vector2f(-loop * 8, 0);
 	}
 
 
@@ -107,7 +111,7 @@ public class ModelWraith extends ModelTemplateElemental {
 	// ==================================================
 	/** Returns the coloring to be used for this part and layer. **/
 	public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
-		if(layer == null) {
+		if(layer == null || layer instanceof LayerScrolling) {
 			float glowSpeed = 80;
 			float glow = loop * glowSpeed % 360;
 			float color = ((float)Math.cos(Math.toRadians(glow)) * 0.1f) + 0.9f;

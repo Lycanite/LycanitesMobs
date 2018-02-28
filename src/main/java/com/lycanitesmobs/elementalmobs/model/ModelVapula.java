@@ -42,7 +42,7 @@ public class ModelVapula extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		renderer.addLayer(new LayerEffect(renderer, "", true, false, true));
+		renderer.addLayer(new LayerEffect(renderer, "", true, LayerEffect.BLEND.NORMAL.id, true));
 	}
 
 
@@ -118,6 +118,7 @@ public class ModelVapula extends ModelTemplateElemental {
 	//                Get Part Color
 	// ==================================================
 	/** Returns the coloring to be used for this part and layer. **/
+	@Override
 	public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
 		if(this.isCrystal(partName)) {
 			float glowSpeed = 40;

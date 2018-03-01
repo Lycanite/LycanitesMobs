@@ -48,7 +48,7 @@ public class EntityAIChase extends EntityAIBase {
         if(this.target == null) {
 			return false;
 		}
-        //else if(this.host.getDistanceSqToEntity(this.target) > (double)(this.maxTargetDistance * this.maxTargetDistance))
+        //else if(this.host.getDistance(this.target) > (double)(this.maxTargetDistance * this.maxTargetDistance))
             //return false;
         
         Vec3d vec3 = RandomPositionGenerator.findRandomTargetTowards(this.host, 16, 7, new Vec3d(this.target.posX, this.target.posY, this.target.posZ));
@@ -68,7 +68,7 @@ public class EntityAIChase extends EntityAIBase {
 			return false;
 		}
 		boolean fixated = this.host.hasFixateTarget() && this.host.getFixateTarget() == this.target;
-		if(!fixated && this.target.getDistanceSqToEntity(this.host) > (double)(this.maxTargetDistance * this.maxTargetDistance)) {
+		if(!fixated && this.target.getDistance(this.host) > (double)(this.maxTargetDistance * this.maxTargetDistance)) {
 			return false;
 		}
 		if (this.host.getNavigator().noPath()) {

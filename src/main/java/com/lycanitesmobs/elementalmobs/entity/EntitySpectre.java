@@ -157,7 +157,7 @@ public class EntitySpectre extends EntityCreatureTameable implements IMob, IGrou
 		}
 
 		// Attack Target:
-		return !this.pullRecharging && this.hasAttackTarget() && this.getDistanceToEntity(this.getAttackTarget()) <= (this.pullRange * 3);
+		return !this.pullRecharging && this.hasAttackTarget() && this.getDistance(this.getAttackTarget()) <= (this.pullRange * 3);
 	}
     
     

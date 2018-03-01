@@ -178,7 +178,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
         }
 
         // Attack Target:
-        return !this.whirlpoolRecharging && this.hasAttackTarget() && this.getDistanceToEntity(this.getAttackTarget()) <= (this.whirlpoolRange * 3);
+        return !this.whirlpoolRecharging && this.hasAttackTarget() && this.getDistance(this.getAttackTarget()) <= (this.whirlpoolRange * 3);
     }
 
 	

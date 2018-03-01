@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.gui;
 
 import com.lycanitesmobs.ExtendedPlayer;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.pets.PetEntry;
 import net.minecraft.client.Minecraft;
@@ -53,8 +54,9 @@ public class GUIFamiliarList extends GuiScrollingList {
 	protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
 		PetEntry petEntry = this.familiarList.get(index);
 		CreatureInfo creatureInfo = petEntry.summonSet.getCreatureInfo();
-        if(creatureInfo == null)
-            return;
+        if(creatureInfo == null) {
+			return;
+		}
 
 		int boxLeft = this.left;
 		if(petEntry.spawningActive) {

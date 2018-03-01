@@ -67,7 +67,7 @@ public class EntityEttin extends EntityCreatureAgeable implements IMob {
     	// Destroy Blocks:
 		if(!this.getEntityWorld().isRemote)
 	        if(this.getAttackTarget() != null && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.ettinGreifing) {
-		    	float distance = this.getAttackTarget().getDistanceToEntity(this);
+		    	float distance = this.getAttackTarget().getDistance(this);
 		    		if(distance <= this.width + 4.0F)
 		    			this.destroyArea((int)this.posX, (int)this.posY, (int)this.posZ, 10, true);
 	        }

@@ -34,7 +34,7 @@ public class ItemSwordCinderfallVerdant extends ItemSwordCinderfall {
     // ==================================================
     // ========== Get Sword Damage ==========
     @Override
-    public float getDamageVsEntity() {
+    public float getAttackDamage() {
         return 4F;
     }
 }

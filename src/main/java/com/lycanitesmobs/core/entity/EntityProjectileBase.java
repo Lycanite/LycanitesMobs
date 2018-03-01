@@ -63,7 +63,7 @@ public class EntityProjectileBase extends EntityThrowable {
 
     public EntityProjectileBase(World world, EntityLivingBase entityLiving) {
         super(world, entityLiving);
-        this.setHeadingFromThrower(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 1.5F, 1.0F);
+        this.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, 1.5F, 1.0F);
         this.dataManager.register(SCALE, this.projectileScale);
         this.setProjectileScale(this.projectileScale);
         this.setup();

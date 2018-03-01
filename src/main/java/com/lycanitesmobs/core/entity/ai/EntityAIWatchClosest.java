@@ -70,7 +70,7 @@ public class EntityAIWatchClosest extends EntityAIBase {
     public boolean shouldContinueExecuting() {
     	if(!this.closestEntity.isEntityAlive())
     		return false;
-    	if(this.host.getDistanceSqToEntity(this.closestEntity) > (double)(this.maxDistanceForPlayer * this.maxDistanceForPlayer))
+    	if(this.host.getDistance(this.closestEntity) > (double)(this.maxDistanceForPlayer * this.maxDistanceForPlayer))
     		return false;
         return this.lookTime > 0;
     }

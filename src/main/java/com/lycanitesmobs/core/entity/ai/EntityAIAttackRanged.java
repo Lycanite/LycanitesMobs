@@ -174,7 +174,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
   	// ==================================================
     public void updateTask() {
     	boolean fixated = this.host.hasFixateTarget() && this.host.getFixateTarget() == this.attackTarget;
-        double distance = this.host.getDistanceToEntity(this.attackTarget);
+        double distance = this.host.getDistance(this.attackTarget);
         boolean hasSight = fixated || this.host.getEntitySenses().canSee(this.attackTarget);
         float flyingHeightOffset = this.flyingHeight;
         
@@ -189,7 +189,7 @@ public class EntityAIAttackRanged extends EntityAIBase {
         // If within min range or chase timed out:
         if(distance <= this.minChaseDistance || (this.chaseTimeMax >= 0 && distance <= (double)this.attackDistance && this.chaseTime >= this.chaseTimeMax)) {
             if(!this.host.useDirectNavigator())
-                this.host.getNavigator().clearPathEntity();
+                this.host.getNavigator().clearPath();
             else
                 this.host.directNavigator.clearTargetPosition(1.0D);
         }

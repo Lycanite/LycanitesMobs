@@ -174,7 +174,7 @@ public class ExtendedEntity implements IExtendedEntity {
 					return;
 				}
 			}
-			if (this.entity.getDistanceSqToEntity(this.pickedUpByEntity) > 32D) {
+			if (this.entity.getDistance(this.pickedUpByEntity) > 32D) {
 				this.setPickedUpByEntity(null);
 				return;
 			}

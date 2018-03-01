@@ -87,7 +87,7 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
         
         if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() == 3 && !this.isPetType("familiar")) {
 	    	// Random Charging:
-	    	if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
+	    	if(this.hasAttackTarget() && this.getDistance(this.getAttackTarget()) > 1 && this.getRNG().nextInt(20) == 0) {
 	    		if(this.posY - 1 > this.getAttackTarget().posY)
 	    			this.leap(6.0F, -1.0D, this.getAttackTarget());
 	    		else if(this.posY + 1 < this.getAttackTarget().posY)

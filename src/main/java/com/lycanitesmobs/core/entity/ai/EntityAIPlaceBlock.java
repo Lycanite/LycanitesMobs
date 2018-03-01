@@ -102,7 +102,7 @@ public class EntityAIPlaceBlock extends EntityAIBase {
  	//                       Reset
  	// ==================================================
     public void resetTask() {
-        this.host.getNavigator().clearPathEntity();
+        this.host.getNavigator().clearPath();
         this.host.directNavigator.clearTargetPosition(1.0D);
         this.block = null;
     }

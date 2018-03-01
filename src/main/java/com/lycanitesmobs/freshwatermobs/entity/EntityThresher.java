@@ -175,7 +175,7 @@ public class EntityThresher extends EntityCreatureRideable implements IMob, IGro
         }
 
         // Attack Target:
-        return !this.whirlpoolRecharging && this.hasAttackTarget() && this.getDistanceToEntity(this.getAttackTarget()) <= (this.whirlpoolRange * 3);
+        return !this.whirlpoolRecharging && this.hasAttackTarget() && this.getDistance(this.getAttackTarget()) <= (this.whirlpoolRange * 3);
     }
 
 	

@@ -29,7 +29,7 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
         if(iprojectile == null)
         	return stack;
         
-        iprojectile.setThrowableHeading((double)facing.getFrontOffsetX(), (double)facing.getFrontOffsetY(), (double)facing.getFrontOffsetZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
+        iprojectile.shoot((double)facing.getFrontOffsetX(), (double)facing.getFrontOffsetY(), (double)facing.getFrontOffsetZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy());
         world.spawnEntity((Entity)iprojectile);
         stack.splitStack(1);
         

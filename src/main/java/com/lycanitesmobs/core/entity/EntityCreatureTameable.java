@@ -484,7 +484,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 
 	/**
 	 * Sets the owner of this entity via a Player Entity.
-	 * @param player
+	 * @param player The player to become an owner.
 	 */
 	public void setPlayerOwner(EntityPlayer player) {
 		if(player == null) {
@@ -493,12 +493,19 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         this.setPlayerOwner(player.getUniqueID());
     }
 
-    public void setPlayerOwner(UUID playerUUID) {
-        this.setPlayerOwner();
+	/**
+	 * Sets the owner of this entity via a Player UUID.
+	 * @param playerUUID The owner player UUID.
+	 */
+	public void setPlayerOwner(UUID playerUUID) {
+        this.onTamedByPlayer();
         this.setOwnerId(playerUUID);
     }
 
-    public void setPlayerOwner() {
+	/**
+	 * Called when this creature is tamed by a player, this clears movement, targets, etc and sets default the pet behaviour.
+	 */
+	public void onTamedByPlayer() {
         this.setTamed(true);
         this.clearMovement();
         this.setAttackTarget(null);

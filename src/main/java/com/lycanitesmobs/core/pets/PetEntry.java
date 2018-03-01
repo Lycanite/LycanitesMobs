@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.pets;
 
 
 import com.lycanitesmobs.ExtendedPlayer;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -80,7 +81,7 @@ public class PetEntry {
     /** Returns a new PetEntry based off the provided entity for the provided player. **/
     public static PetEntry createFromEntity(EntityPlayer player, EntityCreatureBase entity, String petType) {
         CreatureInfo creatureInfo = entity.creatureInfo;
-        String entryName = petType + "-" + player.getName() + creatureInfo.getName() + "-" + UUID.randomUUID().toString();
+        String entryName = petType + "-" + player.getName() + "-" + creatureInfo.getName() + "-" + UUID.randomUUID().toString();
         PetEntry petEntry = new PetEntry(entryName, petType, player, creatureInfo.getName());
         if(entity.hasCustomName())
             petEntry.setEntityName(entity.getCustomNameTag());
@@ -244,6 +245,7 @@ public class PetEntry {
             return;
         }
 
+        // Active Checks:
 		if(!this.active)
             return;
         if(!this.isActive()) {
@@ -343,8 +345,9 @@ public class PetEntry {
             return;
         try {
             this.entity = (Entity)this.summonSet.getCreatureClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {this.host.getEntityWorld()});
-        } catch (Exception e) {
-            //LycanitesMobs.printWarning("", "[Pet Entry] A none Entity class was set in a PetEntry, only classes of Entity are valid!");
+        }
+        catch (Exception e) {
+            LycanitesMobs.printWarning("Pets", "[Pet Entry] Unable to find an entity class for pet entry. " + " Type: " + this.summonSet.summonType + " Class: " + this.summonSet.getCreatureClass() + " Name: " + this.name);
             //e.printStackTrace();
         }
 

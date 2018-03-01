@@ -61,7 +61,7 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
 		this.setSoundType(SoundType.METAL);
 
         // Tile Entity:
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
 	}
 
     @Override

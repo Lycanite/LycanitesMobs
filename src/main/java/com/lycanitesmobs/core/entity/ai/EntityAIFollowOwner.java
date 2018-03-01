@@ -68,7 +68,7 @@ public class EntityAIFollowOwner extends EntityAIFollow {
     @Override
     public void updateTask() {
     	if(!this.host.isSitting()) {
-    		if(this.host.getDistanceSqToEntity(this.getTarget()) >= this.lostDistance)
+    		if(this.host.getDistance(this.getTarget()) >= this.lostDistance)
     			this.teleportToOwner();
     	}
     	super.updateTask();

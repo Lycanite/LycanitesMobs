@@ -45,12 +45,12 @@ public abstract class EntityAITarget extends EntityAIBase {
 
         this.targetSelector = entity -> {
             double d0 = EntityAITarget.this.getTargetDistance();
-            return !((double) entity.getDistanceToEntity(EntityAITarget.this.host) > d0) && EntityAITarget.this.isSuitableTarget(entity, false);
+            return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isSuitableTarget(entity, false);
         };
 
         this.allySelector = entity -> {
             double d0 = EntityAITarget.this.getTargetDistance();
-            return !((double) entity.getDistanceToEntity(EntityAITarget.this.host) > d0) && EntityAITarget.this.isAllyTarget(entity, false);
+            return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isAllyTarget(entity, false);
         };
         this.nearestSorter = new TargetSorterNearest(setHost);
     }
@@ -80,7 +80,7 @@ public abstract class EntityAITarget extends EntityAIBase {
 
         // Target Out of Range:
         double distance = this.getTargetDistance() + 2;
-        if(Math.sqrt(this.host.getDistanceSqToEntity(this.getTarget())) > distance)
+        if(Math.sqrt(this.host.getDistance(this.getTarget())) > distance)
             return false;
         
         if(this.checkSight)

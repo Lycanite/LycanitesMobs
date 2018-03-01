@@ -67,7 +67,7 @@ public class EntityAstaroth extends EntityCreatureBase implements IMob, IGroupDe
                 double dZ = this.getMasterTarget().posZ - this.posZ;
                 double distance = MathHelper.sqrt(dX * dX + dZ * dZ) * 0.1F;
                 float velocity = 0.8F;
-                projectile.setThrowableHeading(dX, dY + distance, dZ, velocity, 0.0F);
+                projectile.shoot(dX, dY + distance, dZ, velocity, 0.0F);
                 this.getEntityWorld().spawnEntity(projectile);
             }
         }

@@ -178,7 +178,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
             for(int i = 0; i < 3; i++) {
                 EntityProjectileBase projectile = new EntityHellfireball(this.getEntityWorld(), this);
                 projectile.setProjectileScale(8f);
-                projectile.setThrowableHeading((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 1.2F, 3.0F);
+                projectile.shoot((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 1.2F, 3.0F);
                 this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                 this.getEntityWorld().spawnEntity(projectile);
             }

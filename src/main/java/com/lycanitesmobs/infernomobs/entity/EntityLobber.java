@@ -152,7 +152,7 @@ public class EntityLobber extends EntityCreatureBase implements IMob, IGroupFire
             if(this.ticksExisted % 40 == 0) {
                 EntityProjectileBase projectile = new EntityMagma(this.getEntityWorld(), this);
                 projectile.setProjectileScale(2f);
-                projectile.setThrowableHeading((2 * this.getRNG().nextFloat()) - 1, this.getRNG().nextFloat(), (2 * this.getRNG().nextFloat()) - 1, 1.2F, 6.0F);
+                projectile.shoot((2 * this.getRNG().nextFloat()) - 1, this.getRNG().nextFloat(), (2 * this.getRNG().nextFloat()) - 1, 1.2F, 6.0F);
                 this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                 this.getEntityWorld().spawnEntity(projectile);
             }

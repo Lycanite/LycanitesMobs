@@ -455,7 +455,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         double d2 = target.getZ() - projectile.posZ;
         float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.1F;
         float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double) f1, d2, velocity, 0.0F);
+        projectile.shoot(d0, d1 + (double) f1, d2, velocity, 0.0F);
 
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

@@ -105,11 +105,11 @@ public class ItemSwordVenomAxeblade extends ItemSwordBase {
      
      // ========== Block Effectiveness ==========
      @Override
-     public float getStrVsBlock(ItemStack itemStack, IBlockState state) {
+     public float getDestroySpeed(ItemStack itemStack, IBlockState state) {
     	 if(state.getMaterial() == Material.WOOD || state.getMaterial() == Material.PLANTS || state.getMaterial() == Material.VINE) {
-    		 return Items.DIAMOND_AXE.getStrVsBlock(itemStack, state);
+    		 return Items.DIAMOND_AXE.getDestroySpeed(itemStack, state);
     	 }
-    	 return super.getStrVsBlock(itemStack, state);
+    	 return super.getDestroySpeed(itemStack, state);
      }
 
 	

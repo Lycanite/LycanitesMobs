@@ -149,7 +149,7 @@ public class EntitySerpix extends EntityCreatureTameable implements IGroupPredat
             double d2 = target.posZ - launchPos.getZ() + accuracy;
             float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
             float velocity = 1.2F;
-            projectile.setThrowableHeading(d0, d1 + (double)f1, d2, velocity, 6.0F);
+            projectile.shoot(d0, d1 + (double)f1, d2, velocity, 6.0F);
 
             // Launch:
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

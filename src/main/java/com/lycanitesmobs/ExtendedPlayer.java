@@ -159,7 +159,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
         double heightCompensation = 0;
         if(heightOffset > 0)
             heightCompensation = Math.min(heightOffset, targetHeight);
-        double distance = Math.sqrt(this.player.getDistanceSqToEntity(targetEntity));
+        double distance = Math.sqrt(this.player.getDistance(targetEntity));
         double range = 6 + heightCompensation + (targetWidth / 2);
         return distance <= range;
     }

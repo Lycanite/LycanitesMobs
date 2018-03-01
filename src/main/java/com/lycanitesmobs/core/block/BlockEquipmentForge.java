@@ -61,7 +61,7 @@ public class BlockEquipmentForge extends BlockBase implements ITileEntityProvide
 		this.setHardness(5F);
 
         // Tile Entity:
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
 	}
 
     @Override

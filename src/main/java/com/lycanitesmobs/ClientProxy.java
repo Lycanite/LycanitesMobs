@@ -34,15 +34,13 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ClientProxy extends CommonProxy {
 
-    public static IItemColor itemColor = new IItemColor() {
-        public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-            Item item = stack.getItem();
-            if(item == null || !(item instanceof ItemBase))
-                return 16777215;
-            ItemBase itemBase = (ItemBase)item;
-            return itemBase.getColorFromItemstack(stack, tintIndex);
-        }
-    };
+    public static IItemColor itemColor = (stack, tintIndex) -> {
+		Item item = stack.getItem();
+		if(item == null || !(item instanceof ItemBase))
+			return 16777215;
+		ItemBase itemBase = (ItemBase)item;
+		return itemBase.getColorFromItemstack(stack, tintIndex);
+	};
 
 	
 	// ========== Register Event Handlers ==========

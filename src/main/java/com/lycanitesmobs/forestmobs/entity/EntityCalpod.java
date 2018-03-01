@@ -70,7 +70,7 @@ public class EntityCalpod extends EntityCreatureBase implements IMob, IGroupPrey
 		// Destroy Blocks:
 		if(!this.getEntityWorld().isRemote)
 			if(this.getAttackTarget() != null && this.getEntityWorld().getGameRules().getBoolean("mobGriefing") && this.calpodGreifing) {
-				float distance = this.getAttackTarget().getDistanceToEntity(this);
+				float distance = this.getAttackTarget().getDistance(this);
 				if(distance <= this.width + 1.0F)
 					this.destroyAreaBlock((int)this.posX, (int)this.posY, (int)this.posZ, BlockLog.class, true, 0);
 			}

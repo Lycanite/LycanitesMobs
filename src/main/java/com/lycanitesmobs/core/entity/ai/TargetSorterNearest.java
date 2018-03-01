@@ -33,8 +33,8 @@ public class TargetSorterNearest implements Comparator {
   	//                   Compare Distance
   	// ==================================================
     public int compareDistanceSq(Entity targetA, Entity targetB) {
-        double distanceA = this.host.getDistanceSqToEntity(targetA);
-        double distanceB = this.host.getDistanceSqToEntity(targetB);
+        double distanceA = this.host.getDistance(targetA);
+        double distanceB = this.host.getDistance(targetB);
         return distanceA < distanceB ? -1 : (distanceA > distanceB ? 1 : 0);
     }
 

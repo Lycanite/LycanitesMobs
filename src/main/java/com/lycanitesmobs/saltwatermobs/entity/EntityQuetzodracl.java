@@ -125,7 +125,7 @@ public class EntityQuetzodracl extends EntityCreatureRideable implements IMob, I
                 }
     	    	
     	    	/*/ Random Swooping:
-    	    	else if(this.hasAttackTarget() && this.getDistanceSqToEntity(this.getAttackTarget()) > 2 && this.getRNG().nextInt(20) == 0) {
+    	    	else if(this.hasAttackTarget() && this.getDistance(this.getAttackTarget()) > 2 && this.getRNG().nextInt(20) == 0) {
     	    		if(this.posY - 1 > this.getAttackTarget().posY)
     	    			this.leap(1.0F, -1.0D, this.getAttackTarget());
     	    		else if(this.posY + 1 < this.getAttackTarget().posY)

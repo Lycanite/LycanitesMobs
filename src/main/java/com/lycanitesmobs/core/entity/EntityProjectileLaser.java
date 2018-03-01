@@ -120,7 +120,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     public AxisAlignedBB getRenderBoundingBox() {
         if(this.laserEnd == null)
             return super.getRenderBoundingBox();
-        double distance = this.getDistanceToEntity(this.laserEnd);
+        double distance = this.getDistance(this.laserEnd);
         return super.getRenderBoundingBox().expand(distance, distance, distance);
     }
 	
@@ -296,7 +296,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
 			// Damage:
 			if(this.laserTime % this.laserDelay == 0 && this.isEntityAlive()) {
                 if (target != null && target.entityHit != null) {
-                    if(this.laserEnd.getDistanceToEntity(target.entityHit) <= (this.laserWidth * 10)) {
+                    if(this.laserEnd.getDistance(target.entityHit) <= (this.laserWidth * 10)) {
                         boolean doDamage = true;
                         if (target.entityHit instanceof EntityLivingBase) {
                             doDamage = this.canDamage((EntityLivingBase) target.entityHit);
@@ -528,7 +528,7 @@ public class EntityProjectileLaser extends EntityProjectileBase {
     public float getLength() {
     	if(this.laserEnd == null)
     		return 0;
-    	return this.getDistanceToEntity(this.laserEnd);
+    	return this.getDistance(this.laserEnd);
     }
     
     public float[] getBeamAngles() {

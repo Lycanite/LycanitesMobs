@@ -87,7 +87,12 @@ public class EntityNymph extends EntityCreatureTameable implements IGroupPlant {
 			// Ranged Attack:
 			if(this.hasAvoidTarget()) {
 				if(this.updateTick % this.getRangedCooldown() == 0) {
-					this.attackRanged(this.getAvoidTarget(), this.getDistanceToEntity(this.getAvoidTarget()));
+					this.attackRanged(this.getAvoidTarget(), this.getDistance(this.getAvoidTarget()));
+				}
+			}
+			else if(this.hasAttackTarget()) {
+				if(this.updateTick % this.getRangedCooldown() == 0) {
+					this.attackRanged(this.getAttackTarget(), this.getDistance(this.getAttackTarget()));
 				}
 			}
 		}

@@ -88,7 +88,7 @@ public class EntityAIMate extends EntityAIBase {
         	this.host.getNavigator().tryMoveToEntityLiving(this.partner, this.speed);
         else
         	this.host.directNavigator.setTargetPosition(new BlockPos((int)this.partner.posX, (int)this.partner.posY, (int)this.partner.posZ), speed);
-        if(this.host.getDistanceSqToEntity(this.partner) < this.mateDistance)
+        if(this.host.getDistance(this.partner) < this.mateDistance)
 	        ++this.mateTime;
 	        if(this.mateTime >= mateTimeMax)
 	            this.host.procreate(this.partner);
@@ -109,9 +109,9 @@ public class EntityAIMate extends EntityAIBase {
         	EntityLivingBase nextEntity = (EntityLivingBase)possibleMate.next();
         	if(nextEntity instanceof EntityCreatureAgeable) {
 	        	EntityCreatureAgeable testMate = (EntityCreatureAgeable)nextEntity;
-	            if(this.host.canBreedWith(testMate) && this.host.getDistanceSqToEntity(testMate) < closestDistance) {
+	            if(this.host.canBreedWith(testMate) && this.host.getDistance(testMate) < closestDistance) {
 	            	newMate = testMate;
-	            	closestDistance = this.host.getDistanceSqToEntity(testMate);
+	            	closestDistance = this.host.getDistance(testMate);
 	            }
         	}
         }

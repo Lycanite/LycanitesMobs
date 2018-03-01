@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.StatBase;
@@ -294,10 +295,10 @@ public class CreatureInfo {
 		AssetManager.addSound(name + "_attack", group, "entity." + name + ".attack");
 		AssetManager.addSound(name + "_jump", group, "entity." + name + ".jump");
 		AssetManager.addSound(name + "_fly", group, "entity." + name + ".fly");
-		if(this.isSummonable() || this.isTameable())
+		if(this.isSummonable() || this.isTameable() || EntityCreatureTameable.class.isAssignableFrom(this.entityClass)) {
 			AssetManager.addSound(name + "_tame", group, "entity." + name + ".tame");
-		if(this.isSummonable() || this.isTameable())
 			AssetManager.addSound(name + "_beg", group, "entity." + name + ".beg");
+		}
 		if(this.isTameable())
 			AssetManager.addSound(name + "_eat", group, "entity." + name + ".eat");
 		if(this.isMountable())

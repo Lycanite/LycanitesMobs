@@ -302,7 +302,7 @@ public class ObjectLists {
 			return true;
 		if(item instanceof ItemShears)
 			return false;
-		return item.getStrVsBlock(new ItemStack(item), Blocks.MELON_BLOCK.getDefaultState()) > 1F;
+		return item.getDestroySpeed(new ItemStack(item), Blocks.MELON_BLOCK.getDefaultState()) > 1F;
 	}
 
     // ========== Pickaxe ==========
@@ -325,7 +325,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "pickaxe", null, null) != -1)
                 return true;
-            return item.getStrVsBlock(new ItemStack(item), Blocks.STONE.getDefaultState()) > 1F;
+            return item.getDestroySpeed(new ItemStack(item), Blocks.STONE.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}
@@ -353,7 +353,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "axe", null, null) != -1)
                 return true;
-            return item.getStrVsBlock(new ItemStack(item), Blocks.LOG.getDefaultState()) > 1F;
+            return item.getDestroySpeed(new ItemStack(item), Blocks.LOG.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}
@@ -380,7 +380,7 @@ public class ObjectLists {
                 return true;
             if(item.getHarvestLevel(new ItemStack(item), "shovel", null, null) != -1)
                 return true;
-            return item.getStrVsBlock(new ItemStack(item), Blocks.DIRT.getDefaultState()) > 1F;
+            return item.getDestroySpeed(new ItemStack(item), Blocks.DIRT.getDefaultState()) > 1F;
 
         }
         catch(Exception e) {}

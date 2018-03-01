@@ -39,7 +39,7 @@ public abstract class EntityAIDoorInteract extends EntityAIBase {
  	//                  Should Execute
  	// ==================================================
     public boolean shouldExecute() {
-        if(!this.host.isCollidedHorizontally)
+        if(!this.host.collidedHorizontally)
             return false;
 
         Path pathEntity = this.host.getNavigator().getPath();

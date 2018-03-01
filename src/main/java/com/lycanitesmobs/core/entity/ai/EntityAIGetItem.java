@@ -104,7 +104,7 @@ public class EntityAIGetItem extends EntityAIBase {
         if(!this.target.isEntityAlive())
             return false;
         
-        double distance = this.host.getDistanceSqToEntity(target);
+        double distance = this.host.getDistance(target);
         if(distance > this.distanceMax)
         	return false;
         

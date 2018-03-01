@@ -113,7 +113,7 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
         double d2 = target.posZ - this.posZ + accuracy;
         float f1 = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
         float velocity = 1.2F;
-        projectile.setThrowableHeading(d0, d1 + (double) f1, d2, velocity, 6.0F);
+        projectile.shoot(d0, d1 + (double) f1, d2, velocity, 6.0F);
 
         // Launch:
         this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -123,7 +123,7 @@ public class EntityGorger extends EntityCreatureTameable implements IGroupPredat
         for(int i = 0; i < 10; i++) {
             projectile = new EntityMagma(this.getEntityWorld(), this);
             projectile.setProjectileScale(2f);
-            projectile.setThrowableHeading((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 0.5F, 3.0F);
+            projectile.shoot((this.getRNG().nextFloat()) - 0.5F, this.getRNG().nextFloat(), (this.getRNG().nextFloat()) - 0.5F, 0.5F, 3.0F);
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
             this.getEntityWorld().spawnEntity(projectile);
         }

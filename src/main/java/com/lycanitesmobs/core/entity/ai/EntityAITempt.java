@@ -133,7 +133,7 @@ public class EntityAITempt extends EntityAIBase {
   	// ==================================================
     public boolean shouldContinueExecuting() {
         if(this.scaredByPlayerMovement) {
-            if(this.host.getDistanceSqToEntity(this.player) < 36.0D) {
+            if(this.host.getDistance(this.player) < 36.0D) {
                 if(this.player.getDistanceSq(this.targetX, this.targetY, this.targetZ) > 0.010000000000000002D)
                     return false;
                 if(Math.abs((double)this.player.rotationPitch - this.targetPitch) > 5.0D || Math.abs((double)this.player.rotationYaw - this.targetYaw) > 5.0D)
@@ -176,7 +176,7 @@ public class EntityAITempt extends EntityAIBase {
   	// ==================================================
     public void resetTask() {
         this.player = null;
-        this.host.getNavigator().clearPathEntity();
+        this.host.getNavigator().clearPath();
         this.retemptTime = this.retemptTimeMax;
         if(this.host instanceof EntityCreatureAgeable) {
             EntityCreatureAgeable ageable = (EntityCreatureAgeable)this.host;
@@ -198,7 +198,7 @@ public class EntityAITempt extends EntityAIBase {
         if(this.stopAttack)
         	this.host.setAttackTarget(null);
         this.host.getLookHelper().setLookPositionWithEntity(this.player, 30.0F, (float)this.host.getVerticalFaceSpeed());
-        if(this.host.getDistanceSqToEntity(this.player) < this.temptDistanceMin)
+        if(this.host.getDistance(this.player) < this.temptDistanceMin)
             this.host.clearMovement();
         else {
         	if(!this.host.useDirectNavigator())

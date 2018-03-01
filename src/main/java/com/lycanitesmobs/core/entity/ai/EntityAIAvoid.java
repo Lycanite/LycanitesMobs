@@ -69,7 +69,7 @@ public class EntityAIAvoid extends EntityAIBase {
         if(this.targetClass != null && !this.targetClass.isAssignableFrom(this.avoidTarget.getClass()))
             return false;
 
-        /*if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance) {
+        /*if(this.host.getDistance(this.avoidTarget) >= this.farDistance) {
         	return false;
         }*/
         
@@ -77,7 +77,7 @@ public class EntityAIAvoid extends EntityAIBase {
         if(avoidVector == null)
             return false;
         
-        if(this.avoidTarget.getDistanceSq(avoidVector.x, avoidVector.y, avoidVector.z) < this.avoidTarget.getDistanceSqToEntity(this.host))
+        if(this.avoidTarget.getDistanceSq(avoidVector.x, avoidVector.y, avoidVector.z) < this.avoidTarget.getDistance(this.host))
             return false;
 
         if(!this.host.useDirectNavigator()) {
@@ -99,7 +99,7 @@ public class EntityAIAvoid extends EntityAIBase {
 		if(this.host.useDirectNavigator() && this.host.directNavigator.atTargetPosition())
 			return false;
 
-        /*if(this.host.getDistanceSqToEntity(this.avoidTarget) >= this.farDistance)
+        /*if(this.host.getDistance(this.avoidTarget) >= this.farDistance)
         	return false;*/
     	return true;
     }
@@ -128,7 +128,7 @@ public class EntityAIAvoid extends EntityAIBase {
  	//                      Update
  	// ==================================================
     public void updateTask() {
-        if(this.host.getDistanceSqToEntity(this.avoidTarget) < this.nearDistance)
+        if(this.host.getDistance(this.avoidTarget) < this.nearDistance)
         	if(!this.host.useDirectNavigator())
         		this.host.getNavigator().setSpeed(this.nearSpeed);
         	else

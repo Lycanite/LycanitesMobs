@@ -29,8 +29,8 @@ public class CreatureNodeProcessor extends NodeProcessor implements ICreatureNod
 
     // ==================== Setup ====================
     @Override
-    public void initProcessor(IBlockAccess sourceIn, EntityLiving mob) {
-        super.initProcessor(sourceIn, mob);
+    public void init(IBlockAccess sourceIn, EntityLiving mob) {
+        super.init(sourceIn, mob);
         this.avoidsWater = mob.getPathPriority(PathNodeType.WATER);
         if(mob instanceof EntityCreatureBase)
             this.entityCreature = (EntityCreatureBase)mob;

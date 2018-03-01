@@ -56,7 +56,12 @@ public class SummonSet {
 		/*if(this.playerExt != null && this.summonableOnly && (!this.playerExt.beastiary.hasFullKnowledge(this.summonType) || !isSummonableCreature(this.summonType)))
 			this.summonType = "";
         else*/
-		    this.summonType = summonType;
+		if(summonType != null) {
+			this.summonType = summonType.toLowerCase();
+		}
+		else {
+			this.summonType = null;
+		}
 	}
 	
 	public boolean getSitting() {
@@ -84,7 +89,7 @@ public class SummonSet {
 	 * @return The summon set creature info.
 	 */
 	public CreatureInfo getCreatureInfo() {
-		return CreatureManager.getInstance().getCreature(this.summonType);
+		return CreatureManager.getInstance().getCreature(this.summonType.toLowerCase());
 	}
 
     /**

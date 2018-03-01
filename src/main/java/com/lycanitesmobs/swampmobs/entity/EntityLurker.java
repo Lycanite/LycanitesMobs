@@ -117,7 +117,7 @@ public class EntityLurker extends EntityCreatureTameable implements IGroupHunter
 					if(!this.getAttackTarget().isPotionActive(stalkingEffect))
 						return false;
 				}
-	    		if(this.getDistanceSqToEntity(this.getAttackTarget()) < (5.0D * 5.0D))
+	    		if(this.getDistance(this.getAttackTarget()) < (5.0D * 5.0D))
 	    			return false;
 	    	}
 	    	else {

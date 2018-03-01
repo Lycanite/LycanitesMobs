@@ -100,8 +100,8 @@ public class ItemSwordBase extends ItemSword {
      * @return
      */
     @Override
-    public float getDamageVsEntity() {
-        return this.toolMaterial.getDamageVsEntity();
+    public float getAttackDamage() {
+        return this.toolMaterial.getAttackDamage();
     }
 
 	// ========== Hit Entity ==========
@@ -118,8 +118,8 @@ public class ItemSwordBase extends ItemSword {
     
     // ========== Block Effectiveness ==========
     @Override
-    public float getStrVsBlock(ItemStack itemStack, IBlockState state) {
-        return super.getStrVsBlock(itemStack, state);
+    public float getDestroySpeed(ItemStack itemStack, IBlockState state) {
+        return super.getDestroySpeed(itemStack, state);
     }
     
     

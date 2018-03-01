@@ -1322,7 +1322,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         // Climbing/Flying:
         if(!this.getEntityWorld().isRemote || this.canPassengerSteer()) {
-        	this.setBesideClimbableBlock(this.isCollidedHorizontally);
+        	this.setBesideClimbableBlock(this.collidedHorizontally);
         	if(!this.onGround && this.flySoundSpeed > 0 && this.ticksExisted % 20 == 0)
         		this.playFlySound();
         }
@@ -1502,7 +1502,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.getEntityWorld().isRemote && this.pickupEntity != null) {
 			if(!this.pickupEntity.isEntityAlive())
 				this.dropPickupEntity();
-			else if(Math.sqrt(this.getDistanceSqToEntity(this.pickupEntity)) > 32D) {
+			else if(Math.sqrt(this.getDistance(this.pickupEntity)) > 32D) {
 				this.dropPickupEntity();
 			}
         }
@@ -1860,7 +1860,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Cuts off all movement for this update, will clear any pathfinder paths, works with the flight navigator too. **/
     public void clearMovement() {
     	if(!this.useDirectNavigator() && this.getNavigator() != null)
-        	this.getNavigator().clearPathEntity();
+        	this.getNavigator().clearPath();
         else
         	this.directNavigator.clearTargetPosition(1.0D);
     }
@@ -1870,10 +1870,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     protected void updateLeashedState() {
         super.updateLeashedState();
-        if(this.getLeashed() && this.getLeashedToEntity().getEntityWorld() == this.getEntityWorld()) {
-            Entity entity = this.getLeashedToEntity();
+        if(this.getLeashed() && this.getLeashHolder().getEntityWorld() == this.getEntityWorld()) {
+            Entity entity = this.getLeashHolder();
             this.setHome((int)entity.posX, (int)entity.posY, (int)entity.posZ, 5);
-            float distance = this.getDistanceToEntity(entity);
+            float distance = this.getDistance(entity);
             this.testLeash(distance);
             
             if(!this.leashAIActive) {
@@ -2413,7 +2413,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		}
 
 		float distanceXZ = MathHelper.sqrt(distanceX * distanceX + distanceZ * distanceZ) * 0.1F;
-		projectile.setThrowableHeading(distanceX, distanceY + distanceXZ, distanceZ, velocity, inaccuracy);
+		projectile.shoot(distanceX, distanceY + distanceXZ, distanceZ, velocity, inaccuracy);
 		this.getEntityWorld().spawnEntity(projectile);
 
 		if(projectile.getLaunchSound() != null) {
@@ -3244,7 +3244,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	
     	// Leash:
     	if("Leash".equals(command)) {
-    		this.setLeashedToEntity(player, true);
+    		this.setLeashHolder(player, true);
     		this.consumePlayersItem(player, itemStack);
     	}
     	
@@ -3456,7 +3456,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.isBoss()) {
             if(entity == null)
                 return false;
-            return this.getDistanceToEntity(entity) <= this.bossRange;
+            return this.getDistance(entity) <= this.bossRange;
         }
         return true;
     }
@@ -3671,7 +3671,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                 continue;
             if(targetEntity == this.getControllingPassenger())
                 continue;
-            double distance = this.getDistanceToEntity(targetEntity);
+            double distance = this.getDistance(targetEntity);
             if(distance < nearestDistance) {
                 nearestDistance = distance;
                 nearestEntity = targetEntity;

@@ -71,6 +71,9 @@ public class MobSpawn {
 	/** If true, the spawned mob will fixate on the player that triggered the spawn, always attacking that player. **/
 	protected boolean fixate = false;
 
+	/** If set, the spawned mob will set the location it spawned at as a home position and will stay within this distance (in blocks) of that position. **/
+	protected double home = -1;
+
 	/** The level boost of the mob spawned, higher levels increase the stats by a small amount. This is added to the starting mob level (normally just 1). **/
 	protected int mobLevel = 0;
 
@@ -171,6 +174,9 @@ public class MobSpawn {
 
 		if(json.has("fixate"))
 			this.fixate = json.get("fixate").getAsBoolean();
+
+		if(json.has("home"))
+			this.home = json.get("home").getAsDouble();
 
 		if(json.has("mobLevel"))
 			this.mobLevel = json.get("mobLevel").getAsInt();
@@ -382,6 +388,9 @@ public class MobSpawn {
 			}
 			if(this.fixate && player != null) {
 				entityCreature.setFixateTarget(player);
+			}
+			if(this.home >= 0) {
+				entityCreature.setHome((int)entityCreature.posX, (int)entityCreature.posY, (int)entityCreature.posZ, (float)this.home);
 			}
 			if(this.mobLevel > 0) {
 				entityCreature.addLevel(this.mobLevel);

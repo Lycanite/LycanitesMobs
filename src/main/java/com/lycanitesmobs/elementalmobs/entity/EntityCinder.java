@@ -132,7 +132,7 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
     	projectiles.add(projectileEntry6);
     	
     	EntityProjectileRapidFire projectileEntry7 = new EntityProjectileRapidFire(EntityEmber.class, this.getEntityWorld(), this, 15, 3);
-    	projectileEntry7.offsetY -= 10D;
+    	projectileEntry7.offsetY -= 1.0D;
     	projectiles.add(projectileEntry7);
     	
     	for(EntityProjectileRapidFire projectile : projectiles) {

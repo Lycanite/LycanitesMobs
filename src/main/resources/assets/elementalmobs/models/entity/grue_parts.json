@@ -42,16 +42,9 @@
     "centerZ": "1.204"
   },
   {
-    "name": "CloakRight",
+    "name": "Cloak",
     "parent": "Body",
-    "centerX": "0.05",
-    "centerY": "1.44",
-    "centerZ": "-0.2"
-  },
-  {
-    "name": "CloakLeft",
-    "parent": "Body",
-    "centerX": "-0.05",
+    "centerX": "0.0",
     "centerY": "1.44",
     "centerZ": "-0.2"
   },

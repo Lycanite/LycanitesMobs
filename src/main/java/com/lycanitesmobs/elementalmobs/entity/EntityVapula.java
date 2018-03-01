@@ -49,7 +49,7 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-		this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(2.0F));
+		this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(3.0F));
 		this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(18.0F).setMinChaseDistance(10.0F).setCheckSight(false));
         this.tasks.addTask(4, this.aiSit);
         this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));

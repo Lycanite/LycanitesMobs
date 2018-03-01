@@ -1,19 +1,15 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupDemon;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -22,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityWraith extends EntityCreatureTameable implements IMob {
 
-    public int detonateTimer = -1;
+    protected int detonateTimer = -1;
     
     // ==================================================
  	//                    Constructor

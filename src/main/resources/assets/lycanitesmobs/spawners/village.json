@@ -28,7 +28,8 @@
 	"mobSpawns": [
 		{
 			"mobId": "elementalmobs:aegis",
-			"weight": 8
+			"weight": 8,
+			"home": 32
 		}
 	]
 }

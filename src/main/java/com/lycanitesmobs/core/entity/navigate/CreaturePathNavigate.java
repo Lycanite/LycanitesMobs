@@ -201,11 +201,15 @@ public class CreaturePathNavigate extends PathNavigate {
         return block == ObjectManager.getBlock("ooze");
     }
 
-    /** Returns true if the entity can stand at the block position. **/
+    /** Returns true if the entity can move to the block position. **/
     public boolean canEntityStandOnPos(BlockPos pos) {
         // Flight/Swimming:
-        if(this.entityCreature.isFlying() || this.entityCreature.isInWater()) {
-            return !this.world.getBlockState(pos).isFullBlock(); // Might not need this.
+        if(this.entityCreature.isFlying() || (this.entityCreature.isInWater() && this.entityCreature.isStrongSwimmer())) {
+            IBlockState blockState = this.world.getBlockState(pos);
+            if(blockState.getMaterial().isLiquid()) {
+            	return this.entityCreature.isStrongSwimmer();
+			}
+            return !blockState.getMaterial().isSolid();
         }
         return super.canEntityStandOnPos(pos);
     }

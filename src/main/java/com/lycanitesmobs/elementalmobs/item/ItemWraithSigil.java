@@ -44,8 +44,6 @@ public class ItemWraithSigil extends ItemScepter {
         if(!world.isRemote) {
             for(int i = -2; i <= 2; i++) {
                 EntityWraith minion = new EntityWraith(world);
-                if (minion == null)
-                    return false;
                 minion.setPositionAndRotation(entity.posX, entity.posY + 1, entity.posZ, entity.rotationYaw + (5 * i), -entity.rotationPitch);
                 world.spawnEntity(minion);
                 minion.setMinion(true);

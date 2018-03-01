@@ -47,10 +47,11 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpClasses(EntityMaka.class));
-        this.targetTasks.addTask(1, new EntityAITargetAttack(this).setTargetClass(IGroupPredator.class));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityMakaAlpha.class).setChance(100));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setOnlyNearby(true).setChance(100));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setOnlyNearby(true).setChance(100));
+		this.targetTasks.addTask(2, new EntityAITargetDefend(this, EntityVillager.class));
+		this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPredator.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityMakaAlpha.class).setChance(10));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setOnlyNearby(true).setChance(100));
+        this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setOnlyNearby(true).setChance(100));
     }
 	
 	
@@ -116,9 +117,11 @@ public class EntityMakaAlpha extends EntityCreatureAgeable implements IAnimals, 
     // ========== Set Attack Target ==========
     @Override
     public void setAttackTarget(EntityLivingBase entity) {
-    	if(entity == null && this.getAttackTarget() instanceof EntityMakaAlpha && this.getHealth() < this.getMaxHealth()) {
+    	if(entity == null && this.getAttackTarget() instanceof EntityMakaAlpha) {
     		this.heal((this.getMaxHealth() - this.getHealth()) / 2);
     		this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20 * 20, 2, false, false));
+			this.getAttackTarget().heal((this.getMaxHealth() - this.getHealth()) / 2);
+			this.getAttackTarget().addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20 * 20, 2, false, false));
     	}
     	super.setAttackTarget(entity);
     }

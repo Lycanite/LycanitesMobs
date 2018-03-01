@@ -69,7 +69,7 @@ public class LayerEffect extends LayerBase {
 		int k = i / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
 
-		// Additive: TODO Get this working!
+		// Blending:
     	if(this.blending == BLEND.ADD.id) {
 			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 		}

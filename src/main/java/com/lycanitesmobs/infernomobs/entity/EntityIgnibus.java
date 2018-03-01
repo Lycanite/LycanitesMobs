@@ -248,7 +248,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         projectiles.add(projectileEntry6);
 
         EntityProjectileRapidFire projectileEntry7 = new EntityProjectileRapidFire(EntityScorchfireball.class, this.getEntityWorld(), this, 15, 3);
-        projectileEntry7.offsetY -= 10D;
+        projectileEntry7.offsetY -= 1.0D;
         projectileEntry7.setProjectileScale(0.25f);
         projectiles.add(projectileEntry7);
 

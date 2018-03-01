@@ -204,6 +204,18 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
             return false;
 		return super.canAttackClass(targetClass);
 	}
+
+
+    // ==================================================
+    //                      Targets
+    // ==================================================
+    @Override
+    public boolean isAggressive() {
+        if(this.getEntityWorld().isDaytime())
+            return this.testLightLevel() < 2;
+        else
+            return super.isAggressive();
+    }
     
     
     // ==================================================

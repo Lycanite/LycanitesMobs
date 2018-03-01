@@ -244,8 +244,12 @@ public class ItemCustomSpawnEgg extends ItemBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-    	if(this.group == null || !ObjectManager.entityLists.containsKey(this.group.filename) || (tab != this.getCreativeTab() && tab != CreativeTabs.SEARCH))
+    	if(this.group == null || !ObjectManager.entityLists.containsKey(this.group.filename))
     		return;
+
+    	if(!this.isInCreativeTab(tab)) {
+    		return;
+		}
 
         for(EntityListCustom.EntityEggInfo entityEggInfo : ObjectManager.entityLists.get(this.group.filename).entityEggs.values()) {
             ItemStack itemstack = new ItemStack(this, 1);

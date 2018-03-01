@@ -76,7 +76,7 @@
 			"metadata": 1,
 			"minAmount": 1,
 			"maxAmount": 1,
-			"chance": 0.25
+			"chance": 0.05
 		},
 		{
 			"item": "shadowmobs:geistliver",

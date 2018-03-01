@@ -40,7 +40,7 @@ public class EntityCrystalShard extends EntityProjectileModel {
     	this.group = ElementalMobs.instance.group;
     	this.setBaseDamage(2);
     	this.setProjectileScale(1F);
-        this.knockbackChance = 0.125D;
+        this.knockbackChance = 0D;
         this.projectileLife = 100;
     	
     	this.waterProof = true;

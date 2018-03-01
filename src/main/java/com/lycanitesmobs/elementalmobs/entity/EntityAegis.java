@@ -5,10 +5,7 @@ import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockDoor;
-import net.minecraft.block.BlockFurnace;
+import net.minecraft.block.*;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityIronGolem;
@@ -93,13 +90,13 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
 				EntityPlayer player = this.getEntityWorld().getNearestAttackablePlayer(this, 64, 32);
 				ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
 				if(player != null) {
-					if(player.openContainer != null && (player.openContainer instanceof ContainerChest || player.openContainer instanceof ContainerFurnace)) {
+					if(player.openContainer != null && (player.openContainer instanceof ContainerChest)) {
 						this.setAttackTarget(player);
 						this.setFixateTarget(player);
 					}
 					else if(extendedPlayer != null && extendedPlayer.justBrokenBlock != null) {
 						Block brokenBlock = extendedPlayer.justBrokenBlock.getBlock();
-						if(brokenBlock instanceof BlockChest || brokenBlock instanceof BlockDoor || brokenBlock instanceof BlockFurnace) {
+						if(brokenBlock instanceof BlockChest || brokenBlock instanceof BlockDoor || brokenBlock instanceof BlockGlowstone) {
 							this.setAttackTarget(player);
 							this.setFixateTarget(player);
 						}

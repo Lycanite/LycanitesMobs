@@ -1,7 +1,5 @@
 package com.lycanitesmobs.elementalmobs.model;
 
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.LayerEffect;
@@ -10,10 +8,8 @@ import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector4f;
 

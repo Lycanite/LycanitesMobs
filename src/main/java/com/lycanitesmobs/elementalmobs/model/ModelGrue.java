@@ -1,19 +1,19 @@
 package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.LycanitesMobs;
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.LayerEffect;
+import com.lycanitesmobs.core.renderer.LayerScrolling;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
@@ -42,7 +42,7 @@ public class ModelGrue extends ModelTemplateElemental {
 	@Override
 	public void addCustomLayers(RenderCreature renderer) {
 		super.addCustomLayers(renderer);
-		renderer.addLayer(new LayerEffect(renderer, "cloak", false, LayerEffect.BLEND.SUB.id, true));
+		renderer.addLayer(new LayerScrolling(renderer, "cloak", false, LayerEffect.BLEND.SUB.id, true, new Vec2f(0, 1)));
 	}
     
     
@@ -78,18 +78,9 @@ public class ModelGrue extends ModelTemplateElemental {
 	// ==================================================
 	//                Can Render Part
 	// ==================================================
-	/** Returns true if the part can be rendered on the base layer. **/
-	@Override
-	public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
-		if(partName.contains("cloak")) {
-			return false;
-		}
-		return true;
-	}
-
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
-		if(partName.contains("cloak")) {
+		if("cloak".equals(partName)) {
 			return layer != null && "cloak".equals(layer.name);
 		}
 		return layer == null;
@@ -102,22 +93,6 @@ public class ModelGrue extends ModelTemplateElemental {
 	/** Returns the coloring to be used for this part and layer. **/
 	@Override
 	public Vector4f getPartColor(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
-		if(layer != null && "cloak".equals(layer.name)) {
-			return new Vector4f(1, 1, 1, 0.75f);
-		}
-
 		return super.getPartColor(partName, entity, layer, trophy, loop);
-	}
-
-
-	// ==================================================
-	//              Get Part Texture Offset
-	// ==================================================
-	@Override
-	public Vector2f getPartTextureOffset(String partName, Entity entity, LayerBase layer, boolean trophy, float loop) {
-		if(layer != null && "cloak".equals(layer.name)) {
-			return new Vector2f(0, loop);
-		}
-		return super.getPartTextureOffset(partName, entity, layer, trophy, loop);
 	}
 }

@@ -2050,30 +2050,38 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public void setHomePosition(int x, int y, int z) {
     	this.homePosition = new BlockPos(x, y, z);
     }
+
     /** Sets the distance this mob is allowed to stray from it's home. -1 will turn off the home restriction. **/
     public void setHomeDistanceMax(float newDist) { this.homeDistanceMax = newDist; }
+
     /** Returns the home position in BlockPos. **/
     public BlockPos getHomePosition() { return this.homePosition; }
+
     /** Gets the distance this mob is allowed to stray from it's home. -1 is used to unlimited distance. **/
     public float getHomeDistanceMax() { return this.homeDistanceMax; }
+
     /** Clears the current home position. **/
     public void detachHome() {
     	this.setHomeDistanceMax(-1);
     }
+
     /** Returns whether or not this mob has a home set. **/
     public boolean hasHome() {
     	return this.getHomePosition() != null && this.getHomeDistanceMax() >= 0;
     }
+
     /** Returns whether or not the given XYZ position is near this entity's home position, returns true if no home is set. **/
     public boolean positionNearHome(int x, int y, int z) {
         if(!hasHome()) return true;
         return this.getDistanceFromHome(x, y, z) < this.getHomeDistanceMax() * this.getHomeDistanceMax();
     }
+
     /** Returns the distance that the specified XYZ position is from the home position. **/
     public double getDistanceFromHome(int x, int y, int z) {
     	if(!hasHome()) return 0;
     	return this.homePosition.getDistance(x, y, z);
     }
+
     /** Returns the distance that the entity's position is from the home position. **/
     public double getDistanceFromHome() {
     	return this.homePosition.getDistance((int) this.posX, (int) this.posY, (int) this.posZ);
@@ -2777,7 +2785,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		}
     		return false;
     	}
-    	
+
 		if(type.getCreatureClass() == IMob.class) // If checking for EnumCretureType.monster (IMob) return whether or not this creature is hostile instead.
 			return this.isHostile();
         return type.getCreatureClass().isAssignableFrom(this.getClass());

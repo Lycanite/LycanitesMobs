@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.info.EntityListCustom;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.equipment.features.EquipmentFeature;
@@ -13,13 +15,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Vector4f;
@@ -196,6 +202,16 @@ public class ItemEquipmentPart extends ItemBase {
 			r = nbt.getFloat("equipmentColorB");
 		}
 		return new Vector4f(r, g, b, 1);
+	}
+
+
+	// ==================================================
+	//                   Get Sub Items
+	// ==================================================
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		super.getSubItems(tab, items);
 	}
 
 

@@ -117,7 +117,7 @@ public class ModelWraith extends ModelTemplateElemental {
 			float color = ((float)Math.cos(Math.toRadians(glow)) * 0.1f) + 0.9f;
 			float alpha = 1.0f;
 			if("fire".equals(partName)) {
-				alpha = 0.6f;
+				alpha = 1f;
 			}
 			return new Vector4f(color, color, color, alpha);
 		}

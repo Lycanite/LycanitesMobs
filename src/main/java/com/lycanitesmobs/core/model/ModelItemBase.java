@@ -163,6 +163,8 @@ public abstract class ModelItemBase {
 		}
 
 		// Render Parts:
+		GlStateManager.enableBlend();
+		GlStateManager.enableAlpha();
 		for(ObjObject part : this.wavefrontParts) {
 			String partName = part.getName().toLowerCase();
 			if(!this.canRenderPart(partName, itemStack))
@@ -171,7 +173,6 @@ public abstract class ModelItemBase {
 
 			// Begin Rendering Part:
 			GlStateManager.pushMatrix();
-			GlStateManager.enableAlpha();
 
 			// Apply Initial Offsets: (To Match Blender OBJ Export)
 			this.doAngle(modelXRotOffset, 1F, 0F, 0F);
@@ -184,6 +185,8 @@ public abstract class ModelItemBase {
 			this.wavefrontObject.renderGroup(part, this.getPartColor(partName, itemStack), new Vector2f(0, 0));
 			GlStateManager.popMatrix();
 		}
+		GlStateManager.disableBlend();
+		GlStateManager.disableAlpha();
 
 		// Clear Animation Frames:
 		for(ModelObjPart animationPart : this.animationParts.values()) {

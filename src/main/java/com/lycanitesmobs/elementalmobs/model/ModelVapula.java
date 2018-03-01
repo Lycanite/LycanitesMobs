@@ -80,37 +80,61 @@ public class ModelVapula extends ModelTemplateElemental {
 	/** Returns true if the part can be rendered on the base layer. **/
 	@Override
 	public boolean canBaseRenderPart(String partName, Entity entity, boolean trophy) {
-		if(entity instanceof EntityCreatureBase && partName.contains("effect")) {
-			int attackPhase = ((EntityCreatureBase)entity).getAttackPhase();
-			if(((EntityCreatureBase)entity).justAttacked() && attackPhase == 0) {
-				return false;
+		return true;
+	}
+
+	@Override
+	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+		if(!this.isCrystal(partName)) {
+			return layer == null;
+		}
+
+		if(layer instanceof LayerEffect) {
+			if(partName.contains("effect")) {
+				if(entity instanceof EntityCreatureBase) {
+					int attackPhase = ((EntityCreatureBase) entity).getAttackPhase();
+					if (((EntityCreatureBase) entity).justAttacked() && attackPhase == 0) {
+						return false;
+					}
+					if ("effect01".equals(partName)) {
+						return attackPhase <= 7;
+					}
+					else if ("effect02".equals(partName)) {
+						return attackPhase <= 6;
+					}
+					else if ("effect03".equals(partName)) {
+						return attackPhase <= 5;
+					}
+					else if ("effect04".equals(partName)) {
+						return attackPhase <= 4;
+					}
+					else if ("effect05".equals(partName)) {
+						return attackPhase <= 3;
+					}
+					else if ("effect06".equals(partName)) {
+						return attackPhase <= 2;
+					}
+					else if ("effect07".equals(partName)) {
+						return attackPhase <= 1;
+					}
+					else if ("effect08".equals(partName)) {
+						return attackPhase <= 0;
+					}
+				}
 			}
-			if("effect01".equals(partName)) {
-				return attackPhase <= 7;
-			}
-			else if("effect02".equals(partName)) {
-				return attackPhase <= 6;
-			}
-			else if("effect03".equals(partName)) {
-				return attackPhase <= 5;
-			}
-			else if("effect04".equals(partName)) {
-				return attackPhase <= 4;
-			}
-			else if("effect05".equals(partName)) {
-				return attackPhase <= 3;
-			}
-			else if("effect06".equals(partName)) {
-				return attackPhase <= 2;
-			}
-			else if("effect07".equals(partName)) {
-				return attackPhase <= 1;
-			}
-			else if("effect08".equals(partName)) {
-				return attackPhase <= 0;
+			else {
+				return true;
 			}
 		}
-		return true;
+
+		return false;
+	}
+
+	protected boolean isCrystal(String partName) {
+		if("eye".equals(partName) || "crystals".equals(partName)) {
+			return true;
+		}
+		return partName.contains("effect") || partName.contains("finger");
 	}
 
 
@@ -128,24 +152,5 @@ public class ModelVapula extends ModelTemplateElemental {
 		}
 
 		return super.getPartColor(partName, entity, layer, trophy, loop);
-	}
-
-
-	// ==================================================
-	//                Can Render Part
-	// ==================================================
-	@Override
-	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
-		if(!this.isCrystal(partName)) {
-			return layer == null;
-		}
-		return layer instanceof LayerEffect;
-	}
-
-	protected boolean isCrystal(String partName) {
-		if("eye".equals(partName) || "crystals".equals(partName)) {
-			return true;
-		}
-		return partName.contains("effect") || partName.contains("finger");
 	}
 }

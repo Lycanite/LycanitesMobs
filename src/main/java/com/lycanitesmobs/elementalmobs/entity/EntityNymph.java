@@ -18,9 +18,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityNymph extends EntityCreatureTameable implements IMob, IGroupPlant {
+public class EntityNymph extends EntityCreatureTameable implements IGroupPlant {
 
-	EntityAIAttackRanged rangedAttackAI;
 	public int healingRate = 20;
 
     // ==================================================

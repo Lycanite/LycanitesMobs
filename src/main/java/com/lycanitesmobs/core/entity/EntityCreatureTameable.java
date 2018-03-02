@@ -2,7 +2,6 @@ package com.lycanitesmobs.core.entity;
 
 import com.google.common.base.Optional;
 import com.lycanitesmobs.AssetManager;
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
 import com.lycanitesmobs.core.info.CreatureManager;
@@ -49,7 +48,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 
     // Datawatcher:
     protected static final DataParameter<Byte> TAMED = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Optional<UUID>> OWNER = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    protected static final DataParameter<Optional<UUID>> OWNER_ID = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     protected static final DataParameter<Float> HUNGER = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
     protected static final DataParameter<Float> STAMINA = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
 
@@ -74,7 +73,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(TAMED, (byte)0);
-        this.dataManager.register(OWNER, Optional.absent());
+        this.dataManager.register(OWNER_ID, Optional.absent());
         this.dataManager.register(HUNGER, this.getCreatureHungerMax());
         this.dataManager.register(STAMINA, this.getStaminaMax());
     }
@@ -437,8 +436,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	 */
 	public void setOwnerId(UUID ownerUUID) {
 		this.ownerUUID = ownerUUID;
-		this.dataManager.set(OWNER, Optional.fromNullable(this.ownerUUID));
-		this.setTamed(this.ownerUUID != null);
+		this.dataManager.set(OWNER_ID, Optional.fromNullable(ownerUUID));
+		this.setTamed(ownerUUID != null);
 	}
 
 	/**
@@ -462,10 +461,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public UUID getOwnerId() {
 		if(this.getEntityWorld().isRemote) {
 			try {
-				this.ownerUUID = this.getUUIDFromDataManager(OWNER).orNull();
+				return this.getUUIDFromDataManager(OWNER_ID).orNull();
 			} catch (Exception ignored) {}
 		}
-
 		return this.ownerUUID;
 	}
 

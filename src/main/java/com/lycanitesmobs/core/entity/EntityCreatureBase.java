@@ -1239,13 +1239,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 				// Tamed:
 				if (transformedCreature instanceof EntityCreatureTameable) {
 					EntityCreatureTameable fusionTameable = (EntityCreatureTameable) transformedCreature;
-					if (this.getOwnerId() != null) {
-						fusionTameable.setOwnerId(this.getOwnerId());
+					if (this.getOwner() != null && this.getOwner() instanceof EntityPlayer) {
+						fusionTameable.setPlayerOwner((EntityPlayer)this.getOwner());
 					}
 
 					// Tamed Partner:
-					else if (partnerCreature.getOwnerId() != null) {
-						fusionTameable.setOwnerId(this.getOwnerId());
+					else if (partnerCreature.getOwner() != null && partnerCreature.getOwner() instanceof EntityPlayer) {
+						fusionTameable.setPlayerOwner((EntityPlayer)partnerCreature.getOwner());
 
 						// Temporary:
 						if (partnerCreature.isTemporary) {

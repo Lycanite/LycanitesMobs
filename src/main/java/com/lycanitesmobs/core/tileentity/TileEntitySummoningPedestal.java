@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.container.ContainerSummoningPedestal;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.gui.GUISummoningPedestal;
 import com.lycanitesmobs.core.pets.SummonSet;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -162,7 +163,8 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     /** Sets the owner of this block. **/
     public void setOwner(EntityLivingBase entity) {
         if(entity instanceof EntityPlayer) {
-            this.ownerUUID = entity.getUniqueID();
+            EntityPlayer entityPlayer = (EntityPlayer)entity;
+            this.ownerUUID = entityPlayer.getUniqueID();
             this.ownerName = entity.getName();
         }
     }

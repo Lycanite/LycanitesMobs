@@ -144,7 +144,7 @@ public class EntityArix extends EntityCreatureTameable implements IMob, IGroupIc
     // ========== Ranged Attack ==========
     @Override
     public void attackRanged(Entity target, float range) {
-        this.fireProjectile(EntityIcefireball.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 2f, 6F);
+        this.fireProjectile(EntityIcefireball.class, target, range, 0, new Vec3d(0, 0, 0), 0.8f, 2f, 6F);
         super.attackRanged(target, range);
     }
     

@@ -171,18 +171,6 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         return commands;
     }
 
-    // ========== Perform Command ==========
-    @Override
-    public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
-
-        // Water:
-        if(command.equals("Water")) {
-            this.replacePlayersItem(player, itemStack, new ItemStack(Items.WATER_BUCKET));
-        }
-
-        super.performCommand(command, player, itemStack);
-    }
-
 
     // ==================================================
     //                      Fusion

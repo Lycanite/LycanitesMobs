@@ -33,6 +33,10 @@
 		{
 			"mobId": "elementalmobs:geonach",
 			"weight": 8
+		},
+		{
+			"mobId": "elementalmobs:vapula",
+			"weight": 1
 		}
 	]
 }

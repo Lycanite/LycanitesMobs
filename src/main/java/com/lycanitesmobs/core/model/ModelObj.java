@@ -238,9 +238,6 @@ public class ModelObj extends ModelCustom {
             }
     	}
 
-		// Render Start:
-		this.onRenderStart(layer, entity, renderAsTrophy);
-
 		// Render Parts:
         for(ObjObject part : this.wavefrontParts) {
             String partName = part.getName().toLowerCase();
@@ -276,12 +273,11 @@ public class ModelObj extends ModelCustom {
             this.currentAnimationPart.applyAnimationFrames(this.animator);
 
             // Render Part:
+			this.onRenderStart(layer, entity, renderAsTrophy);
             this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, renderAsTrophy, loop), this.getPartTextureOffset(partName, entity, layer, renderAsTrophy, loop));
+			this.onRenderFinish(layer, entity, renderAsTrophy);
 			GlStateManager.popMatrix();
-        }
-
-		// Render Finish:
-		this.onRenderFinish(layer, entity, renderAsTrophy);
+		}
 
 		// Clear Animation Frames:
         for(ModelObjPart animationPart : this.animationParts.values()) {
@@ -291,10 +287,8 @@ public class ModelObj extends ModelCustom {
 
 	/** Called just before a layer is rendered. **/
 	public void onRenderStart(LayerBase layer, Entity entity, boolean renderAsTrophy) {
-		//GlStateManager.disableAlpha();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		//GlStateManager.clearColor(0, 0, 0, 0);
 		if(layer != null) {
 			layer.onRenderStart(entity, renderAsTrophy);
 		}
@@ -303,7 +297,6 @@ public class ModelObj extends ModelCustom {
 	/** Called just after a layer is rendered. **/
 	public void onRenderFinish(LayerBase layer, Entity entity, boolean renderAsTrophy) {
 		GlStateManager.disableBlend();
-		//GlStateManager.enableAlpha();
 		if(layer != null) {
 			layer.onRenderFinish(entity, renderAsTrophy);
 		}

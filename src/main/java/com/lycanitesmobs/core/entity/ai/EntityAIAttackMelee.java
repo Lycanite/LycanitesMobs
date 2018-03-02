@@ -160,24 +160,25 @@ public class EntityAIAttackMelee extends EntityAIBase {
         EntityLivingBase attackTarget = this.host.getAttackTarget();
         this.host.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
-        if((this.longMemory || this.host.getEntitySenses().canSee(attackTarget)) && --this.repathTime <= 0) {
-	        this.repathTime = failedPathFindingPenalty + 4 + this.host.getRNG().nextInt(7);
-	        
-	        // Path To Target:
+		// Path To Target:
+		if((this.longMemory || this.host.getEntitySenses().canSee(attackTarget)) && --this.repathTime <= 0) {
+			this.repathTime = failedPathFindingPenalty + 4 + this.host.getRNG().nextInt(7);
+
         	if(!this.host.useDirectNavigator()) {
-        		this.host.getNavigator().tryMoveToXYZ(attackTarget.posX, attackTarget.getEntityBoundingBox().minY + this.host.getFlightOffset(), attackTarget.posZ, this.speed);
+        		this.host.getNavigator().tryMoveToEntityLiving(attackTarget, this.speed);
 	            if(this.host.getNavigator().getPath() != null) {
 	                PathPoint finalPathPoint = this.host.getNavigator().getPath().getFinalPathPoint();
-	                if(finalPathPoint != null && attackTarget.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1)
-	                    failedPathFindingPenalty = 0;
-	                else
-	                    failedPathFindingPenalty += failedPathFindingPenaltyMax;
+	                if(finalPathPoint != null && attackTarget.getDistanceSq(finalPathPoint.x, finalPathPoint.y, finalPathPoint.z) < 1) {
+						failedPathFindingPenalty = 0;
+					}
+	                else {
+						failedPathFindingPenalty += failedPathFindingPenaltyMax;
+					}
 	            }
-	            else
-	                failedPathFindingPenalty += failedPathFindingPenaltyMax;
+	            else {
+					failedPathFindingPenalty += failedPathFindingPenaltyMax;
+				}
         	}
-        	
-        	// Move Directly To Navigator:
         	else {
         		this.host.directNavigator.setTargetPosition(new BlockPos((int) attackTarget.posX, (int) (attackTarget.posY + this.host.getFlightOffset()), (int) attackTarget.posZ), speed);
         	}
@@ -209,7 +210,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	 * @return The maximum attack range.
 	 */
 	protected double getAttackRange(EntityLivingBase attackTarget) {
-		double range = this.attackRange + 0.5D + (this.host.width * 2.0F * this.host.width * 2.0F + attackTarget.width);
+		double range = this.attackRange + (this.host.width * 2.0F * this.host.width * 2.0F + attackTarget.width);
 		if(this.host.isCurrentlyFlying()) {
 			range += 0.5D;
 		}

@@ -4,19 +4,18 @@ import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.EntityItemCustom;
 import com.lycanitesmobs.core.info.ItemInfo;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.ItemSwordBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -452,7 +451,7 @@ public class EventListener {
 	//                 Debug Overlay
 	// ==================================================
 	@SubscribeEvent
-	public void onBucketFill(RenderGameOverlayEvent.Text event) {
+	public void onGameOverlay(RenderGameOverlayEvent.Text event) {
 		if(!LycanitesMobs.config.getBool("Debug", "Overlay", false)) {
 			return;
 		}
@@ -488,6 +487,12 @@ public class EventListener {
 					event.getLeft().add("Has Avoid Target: " + mouseOverCreature.hasAvoidTarget());
 					event.getLeft().add("Has Master Target: " + mouseOverCreature.hasMaster());
 					event.getLeft().add("Has Parent Target: " + mouseOverCreature.hasParent());
+					if(mouseOverEntity instanceof EntityCreatureTameable) {
+						EntityCreatureTameable mouseOverTameable = (EntityCreatureTameable)mouseOverCreature;
+						event.getLeft().add("");
+						event.getLeft().add("Owner ID: " + (mouseOverTameable.getOwnerId() != null ? mouseOverTameable.getOwnerId().toString() : "None"));
+						event.getLeft().add("Owner Name: " + mouseOverTameable.getOwnerName());
+					}
 				}
 			}
 		}

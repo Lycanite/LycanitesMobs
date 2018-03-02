@@ -393,9 +393,6 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     // ==================================================
     //                     Abilities
     // ==================================================
-    @Override
-    public boolean canSit() { return false; }
-
     public boolean canBeMounted(Entity entity) {
     	if(this.getControllingPassenger() != null)
     		return false;

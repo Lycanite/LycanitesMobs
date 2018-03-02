@@ -157,7 +157,7 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Ranged Attack ==========
 	@Override
 	public void attackRanged(Entity target, float range) {
-		this.fireProjectile(EntityCrystalShard.class, target, range, 0, new Vec3d(0, 0, 0), 1.2f, 1f, 1F);
+		this.fireProjectile(EntityCrystalShard.class, target, range, 0, new Vec3d(0, 0, 0), 0.6f, 1f, 1F);
 		this.nextAttackPhase();
 		super.attackRanged(target, range);
 	}
@@ -165,7 +165,7 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
 	@Override
 	public int getRangedCooldown() {
 		if(this.getAttackPhase() < 7)
-			return super.getRangedCooldown() / 12;
+			return super.getRangedCooldown() / 24;
 		return super.getRangedCooldown();
 	}
     

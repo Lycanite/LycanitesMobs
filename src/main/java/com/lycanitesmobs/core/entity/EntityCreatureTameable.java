@@ -42,9 +42,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public float sittingGuardRange = 16F;
 
     // Owner:
-    public UUID ownerUUID;
-    public Entity ownerTarget;
-	
+    protected UUID ownerUUID;
+
 	// AI:
 	public EntityAISit aiSit;
 
@@ -68,7 +67,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
   	// ==================================================
 	public EntityCreatureTameable(World world) {
 		super(world);
-		this.setTamed(false);
 	}
 	
 	// ========== Init ==========
@@ -77,8 +75,8 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         super.entityInit();
         this.dataManager.register(TAMED, (byte)0);
         this.dataManager.register(OWNER, Optional.absent());
-        this.dataManager.register(HUNGER, new Float(this.getCreatureHungerMax()));
-        this.dataManager.register(STAMINA, new Float(this.getStaminaMax()));
+        this.dataManager.register(HUNGER, this.getCreatureHungerMax());
+        this.dataManager.register(STAMINA, this.getStaminaMax());
     }
 
     // ========== Init AI ==========
@@ -164,7 +162,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public void onLivingUpdate() {
     	super.onLivingUpdate();
     	this.staminaUpdate();
-    }
+	}
     
     public void staminaUpdate() {
     	if(this.getEntityWorld().isRemote)
@@ -428,6 +426,65 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             return super.attackEntityFrom(damageSrc, damage);
         }
     }
+
+
+	// ==================================================
+	//                       Owner
+	// ==================================================
+	/**
+	 * Sets the owner of this entity via the unique id of the owner entity. Also updates the tamed status of this entity.
+	 * @param ownerUUID The owner entity UUID.
+	 */
+	public void setOwnerId(UUID ownerUUID) {
+		this.ownerUUID = ownerUUID;
+		this.dataManager.set(OWNER, Optional.fromNullable(this.ownerUUID));
+		this.setTamed(this.ownerUUID != null);
+	}
+
+	/**
+	 * Sets the owner of this entity to the provided player entity. Also updates the tamed status of this entity.
+	 * @param player The player to become the owner.
+	 */
+	public void setPlayerOwner(EntityPlayer player) {
+		this.setOwnerId(player.getUniqueID());
+	}
+
+	@Override
+	public Entity getOwner() {
+		UUID uuid = this.getOwnerId();
+		if(uuid == null) {
+			return super.getOwner();
+		}
+		return this.getEntityWorld().getPlayerEntityByUUID(uuid);
+	}
+
+	@Override
+	public UUID getOwnerId() {
+		if(this.getEntityWorld().isRemote) {
+			try {
+				this.ownerUUID = this.getUUIDFromDataManager(OWNER).orNull();
+			} catch (Exception ignored) {}
+		}
+
+		return this.ownerUUID;
+	}
+
+	/**
+	 * Gets the display name of the entity that owns this entity or an empty string if none.
+	 * @return The owner display name.
+	 */
+	public String getOwnerName() {
+		Entity owner = this.getOwner();
+		if(owner != null) {
+			if(owner instanceof EntityPlayer) {
+				return ((EntityPlayer)owner).getDisplayNameString();
+			}
+			else {
+				return owner.getName();
+			}
+		}
+		return "";
+	}
     
     
     // ==================================================
@@ -442,16 +499,16 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         }
     }
     
-    public void setTamed(boolean setTamed) {
+    public void setTamed(boolean isTamed) {
         byte tamed = this.getByteFromDataManager(TAMED);
-        if(setTamed) {
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamed | TAMED_ID.IS_TAMED.id)));
+        if(isTamed) {
+            this.dataManager.set(TAMED, (byte) (tamed | TAMED_ID.IS_TAMED.id));
             this.spawnEventType = "";
         }
         else {
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamed - (tamed & TAMED_ID.IS_TAMED.id))));
+            this.dataManager.set(TAMED, (byte) (tamed - (tamed & TAMED_ID.IS_TAMED.id)));
         }
-        this.setAlwaysRenderNameTag(setTamed);
+        this.setAlwaysRenderNameTag(isTamed);
         this.refreshStats();
     }
     
@@ -460,62 +517,49 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     // ========== Tame Entity ==========
+	/**
+	 * Attempts to tame this entity to the provided player.
+	 * @param player The player taming this entity.
+	 * @return True if the entity is tamed, false on failure.
+	 */
     public boolean tame(EntityPlayer player) {
-    	if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() < 3)
-            if(this.rand.nextInt(3) == 0) {
-                this.setPlayerOwner(player);
-                this.unsetTemporary();
-                String tameMessage = I18n.translateToLocal("message.pet.tamed");
-                tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
-        		player.sendMessage(new TextComponentString(tameMessage));
-        		this.playTameEffect(this.isTamed());
-                player.addStat(ObjectManager.getStat(this.creatureInfo.getName() + ".tame"), 1);
-                if(this.timeUntilPortal > this.getPortalCooldown())
-                    this.timeUntilPortal = this.getPortalCooldown();
-            }
-            else {
-            	String tameFailedMessage = I18n.translateToLocal("message.pet.tamefail");
-            	tameFailedMessage = tameFailedMessage.replace("%creature%", this.getSpeciesName());
-        		player.sendMessage(new TextComponentString(tameFailedMessage));
-        		this.playTameEffect(this.isTamed());
-            }
+    	if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() < 3) {
+			if (this.rand.nextInt(3) == 0) {
+				this.setPlayerOwner(player);
+				this.onTamedByPlayer();
+				this.unsetTemporary();
+				String tameMessage = I18n.translateToLocal("message.pet.tamed");
+				tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
+				player.sendMessage(new TextComponentString(tameMessage));
+				this.playTameEffect(this.isTamed());
+				player.addStat(ObjectManager.getStat(this.creatureInfo.getName() + ".tame"), 1);
+				if (this.timeUntilPortal > this.getPortalCooldown()) {
+					this.timeUntilPortal = this.getPortalCooldown();
+				}
+			}
+			else {
+				String tameFailedMessage = I18n.translateToLocal("message.pet.tamefail");
+				tameFailedMessage = tameFailedMessage.replace("%creature%", this.getSpeciesName());
+				player.sendMessage(new TextComponentString(tameFailedMessage));
+				this.playTameEffect(this.isTamed());
+			}
+		}
     	return this.isTamed();
     }
 
 	/**
-	 * Sets the owner of this entity via a Player Entity.
-	 * @param player The player to become an owner.
-	 */
-	public void setPlayerOwner(EntityPlayer player) {
-		if(player == null) {
-			return;
-		}
-        this.setPlayerOwner(player.getUniqueID());
-    }
-
-	/**
-	 * Sets the owner of this entity via a Player UUID.
-	 * @param playerUUID The owner player UUID.
-	 */
-	public void setPlayerOwner(UUID playerUUID) {
-        this.onTamedByPlayer();
-        this.setOwnerId(playerUUID);
-    }
-
-	/**
-	 * Called when this creature is tamed by a player, this clears movement, targets, etc and sets default the pet behaviour.
+	 * Called when this creature is first tamed by a player, this clears movement, targets, etc and sets default the pet behaviour.
 	 */
 	public void onTamedByPlayer() {
-        this.setTamed(true);
-        this.clearMovement();
-        this.setAttackTarget(null);
-        this.setSitting(false);
-        this.setFollowing(true);
-        this.setPassive(false);
-        this.setAggressive(false);
-        this.setPVP(true);
-        this.playTameSound();
-    }
+		this.clearMovement();
+		this.setAttackTarget(null);
+		this.setSitting(false);
+		this.setFollowing(true);
+		this.setPassive(false);
+		this.setAggressive(false);
+		this.setPVP(true);
+		this.playTameSound();
+	}
 
 	@Override
 	public void onCreateBaby(EntityCreatureAgeable partner, EntityCreatureAgeable baby) {
@@ -527,64 +571,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 			}
 		}
 		super.onCreateBaby(partner, baby);
-	}
-    
-    
-    // ==================================================
-    //                       Owner
-    // ==================================================
-	@Override
-	public Entity getOwner() {
-		if(this.ownerTarget != null) {
-			return this.ownerTarget;
-		}
-		if(this.getOwnerId() == null) {
-			return super.getOwner();
-		}
-		this.ownerTarget = this.getEntityWorld().getPlayerEntityByUUID(this.getOwnerId());
-		return this.ownerTarget;
-	}
-
-	/**
-	 * Gets the unique id of the entity that owns this entity.
-	 * @return The owner entity UUID.
-	 */
-	public UUID getOwnerId() {
-		if(this.getEntityWorld().isRemote) {
-			try {
-				this.ownerUUID = this.getUUIDFromDataManager(OWNER).orNull();
-			} catch (Exception ignored) {}
-		}
-
-        return this.ownerUUID;
-    }
-
-	/**
-	 * Sets the owner of this entity via the unique id of the owner entity. Also updates the tamed status of this entity.
-	 * @param ownerUUID The owner entity UUID.
-	 */
-	public void setOwnerId(UUID ownerUUID) {
-        this.ownerUUID = ownerUUID;
-        this.setTamed(ownerUUID != null);
-        this.ownerTarget = null; // Clear cached owner target.
-		this.dataManager.set(OWNER, this.ownerUUID != null ? Optional.of(this.ownerUUID) : Optional.absent());
-    }
-	/**
-	 * Gets the name of the entity that owns this entity or an empty string if none.
-	 * @return The owner display name.
-	 */
-	public String getOwnerName() {
-		Entity owner = this.getOwner();
-		if(owner != null) {
-			if(owner instanceof EntityPlayer) {
-				return ((EntityPlayer)owner).getDisplayNameString();
-			}
-			else {
-				return owner.getName();
-			}
-		}
-
-		return "";
 	}
     
     
@@ -625,11 +611,11 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		set = false;
         byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set) {
-            this.dataManager.set(TAMED, Byte.valueOf((byte) (tamedStatus | TAMED_ID.MOVE_SIT.id)));
+            this.dataManager.set(TAMED, (byte) (tamedStatus | TAMED_ID.MOVE_SIT.id));
             this.setHome((int)this.posX, (int)this.posY, (int)this.posZ, this.sittingGuardRange);
         }
         else {
-            this.dataManager.set(TAMED, Byte.valueOf((byte) (tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id))));
+            this.dataManager.set(TAMED, (byte) (tamedStatus - (tamedStatus & TAMED_ID.MOVE_SIT.id)));
             this.detachHome();
         }
     }
@@ -646,9 +632,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		set = false;
         byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set)
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.MOVE_FOLLOW.id)));
+            this.dataManager.set(TAMED, (byte) (tamedStatus | TAMED_ID.MOVE_FOLLOW.id));
         else
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.MOVE_FOLLOW.id))));
+            this.dataManager.set(TAMED, (byte) (tamedStatus - (tamedStatus & TAMED_ID.MOVE_FOLLOW.id)));
     }
     
     // ========== Passiveness ==========
@@ -663,12 +649,12 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		set = false;
         byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set) {
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_PASSIVE.id)));
+            this.dataManager.set(TAMED, (byte) (tamedStatus | TAMED_ID.STANCE_PASSIVE.id));
             this.setAttackTarget(null);
             this.setStealth(0);
         }
         else
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id))));
+            this.dataManager.set(TAMED, (byte) (tamedStatus - (tamedStatus & TAMED_ID.STANCE_PASSIVE.id)));
     }
     
     // ========== Agressiveness ==========
@@ -683,9 +669,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		set = false;
         byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set)
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id)));
+            this.dataManager.set(TAMED, (byte) (tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id));
         else
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id))));
+            this.dataManager.set(TAMED, (byte) (tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id)));
     }
     
     // ========== PvP ==========
@@ -698,9 +684,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		set = false;
         byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set)
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus | TAMED_ID.PVP.id)));
+            this.dataManager.set(TAMED, (byte) (tamedStatus | TAMED_ID.PVP.id));
         else
-            this.dataManager.set(TAMED, Byte.valueOf((byte)(tamedStatus - (tamedStatus & TAMED_ID.PVP.id))));
+            this.dataManager.set(TAMED, (byte) (tamedStatus - (tamedStatus & TAMED_ID.PVP.id)));
     }
     
     
@@ -821,7 +807,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     
     // =========== Movement ==========
     public boolean canBeTempted() { return !this.isTamed(); }
-    public boolean canSit() { return true; }
 
     @Override
     public boolean shouldDismountInWater(Entity rider) {
@@ -882,20 +867,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     public void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
         super.readEntityFromNBT(nbtTagCompound);
 
-        // Old String Based UUID NBT:
-		if(nbtTagCompound.hasKey("OwnerUUID")) {
-			LycanitesMobs.printDebug("", "Reading Old Owner UUID: " + nbtTagCompound.getUniqueId("OwnerId"));
-			String uuidString = nbtTagCompound.getString("OwnerUUID");
-			if(!"".equals(uuidString))
-				this.setOwnerId(UUID.fromString(uuidString));
-			else
-				this.setOwnerId(null);
-		}
-		else {
-			this.ownerUUID = null;
-		}
-
-		// New UUID NBT:
+		// UUID NBT:
         if(nbtTagCompound.hasUniqueId("OwnerId")) {
             this.setOwnerId(nbtTagCompound.getUniqueId("OwnerId"));
         }

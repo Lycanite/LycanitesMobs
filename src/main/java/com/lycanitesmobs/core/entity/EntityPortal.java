@@ -222,7 +222,7 @@ public class EntityPortal extends EntityProjectileBase {
                 else if (this.summoningPedestal != null && this.summoningPedestal.getOwnerUUID() != null) {
                     entityCreature.setMinion(true);
                     if (entityCreature instanceof EntityCreatureTameable) {
-                        ((EntityCreatureTameable) entityCreature).setPlayerOwner(this.summoningPedestal.getOwnerUUID());
+                        ((EntityCreatureTameable) entityCreature).setOwnerId(this.summoningPedestal.getOwnerUUID());
                         this.summoningPedestal.applyMinionBehaviour((EntityCreatureTameable) entityCreature);
                     }
                 }

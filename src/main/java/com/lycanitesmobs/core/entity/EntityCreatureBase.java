@@ -1239,13 +1239,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 				// Tamed:
 				if (transformedCreature instanceof EntityCreatureTameable) {
 					EntityCreatureTameable fusionTameable = (EntityCreatureTameable) transformedCreature;
-					if (this.getOwner() != null && this.getOwner() instanceof EntityPlayer) {
-						fusionTameable.setPlayerOwner((EntityPlayer) this.getOwner());
+					if (this.getOwnerId() != null) {
+						fusionTameable.setOwnerId(this.getOwnerId());
 					}
 
 					// Tamed Partner:
-					else if (partnerCreature.getOwner() != null && partnerCreature.getOwner() instanceof EntityPlayer) {
-						fusionTameable.setPlayerOwner((EntityPlayer) partnerCreature.getOwner());
+					else if (partnerCreature.getOwnerId() != null) {
+						fusionTameable.setOwnerId(this.getOwnerId());
 
 						// Temporary:
 						if (partnerCreature.isTemporary) {
@@ -2688,7 +2688,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	}
 
     /** Returns this entity's Owner Target. **/
-    public Entity getOwner() { return null; }
+    public Entity getOwner() {
+    	return null;
+    }
+
+	/**
+	 * Gets the unique id of the entity that owns this entity.
+	 * @return The owner entity UUID.
+	 */
+	public UUID getOwnerId() {
+		return null;
+	}
 
     /** Returns this entity's Rider Target as an EntityLivingBase or null if it isn't one, see getRiderTarget(). **/
     public EntityLivingBase getRider() {

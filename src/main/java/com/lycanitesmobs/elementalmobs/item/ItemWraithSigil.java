@@ -1,5 +1,6 @@
 package com.lycanitesmobs.elementalmobs.item;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.item.ItemScepter;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import com.lycanitesmobs.elementalmobs.entity.EntityWraith;
@@ -45,12 +46,12 @@ public class ItemWraithSigil extends ItemScepter {
             for(int i = -2; i <= 2; i++) {
                 EntityWraith minion = new EntityWraith(world);
                 minion.setPositionAndRotation(entity.posX, entity.posY + 1, entity.posZ, entity.rotationYaw + (5 * i), -entity.rotationPitch);
-                world.spawnEntity(minion);
                 minion.setMinion(true);
-                if(entity instanceof EntityPlayer) {
-                    minion.setPlayerOwner((EntityPlayer)entity);
-                }
-                minion.playAttackSound();
+				if(entity instanceof EntityPlayer) {
+					minion.setPlayerOwner((EntityPlayer)entity);
+				}
+				world.spawnEntity(minion);
+				minion.playAttackSound();
                 minion.chargeAttack();
             }
         }

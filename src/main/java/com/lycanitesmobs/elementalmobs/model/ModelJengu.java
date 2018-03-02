@@ -2,9 +2,13 @@ package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
 import com.lycanitesmobs.core.renderer.LayerBase;
+import com.lycanitesmobs.core.renderer.LayerEffect;
+import com.lycanitesmobs.core.renderer.LayerScrolling;
+import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.Vec2f;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,6 +33,16 @@ public class ModelJengu extends ModelTemplateElemental {
         this.trophyScale = 1.2F;
         this.trophyOffset = new float[] {0.0F, 0.0F, -0.2F};
     }
+
+
+	// ==================================================
+	//             Add Custom Render Layers
+	// ==================================================
+	@Override
+	public void addCustomLayers(RenderCreature renderer) {
+		super.addCustomLayers(renderer);
+		renderer.addLayer(new LayerEffect(renderer, "", false, LayerEffect.BLEND.NORMAL.id, true));
+	}
 
 
 	// ==================================================
@@ -62,6 +76,18 @@ public class ModelJengu extends ModelTemplateElemental {
 			return super.getBaseTextureOffset(partName, entity, trophy, loop);
 		}
 		return new Vector2f(0, loop);
+	}
+
+
+	// ==================================================
+	//                Can Render Part
+	// ==================================================
+	@Override
+	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
+		if(partName.contains("effect")) {
+			return layer != null;
+		}
+		return layer == null;
 	}
 
 

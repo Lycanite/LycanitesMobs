@@ -1,9 +1,7 @@
 package com.lycanitesmobs.core.entity.ai;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -57,8 +55,7 @@ public class EntityAIFollowOwner extends EntityAIFollow {
 
 	@Override
 	public void setTarget(Entity entity) {
-		if(entity instanceof EntityPlayer)
-			this.host.setPlayerOwner((EntityPlayer) entity);
+    	// Do nothing here.
 	}
     
 	

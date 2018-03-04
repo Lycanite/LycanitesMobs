@@ -1,6 +1,5 @@
 package com.lycanitesmobs.elementalmobs.item;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.item.ItemScepter;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import com.lycanitesmobs.elementalmobs.entity.EntityWraith;
@@ -49,6 +48,7 @@ public class ItemWraithSigil extends ItemScepter {
                 minion.setMinion(true);
 				if(entity instanceof EntityPlayer) {
 					minion.setPlayerOwner((EntityPlayer)entity);
+					minion.ownerUUID = entity.getUniqueID();
 				}
 				world.spawnEntity(minion);
 				minion.playAttackSound();

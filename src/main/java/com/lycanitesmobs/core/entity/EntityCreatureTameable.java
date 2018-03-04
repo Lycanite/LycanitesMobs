@@ -41,7 +41,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public float sittingGuardRange = 16F;
 
     // Owner:
-    protected UUID ownerUUID;
+	public UUID ownerUUID;
 
 	// AI:
 	public EntityAISit aiSit;
@@ -440,14 +440,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 		this.setTamed(ownerUUID != null);
 	}
 
-	/**
-	 * Sets the owner of this entity to the provided player entity. Also updates the tamed status of this entity.
-	 * @param player The player to become the owner.
-	 */
-	public void setPlayerOwner(EntityPlayer player) {
-		this.setOwnerId(player.getUniqueID());
-	}
-
 	@Override
 	public Entity getOwner() {
 		UUID uuid = this.getOwnerId();
@@ -455,6 +447,14 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 			return super.getOwner();
 		}
 		return this.getEntityWorld().getPlayerEntityByUUID(uuid);
+	}
+
+	/**
+	 * Sets the owner of this entity to the provided player entity. Also updates the tamed status of this entity.
+	 * @param player The player to become the owner.
+	 */
+	public void setPlayerOwner(EntityPlayer player) {
+		this.setOwnerId(player.getUniqueID());
 	}
 
 	@Override
@@ -465,6 +465,21 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 			} catch (Exception ignored) {}
 		}
 		return this.ownerUUID;
+	}
+
+	/**
+	 * Returns the owner of this entity as a player or null if there is no player owner. This is separated from getOwner and getOwnerId as they behave inconsistently when built.
+	 * @return The player owner.
+	 */
+	public Entity getPlayerOwner() {
+		if(this.getEntityWorld().isRemote) {
+			Entity owner = this.getOwner();
+			if(owner instanceof EntityPlayer) {
+				return owner;
+			}
+			return null;
+		}
+		return this.getEntityWorld().getPlayerEntityByUUID(this.ownerUUID);
 	}
 
 	/**

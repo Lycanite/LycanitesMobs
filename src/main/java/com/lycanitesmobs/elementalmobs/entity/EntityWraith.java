@@ -69,11 +69,11 @@ public class EntityWraith extends EntityCreatureTameable implements IMob {
                 }
                 else {
                     for (EntityLivingBase entity : this.getNearbyEntities(EntityLivingBase.class, null, 1)) {
-                        if (entity == this.getOwner())
+                        if (this.getPlayerOwner() != null && entity == this.getPlayerOwner())
                             continue;
-                        if (entity instanceof EntityCreatureBase) {
-                            EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
-                            if (entityCreature.getOwner() != null && entityCreature.getOwner() == this.getOwner())
+                        if (entity instanceof EntityCreatureTameable) {
+                            EntityCreatureTameable entityCreature = (EntityCreatureTameable) entity;
+                            if (entityCreature.getPlayerOwner() != null && entityCreature.getPlayerOwner() == this.getPlayerOwner())
                                 continue;
                         }
                         this.detonateTimer = 0;

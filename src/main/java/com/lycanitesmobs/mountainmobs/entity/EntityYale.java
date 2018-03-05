@@ -1,8 +1,8 @@
 package com.lycanitesmobs.mountainmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.ai.*;
@@ -16,16 +16,16 @@ import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -50,7 +50,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         }
     }, 2, 1);
 
-    protected static final DataParameter<Byte> FUR = EntityDataManager.<Byte>createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> FUR = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
     
     // ==================================================
  	//                    Constructor
@@ -71,6 +71,10 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         // Add Dyes to the Color Mixer:
         this.colorMixer.setInventorySlotContents(0, new ItemStack(Items.DYE, 1, 0));
         this.colorMixer.setInventorySlotContents(1, new ItemStack(Items.DYE, 1, 0));
+
+        // Load Shear Drop From Config:
+		this.woolDrop = new ItemDrop(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
+		this.woolDrop = ConfigBase.getConfig(this.creatureInfo.group, "general").getItemDrop("Features", "Yale Shear Drop", this.woolDrop, "The item dropped by Yales when sheared. Format is: itemid,metadata,quantitymin,quantitymax,chance");
     }
 
     // ========== Init AI ==========
@@ -124,10 +128,14 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	
 	@Override
 	public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+		ArrayList<ItemStack> dropStacks = new ArrayList<>();
+		if(this.woolDrop == null) {
+			return dropStacks;
+		}
+
 		this.setFur(false);
-		this.playSound(new SoundEvent(new ResourceLocation("mob.sheep.shear")), 1.0F, 1.0F);
-		ArrayList<ItemStack> dropStacks = new ArrayList<ItemStack>();
-		
+		this.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1.0F, 1.0F);
+
 		int quantity = this.woolDrop.getQuantity(this.getRNG(), fortune);
 		ItemStack dropStack = this.woolDrop.getItemStack(this, quantity);
 		this.dropItem(dropStack);
@@ -160,9 +168,12 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
 	
 	@Override
 	public void setColor(int color) {
-        if(this.woolDrop == null)
-            this.woolDrop = new ItemDrop(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
-		this.woolDrop.setDrop(new ItemStack(Blocks.WOOL, 1, color));
+        if(this.woolDrop == null) {
+			this.woolDrop = new ItemDrop(new ItemStack(Blocks.WOOL), 1).setMinAmount(1).setMaxAmount(3);
+		}
+		else if(this.woolDrop.itemStack.getItem() == Item.getItemFromBlock(Blocks.WOOL)) {
+			this.woolDrop.setDrop(new ItemStack(Blocks.WOOL, 1, color));
+		}
 		super.setColor(color);
 	}
 	

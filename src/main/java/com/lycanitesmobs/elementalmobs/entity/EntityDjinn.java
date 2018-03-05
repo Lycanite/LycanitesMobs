@@ -97,7 +97,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
     public void attackRanged(Entity target, float range) {
     	int projectileCount = 10;
     	for(int i = 0; i < projectileCount; i++) {
-    		this.fireProjectile(EntityWhirlwind.class, target, range, (360 / 10) * i, new Vec3d(0, 0, 0), 1.2f, 2f, 1F);
+    		this.fireProjectile(EntityWhirlwind.class, target, range, (360 / 10) * i, new Vec3d(0, 0, 0), 0.6f, 2f, 1F);
 		}
         super.attackRanged(target, range);
     }

@@ -32,6 +32,7 @@ public class PacketHandler {
 		this.network.registerMessage(MessageWorldEvent.class, MessageWorldEvent.class, messageID++, Side.CLIENT);
         this.network.registerMessage(MessageMobEvent.class, MessageMobEvent.class, messageID++, Side.CLIENT);
         this.network.registerMessage(MessageSummoningPedestalStats.class, MessageSummoningPedestalStats.class, messageID++, Side.CLIENT);
+		this.network.registerMessage(MessageEntityVelocity.class, MessageEntityVelocity.class, messageID++, Side.CLIENT);
 		
 		// Client to Server:
 		this.network.registerMessage(MessageEntityGUICommand.class, MessageEntityGUICommand.class, messageID++, Side.SERVER);

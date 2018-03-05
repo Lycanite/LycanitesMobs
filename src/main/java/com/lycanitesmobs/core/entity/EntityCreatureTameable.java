@@ -479,6 +479,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 			}
 			return null;
 		}
+		if(this.ownerUUID == null) {
+			return null;
+		}
 		return this.getEntityWorld().getPlayerEntityByUUID(this.ownerUUID);
 	}
 

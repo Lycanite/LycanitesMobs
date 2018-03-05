@@ -49,6 +49,12 @@
 			"conditions": [
 				{
 					"type": "player"
+				},
+				{
+					"type": "world",
+					"dimensionIds": [0, 7],
+					"dayTimeMin": 10000,
+					"moonPhase": 0
 				}
 			]
 		}

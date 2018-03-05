@@ -2,8 +2,15 @@ package com.lycanitesmobs.core.config;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.GroupInfo;
+import com.lycanitesmobs.core.info.ItemDrop;
+import jline.internal.Nullable;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -225,6 +232,56 @@ public class ConfigBase {
 		if(comment != null) property.setComment(comment);
         if(newEntry) this.config.save();
 		return property.getString();
+	}
+
+	// ========== Get String ==========
+	@Nullable
+	public ItemDrop getItemDrop(String category, String key) {
+		return this.getItemDrop(category, key, null);
+	}
+
+	@Nullable
+	public ItemDrop getItemDrop(String category, String key, ItemDrop defaultValue) {
+		return this.getItemDrop(category, key, defaultValue, null);
+	}
+
+	@Nullable
+	public ItemDrop getItemDrop(String category, String key, ItemDrop defaultValue, String comment) {
+    	String defaultValueString = "";
+    	if(defaultValue != null) {
+    		defaultValueString = defaultValue.toConfigString();
+		}
+		String itemDropString = this.getString(category, key, defaultValueString, comment).replace(" ", "");
+		if(itemDropString != null && itemDropString.length() > 0) {
+			String[] customDropValues = itemDropString.split(",");
+			String itemId = customDropValues[0];
+			int itemMetadata = 0;
+			if (customDropValues.length > 1) {
+				itemMetadata = Integer.parseInt(customDropValues[1]);
+			}
+			int amountMin = 1;
+			if (customDropValues.length > 2) {
+				amountMin = Integer.parseInt(customDropValues[2]);
+			}
+			int amountMax = 1;
+			if (customDropValues.length > 3) {
+				amountMax = Integer.parseInt(customDropValues[3]);
+			}
+			float chance = 1;
+			if (customDropValues.length > 4) {
+				chance = Float.parseFloat(customDropValues[4]);
+			}
+
+			ItemDrop itemDrop = null;
+			Item item = GameRegistry.findRegistry(Item.class).getValue(new ResourceLocation(itemId));
+			if(item != null) {
+				itemDrop = new ItemDrop(new ItemStack(item, amountMin, itemMetadata), chance);
+				itemDrop.setMinAmount(amountMin);
+				itemDrop.setMaxAmount(amountMax);
+			}
+			return itemDrop;
+		}
+		return null;
 	}
 	
 	

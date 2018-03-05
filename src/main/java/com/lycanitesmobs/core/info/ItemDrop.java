@@ -105,7 +105,7 @@ public class ItemDrop {
 		}
 	}
 
-	
+
     // ==================================================
    	//                     Properties
    	// ==================================================
@@ -144,10 +144,13 @@ public class ItemDrop {
         return this;
     }
 
-	
-    // ==================================================
-   	//                       Drop
-   	// ==================================================
+
+	/**
+	 * Returns a quantity to drop.
+	 * @param random The instance of random to use.
+	 * @param bonus A bonus multiplier.
+	 * @return The randomised amount to drop.
+	 */
 	public int getQuantity(Random random, int bonus) {
 		// Will It Drop?
 		float roll = random.nextFloat();
@@ -187,9 +190,10 @@ public class ItemDrop {
 	}
 
 
-	// ==================================================
-	//                    Read From NBT
-	// ==================================================
+	/**
+	 * Reads this Item Drop from NBT.
+	 * @param nbtTagCompound The NBT to load values from.
+	 */
 	public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		this.itemStack = new ItemStack(nbtTagCompound);
 
@@ -199,9 +203,11 @@ public class ItemDrop {
 	}
 
 
-	// ==================================================
-	//                    Write To NBT
-	// ==================================================
+	/**
+	 * Writes this Item Drop to NBT.
+	 * @param nbtTagCompound The NBT to write to.
+	 * @return The NBT written to.
+	 */
 	public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
 		NBTTagCompound itemNBT = new NBTTagCompound();
 		this.itemStack.writeToNBT(itemNBT);
@@ -212,5 +218,14 @@ public class ItemDrop {
 		nbtTagCompound.setFloat("Chance", this.chance);
 
 		return nbtTagCompound;
+	}
+
+
+	/**
+	 * Returns this Item Drop as a string value for using in configs.
+	 * @return The Item Drop config string.
+	 */
+	public String toConfigString() {
+		return this.itemStack.getItem().getRegistryName().toString() + "," + this.itemStack.getMetadata() + "," + this.minAmount + "," + this.maxAmount + "," + this.chance;
 	}
 }

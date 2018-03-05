@@ -269,25 +269,26 @@ public class ObjectLists {
 		config.setCategoryComment("item lists", "Here you can add items from vanilla Minecraft or other mods to various lists used by this mod. These are mostly food items that can be fed to farmable/tameable mobs. Format is: mod:itemname,metadata Multiple entries should be semicolon separated, be sure to use a colon and semicolon in the correct place.");
 		String customDropsString = config.getString("Item Lists", listName).replace(" ", "");
 		LycanitesMobs.printDebug("ItemSetup", "~O========== Custom " + listName + " ==========O~");
-		if(customDropsString != null && customDropsString.length() > 0)
-    		for(String customDropEntryString : customDropsString.replace(" ", "").split(";")) {
-    			LycanitesMobs.printDebug("ItemSetup", "Adding: " + customDropEntryString);
-    			String[] customDropValues = customDropEntryString.split(",");
+		if(customDropsString != null && customDropsString.length() > 0) {
+			for (String customDropEntryString : customDropsString.replace(" ", "").split(";")) {
+				LycanitesMobs.printDebug("ItemSetup", "Adding: " + customDropEntryString);
+				String[] customDropValues = customDropEntryString.split(",");
 				String dropName = customDropValues[0];
 				int dropMeta = 0;
-				if(customDropValues.length > 1)
+				if (customDropValues.length > 1)
 					dropMeta = Integer.parseInt(customDropValues[1]);
-				if(Item.getByNameOrId(dropName) != null) {
+				if (Item.getByNameOrId(dropName) != null) {
 					Item customItem = Item.getByNameOrId(dropName);
 					ObjectLists.addItem(listName, new ItemStack(customItem, 1, dropMeta));
-	    			LycanitesMobs.printDebug("ItemSetup", "As Item: " + customItem);
+					LycanitesMobs.printDebug("ItemSetup", "As Item: " + customItem);
 				}
-				else if(Block.getBlockFromName(dropName) != null) {
+				else if (Block.getBlockFromName(dropName) != null) {
 					Block customBlock = Block.getBlockFromName(dropName);
 					ObjectLists.addItem(listName, new ItemStack(customBlock, 1, dropMeta));
-	    			LycanitesMobs.printDebug("ItemSetup", "As Block: " + customBlock);
+					LycanitesMobs.printDebug("ItemSetup", "As Block: " + customBlock);
 				}
-    		}
+			}
+		}
 	}
 	
 	

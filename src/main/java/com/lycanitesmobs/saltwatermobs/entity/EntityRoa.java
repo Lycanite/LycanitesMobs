@@ -105,7 +105,7 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
                         continue;
                     if(entity instanceof EntityLivingBase) {
                         EntityLivingBase entityLivingBase = (EntityLivingBase)entity;
-                        if(entityLivingBase.isPotionActive(ObjectManager.getPotionEffect("weight")) || !this.canAttackEntity(entityLivingBase))
+                        if(entityLivingBase.isPotionActive(ObjectManager.getPotionEffect("weight")) || !this.canAttackEntity(entityLivingBase) || !entity.isInWater())
                             continue;
                     }
                     EntityPlayerMP player = null;

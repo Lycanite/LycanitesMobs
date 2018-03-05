@@ -119,6 +119,9 @@ public class EntityAITargetFuse extends EntityAITarget {
 		if (this.host.updateTick % 20 != 0) {
 			return false;
 		}
+		if(this.host.isPetType("familiar")) {
+			return false;
+		}
 		if(this.targetChance > 0 && this.host.getRNG().nextInt(this.targetChance) != 0) {
 			return false;
 		}

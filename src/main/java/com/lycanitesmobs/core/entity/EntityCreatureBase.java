@@ -732,10 +732,36 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ========== Group Limit Spawn Check ==========
 	/** Checks for nearby entities of this type, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
 	public boolean checkSpawnGroupLimit(World world, BlockPos pos, double range) {
-		int spawnLimit = this.creatureInfo.creatureSpawn.spawnAreaLimit;
-		if(spawnLimit > 0 && range > 0) {
-			List targets = this.getNearbyEntities(EntityCreatureBase.class, this.creatureInfo.entityClass, range);
-			if(targets.size() >= spawnLimit) {
+		if(range <= 0) {
+			return true;
+		}
+
+		// Get Limits:
+		int typesLimit = CreatureManager.getInstance().spawnConfig.typeSpawnLimit;
+		int speciesLimit = this.creatureInfo.creatureSpawn.spawnAreaLimit;
+		if(typesLimit <= 0 && speciesLimit <= 0) {
+			return true;
+		}
+
+		// Count Nearby Entities:
+		List<EntityCreatureBase> targets = this.getNearbyEntities(EntityCreatureBase.class, EntityCreatureBase.class, range);
+		int typesFound = 0;
+		int speciesFound = 0;
+		for(EntityCreatureBase targetCreature : targets) {
+			if(targetCreature.creatureInfo.peaceful == this.creatureInfo.peaceful) {
+				typesFound++;
+			}
+			if(this.creatureInfo.entityClass.isAssignableFrom(targetCreature.getClass())) {
+				speciesFound++;
+			}
+		}
+
+		// Check Limits:
+		if(range > 0) {
+			if(typesLimit > 0 && typesFound >= typesLimit) {
+				return false;
+			}
+			if(speciesLimit > 0 && speciesFound >= speciesLimit) {
 				return false;
 			}
 		}
@@ -3670,7 +3696,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
    	// ========== Get Nearby Entities ==========
     /** Get entities that are near this entity. **/
     public <T extends Entity> List<T> getNearbyEntities(Class <? extends T > clazz, final Class filterClass, double range) {
-        return this.getEntityWorld().<T>getEntitiesWithinAABB(clazz, this.getEntityBoundingBox().grow(range, range, range), (Predicate<Entity>) entity -> {
+        return this.getEntityWorld().getEntitiesWithinAABB(clazz, this.getEntityBoundingBox().grow(range, range, range), (Predicate<Entity>) entity -> {
 			if(filterClass == null)
 				return true;
 			return filterClass.isAssignableFrom(entity.getClass());

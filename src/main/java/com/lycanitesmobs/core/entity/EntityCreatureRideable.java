@@ -188,10 +188,10 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                 EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
                 ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
                 if (playerExt != null && playerExt.isControlActive(ExtendedPlayer.CONTROL_ID.JUMP)) {
-                    verticalMotion = this.creatureStats.getSpeed();
+                    verticalMotion = this.creatureStats.getSpeed() * 20;
                 }
                 else if(player.rotationPitch > 0 && forward != 0.0F) {
-                    verticalMotion = this.creatureStats.getSpeed() * -(player.rotationPitch / 90);
+                    verticalMotion = this.creatureStats.getSpeed() * 20 * -(player.rotationPitch / 90);
                 }
                 else {
                     verticalMotion = 0;
@@ -245,7 +245,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
                 }
                 else if(this.isInWater() || this.isInLava()) {
 					if(!this.isStrongSwimmer()) {
-						verticalMotion *= 0.015625f;
+						verticalMotion *= 0.25f;
 						strafe *= 0.25f;
 						forward *= 0.25f;
 					}

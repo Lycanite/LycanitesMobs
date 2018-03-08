@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreatureSpawnConfig {
+	public int typeSpawnLimit = 64;
 	public double spawnLimitRange = 32D;
 	public boolean disableAllSpawning = false;
 	public boolean disableDungeonSpawners = false;
@@ -31,7 +32,8 @@ public class CreatureSpawnConfig {
 	 */
 	public void loadConfig(ConfigBase config) {
 		config.setCategoryComment("Global Spawning", "These settings are used by everything. It is recommended to leave them as they are however low end machines might benefit from a few tweaks here.");
-        this.spawnLimitRange = config.getDouble("Global Spawning", "Mob Limit Search Range", this.spawnLimitRange, "When spawned form a vanilla spawner, this is how far a mob should search from in blocks when checking how many of its kind have already spawned. Custom Spawners have it defined in their json file instead.");
+		this.typeSpawnLimit = config.getInt("Global Spawning", "Mob Type Limit", this.typeSpawnLimit, "The limit of how many mobs of the same type (peaceful or not peaceful) can spawn within the limit search range. For individual creature species limits, see the creature json configs.");
+		this.spawnLimitRange = config.getDouble("Global Spawning", "Mob Limit Search Range", this.spawnLimitRange, "When spawned form a vanilla spawner, this is how far a mob should search from in blocks when checking how many of its kind have already spawned. Custom Spawners have it defined in their json file instead.");
 		this.disableAllSpawning = config.getBool("Global Spawning", "Disable Spawning", this.disableAllSpawning, "If true, all mobs from this mod will not spawn at all.");
 		this.enforceBlockCost = config.getBool("Global Spawning", "Enforce Block Costs", this.enforceBlockCost, "If true, mobs will double check if their required blocks are nearby, such as Cinders needing so many blocks of fire.");
 		this.spawnWeightScale = config.getDouble("Global Spawning", "Weight Scale", this.spawnWeightScale, "Scales the spawn weights of all mobs from this mod. For example, you can use this to quickly half the spawn rates of mobs from this mod compared to vanilla/other mod mobs by setting it to 0.5.");

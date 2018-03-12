@@ -2,6 +2,9 @@ package com.lycanitesmobs.core.info;
 
 import com.lycanitesmobs.core.config.ConfigBase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Loads global creature configs. **/
 public class CreatureConfig {
 
@@ -70,6 +73,12 @@ public class CreatureConfig {
 	/** If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at. **/
 	public boolean disablePickupOffsets = false;
 
+	/** If true, all mobs will be immune to suffocation damage. **/
+	public boolean suffocationImmunity = false;
+
+	/** If true, all mobs will be immune to damage from running out of air. **/
+	public boolean drownImmunity = false;
+
 
 	// Variations:
 	/** If true, mobs will have a chance of becoming a subspecies when spawned. **/
@@ -83,6 +92,9 @@ public class CreatureConfig {
 	/** A string of global drops to add to every mob. **/
 	public String globalDropsString = "";
 
+	/** A list of global drops to add to every mob. **/
+	protected List<ItemDrop> globalDrops;
+
 
 	/**
 	 * Loads settings from the config.
@@ -95,11 +107,11 @@ public class CreatureConfig {
 
 		// Stats:
 		config.setCategoryComment("Base Starting Level", "The base starting level is the level every mob will start at. Mob Events, Special Spawners and other things will then add onto this base level.");
-		startingLevelMin = config.getInt("Base Starting Level", "Starting Level Min", startingLevelMin, "The minimum base starting level of every mob. Cannot be less than 1.");
-		startingLevelMax = config.getInt("Base Starting Level", "Starting Level Max", startingLevelMax, "The maximum base starting level of every mob. Ignored when not greater than the min level.");
-		levelPerDay = config.getDouble("Base Starting Level", "Level Gain Per Day", levelPerDay, "Increases the base start level by this amount of every world day that has gone by, use this to slowly level up mobs as the world gets older. Fractions can be used such as 0.05 levels per day. The levels are rounded down so +0.9 would be +0 levels.");
-		levelPerDayMax = config.getInt("Base Starting Level", "Level Gain Per Day Max", levelPerDayMax, "The maximum level to be able gain from levels per day.");
-		levelPerLocalDifficulty = config.getDouble("Base Starting Level", "Level Gain Per Local Difficulty", levelPerLocalDifficulty, "How many levels a mob gains multiplied by the local area difficulty level. Staying in an area for a while slowly increases the difficulty of that area ranging from 0.00 to 6.75. So 1.5 means level 10 at full local area difficulty.");
+		this.startingLevelMin = config.getInt("Base Starting Level", "Starting Level Min", this.startingLevelMin, "The minimum base starting level of every mob. Cannot be less than 1.");
+		this.startingLevelMax = config.getInt("Base Starting Level", "Starting Level Max", this.startingLevelMax, "The maximum base starting level of every mob. Ignored when not greater than the min level.");
+		this.levelPerDay = config.getDouble("Base Starting Level", "Level Gain Per Day", this.levelPerDay, "Increases the base start level by this amount of every world day that has gone by, use this to slowly level up mobs as the world gets older. Fractions can be used such as 0.05 levels per day. The levels are rounded down so +0.9 would be +0 levels.");
+		this.levelPerDayMax = config.getInt("Base Starting Level", "Level Gain Per Day Max", this.levelPerDayMax, "The maximum level to be able gain from levels per day.");
+		this.levelPerLocalDifficulty = config.getDouble("Base Starting Level", "Level Gain Per Local Difficulty", this.levelPerLocalDifficulty, "How many levels a mob gains multiplied by the local area difficulty level. Staying in an area for a while slowly increases the difficulty of that area ranging from 0.00 to 6.75. So 1.5 means level 10 at full local area difficulty.");
 
 		// Pets:
 		config.setCategoryComment("Pets", "Here you can control all settings related to taming and mounting.");
@@ -124,15 +136,37 @@ public class CreatureConfig {
 		this.animalsFightBack = config.getBool("Mob Interaction", "Animals Fight Back", this.animalsFightBack, "If true, passive mobs will fight back when hit instead of running away.");
 		this.elementalFusion = config.getBool("Mob Interaction", "Elemental Fusion", this.elementalFusion, "If true, some elemental mobs will fuse with each other on sight into a stronger different elemental.");
 		this.disablePickupOffsets = config.getBool("Mob Interaction", "Disable Pickup Offset", this.disablePickupOffsets, "If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at.");
+		this.suffocationImmunity = config.getBool("Mob Interaction", "Global Suffocation Immunity", this.suffocationImmunity, "If true, all mobs will be immune to suffocation (inWall) damage.");
+		this.drownImmunity = config.getBool("Mob Interaction", "Global Drown Immunity", this.drownImmunity, "If true, all mobs will be immune to damage from running out of air (drown damage).");
 
 		// Variations:
 		config.setCategoryComment("Mob Variations", "Settings for how mobs randomly vary such as subspecies. Subspecies are uncommon and rare variants of regular mobs, uncommon subspecies tend to be a bit tougher and rare subspecies are quite powerful and can be considered as mini bosses..");
-		subspeciesSpawn = config.getBool("Mob Variations", "Subspecies Can Spawn", subspeciesSpawn, "Set to false to prevent subspecies from spawning, this will not affect mobs that have already spawned as subspecies.");
-		randomSizes = config.getBool("Mob Variations", "Random Sizes", randomSizes, "Set to false to prevent mobs from having a random size variation when spawning, this will not affect mobs that have already spawned.");
+		this.subspeciesSpawn = config.getBool("Mob Variations", "Subspecies Can Spawn", this.subspeciesSpawn, "Set to false to prevent subspecies from spawning, this will not affect mobs that have already spawned as subspecies.");
+		this.randomSizes = config.getBool("Mob Variations", "Random Sizes", this.randomSizes, "Set to false to prevent mobs from having a random size variation when spawning, this will not affect mobs that have already spawned.");
 		Subspecies.loadGlobalSettings(config);
 
 		// Drops:
 		config.setCategoryComment("Custom Item Drops", "Here you can add a global list of item drops to add to every mob from Lycanites Mobs. Format is: mod:item,metadata,chance,min,max Multiple drops should be semicolon separated and chances are in decimal format. You can also add an additional comma and then a subspecies ID to restrict that drop to a certain subspecies like so: mod:item,metadata,chance,min,max,subspecies. minecraft:wool,2,0.25,0,3 is Green Wool with a 25% drop rate and will drop 0 to 3 blocks. Be sure to use a colon for mod:item and commas for everything else in an entry. Semicolons can be used to separate multiple entries.");
-		globalDropsString = config.getString("Default Item Drops", "Global Drops", globalDropsString, "");
+		this.globalDropsString = config.getString("Default Item Drops", "Global Drops", this.globalDropsString, "");
+	}
+
+
+	/**
+	 * Returns a list of item drops to be drops by all mobs.
+	 * @return Global item drops list.
+	 */
+	public List<ItemDrop> getGlobalDrops() {
+		if(this.globalDrops == null) {
+			this.globalDrops = new ArrayList<>();
+			if(this.globalDropsString != null && this.globalDropsString.length() > 0) {
+				for (String customDropEntryString : this.globalDropsString.replace(" ", "").split(";")) {
+					ItemDrop itemDrop = ItemDrop.createFromConfigString(customDropEntryString);
+					if(itemDrop != null) {
+						this.globalDrops.add(itemDrop);
+					}
+				}
+			}
+		}
+		return this.globalDrops;
 	}
 }

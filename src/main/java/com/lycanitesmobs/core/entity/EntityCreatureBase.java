@@ -433,6 +433,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			ItemDrop newDrop = new ItemDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);
 			this.drops.add (newDrop);
 		}
+		for(ItemDrop drop : CreatureManager.getInstance().config.getGlobalDrops()) {
+			ItemDrop newDrop = new ItemDrop(drop.itemStack.copy(), drop.chance).setMinAmount(drop.minAmount).setMaxAmount(drop.maxAmount).setChance(drop.chance).setSubspecies(drop.subspeciesID).setBurningDrop(drop.burningItemStack);
+			this.drops.add (newDrop);
+		}
 	}
 
     /** Adds a saved item drop to this creature instance where it will be read/written from/to NBT Data. **/
@@ -3494,6 +3498,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
         if(("inWall".equals(type) || "cactus".equals(type)) && (this.getSubspeciesIndex() >= 3 || this.isBoss()))
             return false;
+		if("inWall".equals(type))
+			return !CreatureManager.getInstance().config.suffocationImmunity;
+		if("drown".equals(type))
+			return !CreatureManager.getInstance().config.drownImmunity;
         return true;
     }
 

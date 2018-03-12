@@ -61,6 +61,44 @@ public class ItemDrop {
 		return itemDrop;
 	}
 
+
+	// ==================================================
+	//                      Config
+	// ==================================================
+	/** Creates a MobDrop from the provided Config String. **/
+	public static ItemDrop createFromConfigString(String itemDropString) {
+		if(itemDropString != null && itemDropString.length() > 0) {
+			String[] customDropValues = itemDropString.split(",");
+			String itemId = customDropValues[0];
+			int itemMetadata = 0;
+			if (customDropValues.length > 1) {
+				itemMetadata = Integer.parseInt(customDropValues[1]);
+			}
+			int amountMin = 1;
+			if (customDropValues.length > 2) {
+				amountMin = Integer.parseInt(customDropValues[2]);
+			}
+			int amountMax = 1;
+			if (customDropValues.length > 3) {
+				amountMax = Integer.parseInt(customDropValues[3]);
+			}
+			float chance = 1;
+			if (customDropValues.length > 4) {
+				chance = Float.parseFloat(customDropValues[4]);
+			}
+
+			ItemDrop itemDrop = null;
+			Item item = GameRegistry.findRegistry(Item.class).getValue(new ResourceLocation(itemId));
+			if(item != null) {
+				itemDrop = new ItemDrop(new ItemStack(item, amountMin, itemMetadata), chance);
+				itemDrop.setMinAmount(amountMin);
+				itemDrop.setMaxAmount(amountMax);
+			}
+			return itemDrop;
+		}
+		return null;
+	}
+
 	
     // ==================================================
    	//                     Constructor

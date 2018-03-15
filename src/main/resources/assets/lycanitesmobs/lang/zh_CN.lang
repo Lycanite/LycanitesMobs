@@ -21,7 +21,7 @@ mobevent.eruption.name=火山喷发
 mobevent.halloween.name=快乐万圣节
 mobevent.hellsfury.name=地狱之怒
 mobevent.marchofthegorgomites.name=魔鬼螨的进军
-mobevent.poopparty.name=”投翔”派对
+mobevent.poopparty.name="投翔"派对
 mobevent.primalfury.name=原始之怒
 mobevent.rahovart.name=拉赫凡特
 mobevent.raptorrampage.name=猛禽暴怒
@@ -92,9 +92,9 @@ subspecies.umber.name=棕土
 # ========== Blocks ==========
 tile.summoningpedestal.name=召唤基座
 tile.summoningpedestal.description=这个基座可以打开一个稳定的传送门用来召唤选择的宠物。有些基座可以被玩家获得，有些不行。
-tile.equipmentforge_wood.name=Wood Equipment Forge (Level 1)
-tile.equipmentforge_stone.name=Stone Equipment Forge (Level 2)
-tile.equipmentforge_iron.name=Iron Equipment Forge (Level 3)
+tile.equipmentforge_wood.name=木质锻造台（一阶）
+tile.equipmentforge_stone.name=石质锻造台（二阶）
+tile.equipmentforge_iron.name=铁质锻造台（三阶）
 tile.equipmentforge_wood.description=This forge can be used to create new Equipment from Level 1 creature body parts (higher level parts will be downgraded if possible).
 tile.equipmentforge_stone.description=This forge can be used to create new Equipment from Level 2 or below creature body parts (higher level parts will be downgraded if possible).
 tile.equipmentforge_iron.description=This forge can be used to create new Equipment from Level 3 or below creature body parts.
@@ -209,15 +209,15 @@ gui.mount.controls=按下%control%使用坐骑能力
 #%control% will be replaced with the Mount Ability key, don't translate this! | %control% 将被替换为特定的能力名称，请不要翻译！
 #
 # Equipment Forge:
-gui.equipmentforge.text.name=Equipment Name:
-gui.equipmentforge.button.construct=Construct
-gui.equipmentforge.button.deconstruct=Deconstruct
+gui.equipmentforge.text.name=设备名称：
+gui.equipmentforge.button.construct=构建
+gui.equipmentforge.button.deconstruct=解析
 gui.equipmentforge.info.empty=Insert a Base Equipment Part or piece of Equipment to get started.
 gui.equipmentforge.warning.construct=Warning! Some Equipment Parts used are a higher level than this Forge and will be leveled down, continue?
 gui.equipmentforge.warning.deconstruct=Warning! The Equipment you are deconstructing has parts that are a higher level than this forge and will be leveled down, continue?
 gui.equipmentforge.error.construct=Some Equipment Parts used have a higher minimum level than this Forge and cannot be used.
 gui.equipmentforge.error.deconstruct=The Equipment you are deconstructing has parts that have a higher minimum level than this Forge so it cannot be deconstructed.
-gui.equipmentforge.error.name=You must name your new Equipment!
+gui.equipmentforge.error.name=你必须为你的设备命名！
 #
 #
 #

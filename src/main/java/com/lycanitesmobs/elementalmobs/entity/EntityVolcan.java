@@ -112,7 +112,7 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
 		}
 
 		// Melt Blocks:
-		if(this.updateTick % 40 == 0 && this.volcanMeltRadius > 0 && !this.isTamed() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing")) {
+		if(!this.getEntityWorld().isRemote && this.updateTick % 40 == 0 && this.volcanMeltRadius > 0 && !this.isTamed() && this.getEntityWorld().getGameRules().getBoolean("mobGriefing")) {
 			int range = this.volcanMeltRadius;
 			for (int w = -((int) Math.ceil(this.width) + range); w <= (Math.ceil(this.width) + range); w++) {
 				for (int d = -((int) Math.ceil(this.width) + range); d <= (Math.ceil(this.width) + range); d++) {

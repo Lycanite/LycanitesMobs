@@ -131,6 +131,12 @@
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 1
+		},
+		{
+			"item": "elementalmobs:wraithsigil",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 1
 		}
 	],
 	"sizeScale": 1,

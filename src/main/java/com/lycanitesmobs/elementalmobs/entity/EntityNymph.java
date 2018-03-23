@@ -31,9 +31,7 @@ public class EntityNymph extends EntityCreatureTameable implements IGroupPlant {
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
+
 		this.fleeHealthPercent = 1.0F;
 		this.isHostileByDefault = false;
         this.setupMob();

@@ -413,7 +413,7 @@ public class Spawner {
 
 		// Get Mobs:
 		List<MobSpawn> mobSpawns = this.getMobSpawns(world, player, spawnPositions.size(), biomes);
-		LycanitesMobs.printDebug("JSONSpawner", "Mobs Found: " + mobSpawns.size());
+		LycanitesMobs.printDebug("JSONSpawner", "Spawnable Mobs Found: " + mobSpawns.size());
 		if(mobSpawns.size() == 0) {
 			return false;
 		}

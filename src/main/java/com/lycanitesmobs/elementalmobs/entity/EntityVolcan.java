@@ -1,6 +1,5 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
@@ -17,8 +16,8 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -169,6 +168,18 @@ public class EntityVolcan extends EntityCreatureTameable implements IMob, IGroup
   	// ==================================================
     @Override
     public boolean isFlying() { return true; }
+
+	// ========== Perform Command ==========
+	@Override
+	public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
+
+		// Water:
+		if(command.equals("Water")) {
+			this.replacePlayersItem(player, itemStack, new ItemStack(Items.LAVA_BUCKET));
+		}
+
+		super.performCommand(command, player, itemStack);
+	}
     
     
     // ==================================================

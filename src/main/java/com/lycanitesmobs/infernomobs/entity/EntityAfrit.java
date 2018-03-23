@@ -44,9 +44,7 @@ public class EntityAfrit extends EntityCreatureTameable implements IMob, IGroupF
         this.isLavaCreature = true;
         this.hasAttackSound = false;
         this.flySoundSpeed = 20;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 0.8F;
+
         this.setupMob();
 
         this.stepHeight = 1.0F;

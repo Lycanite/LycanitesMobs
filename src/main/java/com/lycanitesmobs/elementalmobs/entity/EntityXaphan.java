@@ -1,8 +1,6 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupFire;
-import com.lycanitesmobs.api.IGroupWater;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.entity.Entity;
@@ -12,18 +10,17 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
 
-public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupWater, IFusable {
+public class EntityXaphan extends EntityCreatureTameable implements IMob {
 
     // ==================================================
  	//                    Constructor
  	// ==================================================
-    public EntityJengu(World world) {
+    public EntityXaphan(World world) {
         super(world);
         
         // Setup:
@@ -65,12 +62,12 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Particles:
+        /*/ Particles:
         if(this.getEntityWorld().isRemote)
 	        for(int i = 0; i < 2; ++i) {
                 this.getEntityWorld().spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
                 this.getEntityWorld().spawnParticle(EnumParticleTypes.DRIP_WATER, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
-            }
+            }*/
     }
     
     
@@ -142,50 +139,5 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         }
 
         return commands;
-    }
-
-    // ========== Perform Command ==========
-    @Override
-    public void performCommand(String command, EntityPlayer player, ItemStack itemStack) {
-
-        // Water:
-        if(command.equals("Water")) {
-            this.replacePlayersItem(player, itemStack, new ItemStack(Items.WATER_BUCKET));
-        }
-
-        super.performCommand(command, player, itemStack);
-    }
-
-
-    // ==================================================
-    //                      Fusion
-    // ==================================================
-    protected IFusable fusionTarget;
-
-    @Override
-    public IFusable getFusionTarget() {
-        return this.fusionTarget;
-    }
-
-    @Override
-    public void setFusionTarget(IFusable fusionTarget) {
-        this.fusionTarget = fusionTarget;
-    }
-
-    @Override
-    public Class getFusionClass(IFusable fusable) {
-        if(fusable instanceof EntityCinder) {
-            return EntityXaphan.class;
-        }
-        if(fusable instanceof EntityGeonach) {
-            return EntitySpriggan.class;
-        }
-        if(fusable instanceof EntityDjinn) {
-            return EntityReiver.class;
-        }
-        if(fusable instanceof EntityAegis) {
-            return EntityNymph.class;
-        }
-        return null;
     }
 }

@@ -39,9 +39,7 @@ public class EntitySpriggan extends EntityCreatureTameable implements IMob, IGro
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.hasAttackSound = false;
-        
-        this.setWidth = 0.8F;
-        this.setHeight = 1.2F;
+
         this.setupMob();
 
         this.stepHeight = 1.0F;

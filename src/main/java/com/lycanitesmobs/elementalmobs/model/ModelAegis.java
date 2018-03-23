@@ -81,11 +81,6 @@ public class ModelAegis extends ModelTemplateElemental {
 					this.rotate(0, orbit, 0);
 					this.shiftOriginBack(partName, "body");
 
-					/**if(partName.contains("left")) {
-						this.shiftOrigin(partName, "body");
-						this.rotate(0, 90, 0);
-						this.shiftOriginBack(partName, "body");
-					}**/
 					this.translate(0, -0.25f, 0);
 					this.scale(0.5f, 1, 1);
 					if ("shieldupperleft01".equals(partName) || "shieldupperright01".equals(partName)) {

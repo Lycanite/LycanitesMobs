@@ -253,6 +253,9 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 
 	@Override
 	public Class getFusionClass(IFusable fusable) {
+		if(fusable instanceof EntityJengu) {
+			return EntityXaphan.class;
+		}
 		if(fusable instanceof EntityGeonach) {
 			return EntityVolcan.class;
 		}

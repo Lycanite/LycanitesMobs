@@ -165,7 +165,7 @@ public class JSONHelper {
 
 
 			Biome[] selectedBiomes = null;
-			if ("ALL".equals(biomeEntry)) {
+			if ("ALL".equalsIgnoreCase(biomeEntry)) {
 				for (BiomeDictionary.Type biomeType : getAllBiomeTypes()) {
 					if (selectedBiomes == null) {
 						Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
@@ -179,7 +179,7 @@ public class JSONHelper {
 					}
 				}
 			}
-			else if (!"NONE".equals(biomeEntry)) {
+			else if (!"NONE".equalsIgnoreCase(biomeEntry)) {
 				BiomeDictionary.Type biomeType;
 				try {
 					biomeType = BiomeDictionary.Type.getType(biomeEntry);

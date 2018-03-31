@@ -115,7 +115,7 @@ public class FreshwaterMobs extends Submod {
 
 		// Projectiles:
 		ObjectManager.addProjectile("waterjet", EntityWaterJet.class, ObjectManager.getItem("waterjetcharge"), new DispenserBehaviorWaterJet());
-		ObjectManager.addProjectile("waterjetend", EntityWaterJetEnd.class);
+		ObjectManager.addProjectile("waterjetend", EntityWaterJetEnd.class, false);
 	}
 
 	@Override

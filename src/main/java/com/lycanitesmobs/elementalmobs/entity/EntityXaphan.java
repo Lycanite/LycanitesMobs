@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 
 public class EntityXaphan extends EntityCreatureTameable implements IMob {
+	private int nextSplash = 20;
 
     // ==================================================
  	//                    Constructor
@@ -37,7 +38,7 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
-        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(5.0F));
+        this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(10.0F));
         this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
@@ -50,7 +51,6 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-        this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
 	
 	
@@ -61,6 +61,11 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
 	@Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
+		if(!this.getEntityWorld().isRemote && this.updateTick % this.nextSplash == 0) {
+			this.fireProjectile(EntityAcidSplash.class, null, 0, 0, new Vec3d(0.5D - this.getRNG().nextDouble(), 0, 0.5D - this.getRNG().nextDouble()), 0f, (float)this.nextSplash / 20, 1F);
+			this.nextSplash = 20 + this.getRNG().nextInt(20);
+		}
         
         /*/ Particles:
         if(this.getEntityWorld().isRemote)
@@ -83,7 +88,12 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
     // ========== Ranged Attack ==========
     @Override
     public void attackRanged(Entity target, float range) {
-        this.fireProjectile(EntityAquaPulse.class, target, range, 0, new Vec3d(0, 0, 0), 0.6f, 2f, 1F);
+        for(int row = -1; row <= 1; row++) {
+			int projectileCount = 10;
+			for (int i = 0; i < projectileCount; i++) {
+				this.fireProjectile(EntityAcidSplash.class, target, range, (90 / projectileCount) * i, new Vec3d(0, 3 * row, 0), 0.6f, 2f, 1F);
+			}
+		}
         super.attackRanged(target, range);
     }
     

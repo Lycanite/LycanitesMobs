@@ -2807,6 +2807,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns the XYZ in front or behind the provided XYZ coords with the given distance and angle (in degrees), use a negative distance for behind. **/
     public Vec3d getFacingPositionDouble(double x, double y, double z, double distance, double angle) {
+    	if(distance == 0) {
+			distance = 1;
+		}
         angle = Math.toRadians(angle);
         double xAmount = -Math.sin(angle);
         double zAmount = Math.cos(angle);

@@ -78,7 +78,7 @@
 			"chance": 0.25
 		},
 		{
-			"item": "elementalmobs:acidspraycharge",
+			"item": "elementalmobs:acidsplashcharge",
 			"minAmount": 1,
 			"maxAmount": 1,
 			"chance": 0.25

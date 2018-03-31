@@ -160,10 +160,13 @@ public class ObjectManager {
 	
 
 	// ========== Projectile ==========
-    public static void addProjectile(String name, Class entityClass, int updateFrequency) {
+    public static void addProjectile(String name, Class entityClass, int updateFrequency, boolean impactSound) {
         name = name.toLowerCase();
         GroupInfo group = currentGroup;
         AssetManager.addSound(name, group, "projectile." + name);
+        if(impactSound) {
+			AssetManager.addSound(name + "_impact", group, "projectile." + name + ".impact");
+		}
 
         int projectileID = group.getNextProjectileID();
         EntityRegistry.registerModEntity(new ResourceLocation(group.filename, name), entityClass, name, projectileID, group.mod, 64, updateFrequency, true);
@@ -176,14 +179,18 @@ public class ObjectManager {
 		}
     }
 
-	public static void addProjectile(String name, Class entityClass) {
-		addProjectile(name, entityClass, 1);
+	public static void addProjectile(String name, Class entityClass, boolean impactSound) {
+		addProjectile(name, entityClass, 1, impactSound);
+	}
+
+	public static void addProjectile(String name, Class entityClass, Item item, BehaviorProjectileDispense dispenseBehaviour, boolean impactSound) {
+		name = name.toLowerCase();
+		addProjectile(name, entityClass, impactSound);
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item, dispenseBehaviour);
 	}
 	
 	public static void addProjectile(String name, Class entityClass, Item item, BehaviorProjectileDispense dispenseBehaviour) {
-		name = name.toLowerCase();
-		addProjectile(name, entityClass);
-		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(item, dispenseBehaviour);
+		addProjectile(name, entityClass, item, dispenseBehaviour, false);
 	}
 
 

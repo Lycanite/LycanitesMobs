@@ -38,8 +38,7 @@ public class ExplosionSpawnTrigger extends EntitySpawnTrigger {
 	}
 
 
-
-	/** Called every time a player attempts to use a bed. **/
+	/** Called every time an explosion is created. **/
 	public boolean onExplosion(World world, EntityPlayer player, Explosion explosion) {
 		// TODO Figure out strength/size workaround.
 

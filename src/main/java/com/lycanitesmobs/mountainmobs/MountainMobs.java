@@ -117,8 +117,8 @@ public class MountainMobs extends Submod {
 		// Projectiles:
 		ObjectManager.addProjectile("boulderblast", EntityBoulderBlast.class, ObjectManager.getItem("boulderblastcharge"), new DispenserBehaviorBoulderBlast());
 		ObjectManager.addProjectile("arcanelaserstorm", EntityArcaneLaserStorm.class, ObjectManager.getItem("arcanelaserstormcharge"), new DispenserBehaviorArcaneLaserStorm());
-		ObjectManager.addProjectile("arcanelaser", EntityArcaneLaser.class);
-		ObjectManager.addProjectile("arcanelaserend", EntityArcaneLaserEnd.class);
+		ObjectManager.addProjectile("arcanelaser", EntityArcaneLaser.class, false);
+		ObjectManager.addProjectile("arcanelaserend", EntityArcaneLaserEnd.class, false);
 	}
 
 	@Override

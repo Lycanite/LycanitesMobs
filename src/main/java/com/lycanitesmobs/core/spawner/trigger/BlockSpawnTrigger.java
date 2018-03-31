@@ -137,23 +137,23 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 
 
 	/** Called every time a player breaks a block. **/
-	public void onBlockTriggered(World world, EntityPlayer player, BlockPos breakPos, IBlockState blockState, int chain, int fortune) {
+	public void onBlockTriggered(World world, EntityPlayer player, BlockPos blockPos, IBlockState blockState, int chain, int fortune) {
 		// Check Player:
 		if(this.playerOnly && (player == null || player instanceof FakePlayer)) {
 			return;
 		}
 
 		// Check Block:
-		if(!this.isTriggerBlock(blockState, world, breakPos, fortune)) {
+		if(!this.isTriggerBlock(blockState, world, blockPos, fortune)) {
 			return;
 		}
 
 		// Chance:
-		if(this.chance < 1 && player.getRNG().nextDouble() > this.chance) {
+		if(this.chance < 1 && world.rand.nextDouble() > this.chance) {
 			return;
 		}
 
-		this.trigger(world, player, breakPos, this.getBlockLevel(blockState, world, breakPos), chain);
+		this.trigger(world, player, blockPos, this.getBlockLevel(blockState, world, blockPos), chain);
 	}
 
 	/** Returns true if the provided block is a match for this trigger. **/
@@ -170,6 +170,10 @@ public class BlockSpawnTrigger extends SpawnTrigger {
 			if (this.blockMaterials.contains(material)) {
 				return !"blacklist".equalsIgnoreCase(this.blockMaterialsListType);
 			}
+		}
+
+		if(this.blocks.isEmpty() && this.blockMaterials.isEmpty()) {
+			return true;
 		}
 
 		return "blacklist".equalsIgnoreCase(this.blocksListType) && "blacklist".equalsIgnoreCase(this.blockMaterialsListType);

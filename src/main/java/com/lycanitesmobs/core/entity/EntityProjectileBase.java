@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.entity;
 
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.Block;
@@ -155,7 +156,7 @@ public class EntityProjectileBase extends EntityThrowable {
      	
      	// Entity Hit:
      	if(rayTraceResult.entityHit != null) {
-     		if(rayTraceResult.entityHit == this.getThrower())
+     		if(this.getThrower() != null && rayTraceResult.entityHit == this.getThrower())
      			return;
      		boolean doDamage = true;
  			if(rayTraceResult.entityHit instanceof EntityLivingBase) {
@@ -242,12 +243,9 @@ public class EntityProjectileBase extends EntityThrowable {
             		if(this.cutsGrass) {
 						world.destroyBlock(blockPos, false);
 					}
-					else {
-            			collided = false;
-					}
 				}
 				else {
-					collided = blockState.getBoundingBox(this.getEntityWorld(), new BlockPos(i, j, k)) != null;
+					collided = blockState.getMaterial().isSolid();
 				}
 			}
              
@@ -285,16 +283,21 @@ public class EntityProjectileBase extends EntityThrowable {
      	
      	if(collided) {
  	    	// Impact Particles:
- 	        if(!this.getEntityWorld().isRemote)
- 	        	this.onImpact();
- 	        else
- 	        	this.onImpactVisuals();
+ 	        if(!this.getEntityWorld().isRemote) {
+				this.onImpact();
+			}
+ 	        else {
+				this.onImpactVisuals();
+			}
  	        
  	        // Remove Projectile:
             boolean entityPierced = this.pierce && entityCollision;
             boolean blockPierced = this.pierceBlocks && blockCollision;
  	        if(!this.getEntityWorld().isRemote && !entityPierced && !blockPierced) {
  	            this.setDead();
+				if(this.getImpactSound() != null) {
+					this.playSound(this.getImpactSound(), 1.0F, 1.0F / (this.getEntityWorld().rand.nextFloat() * 0.4F + 0.8F));
+				}
  	        }
      	}
      }
@@ -490,4 +493,8 @@ public class EntityProjectileBase extends EntityThrowable {
      public SoundEvent getLaunchSound() {
      	return AssetManager.getSound(this.entityName);
      }
+
+	public SoundEvent getImpactSound() {
+		return AssetManager.getSound(this.entityName + "_impact");
+	}
 }

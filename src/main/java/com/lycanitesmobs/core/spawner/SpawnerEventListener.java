@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.Explosion;
@@ -17,11 +19,9 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
-import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -44,6 +44,7 @@ public class SpawnerEventListener {
 	public List<FishingSpawnTrigger> fishingSpawnTriggers = new ArrayList<>();
 	public List<ExplosionSpawnTrigger> explosionSpawnTriggers = new ArrayList<>();
 	public List<MobEventSpawnTrigger> mobEventSpawnTriggers = new ArrayList<>();
+	public List<MixBlockSpawnTrigger> mixBlockSpawnTriggers = new ArrayList<>();
 
 
 	/** Returns the main Mob Event Listener instance. **/
@@ -76,10 +77,17 @@ public class SpawnerEventListener {
 			this.chunkSpawnTriggers.add((ChunkSpawnTrigger)spawnTrigger);
 			return true;
 		}
+
+		// Block Triggers:
+		if(spawnTrigger instanceof MixBlockSpawnTrigger && !this.mixBlockSpawnTriggers.contains(spawnTrigger)) {
+			this.mixBlockSpawnTriggers.add((MixBlockSpawnTrigger)spawnTrigger);
+			return true;
+		}
 		if(spawnTrigger instanceof BlockSpawnTrigger && !this.blockSpawnTriggers.contains(spawnTrigger)) {
 			this.blockSpawnTriggers.add((BlockSpawnTrigger)spawnTrigger);
 			return true;
 		}
+
 		if(spawnTrigger instanceof SleepSpawnTrigger && !this.sleepSpawnTriggers.contains(spawnTrigger)) {
 			this.sleepSpawnTriggers.add((SleepSpawnTrigger)spawnTrigger);
 			return true;
@@ -129,6 +137,9 @@ public class SpawnerEventListener {
 		}
 		if(this.mobEventSpawnTriggers.contains(spawnTrigger)) {
 			this.mobEventSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.mixBlockSpawnTriggers.contains(spawnTrigger)) {
+			this.mixBlockSpawnTriggers.remove(spawnTrigger);
 		}
 	}
 
@@ -361,7 +372,7 @@ public class SpawnerEventListener {
 	// ==================================================
 	//                  Fished Event
 	// ==================================================
-	/** This uses the lightning strike event to spawn mobs. **/
+	/** This uses the item fished event to spawn mobs. **/
 	@SubscribeEvent
 	public void onFished(ItemFishedEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
@@ -380,9 +391,9 @@ public class SpawnerEventListener {
 
 
 	// ==================================================
-	//                Explosion Event
+	//                  Explosion Event
 	// ==================================================
-	/** This uses the explosion strike event to spawn mobs. **/
+	/** This uses the explosion event to spawn mobs. **/
 	@SubscribeEvent
 	public void onExplosion(ExplosionEvent.Detonate event) {
 		Explosion explosion = event.getExplosion();
@@ -402,6 +413,65 @@ public class SpawnerEventListener {
 
 		for(ExplosionSpawnTrigger spawnTrigger : this.explosionSpawnTriggers) {
 			spawnTrigger.onExplosion(world, player, explosion);
+		}
+	}
+
+
+	// ==================================================
+	//                  Lava Mix Event
+	// ==================================================
+	/** Used to keep track of where the mix event was last fired as it sometimes fires multiple times in which case extra triggers should be ignored adn this will also reduce spawns from cobblestone generators. **/
+	private BlockPos lastMixPos;
+
+	/** This uses the block neighbor notify event with checks for lava and water mixing to spawn mobs. **/
+	@SubscribeEvent
+	public void onLavaMix(BlockEvent.NeighborNotifyEvent event) {
+		boolean trigger = false;
+
+		if(event.getState().getBlock() == Blocks.OBSIDIAN) {
+			for(EnumFacing side : event.getNotifiedSides()) {
+				IBlockState sideBlockState = event.getWorld().getBlockState(event.getPos().offset(side));
+				if(sideBlockState.getBlock() == Blocks.WATER || sideBlockState.getBlock() == Blocks.FLOWING_WATER) {
+					trigger = true;
+				}
+			}
+		}
+
+		else if(event.getState().getBlock() == Blocks.STONE) {
+			for(EnumFacing side : event.getNotifiedSides()) {
+				IBlockState sideBlockState = event.getWorld().getBlockState(event.getPos().offset(side));
+				if(sideBlockState.getBlock() == Blocks.LAVA || sideBlockState.getBlock() == Blocks.FLOWING_LAVA) {
+					trigger = true;
+				}
+			}
+		}
+
+		else if(event.getState().getBlock() == Blocks.COBBLESTONE) {
+			boolean water = false;
+			boolean lava = false;
+			for(EnumFacing side : event.getNotifiedSides()) {
+				IBlockState sideBlockState = event.getWorld().getBlockState(event.getPos().offset(side));
+				if(sideBlockState.getBlock() == Blocks.WATER || sideBlockState.getBlock() == Blocks.FLOWING_WATER) {
+					water = true;
+				}
+				else if(sideBlockState.getBlock() == Blocks.LAVA || sideBlockState.getBlock() == Blocks.FLOWING_LAVA) {
+					lava = true;
+				}
+			}
+			if(water && lava) {
+				trigger = true;
+			}
+		}
+
+		if(trigger) {
+			if(this.lastMixPos != null && this.lastMixPos.equals(event.getPos())) {
+				return;
+			}
+			this.lastMixPos = event.getPos();
+
+			for(MixBlockSpawnTrigger spawnTrigger : this.mixBlockSpawnTriggers) {
+				spawnTrigger.onMix(event.getWorld(), event.getState(), event.getPos());
+			}
 		}
 	}
 }

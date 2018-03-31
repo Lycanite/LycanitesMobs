@@ -67,6 +67,26 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/djinn/say", "stream": false}]
     },
+    "entity.xaphan.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/say", "stream": false}]
+    },
+    "entity.xaphan.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/hurt", "stream": false}]
+    },
+    "entity.xaphan.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/death", "stream": false}]
+    },
+    "entity.xaphan.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/beg", "stream": false}]
+    },
+    "entity.xaphan.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/tame", "stream": false}]
+    },
     "entity.nymph.hurt": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/nymph/hurt", "stream": false}]
@@ -366,6 +386,14 @@
     "projectile.whirlwind": {
         "category": "ambient",
         "sounds": [{"name": "elementalmobs:projectile/whirlwind", "stream": false}]
+    },
+    "projectile.acidsplash": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/acidsplash", "stream": false}]
+    },
+    "projectile.acidsplash.impact": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/acidsplash_impact", "stream": false}]
     },
     "projectile.lifedrain": {
         "category": "ambient",

@@ -75,6 +75,9 @@ public abstract class SpawnTrigger {
 		else if("mobEvent".equalsIgnoreCase(type)) {
 			spawnTrigger = new MobEventSpawnTrigger(spawner);
 		}
+		else if("mix".equalsIgnoreCase(type)) {
+			spawnTrigger = new MixBlockSpawnTrigger(spawner);
+		}
 
 		spawnTrigger.loadFromJSON(json);
 		return spawnTrigger;

@@ -151,18 +151,18 @@ public class DemonMobs extends Submod {
 		ObjectManager.addProjectile("hellfireball", EntityHellfireball.class, ObjectManager.getItem("hellfirecharge"), new DispenserBehaviorHellfireball());
 		ObjectManager.addProjectile("doomfireball", EntityDoomfireball.class, ObjectManager.getItem("doomfirecharge"), new DispenserBehaviorDoomfireball());
 		ObjectManager.addProjectile("devilstar", EntityDevilstar.class, ObjectManager.getItem("devilstarcharge"), new DispenserBehaviorDevilstar());
-		ObjectManager.addProjectile("demonicspark", EntityDemonicSpark.class);
+		ObjectManager.addProjectile("demonicspark", EntityDemonicSpark.class, false);
 		ObjectManager.addProjectile("demonicblast", EntityDemonicBlast.class, ObjectManager.getItem("demoniclightningcharge"), new DispenserBehaviorDemonicLightning());
-		ObjectManager.addProjectile("hellfirewall", EntityHellfireWall.class);
-		ObjectManager.addProjectile("hellfireorb", EntityHellfireOrb.class);
-		ObjectManager.addProjectile("hellfirewave", EntityHellfireWave.class);
-		ObjectManager.addProjectile("hellfirewavepart", EntityHellfireWavePart.class);
-		ObjectManager.addProjectile("hellfirebarrier", EntityHellfireBarrier.class);
-		ObjectManager.addProjectile("hellfirebarrierpart", EntityHellfireBarrierPart.class);
-		ObjectManager.addProjectile("devilgatling", EntityDevilGatling.class);
-		ObjectManager.addProjectile("hellshield", EntityHellShield.class);
-		ObjectManager.addProjectile("helllaser", EntityHellLaser.class);
-		ObjectManager.addProjectile("helllaserend", EntityHellLaserEnd.class);
+		ObjectManager.addProjectile("hellfirewall", EntityHellfireWall.class, false);
+		ObjectManager.addProjectile("hellfireorb", EntityHellfireOrb.class, false);
+		ObjectManager.addProjectile("hellfirewave", EntityHellfireWave.class, false);
+		ObjectManager.addProjectile("hellfirewavepart", EntityHellfireWavePart.class, false);
+		ObjectManager.addProjectile("hellfirebarrier", EntityHellfireBarrier.class, false);
+		ObjectManager.addProjectile("hellfirebarrierpart", EntityHellfireBarrierPart.class, false);
+		ObjectManager.addProjectile("devilgatling", EntityDevilGatling.class, false);
+		ObjectManager.addProjectile("hellshield", EntityHellShield.class, false);
+		ObjectManager.addProjectile("helllaser", EntityHellLaser.class, false);
+		ObjectManager.addProjectile("helllaserend", EntityHellLaserEnd.class, false);
 	}
 
 	@Override

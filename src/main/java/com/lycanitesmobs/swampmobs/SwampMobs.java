@@ -123,7 +123,7 @@ public class SwampMobs extends Submod {
 
 		// Projectiles:
 		ObjectManager.addProjectile("poisonray", EntityPoisonRay.class, Items.FERMENTED_SPIDER_EYE, new DispenserBehaviorPoisonRay());
-		ObjectManager.addProjectile("poisonrayend", EntityPoisonRayEnd.class);
+		ObjectManager.addProjectile("poisonrayend", EntityPoisonRayEnd.class, false);
 		ObjectManager.addProjectile("venomshot", EntityVenomShot.class, ObjectManager.getItem("poisongland"), new DispenserBehaviorVenomShot());
 	}
 

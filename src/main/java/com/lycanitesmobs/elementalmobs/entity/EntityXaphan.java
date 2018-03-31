@@ -12,6 +12,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
@@ -47,7 +49,6 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
 
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupFire.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
@@ -79,11 +80,13 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
     // ==================================================
     //                      Attacks
     // ==================================================
-    // ========== Set Attack Target ==========
-    @Override
-    public boolean canAttackClass(Class targetClass) {
-        return super.canAttackClass(targetClass);
-    }
+	@Override
+	public boolean isDamageEntityApplicable(Entity entity) {
+		if(entity instanceof EntityXaphan && this.getPlayerOwner() == ((EntityXaphan)entity).getPlayerOwner()) {
+			return false;
+		}
+		return super.isDamageEntityApplicable(entity);
+	}
     
     // ========== Ranged Attack ==========
     @Override
@@ -150,4 +153,18 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
 
         return commands;
     }
+
+
+	// ==================================================
+	//                   Brightness
+	// ==================================================
+	@Override
+	public float getBrightness() {
+		return 1.0F;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public int getBrightnessForRender() {
+		return 15728880;
+	}
 }

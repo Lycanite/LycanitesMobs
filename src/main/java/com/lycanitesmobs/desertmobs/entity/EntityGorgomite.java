@@ -12,8 +12,6 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -85,7 +83,7 @@ public class EntityGorgomite extends EntityCreatureBase implements IMob, IGroupP
     	minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
     	if(minion instanceof EntityCreatureBase) {
     		((EntityCreatureBase)minion).setMinion(true);
-    		((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
+    		((EntityCreatureBase)minion).applySubspecies(this.getSubspeciesIndex(), true);
     	}
     	this.getEntityWorld().spawnEntity(minion);
         if(this.getAttackTarget() != null)

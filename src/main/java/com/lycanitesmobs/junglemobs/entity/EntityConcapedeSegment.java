@@ -18,10 +18,8 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -88,7 +86,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
     	}
     	
     	if(this.hasParent() && this.getParentTarget() instanceof EntityCreatureBase) {
-    		this.setSubspecies(((EntityCreatureBase)this.getParentTarget()).getSubspeciesIndex(), true);
+    		this.applySubspecies(((EntityCreatureBase)this.getParentTarget()).getSubspeciesIndex(), true);
     	}
     }
     

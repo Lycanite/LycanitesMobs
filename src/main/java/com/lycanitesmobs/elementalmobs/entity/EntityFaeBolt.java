@@ -1,6 +1,7 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.block.Block;
@@ -20,6 +21,7 @@ public class EntityFaeBolt extends EntityProjectileBase {
 
 	// Properties:
 	public Entity shootingEntity;
+	public boolean debuff = true;
 
     // ==================================================
  	//                   Constructors
@@ -43,7 +45,9 @@ public class EntityFaeBolt extends EntityProjectileBase {
     	this.setBaseDamage(0);
     	this.setProjectileScale(4F);
     	this.waterProof = true;
-    }
+
+		this.debuff = ConfigBase.getConfig(this.group, "general").getBool("Features", "Nymph Fae Bolt Lifeleak Enabled", this.debuff, "Set to false to disable Lifeleak from Faebolts fired by scared Nymphs.");
+	}
 
 
 	// ==================================================
@@ -62,9 +66,11 @@ public class EntityFaeBolt extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	Potion lifeleak = ObjectManager.getPotionEffect("lifeleak");
-    	if(lifeleak != null)
-            entityLiving.addPotionEffect(new PotionEffect(lifeleak, this.getEffectDuration(3), 0));
+    	if(this.debuff) {
+			Potion lifeleak = ObjectManager.getPotionEffect("lifeleak");
+			if (lifeleak != null)
+				entityLiving.addPotionEffect(new PotionEffect(lifeleak, this.getEffectDuration(3), 0));
+		}
         return true;
     }
     

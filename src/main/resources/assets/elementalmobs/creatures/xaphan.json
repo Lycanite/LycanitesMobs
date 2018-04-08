@@ -53,7 +53,7 @@
 	],
 	"element": "acid",
 	"peaceful": false,
-	"summonable": true,
+	"summonable": false,
 	"tameable": false,
 	"mountable": false,
 	"summonCost": 2,

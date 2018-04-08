@@ -34,6 +34,7 @@
 				"elementalmobs:spriggan",
 				"elementalmobs:reiver",
 				"elementalmobs:nymph",
+				"elementalmobs:eechetik",
 				"elementalmobs:vapula",
 				"elementalmobs:tremor",
 				"elementalmobs:wraith",
@@ -73,6 +74,12 @@
 	"mobSpawns": [
 		{
 			"mobId": "elementalmobs:argus"
+		}
+	],
+	"triggerCountMessages": [
+		{
+			"count": 3,
+			"message": "spawner.chaos.level3"
 		}
 	]
 }

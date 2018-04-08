@@ -67,41 +67,21 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/djinn/say", "stream": false}]
     },
-    "entity.xaphan.say": {
+    "entity.djinn.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/xaphan/say", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/djinn/hurt", "stream": false}]
     },
-    "entity.xaphan.hurt": {
+    "entity.djinn.death": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/xaphan/hurt", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/djinn/death", "stream": false}]
     },
-    "entity.xaphan.death": {
+    "entity.djinn.beg": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/xaphan/death", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/djinn/beg", "stream": false}]
     },
-    "entity.xaphan.beg": {
+    "entity.djinn.tame": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/xaphan/beg", "stream": false}]
-    },
-    "entity.xaphan.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/xaphan/tame", "stream": false}]
-    },
-    "entity.nymph.hurt": {
-        "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/nymph/hurt", "stream": false}]
-    },
-    "entity.nymph.death": {
-        "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/nymph/death", "stream": false}]
-    },
-    "entity.nymph.beg": {
-        "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/nymph/beg", "stream": false}]
-    },
-    "entity.nymph.tame": {
-        "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/nymph/tame", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/djinn/tame", "stream": false}]
     },
     "entity.aegis.say": {
         "category": "hostile",
@@ -150,6 +130,26 @@
     "entity.argus.tame": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/argus/tame", "stream": false}]
+    },
+    "entity.xaphan.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/say", "stream": false}]
+    },
+    "entity.xaphan.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/hurt", "stream": false}]
+    },
+    "entity.xaphan.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/death", "stream": false}]
+    },
+    "entity.xaphan.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/beg", "stream": false}]
+    },
+    "entity.xaphan.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/xaphan/tame", "stream": false}]
     },
     "entity.volcan.say": {
         "category": "hostile",
@@ -231,21 +231,45 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/nymph/say", "stream": false}]
     },
-    "entity.djinn.hurt": {
+    "entity.nymph.hurt": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/hurt", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/hurt", "stream": false}]
     },
-    "entity.djinn.death": {
+    "entity.nymph.death": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/death", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/death", "stream": false}]
     },
-    "entity.djinn.beg": {
+    "entity.nymph.beg": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/beg", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/beg", "stream": false}]
     },
-    "entity.djinn.tame": {
+    "entity.nymph.tame": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/djinn/tame", "stream": false}]
+        "sounds": [{"name": "elementalmobs:entity/nymph/tame", "stream": false}]
+    },
+    "entity.eechetik.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/eechetik/say", "stream": false}]
+    },
+    "entity.eechetik.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/eechetik/hurt", "stream": false}]
+    },
+    "entity.eechetik.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/eechetik/death", "stream": false}]
+    },
+    "entity.eechetik.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/eechetik/attack", "stream": false}]
+    },
+    "entity.eechetik.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/eechetik/beg", "stream": false}]
+    },
+    "entity.eechetik.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/eechetik/tame", "stream": false}]
     },
 	"entity.spriggan.say": {
         "category": "hostile",

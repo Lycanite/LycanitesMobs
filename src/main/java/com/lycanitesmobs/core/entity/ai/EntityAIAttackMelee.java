@@ -185,7 +185,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
         }
         
         // Damage Target:
-        if(this.host.getDistanceSq(attackTarget.posX, attackTarget.getEntityBoundingBox().minY + this.host.getFlightOffset(), attackTarget.posZ) <= this.getAttackRange(attackTarget)) {
+        if(this.host.getDistance(attackTarget.posX, attackTarget.getEntityBoundingBox().minY + this.host.getFlightOffset(), attackTarget.posZ) <= this.getAttackRange(attackTarget)) {
             if(--this.attackTime <= 0) {
                 this.attackTime = this.host.getMeleeCooldown();
                 if(this.host.getHeldItemMainhand() != null)
@@ -210,10 +210,8 @@ public class EntityAIAttackMelee extends EntityAIBase {
 	 * @return The maximum attack range.
 	 */
 	protected double getAttackRange(EntityLivingBase attackTarget) {
-		double range = this.attackRange + (this.host.width * 2.0F * this.host.width * 2.0F + attackTarget.width);
-		if(this.host.isCurrentlyFlying()) {
-			range += 0.5D;
-		}
+		double range = this.host.getMeleeAttackRange();
+		range += this.attackRange + attackTarget.width;
 		return range;
 	}
 }

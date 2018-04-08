@@ -52,7 +52,7 @@ public class ItemSoulkey extends ItemBase {
         }
 
         // Get Possible Altars:
-        List<AltarInfo> possibleAltars = new ArrayList<AltarInfo>();
+        List<AltarInfo> possibleAltars = new ArrayList<>();
         if(AltarInfo.altars.isEmpty())
             LycanitesMobs.printWarning("", "No altars have been registered, Soulkeys will not work at all.");
         for(AltarInfo altarInfo : AltarInfo.altars.values()) {
@@ -76,14 +76,14 @@ public class ItemSoulkey extends ItemBase {
                         itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
                     if (itemStack.getCount() <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                }
-                if(!altarInfo.activate(player, world, pos, this.rank + 1)) {
-                    String message = I18n.translateToLocal("message.soulkey.badlocation");
+                    if(!altarInfo.activate(player, world, pos, this.rank + 1)) {
+                        String message = I18n.translateToLocal("message.soulkey.badlocation");
+                        player.sendMessage(new TextComponentString(message));
+                        return EnumActionResult.FAIL;
+                    }
+                    String message = I18n.translateToLocal("message.soulkey.active");
                     player.sendMessage(new TextComponentString(message));
-                    return EnumActionResult.FAIL;
                 }
-                String message = I18n.translateToLocal("message.soulkey.active");
-                player.sendMessage(new TextComponentString(message));
                 return EnumActionResult.SUCCESS;
             }
         }

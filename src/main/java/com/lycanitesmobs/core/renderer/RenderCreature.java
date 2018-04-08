@@ -5,13 +5,24 @@ import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.model.ModelCustom;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,8 +38,8 @@ public class RenderCreature extends RenderLiving<EntityCreatureBase> {
     // ==================================================
   	//                    Constructor
   	// ==================================================
-    public RenderCreature(String entityID, RenderManager renderManager) {
-    	super(renderManager, AssetManager.getModel(entityID), 0.5F);
+    public RenderCreature(String entityID, RenderManager renderManager, float shadowSize) {
+    	super(renderManager, AssetManager.getModel(entityID), shadowSize);
 
         if(this.mainModel instanceof ModelCustom) {
             ModelCustom modelCustom = (ModelCustom)this.mainModel;

@@ -21,7 +21,7 @@ public class ItemSwordCinderfallVerdant extends ItemSwordCinderfall {
         super.onSpawnEntity(entity);
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
-            entityCreature.setSubspecies(2, true);
+            entityCreature.applySubspecies(2, true);
         }
     }
 

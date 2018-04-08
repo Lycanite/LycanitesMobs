@@ -448,12 +448,25 @@ public class CreatureInfo {
 		}
 		LycanitesMobs.printDebug("Subspecies", "Subspecies Available: " + this.subspecies.size());
 
+		// Get Viable Subspecies:
+		List<Subspecies> possibleSubspecies = new ArrayList<>();
+		for(Subspecies subspeciesEntry : this.subspecies.values()) {
+			if(subspeciesEntry.canSpawn(entity)) {
+				possibleSubspecies.add(subspeciesEntry);
+			}
+		}
+		if(possibleSubspecies.isEmpty()) {
+			LycanitesMobs.printDebug("Subspecies", "No species allowed, will be base species.");
+			return null;
+		}
+		LycanitesMobs.printDebug("Subspecies", "Subspecies Allowed: " + possibleSubspecies.size());
+
 		// Get Weights:
 		int baseSpeciesWeightScaled = Subspecies.baseSpeciesWeight;
 		if(rare)
 			baseSpeciesWeightScaled /= 4;
 		int totalWeight = baseSpeciesWeightScaled;
-		for(Subspecies subspeciesEntry : this.subspecies.values()) {
+		for(Subspecies subspeciesEntry : possibleSubspecies) {
 			totalWeight += subspeciesEntry.weight;
 		}
 		LycanitesMobs.printDebug("Subspecies", "Total Weight: " + totalWeight);
@@ -468,7 +481,7 @@ public class CreatureInfo {
 
 		// Get Random Subspecies:
 		int checkWeight = baseSpeciesWeightScaled;
-		for(Subspecies subspeciesEntry : this.subspecies.values()) {
+		for(Subspecies subspeciesEntry : possibleSubspecies) {
 			checkWeight += subspeciesEntry.weight;
 			if(roll <= checkWeight) {
 				LycanitesMobs.printDebug("Subspecies", "Subspecies selected: " + subspeciesEntry.name + " - " + subspeciesEntry.weight);

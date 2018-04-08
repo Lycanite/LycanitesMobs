@@ -391,7 +391,7 @@ public class PetEntry {
             if(this.entityName != null && !"".equals(this.entityName))
                 entityCreature.setCustomNameTag(this.entityName);
             entityCreature.setSizeScale(this.entitySize);
-            entityCreature.setSubspecies(this.subspeciesID, false);
+            entityCreature.applySubspecies(this.subspeciesID, false);
 
             // Tamed Behaviour:
             if(entityCreature instanceof EntityCreatureTameable && this.host instanceof EntityPlayer) {
@@ -464,7 +464,7 @@ public class PetEntry {
             if(this.entityName != null && !"".equals(this.entityName))
                 entityCreature.setCustomNameTag(this.entityName);
             entityCreature.setSizeScale(this.entitySize);
-            entityCreature.setSubspecies(this.subspeciesID, false);
+            entityCreature.applySubspecies(this.subspeciesID, false);
         }
 
         this.spawnCount++;

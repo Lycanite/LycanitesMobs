@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner.trigger;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.spawner.Spawner;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +13,7 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SleepSpawnTrigger extends SpawnTrigger {
+public class SleepSpawnTrigger extends BlockSpawnTrigger {
 
 	/** How long (in ticks) until this trigger can be started again, this is done per player. **/
 	public int cooldown = 1200;
@@ -39,7 +40,7 @@ public class SleepSpawnTrigger extends SpawnTrigger {
 
 
 	/** Called every time a player attempts to use a bed. **/
-	public boolean onSleep(World world, EntityPlayer player, BlockPos spawnPos) {
+	public boolean onSleep(World world, EntityPlayer player, BlockPos spawnPos, IBlockState blockState) {
 		// Cooldown:
 		if(this.cooldown > -1) {
 			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
@@ -59,6 +60,11 @@ public class SleepSpawnTrigger extends SpawnTrigger {
 
 		// Chance:
 		if(this.chance < 1 && player.getRNG().nextDouble() > this.chance) {
+			return false;
+		}
+
+		// Check Block:
+		if(!this.isTriggerBlock(blockState, world, spawnPos, 0)) {
 			return false;
 		}
 

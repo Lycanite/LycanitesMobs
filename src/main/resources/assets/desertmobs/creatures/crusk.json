@@ -30,7 +30,7 @@
 	"armor": 0,
 	"speed": 24,
 	"damage": 4,
-	"attackSpeed": 0.3,
+	"attackSpeed": 0.5,
 	"rangedSpeed": 1,
 	"effect": 3,
 	"amplifier": 0,

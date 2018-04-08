@@ -155,7 +155,7 @@ public class AltarInfoLunarGrue extends AltarInfo {
         // Spawn Mini Boss:
         entityGrue.altarSummoned = true;
         entityGrue.forceBossHealthBar = true;
-        entityGrue.setSubspecies(3, true);
+        entityGrue.applySubspecies(3, true);
         entityGrue.setLocationAndAngles(x, y - 2, z, 0, 0);
         world.spawnEntity(entityGrue);
         entityGrue.destroyArea(x, y, z, 10000, false, 2);

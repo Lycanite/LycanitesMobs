@@ -3,6 +3,7 @@ package com.lycanitesmobs.elementalmobs.entity;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupRock;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.*;
@@ -15,9 +16,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.ContainerFurnace;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
 public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupRock, IFusable {
+
+	protected Village village;
+	public boolean chestProtection = true;
 
     // ==================================================
  	//                    Constructor
@@ -32,7 +38,9 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
         this.setupMob();
 
         this.stepHeight = 1.0F;
-    }
+
+		this.chestProtection = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Aegis Chest Protection", this.chestProtection, "Set to false to stop Aegis from protecting village chests.");
+	}
 
     // ========== Init AI ==========
     @Override
@@ -86,23 +94,42 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
 
         if(!this.getEntityWorld().isRemote) {
 			if (!this.hasAttackTarget() && !this.isPetType("familiar") && this.updateTick % 40 == 0){
-				// Monitor Nearest Player:
-				EntityPlayer player = this.getEntityWorld().getNearestAttackablePlayer(this, 64, 32);
-				ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
-				if(player != null) {
-					if(player.openContainer != null && (player.openContainer instanceof ContainerChest)) {
-						this.setAttackTarget(player);
-						this.setFixateTarget(player);
+				BlockPos protectLocation = null;
+				int reputation = 0;
+				if(this.hasHome()) {
+					protectLocation = this.getHomePosition();
+				}
+				else if(this.village == null || this.updateTick % 400 == 0) {
+					this.village = this.getEntityWorld().getVillageCollection().getNearestVillage(new BlockPos(this), 32);
+					if(this.village != null) {
+						protectLocation = this.village.getCenter();
 					}
-					else if(extendedPlayer != null && extendedPlayer.justBrokenBlock != null) {
-						Block brokenBlock = extendedPlayer.justBrokenBlock.getBlock();
-						if(brokenBlock instanceof BlockChest || brokenBlock instanceof BlockDoor || brokenBlock instanceof BlockGlowstone) {
-							this.setAttackTarget(player);
-							this.setFixateTarget(player);
+				}
+
+				// Monitor Nearest Player:
+				if(protectLocation != null) {
+					EntityPlayer player = this.getEntityWorld().getNearestAttackablePlayer(this, 64, 32);
+					ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+					if (player != null) {
+						if(this.village != null) {
+							reputation = this.village.getPlayerReputation(player.getUniqueID());
 						}
+						if (reputation <= 0 && Math.sqrt(player.getDistanceSq(protectLocation)) <= 80)
+							if (this.chestProtection && player.openContainer != null && (player.openContainer instanceof ContainerChest)) {
+								this.setAttackTarget(player);
+								this.setFixateTarget(player);
+							}
+							else if (extendedPlayer != null && extendedPlayer.justBrokenBlock != null) {
+								Block brokenBlock = extendedPlayer.justBrokenBlock.getBlock();
+								if (brokenBlock instanceof BlockChest || brokenBlock instanceof BlockDoor || brokenBlock instanceof BlockGlowstone) {
+									this.setAttackTarget(player);
+									this.setFixateTarget(player);
+								}
+							}
 					}
 				}
 			}
+
 			if(!this.hasAttackTarget()) {
 				this.setBlocking();
 			}

@@ -6,6 +6,7 @@
 	"channel": "boss",
 	"duration": 600,
 	"conditions": [],
+	"levelBoostMax": 0,
 	"triggers": [
 		{
 			"type": "altar",

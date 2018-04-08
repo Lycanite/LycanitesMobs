@@ -7,15 +7,15 @@ import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderFactoryCreature<T extends Entity> implements IRenderFactory {
-    protected String entityID;
+    protected CreatureInfo creatureInfo;
 
     public RenderFactoryCreature(CreatureInfo creatureInfo) {
-        this.entityID = creatureInfo.getName();
+        this.creatureInfo = creatureInfo;
     }
 
     @Override
     public Render createRenderFor(RenderManager manager) {
-        return new RenderCreature(this.entityID, manager);
+        return new RenderCreature(this.creatureInfo.getName(), manager, (float)this.creatureInfo.width / 2);
     }
 
 }

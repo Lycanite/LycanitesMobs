@@ -19,7 +19,7 @@ public class ItemSwordVenomAxebladeGolden extends ItemSwordVenomAxeblade {
     public void onSpawnEntity(Entity entity) {
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
-            entityCreature.setSubspecies(1, true);
+            entityCreature.applySubspecies(1, true);
             entityCreature.setTemporary(40 * 20);
         }
     }

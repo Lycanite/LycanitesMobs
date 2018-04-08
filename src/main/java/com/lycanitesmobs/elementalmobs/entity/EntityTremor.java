@@ -11,6 +11,8 @@ import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
@@ -160,6 +162,14 @@ public class EntityTremor extends EntityCreatureTameable implements IMob, IGroup
 			return false;
 		}
 		return super.isDamageEntityApplicable(entity);
+	}
+
+	@Override
+	public boolean isPotionApplicable(PotionEffect potionEffect) {
+    	if(potionEffect != null && potionEffect.getPotion() == MobEffects.WITHER) {
+    		return false;
+		}
+		return super.isPotionApplicable(potionEffect);
 	}
     
     @Override

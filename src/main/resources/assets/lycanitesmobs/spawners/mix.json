@@ -14,7 +14,7 @@
 	"triggers": [
 		{
 			"type": "mix",
-			"chance": 0.1
+			"chance": 0.05
 		}
 	],
 	"locations": [

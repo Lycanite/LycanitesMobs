@@ -3,7 +3,10 @@ package com.lycanitesmobs.core.info;
 
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.CreatureStats;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +38,12 @@ public class Subspecies {
 
     /** The scale of experience for uncommon subspecies. **/
     public static double rareExperienceScale = 10.0D;
+
+	/** The minimum amount of days before uncommon species start to spawn. **/
+	public static int uncommonSpawnDayMin = 0;
+
+	/** The minimum amount of days before rare species start to spawn. **/
+	public static int rareSpawnDayMin = 0;
 
     /** Whether rare subspecies should show boss health bars or not. **/
     public static boolean rareHealthBars = false;
@@ -98,29 +107,63 @@ public class Subspecies {
         uncommonExperienceScale = config.getDouble("Mob Variations", "Subspecies Uncommon Experience Scale", uncommonExperienceScale, "When a creature with the uncommon subspecies (Azure, Verdant, etc) dies, its experience amount is multiplied by this value.");
         rareExperienceScale = config.getDouble("Mob Variations", "Subspecies Rare Experience Scale", rareExperienceScale, "When a creature with the rare subspecies (Celestial, Lunar, etc) dies, its experience amount is multiplied by this value.");
 
-        rareHealthBars = config.getBool("Mob Variations", "Subspecies Rare Health Bars", rareHealthBars, "If set to true, rare subspecies such as the Lunar Grue or Celestial Geonach will display boss health bars.");
+		uncommonSpawnDayMin = config.getInt("Mob Variations", "Subspecies Uncommon Spawn Day Min", uncommonSpawnDayMin, "The minimum amount of days before uncommon species start to spawn.");
+		rareSpawnDayMin = config.getInt("Mob Variations", "Subspecies Rare Spawn Day Min", rareSpawnDayMin, "The minimum amount of days before rare species start to spawn.");
+
+		rareHealthBars = config.getBool("Mob Variations", "Subspecies Rare Health Bars", rareHealthBars, "If set to true, rare subspecies such as the Lunar Grue or Celestial Geonach will display boss health bars.");
     }
 
 
-    // ==================================================
-    //                     Constructor
-    // ==================================================
-    public Subspecies(String setName, int setWeight) {
+	/**
+	 * Constructor for creating a specialized subspecies not related to other subspecies without a type).
+	 * @param setName The name of the Subspecies Set.
+	 * @param setWeight The Weight of the Subspecies.
+	 */
+	public Subspecies(String setName, int setWeight) {
         this.name = setName.toLowerCase();
         this.weight = setWeight;
     }
-    
-    public Subspecies(String name, String type) {
+
+	/**
+	 * Constructor for creating a Subspecies based on a type ('uncommon', 'rare', etc).
+	 * @param name The name of the Subspecies.
+	 * @param type The type of the Subspecies.
+	 */
+	public Subspecies(String name, String type) {
         this.name = name.toLowerCase();
         this.type = type;
         this.weight = commonWeights.get(type);
     }
 
 
-    // ==================================================
-    //                     Get Title
-    // ==================================================
-    public String getTitle() {
+	/**
+	 * Gets the display name of this Subspecies.
+	 * @return The Subpsecies title.
+	 */
+	public String getTitle() {
         return I18n.translateToLocal("subspecies." + this.name + ".name");
     }
+
+
+	/**
+	 * Returns if this Subspecies is allowed to be used on the spawned entity.
+	 * @return True if this Subspecies is allowed.
+	 */
+	public boolean canSpawn(EntityLivingBase entityLiving) {
+		if(entityLiving != null) {
+			World world = entityLiving.getEntityWorld();
+			int day = (int)Math.floor(world.getTotalWorldTime() / 23999D);
+			int spawnDayMin = 0;
+			if("uncommon".equalsIgnoreCase(this.type)) {
+				spawnDayMin = uncommonSpawnDayMin;
+			}
+			else if("rare".equalsIgnoreCase(this.type)) {
+				spawnDayMin = rareSpawnDayMin;
+			}
+			if(day < spawnDayMin) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

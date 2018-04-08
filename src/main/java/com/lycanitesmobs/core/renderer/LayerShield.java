@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.renderer;
 
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -27,7 +28,7 @@ public class LayerShield extends LayerBase {
     public boolean canRenderLayer(EntityCreatureBase entity, float scale) {
         if(!super.canRenderLayer(entity, scale))
             return false;
-        return entity.isBlocking();
+        return true;//entity.isBlocking();
     }
 
 
@@ -46,6 +47,14 @@ public class LayerShield extends LayerBase {
 
     @Override
     public void onRenderStart(Entity entity, boolean trophy) {
+        // Glow In Dark:
+        int i = 15728880;
+        int j = i % 65536;
+        int k = i / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+
         GlStateManager.enableCull();
     }
 

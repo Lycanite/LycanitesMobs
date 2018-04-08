@@ -51,7 +51,7 @@ public class EntityAcidSplash extends EntityProjectileBase {
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
 		Potion penetration = ObjectManager.getPotionEffect("penetration");
 		if(penetration != null)
-			entityLiving.addPotionEffect(new PotionEffect(penetration, this.getEffectDuration(10), 3));
+			entityLiving.addPotionEffect(new PotionEffect(penetration, this.getEffectDuration(10), 1));
     	return true;
     }
     

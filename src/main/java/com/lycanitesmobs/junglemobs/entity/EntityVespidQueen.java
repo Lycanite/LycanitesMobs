@@ -19,8 +19,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -165,7 +163,7 @@ public class EntityVespidQueen extends EntityCreatureAgeable implements IMob, IG
     	EntityLivingBase minion = new EntityVespid(this.getEntityWorld());
     	minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
     	if(minion instanceof EntityCreatureBase) {
-    		((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
+    		((EntityCreatureBase)minion).applySubspecies(this.getSubspeciesIndex(), true);
     	}
     	this.getEntityWorld().spawnEntity(minion);
         if(this.getAttackTarget() != null)

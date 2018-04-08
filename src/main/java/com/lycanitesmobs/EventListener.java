@@ -465,6 +465,7 @@ public class EventListener {
 					EntityCreatureBase mouseOverCreature = (EntityCreatureBase)mouseOverEntity;
 					event.getLeft().add("");
 					event.getLeft().add("Target Creature: " + mouseOverCreature.getName());
+					event.getLeft().add("Distance To player: " + mouseOverCreature.getDistance(Minecraft.getMinecraft().player));
 					event.getLeft().add("Subspecies: " + mouseOverCreature.getSubspeciesIndex());
 					event.getLeft().add("Level: " + mouseOverCreature.getLevel());
 					event.getLeft().add("Size: " + mouseOverCreature.sizeScale);
@@ -477,6 +478,7 @@ public class EventListener {
 					event.getLeft().add("");
 					event.getLeft().add("Damage: " + mouseOverCreature.creatureStats.getDamage());
 					event.getLeft().add("Melee Speed: " + mouseOverCreature.creatureStats.getAttackSpeed());
+					event.getLeft().add("Melee Range: " + mouseOverCreature.getMeleeAttackRange());
 					event.getLeft().add("Ranged Speed: " + mouseOverCreature.creatureStats.getRangedSpeed());
 					event.getLeft().add("Pierce: " + mouseOverCreature.creatureStats.getPierce());
 					event.getLeft().add("");

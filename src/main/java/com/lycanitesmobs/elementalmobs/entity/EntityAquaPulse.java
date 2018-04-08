@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -50,8 +51,7 @@ public class EntityAquaPulse extends EntityProjectileBase {
     //========== Entity Living Collision ==========
     @Override
     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
-    	if(ObjectManager.getPotionEffect("Penetration") != null)
-            entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("Penetration"), this.getEffectDuration(8), 2));
+    	entityLiving.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, this.getEffectDuration(8), 2));
         return true;
     }
     

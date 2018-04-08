@@ -1,6 +1,7 @@
 package com.lycanitesmobs.demonmobs.mobevents;
 
 import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityProjectileBase;
@@ -193,7 +194,7 @@ public class RahovartStructureBuilder extends StructureBuilder {
 
 	/** Adds decoration to a pillar. **/
 	public void buildDecoration(World world, int originX, int originY, int originZ) {
-		Block primaryBlock = Blocks.NETHERRACK;
+		Block primaryBlock = Blocks.OBSIDIAN;
 		Block hazardBlock = ObjectManager.getBlock("hellfire");
 		world.setBlockState(new BlockPos(originX, originY + 1, originZ), primaryBlock.getDefaultState(), 2);
 		world.setBlockState(new BlockPos(originX, originY + 2, originZ), primaryBlock.getDefaultState(), 2);

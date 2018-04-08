@@ -10,7 +10,7 @@
 		{
 			"type": "world",
 			"dimensionIds": [0, 7],
-			"dayTimeMin": 10000,
+			"dayTimeMin": 14000,
 			"moonPhase": 0
 		}
 	],

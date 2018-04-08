@@ -318,7 +318,7 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
             partner.finishBreeding();
             baby.setGrowingAge(baby.growthTime);
             Subspecies babySubspecies = this.creatureInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partner.getSubspecies());
-            baby.setSubspecies(babySubspecies != null ? babySubspecies.index : 0, true);
+            baby.applySubspecies(babySubspecies != null ? babySubspecies.index : 0, true);
             baby.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
 
             for(int i = 0; i < 7; ++i) {

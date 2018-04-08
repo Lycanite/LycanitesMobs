@@ -328,7 +328,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.moveHelper = this.createMoveHelper();
 
         // Level:
-		this.setLevel(this.getStartingLevel());
+		this.applyLevel(this.getStartingLevel());
 
         // Path On Fire or In Lava:
         if(!this.canBurn()) {
@@ -958,7 +958,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         minion.setLocationAndAngles(x, y, z, this.rand.nextFloat() * 360.0F, 0.0F);
         if(minion instanceof EntityCreatureBase) {
             ((EntityCreatureBase)minion).setMinion(true);
-            ((EntityCreatureBase)minion).setSubspecies(this.getSubspeciesIndex(), true);
+            ((EntityCreatureBase)minion).applySubspecies(this.getSubspeciesIndex(), true);
             ((EntityCreatureBase)minion).setMasterTarget(this);
             ((EntityCreatureBase)minion).spawnEventType = this.spawnEventType;
         }
@@ -1038,11 +1038,11 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		Subspecies randomSubspecies = this.creatureInfo.getRandomSubspecies(this, this.spawnedRare);
     		if(randomSubspecies != null) {
 				LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to " + randomSubspecies.getTitle());
-				this.setSubspecies(randomSubspecies.index, true);
+				this.applySubspecies(randomSubspecies.index, true);
 			}
     		else {
 				LycanitesMobs.printDebug("Subspecies", "Setting " + this.getSpeciesName() + " to base species.");
-				this.setSubspecies(0, true);
+				this.applySubspecies(0, true);
 			}
     	}
     }
@@ -1096,16 +1096,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		return startingLevelMin;
 	}
 
-	/** Sets the level of this mob, higher levels have higher stats. **/
+	/** Sets adn applies the level of this mob refreshing stats, higher levels have higher stats. **/
+	public void applyLevel(int level) {
+		this.setLevel(level);
+		this.refreshStats();
+	}
+
+	/** Sets the level of this mob without refreshing stats, used when loading from NBT or from applyLevel(). If a level is changed use applyLevel() instead. **/
 	public void setLevel(int level) {
 		this.level = level;
 		this.dataManager.set(LEVEL, level);
-		this.refreshStats();
 	}
 
 	/** Increases the level of this mob, higher levels have higher stats. **/
 	public void addLevel(int level) {
-		this.setLevel(this.level + level);
+		this.applyLevel(this.level + level);
 	}
 
 
@@ -1158,7 +1163,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	// ==================================================
 	//                    Subspecies
 	// ==================================================
-	/** Sets the subspecies of this mob by index. If not a valid ID or 0 it will be set to null which is for base species. **/
+	/** Sets the subspecies of this mob by index and refreshes stats. If not a valid ID or 0 it will be set to null which is for base species. **/
+	public void applySubspecies(int subspeciesIndex, boolean resetHealth) {
+		this.setSubspecies(subspeciesIndex, resetHealth);
+		this.refreshStats();
+	}
+
+	/** Sets the subspecies of this mob by index without refreshing stats, use applySubspecies() if changing toa  new subspecies. If not a valid ID or 0 it will be set to null which is for base species. **/
 	public void setSubspecies(int subspeciesIndex, boolean resetHealth) {
 		this.subspecies = this.creatureInfo.getSubspecies(subspeciesIndex);
 
@@ -1173,8 +1184,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
 				this.damageLimit = 40;
 			}
 		}
-
-		this.refreshStats();
 	}
 
 	/** Gets the subspecies of this mob, will return null if this is a base species mob. **/
@@ -1262,9 +1271,25 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			if (partner != null && partner instanceof EntityCreatureBase) {
 				EntityCreatureBase partnerCreature = (EntityCreatureBase) partner;
 				Subspecies fusionSubspecies = transformedCreature.creatureInfo.getChildSubspecies(this, this.getSubspeciesIndex(), partnerCreature.getSubspecies());
-				transformedCreature.setSubspecies(fusionSubspecies != null ? fusionSubspecies.index : 0, true);
+				transformedCreature.applySubspecies(fusionSubspecies != null ? fusionSubspecies.index : 0, true);
 				transformedCreature.setSizeScale(this.sizeScale + partnerCreature.sizeScale);
-				transformedCreature.setLevel((this.getLevel() + partnerCreature.getLevel()) * 10);
+
+				// Level:
+				int transformedLevel = this.getLevel();
+				if("lowest".equalsIgnoreCase(CreatureManager.getInstance().config.elementalFusionLevelMix)) {
+					if(transformedLevel > partnerCreature.getLevel()) {
+						transformedLevel = partnerCreature.getLevel();
+					}
+				}
+				else if("highest".equalsIgnoreCase(CreatureManager.getInstance().config.elementalFusionLevelMix)) {
+					if(transformedLevel < partnerCreature.getLevel()) {
+						transformedLevel = partnerCreature.getLevel();
+					}
+				}
+				else {
+					transformedLevel += partnerCreature.getLevel();
+				}
+				transformedCreature.applyLevel(Math.round(transformedLevel * (float)CreatureManager.getInstance().config.elementalFusionLevelMultiplier));
 
 				// Tamed:
 				if (transformedCreature instanceof EntityCreatureTameable) {
@@ -1274,6 +1299,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 						owner = ((EntityCreatureTameable)this).getPlayerOwner();
 					}
 					if (owner != null) {
+						transformedCreature.applyLevel(transformedLevel);
 						fusionTameable.setPlayerOwner((EntityPlayer)owner);
 					}
 
@@ -1284,6 +1310,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 							partnerOwner = ((EntityCreatureTameable)partnerCreature).getPlayerOwner();
 						}
 						if (partnerOwner != null) {
+							transformedCreature.applyLevel(transformedLevel);
 							fusionTameable.setPlayerOwner((EntityPlayer) partnerOwner);
 
 							// Temporary:
@@ -1305,9 +1332,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 			// Without Partner:
 			else {
-				transformedCreature.setSubspecies(this.getSubspeciesIndex(), true);
+				transformedCreature.applySubspecies(this.getSubspeciesIndex(), true);
 				transformedCreature.setSizeScale(this.sizeScale);
-				transformedCreature.setLevel(this.getLevel());
+				transformedCreature.applyLevel(this.getLevel());
 
 				// Tamed:
 				if (transformedCreature instanceof EntityCreatureTameable) {
@@ -1639,7 +1666,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         }
         else {
         	if(this.getSubspeciesIndex() != this.getByteFromDataManager(SUBSPECIES))
-        		this.setSubspecies(this.getByteFromDataManager(SUBSPECIES), false);
+        		this.applySubspecies(this.getByteFromDataManager(SUBSPECIES), false);
         }
 
         // Size:
@@ -2304,6 +2331,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return false;
 		return true;
 	}
+
+	/**
+	 * Returns the melee attack range of this creature.
+	 * @return The attack range.
+	 */
+	public double getMeleeAttackRange() {
+		double range = this.width * 1.55D;
+		if(this.isCurrentlyFlying()) {
+			range += 0.5D;
+		}
+		return range;
+	}
 	
     // ========== Targets ==========
     /** Gets the attack target of this entity's Master Target Entity. **/
@@ -2555,8 +2594,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.isDamageTypeApplicable(damageSrc.getDamageType(), damageSrc, damage)) return false;
         if(!this.isDamageEntityApplicable(damageSrc.getTrueSource())) return false;
         damage *= this.getDamageModifier(damageSrc);
-        if(damageSrc.getTrueSource() instanceof EntityPlayer)
-            damage = this.getDamageAfterDefense(damage);
+        damage = this.getDamageAfterDefense(damage);
         if(this.isBoss() || this.getSubspeciesIndex() >= 3) {
             if (!(damageSrc.getTrueSource() instanceof EntityPlayer))
                 damage *= 0.25F;
@@ -2567,9 +2605,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
             Entity entity = damageSrc.getImmediateSource();
             if(entity instanceof EntityThrowable)
             	entity = ((EntityThrowable)entity).getThrower();
-            
-            if(entity != null && !(entity instanceof EntityPlayer))
-            	damage = (damage + 1.0F) / 2.0F;
             
             if(entity instanceof EntityLivingBase && this.getRider() != entity && this.getRidingEntity() != entity) {
                 if(entity != this)
@@ -2782,6 +2817,16 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	 * @return True if this entity can be targeted.
 	 */
 	public boolean canBeTargetedBy(EntityLivingBase entity) {
+		if(this.isBoss() && entity instanceof EntityCreatureBase) {
+			EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
+			if(entityCreature instanceof EntityCreatureTameable) {
+				EntityCreatureTameable entityTameable = (EntityCreatureTameable) entity;
+				if (entityTameable.getPlayerOwner() != null) {
+					return true;
+				}
+			}
+			return false;
+		}
 		return true;
 	}
 
@@ -3789,16 +3834,26 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		this.setColor(nbtTagCompound.getByte("Color"));
     	}
 
+		if(nbtTagCompound.hasKey("Size")) {
+			this.setSizeScale(nbtTagCompound.getDouble("Size"));
+		}
+
         if(nbtTagCompound.hasKey("Subspecies")) {
-            this.setSubspecies(nbtTagCompound.getByte("Subspecies"), false);
+    		if(this.firstSpawn) {
+				this.applySubspecies(nbtTagCompound.getByte("Subspecies"), false);
+			}
+			else {
+				this.setSubspecies(nbtTagCompound.getByte("Subspecies"), false);
+			}
         }
-    	
-    	if(nbtTagCompound.hasKey("Size")) {
-    		this.setSizeScale(nbtTagCompound.getDouble("Size"));
-    	}
 
 		if(nbtTagCompound.hasKey("MobLevel")) {
-			this.setLevel(nbtTagCompound.getInteger("MobLevel"));
+			if(this.firstSpawn) {
+				this.applyLevel(nbtTagCompound.getInteger("MobLevel"));
+			}
+			else {
+				this.setLevel(nbtTagCompound.getInteger("MobLevel"));
+			}
 		}
 
 		if(nbtTagCompound.hasKey("SpawnedAsBoss")) {

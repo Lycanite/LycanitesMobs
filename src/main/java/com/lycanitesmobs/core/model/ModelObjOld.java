@@ -125,7 +125,6 @@ public class ModelObjOld extends ModelCustom {
 		}
 
         // Render and Animate Each Part:
-		this.onRenderStart(layer, entity, trophyModel);
         for(ObjObject part : this.wavefrontParts) {
     		if(part.getName() == null)
     			continue;
@@ -187,14 +186,17 @@ public class ModelObjOld extends ModelCustom {
 
             // Render:
             this.uncenterPart(partName);
+			this.onRenderStart(layer, entity, trophyModel);
             this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, trophyModel, loop), this.getPartTextureOffset(partName, entity, layer, trophyModel, loop));
+			this.onRenderFinish(layer, entity, trophyModel);
 			GlStateManager.popMatrix();
 		}
-		this.onRenderFinish(layer, entity, trophyModel);
 	}
 
 	/** Called just before a part is being rendered. **/
 	public void onRenderStart(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		if(layer != null) {
 			layer.onRenderStart(entity, renderAsTrophy);
 		}
@@ -202,6 +204,7 @@ public class ModelObjOld extends ModelCustom {
 
 	/** Called just after a part is being rendered. **/
 	public void onRenderFinish(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		GlStateManager.disableBlend();
 		if(layer != null) {
 			layer.onRenderFinish(entity, renderAsTrophy);
 		}

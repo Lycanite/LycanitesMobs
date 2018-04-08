@@ -138,7 +138,7 @@ public class AsmodeusStructureBuilder extends StructureBuilder {
 		IBlockState light = ObjectManager.getBlock("demoncrystal").getDefaultState();
 		IBlockState trimming = ObjectManager.getBlock("demonstonechiseled").getDefaultState();
 		IBlockState top = ObjectManager.getBlock("demonstonepolished").getDefaultState();
-		IBlockState fireBase = Blocks.NETHERRACK.getDefaultState();
+		IBlockState fireBase = Blocks.OBSIDIAN.getDefaultState();
 		IBlockState fire = ObjectManager.getBlock("hellfire").getDefaultState();
 
 		for (int x = minX; x <= maxX; x++) {
@@ -195,7 +195,7 @@ public class AsmodeusStructureBuilder extends StructureBuilder {
 		IBlockState light = ObjectManager.getBlock("demoncrystal").getDefaultState();
 		IBlockState trimming = ObjectManager.getBlock("demonstonechiseled").getDefaultState();
 		IBlockState top = ObjectManager.getBlock("demonstonepolished").getDefaultState();
-		IBlockState fireBase = Blocks.NETHERRACK.getDefaultState();
+		IBlockState fireBase = Blocks.OBSIDIAN.getDefaultState();
 		IBlockState fire = ObjectManager.getBlock("hellfire").getDefaultState();
 
 		for(int x = minX; x <= maxX; x++) {

@@ -68,9 +68,9 @@
 		},
 		{
 			"item": "minecraft:fish",
-			"metadata": 5,
+			"metadata": 1,
 			"burningItem": "minecraft:cooked_fish",
-			"burningMetadata": 5,
+			"burningMetadata": 1,
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 0.5

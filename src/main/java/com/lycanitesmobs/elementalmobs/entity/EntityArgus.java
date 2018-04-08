@@ -168,6 +168,9 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
 		if(fusable instanceof EntityCinder) {
 			return EntityGrue.class;
 		}
+		if(fusable instanceof EntityJengu) {
+			return EntityEechetik.class;
+		}
 		if(fusable instanceof EntityGeonach) {
 			return EntityTremor.class;
 		}

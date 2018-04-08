@@ -35,8 +35,6 @@ public class MobEventManager extends JSONLoader {
 	public int minTicksUntilEvent = 60 * 60 * 20;
 	public int maxTicksUntilEvent = 120 * 60 * 20;
 
-    protected long lastEventUpdateTime = 0;
-
 
 	/** Returns the main Mob Event Manager instance. **/
 	public static MobEventManager getInstance() {
@@ -198,13 +196,14 @@ public class MobEventManager extends JSONLoader {
 		if(world.isRemote)
 			return;
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
-		if(worldExt == null)
+		if(worldExt == null) {
 			return;
+		}
 
 		// Only Tick On World Time Ticks:
-		if(this.lastEventUpdateTime == world.getTotalWorldTime())
+		if(worldExt.lastEventUpdateTime == world.getTotalWorldTime()) {
 			return;
-		this.lastEventUpdateTime = world.getTotalWorldTime();
+		}
 		worldExt.lastEventUpdateTime = world.getTotalWorldTime();
 
 		// Only Run If Players Are Present:
@@ -220,7 +219,7 @@ public class MobEventManager extends JSONLoader {
         // Update Mob Event Players:
         if(worldExt.serverMobEventPlayers.size() > 0) {
             for (MobEventPlayerServer mobEventPlayerServer : worldExt.serverMobEventPlayers.values().toArray(new MobEventPlayerServer[worldExt.serverMobEventPlayers.size()])) {
-                mobEventPlayerServer.onUpdate();
+				mobEventPlayerServer.onUpdate();
             }
         }
     }

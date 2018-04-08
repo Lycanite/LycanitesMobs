@@ -183,7 +183,7 @@ public class AltarInfoCelestialGeonach extends AltarInfo {
         // Spawn Mini Boss:
         entityGeonach.altarSummoned = true;
         entityGeonach.forceBossHealthBar = true;
-        entityGeonach.setSubspecies(3, true);
+        entityGeonach.applySubspecies(3, true);
         entityGeonach.setLocationAndAngles(x, y - 2, z, 0, 0);
         world.spawnEntity(entityGeonach);
         entityGeonach.destroyArea(x, y, z, 10000, false, 2);

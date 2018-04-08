@@ -181,7 +181,7 @@ public class AltarInfoUmberLobber extends AltarInfo {
         // Spawn Mini Boss:
         entityLobber.altarSummoned = true;
         entityLobber.forceBossHealthBar = true;
-        entityLobber.setSubspecies(3, true);
+        entityLobber.applySubspecies(3, true);
         entityLobber.setLocationAndAngles(x, y - 2, z, 0, 0);
         world.spawnEntity(entityLobber);
         entityLobber.destroyArea(x, y, z, 10000, false, 2);

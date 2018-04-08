@@ -40,7 +40,7 @@ public class MobEvent {
 	protected boolean enabled = true;
 
 	/** The channel that this event should use. Can be: world (affects all players in the world), boss (for boss events) or player (the event is unique to the player, for area events). **/
-	protected String channel = "world";
+	public String channel = "world";
 
 	/** How long (in ticks) this mob event will be in the spawning phase for. After this the event is considered over but spawned mobs may linger. **/
 	protected int duration = 60 * 20;
@@ -257,12 +257,12 @@ public class MobEvent {
 			}
 			entityCreature.addLevel(levelBoost);
 
-			if(!entityCreature.isTemporary) {
+			if(!entityCreature.isTemporary && !"boss".equalsIgnoreCase(this.channel)) {
 				entityCreature.setTemporary(MobEventManager.getInstance().defaultMobDuration);
 			}
 
 			if(level > 1) {
-				entityCreature.setSubspecies(level - 1, true);
+				entityCreature.applySubspecies(level - 1, true);
 			}
 		}
     }

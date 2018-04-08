@@ -1,22 +1,25 @@
 package com.lycanitesmobs.demonmobs.block;
 
-import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.block.BlockFireBase;
+import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.demonmobs.DemonMobs;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.MobEffects;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,7 +41,7 @@ public class BlockHellfire extends BlockFireBase {
         this.agingRate = 1;
         this.spreadChance = 1;
         this.removeOnTick = !ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Hellfire", true);
-        this.removeOnNoFireTick = ConfigBase.getConfig(this.group, "general").getBool("Features", "Remove Hellfire on No Fire Tick", false);
+        this.removeOnNoFireTick = ConfigBase.getConfig(this.group, "general").getBool("Features", "Remove Hellfire On No Fire Tick", false);
 
         this.setLightOpacity(1);
         this.setLightLevel(0.8F);
@@ -75,6 +78,17 @@ public class BlockHellfire extends BlockFireBase {
             return;
         entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
         entity.setFire(5);
+    }
+
+
+    // ==================================================
+    //                        Fire
+    // ==================================================
+    @Override
+    public boolean isBlockFireSource(Block block, World world, BlockPos pos, EnumFacing side) {
+        if(block == Blocks.OBSIDIAN)
+            return true;
+        return false;
     }
 
 

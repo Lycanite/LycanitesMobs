@@ -83,15 +83,15 @@ public class SpawnerEventListener {
 			this.mixBlockSpawnTriggers.add((MixBlockSpawnTrigger)spawnTrigger);
 			return true;
 		}
+		if(spawnTrigger instanceof SleepSpawnTrigger && !this.sleepSpawnTriggers.contains(spawnTrigger)) {
+			this.sleepSpawnTriggers.add((SleepSpawnTrigger)spawnTrigger);
+			return true;
+		}
 		if(spawnTrigger instanceof BlockSpawnTrigger && !this.blockSpawnTriggers.contains(spawnTrigger)) {
 			this.blockSpawnTriggers.add((BlockSpawnTrigger)spawnTrigger);
 			return true;
 		}
 
-		if(spawnTrigger instanceof SleepSpawnTrigger && !this.sleepSpawnTriggers.contains(spawnTrigger)) {
-			this.sleepSpawnTriggers.add((SleepSpawnTrigger)spawnTrigger);
-			return true;
-		}
 		if(spawnTrigger instanceof FishingSpawnTrigger && !this.fishingSpawnTriggers.contains(spawnTrigger)) {
 			this.fishingSpawnTriggers.add((FishingSpawnTrigger)spawnTrigger);
 			return true;
@@ -357,7 +357,7 @@ public class SpawnerEventListener {
 		// Run Spawners:
 		boolean interrupted = false;
 		for(SleepSpawnTrigger spawnTrigger : this.sleepSpawnTriggers) {
-			if(spawnTrigger.onSleep(world, player, spawnPos)) {
+			if(spawnTrigger.onSleep(world, player, spawnPos, world.getBlockState(event.getPos()))) {
 				interrupted = true;
 			}
 		}

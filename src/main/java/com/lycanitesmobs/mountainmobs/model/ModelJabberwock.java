@@ -21,10 +21,7 @@ public class ModelJabberwock extends ModelObjOld {
     public ModelJabberwock(float shadowSize) {
     	// Load Model:
     	this.initModel("jabberwock", MountainMobs.instance.group, "entity/jabberwock");
-    	
 
-
-    	
     	// Set Rotation Centers:
     	setPartCenter("head", 0F, 2.2F, 0.1F);
     	setPartCenter("mouth", 0F, 2.25F, 0.8F);

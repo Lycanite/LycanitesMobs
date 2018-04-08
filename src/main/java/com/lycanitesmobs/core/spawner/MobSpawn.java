@@ -383,7 +383,7 @@ public class MobSpawn {
 				firstSpawn = false;
 			}
 			if(this.subspecies > -1) {
-				entityCreature.setSubspecies(this.subspecies, true);
+				entityCreature.applySubspecies(this.subspecies, true);
 				firstSpawn = false;
 			}
 			if(this.fixate && player != null) {

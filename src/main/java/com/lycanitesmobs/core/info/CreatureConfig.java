@@ -70,6 +70,12 @@ public class CreatureConfig {
 	/** If true, some elemental mobs will fuse with each other on sight into a stronger different elemental. **/
 	public boolean elementalFusion = true;
 
+	/** Controls how fused mobs combine their levels. Can be 'both' (default) where both levels are added together, 'highest' where the higher level is used and 'lowest' where the lowest level is used. **/
+	public String elementalFusionLevelMix = "both";
+
+	/** The level of a mob created via fusion is multiplied by this value, set to 1 for no changes. Tamed fusions aren't multiplied by this value. **/
+	public double elementalFusionLevelMultiplier = 10;
+
 	/** If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at. **/
 	public boolean disablePickupOffsets = false;
 
@@ -135,6 +141,8 @@ public class CreatureConfig {
 		this.mobsAttackVillagers = config.getBool("Mob Interaction", "Mobs Attack Villagers", this.mobsAttackVillagers, "Set to false to prevent mobs that attack players from also attacking villagers.");
 		this.animalsFightBack = config.getBool("Mob Interaction", "Animals Fight Back", this.animalsFightBack, "If true, passive mobs will fight back when hit instead of running away.");
 		this.elementalFusion = config.getBool("Mob Interaction", "Elemental Fusion", this.elementalFusion, "If true, some elemental mobs will fuse with each other on sight into a stronger different elemental.");
+		this.elementalFusionLevelMix = config.getString("Mob Interaction", "Elemental Fusion", this.elementalFusionLevelMix, "Controls how fused mobs combine their levels. Can be 'both' (default) where both levels are added together, 'highest' where the higher level is used and 'lowest' where the lowest level is used.");
+		this.elementalFusionLevelMultiplier = config.getDouble("Mob Interaction", "Elemental Fusion", this.elementalFusionLevelMultiplier, "The level of a mob created via fusion is multiplied by this value, set to 1 for no changes. Tamed fusions aren't multiplied by this value.");
 		this.disablePickupOffsets = config.getBool("Mob Interaction", "Disable Pickup Offset", this.disablePickupOffsets, "If true, when a mob picks up a player, the player will be positioned where the mob is rather than offset to where the mob is holding the player at.");
 		this.suffocationImmunity = config.getBool("Mob Interaction", "Global Suffocation Immunity", this.suffocationImmunity, "If true, all mobs will be immune to suffocation (inWall) damage.");
 		this.drownImmunity = config.getBool("Mob Interaction", "Global Drown Immunity", this.drownImmunity, "If true, all mobs will be immune to damage from running out of air (drown damage).");

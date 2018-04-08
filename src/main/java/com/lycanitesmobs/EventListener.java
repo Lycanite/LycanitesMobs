@@ -49,6 +49,8 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EventListener {
 
@@ -450,6 +452,7 @@ public class EventListener {
 	// ==================================================
 	//                 Debug Overlay
 	// ==================================================
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onGameOverlay(RenderGameOverlayEvent.Text event) {
 		if(!LycanitesMobs.config.getBool("Debug", "Overlay", false)) {

@@ -1,5 +1,5 @@
 {
-	"parent": "builtin/generated",
+	"parent": "item/generated",
 	"textures": {
 		"layer0": "demonmobs:items/demonspawn",
 		"layer1": "demonmobs:items/demonspawn_overlay"

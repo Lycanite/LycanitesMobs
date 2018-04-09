@@ -1,5 +1,5 @@
 {
-	"parent": "builtin/generated",
+	"parent": "item/generated",
 	"textures": {
 		"layer0": "infernomobs:items/infernospawn",
 		"layer1": "infernomobs:items/infernospawn_overlay"

@@ -28,7 +28,7 @@ public class LayerShield extends LayerBase {
     public boolean canRenderLayer(EntityCreatureBase entity, float scale) {
         if(!super.canRenderLayer(entity, scale))
             return false;
-        return true;//entity.isBlocking();
+        return entity.isBlocking();
     }
 
 

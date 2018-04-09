@@ -1,5 +1,5 @@
 {
-	"parent": "builtin/generated",
+	"parent": "item/generated",
 	"textures": {
 		"layer0": "demonmobs:blocks/doomfire_layer_0"
 	}

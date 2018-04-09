@@ -1,5 +1,5 @@
 {
-	"parent": "builtin/generated",
+	"parent": "item/generated",
 	"textures": {
 		"layer0": "shadowmobs:items/shadowspawn",
 		"layer1": "shadowmobs:items/shadowspawn_overlay"

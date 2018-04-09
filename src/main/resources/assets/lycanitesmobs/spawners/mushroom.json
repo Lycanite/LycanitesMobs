@@ -27,7 +27,7 @@
 			"rangeMin": [16, 0, 16],
 			"rangeMax": [32, 32, 32],
 			"surface": true,
-			"underground": false,
+			"underground": true,
 			"sorting": "random",
 			"blocks": [
 				"minecraft:brown_mushroom",

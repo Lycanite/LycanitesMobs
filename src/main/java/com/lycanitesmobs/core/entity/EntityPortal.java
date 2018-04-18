@@ -187,11 +187,11 @@ public class EntityPortal extends EntityProjectileBase {
     // ==================================================
   	//                 Summon Creatures
   	// ==================================================
-    public boolean summonCreatures() {
+    public int summonCreatures() {
     	if(this.getEntityWorld().isRemote)
-    		return true;
+    		return 1;
         if(this.summonClass == null)
-            return false;
+            return 0;
     	for(int i = 0; i < this.summonAmount; i++) {
 	    	Entity entity = null;
 			try {
@@ -201,7 +201,7 @@ public class EntityPortal extends EntityProjectileBase {
 				e.printStackTrace();
 			}
 	    	if(entity == null)
-	    		return false;
+	    		return 0;
 	    	entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rand.nextFloat() * 360.0F, 0.0F);
 	    	if(entity instanceof EntityCreatureBase) {
                 EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
@@ -235,9 +235,9 @@ public class EntityPortal extends EntityProjectileBase {
             }
 	    	this.getEntityWorld().spawnEntity(entity);
     	}
-    	boolean summonedCreatures = this.summonAmount > 0;
+        int amount = this.summonAmount;
     	this.summonAmount = 0;
-    	return summonedCreatures;
+    	return amount;
     }
 	
     

@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.chaosbuffalo.targeting_api.Targeting;
 import com.google.common.base.Predicate;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
@@ -199,6 +200,10 @@ public abstract class EntityAITarget extends EntityAIBase {
         // Additional Checks:
         if(!this.isValidTarget(checkTarget))
             return false;
+
+        // Targeting API Checks
+        if(!Targeting.isValidTarget(Targeting.TargetType.ENEMY, this.host, checkTarget, true))
+            return false;
         
         // Home Check:
         if(!this.host.positionNearHome(MathHelper.floor(checkTarget.posX), MathHelper.floor(checkTarget.posY), MathHelper.floor(checkTarget.posZ)))
@@ -235,6 +240,9 @@ public abstract class EntityAITarget extends EntityAIBase {
         if(!checkTarget.isEntityAlive())
             return false;
         if(checkTarget.getClass() != this.host.getClass() && (!this.host.isOnSameTeam(checkTarget) || !checkTarget.isOnSameTeam(this.host)))
+            return false;
+
+        if(!Targeting.isValidTarget(Targeting.TargetType.FRIENDLY, this.host, checkTarget, true))
             return false;
 
         // Creative Check:

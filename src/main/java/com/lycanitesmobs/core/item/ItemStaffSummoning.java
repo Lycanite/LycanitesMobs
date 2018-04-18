@@ -55,7 +55,7 @@ public class ItemStaffSummoning extends ItemScepter {
     
     public void damageItemCharged(ItemStack itemStack, EntityLivingBase entity, float power) {
     	if(this.portalEntity != null) {
-    		itemStack.damageItem(this.portalEntity.summonAmount, entity);
+            this.damage_item(itemStack, this.portalEntity.summonAmount, entity);
     	}
     }
     
@@ -146,14 +146,26 @@ public class ItemStaffSummoning extends ItemScepter {
     public boolean rapidAttack(ItemStack itemStack, World world, EntityLivingBase entity) {
     	return false;
     }
+
+    private void damage_item(ItemStack itemStack, int amountToDamage, EntityLivingBase entity)
+    {
+        itemStack.damageItem(amountToDamage, entity);
+        if (itemStack.getCount() == 0) {
+            if (entity.getHeldItem(EnumHand.MAIN_HAND).equals(itemStack)) {
+                entity.setHeldItem(EnumHand.MAIN_HAND, ItemStack.EMPTY);
+            } else if (entity.getHeldItem(EnumHand.OFF_HAND).equals(itemStack)) {
+                entity.setHeldItem(EnumHand.OFF_HAND, ItemStack.EMPTY);
+            }
+        }
+    }
     
     // ========== Charged ==========
     @Override
     public boolean chargedAttack(ItemStack itemStack, World world, EntityLivingBase entity, float power) {
     	if(this.portalEntity != null) {
-			boolean success = this.portalEntity.summonCreatures();
-			this.portalEntity = null;
-			return success;
+			int successCount = this.portalEntity.summonCreatures();
+            this.damage_item(itemStack, successCount, entity);
+			return successCount > 0;
 		}
 		return false;
     }

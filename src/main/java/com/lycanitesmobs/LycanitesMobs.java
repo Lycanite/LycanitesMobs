@@ -27,6 +27,7 @@ import com.lycanitesmobs.core.spawner.SpawnerManager;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import com.lycanitesmobs.core.worldgen.WorldGeneratorDungeon;
+import com.lycanitesmobs.integration.Integrations;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -47,7 +48,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, useMetadata = false, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
+@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version,
+	 useMetadata = false, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions,
+	 dependencies = "required-after:targeting_api")
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
@@ -283,6 +286,9 @@ public class LycanitesMobs {
 		EntityRegistry.registerModEntity(new ResourceLocation(this.group.filename, "fear"), EntityFear.class, "fear", specialEntityID++, instance, 64, 1, true);
 		AssetManager.addSound("effect_fear", group, "effect.fear");
 		EntityRegistry.registerModEntity(new ResourceLocation(this.group.filename, "hitarea"), EntityHitArea.class, "hitarea", specialEntityID++, instance, 64, 1, true);
+
+		// ========== Mod Integrations API ==========
+		Integrations.setup();
 	}
 	
 	

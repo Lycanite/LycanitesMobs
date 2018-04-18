@@ -27,7 +27,7 @@ minecraft {
 }
 
 dependencies {
-    
+    compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 processResources {

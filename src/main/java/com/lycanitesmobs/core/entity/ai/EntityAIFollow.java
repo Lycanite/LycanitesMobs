@@ -69,7 +69,7 @@ public abstract class EntityAIFollow extends EntityAIBase {
         if(!target.isEntityAlive())
         	return false;
 
-        double distance = Math.sqrt(this.host.getDistance(target));
+        double distance = this.host.getDistance(target);
 	    if(distance > this.lostDistance && this.lostDistance != 0)
 	        return false;
 	    if(distance <= this.strayDistance && this.strayDistance != 0)
@@ -89,10 +89,11 @@ public abstract class EntityAIFollow extends EntityAIBase {
         if(!target.isEntityAlive())
         	return false;
         
-        double distance = Math.sqrt(this.host.getDistance(target));
+        double distance = this.host.getDistance(target);
         if(distance > this.lostDistance && this.lostDistance != 0)
         	this.setTarget(null);
-        if(distance <= this.strayDistance && this.strayDistance != 0)
+        // Start straying when we reach halfway between the stray radius and the target
+        if(distance <= this.strayDistance / 2.0 && this.strayDistance != 0)
         	return false;
 		this.onTargetDistance(distance, target);
         

@@ -80,7 +80,7 @@ public abstract class EntityAITarget extends EntityAIBase {
 
         // Target Out of Range:
         double distance = this.getTargetDistance() + 2;
-        if(Math.sqrt(this.host.getDistance(this.getTarget())) > distance)
+        if(this.host.getDistance(this.getTarget()) > distance)
             return false;
         
         if(this.checkSight)

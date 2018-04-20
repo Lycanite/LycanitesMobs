@@ -18,7 +18,7 @@
 	"triggers": [
 		{
 			"type": "chunk",
-			"chance": 0.1
+			"chance": 0.05
 		}
 	],
 	"locations": [

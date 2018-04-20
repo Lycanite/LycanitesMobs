@@ -62,7 +62,7 @@ public class EntityAITargetRiderRevenge extends EntityAITargetAttack {
         int i = this.host.getRider().getRevengeTimer();
         if(i == this.revengeTime)
         	return false;
-        if(!this.isSuitableTarget(this.host.getRider().getRevengeTarget(), false))
+        if(!this.isEntityTargetable(this.host.getRider().getRevengeTarget(), false))
         	return false;
         return true;
     }

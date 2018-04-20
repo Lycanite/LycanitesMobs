@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.entity.ai;
 
 import com.lycanitesmobs.api.IGroupAnimal;
+import com.lycanitesmobs.api.Targeting;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import net.minecraft.entity.Entity;
@@ -8,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class EntityAITargetOwnerThreats extends EntityAITarget {
 	// Properties:
@@ -69,13 +71,23 @@ public class EntityAITargetOwnerThreats extends EntityAITarget {
     	if(!this.host.isAggressive())
             return false;
     	
-    	// Ownable Checks:
-        if(this.host instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() != null) {
-            if(target instanceof IEntityOwnable && ((IEntityOwnable)this.host).getOwner() == ((IEntityOwnable)target).getOwner())
-                return false;
-            if(target == ((IEntityOwnable)this.host).getOwner())
-                return false;
+    	// Team Checks:
+        if(this.host.isOnSameTeam(target)) {
+            return false;
         }
+
+        // EntityLiving Check:
+		if(target instanceof EntityLiving) {
+			EntityLiving targetLiving = (EntityLiving)target;
+			if(!targetLiving.canAttackClass(EntityPlayer.class)) {
+				return false;
+			}
+		}
+
+		// Mod Interaction Check:
+		if(!Targeting.isValidTarget(this.host, target)) {
+        	return false;
+		}
 
         // Threat Check:
         if(target instanceof IMob && !(target instanceof IEntityOwnable) && !(target instanceof EntityCreatureBase)) {

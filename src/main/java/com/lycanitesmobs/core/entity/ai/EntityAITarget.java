@@ -45,12 +45,12 @@ public abstract class EntityAITarget extends EntityAIBase {
 
         this.targetSelector = entity -> {
             double d0 = EntityAITarget.this.getTargetDistance();
-            return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isSuitableTarget(entity, false);
+            return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isEntityTargetable(entity, false);
         };
 
         this.allySelector = entity -> {
             double d0 = EntityAITarget.this.getTargetDistance();
-            return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isAllyTarget(entity, false);
+            return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isAllyTarget(entity);
         };
         this.nearestSorter = new TargetSorterNearest(setHost);
     }
@@ -181,10 +181,15 @@ public abstract class EntityAITarget extends EntityAIBase {
     
     
     // ==================================================
- 	//                 Valid Target Check
+ 	//                  Target Checking
  	// ==================================================
-    // ========== Common Checks ==========
-    protected boolean isSuitableTarget(EntityLivingBase checkTarget, boolean targetCreative) {
+    /**
+     * Performs all checks to see if the entity can be targeted at all. Override isValidTarget for AI specific checks.
+     * @param checkTarget The target entity to check.
+     * @param targetCreative If true, creative players can pass this check.
+     * @return
+     */
+    protected boolean isEntityTargetable(EntityLivingBase checkTarget, boolean targetCreative) {
         if(checkTarget == null)
             return false;
         if(checkTarget == this.host)
@@ -192,11 +197,15 @@ public abstract class EntityAITarget extends EntityAIBase {
         if(!checkTarget.isEntityAlive())
             return false;
 
-        // Creative Check:
-        if(checkTarget instanceof EntityPlayer && !targetCreative && (((EntityPlayer)checkTarget).isCreative() || ((EntityPlayer)checkTarget).isSpectator()))
-            return false;
+        // Player Checks:
+		if(checkTarget instanceof EntityPlayer) {
+			if(!targetCreative && ((EntityPlayer)checkTarget).isCreative())
+				return false;
+			if(((EntityPlayer)checkTarget).isSpectator())
+				return false;
+		}
         
-        // Additional Checks:
+        // Valid Check:
         if(!this.isValidTarget(checkTarget))
             return false;
         
@@ -220,26 +229,40 @@ public abstract class EntityAITarget extends EntityAIBase {
         
         return true;
     }
-    
-    // ========== Additional Checks ==========
-    protected boolean isValidTarget(EntityLivingBase target) {
+
+	/**
+	 * Checks if the target entity is a vlid target for this targeting AI. This should be overridden for AI specific checks..
+	 * @param target The target entity to check.
+	 * @return True if the entity can be targeted by this AI.
+	 */
+	protected boolean isValidTarget(EntityLivingBase target) {
     	return true;
     }
 
-    // ========== Ally Checks ==========
-    protected boolean isAllyTarget(EntityLivingBase checkTarget, boolean targetCreative) {
+	/**
+	 * Returns if the provided target should be considered an ally when calling for help, etc.
+	 * @param checkTarget The target entity to check.
+	 * @return True if the target is to be considered an ally to help.
+	 */
+    protected boolean isAllyTarget(EntityLivingBase checkTarget) {
         if(checkTarget == null)
             return false;
         if(checkTarget == this.host)
             return false;
         if(!checkTarget.isEntityAlive())
             return false;
-        if(checkTarget.getClass() != this.host.getClass() && (!this.host.isOnSameTeam(checkTarget) || !checkTarget.isOnSameTeam(this.host)))
+
+		// Player Check:
+		if(checkTarget instanceof EntityPlayer)
+			return false;
+
+        // Same Species:
+        if(checkTarget.getClass() != this.host.getClass())
             return false;
 
-        // Creative Check:
-        if(checkTarget instanceof EntityPlayer)
-            return false;
+        // Same Team:
+		if(!checkTarget.isOnSameTeam(this.host))
+			return false;
 
         // Sight Check:
         return !this.checkSight || this.host.getEntitySenses().canSee(checkTarget);

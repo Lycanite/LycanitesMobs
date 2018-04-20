@@ -48,3 +48,23 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+// Don't obfuscate mod:
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    from sourceSets.api.output
+    classifier = 'dev'
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.api.output
+    classifier = 'api'
+}
+
+jar {
+    // Add api classes to main package
+    from sourceSets.api.output
+}
+
+// Run additional functions on build:
+build.dependsOn sourceJar, deobfJar, apiJar

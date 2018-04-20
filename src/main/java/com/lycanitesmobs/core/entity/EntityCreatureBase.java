@@ -2305,19 +2305,31 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns whether or not this mob is allowed to attack the given target entity. **/
 	public boolean canAttackEntity(EntityLivingBase targetEntity) {
-		if(!CreatureManager.getInstance().config.mobsAttackVillagers && targetEntity instanceof EntityVillager)
+		if(!CreatureManager.getInstance().config.mobsAttackVillagers && targetEntity instanceof EntityVillager) {
 			return false;
+		}
+
+		// Players:
         if(targetEntity instanceof EntityPlayer) {
             EntityPlayer targetPlayer = (EntityPlayer)targetEntity;
-            if(targetPlayer.capabilities.isCreativeMode)
-                return false;
+            if(targetPlayer.capabilities.isCreativeMode) {
+				return false;
+			}
         }
+
+        // Team:
+		if(this.isOnSameTeam(targetEntity)) {
+			return false;
+		}
+
+        // Creatures:
         if(targetEntity instanceof EntityCreatureBase) {
 			EntityCreatureBase targetCreature = (EntityCreatureBase)targetEntity;
-            if(targetCreature.getMasterTarget() == this)
-                return false;
-            if (!(this instanceof IGroupBoss)) {
-                if(this.getOwner() == null) {
+            if(targetCreature.getMasterTarget() == this) {
+				return false;
+			}
+            if(!(this instanceof IGroupBoss)) {
+                if(!this.isTamed()) {
 					if(targetEntity instanceof IGroupBoss) {
 						return false;
 					}
@@ -2327,8 +2339,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
 				}
             }
         }
-        if(!this.isStrongSwimmer() && this.isFlying() && targetEntity.isInWater())
-            return false;
+
+        // Inaccessible From Water:
+        if(!this.isStrongSwimmer() && this.isFlying() && targetEntity.isInWater()) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -2860,6 +2876,18 @@ public abstract class EntityCreatureBase extends EntityLiving {
         double zAmount = Math.cos(angle);
         return new Vec3d(x + (distance * xAmount), y, z + (distance * zAmount));
     }
+
+
+	// ==================================================
+	//                       Taming
+	// ==================================================
+	/**
+	 * Returns if this creature is considered to be tamed where it behaves a bit differently.
+	 * @return True if tamed.
+	 */
+	public boolean isTamed() {
+		return false;
+	}
     
     
     // ==================================================

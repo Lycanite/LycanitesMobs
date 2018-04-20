@@ -57,7 +57,7 @@ public class EntityAITargetOwnerRevenge extends EntityAITargetAttack {
         int i = owner.getRevengeTimer();
         if(i == this.revengeTime)
         	return false;
-        if(!this.isSuitableTarget(owner.getRevengeTarget(), false))
+        if(!this.isEntityTargetable(owner.getRevengeTarget(), false))
         	return false;
         return true;
     }

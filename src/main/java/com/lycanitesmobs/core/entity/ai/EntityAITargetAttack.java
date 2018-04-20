@@ -5,6 +5,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IGroupAlpha;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
+import com.lycanitesmobs.api.Targeting;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import net.minecraft.entity.EntityLivingBase;
@@ -116,10 +117,14 @@ public class EntityAITargetAttack extends EntityAITarget {
     	if(this.targetClass != this.host.getClass() && target.getClass() == this.host.getClass())
             return false;
 
+		// Tamed Targeting Check:
+		if(!this.tameTargeting && this.host.isTamed())
+			return false;
+
         // Predator Animal/Alpha Check:
         if(this.targetClass == IGroupAnimal.class || this.targetClass == IGroupAlpha.class) {
             if(target instanceof IGroupPredator)
-                return false;
+                return false; // Do not attack predators when targeting animals or alphas (some predators could also count as alphas, etc).
         }
     	
     	// Class Check:
@@ -127,20 +132,14 @@ public class EntityAITargetAttack extends EntityAITarget {
             return false;
 
         // Entity Check:
-        if(!this.host.canAttackEntity(target))
-        	return false;
-        
-        // Ownable Checks:
-        if(this.host instanceof IEntityOwnable && this.host.getOwner() != null) {
-            if(target instanceof IEntityOwnable && this.host.getOwner() == ((IEntityOwnable)target).getOwner())
-                return false;
-            if(target == this.host.getOwner())
-                return false;
-        }
-        
-        // Tamed Checks:
-        if(!this.tameTargeting && this.host instanceof EntityCreatureTameable && ((EntityCreatureTameable)this.host).isTamed())
-        	return false;
+		if(!this.host.canAttackEntity(target)) {
+			return false;
+		}
+
+		// Mod Interaction Check:
+		if(!Targeting.isValidTarget(this.host, target)) {
+			return false;
+		}
         
         // Pack Size Check:
         if(this.allySize > 0 && this.enemySize > 0) {

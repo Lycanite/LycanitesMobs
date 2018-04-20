@@ -36,16 +36,15 @@ public class EntityAIDefendVillage extends EntityAITargetAttack {
 		if (this.target instanceof EntityCreeper) {
 			return false;
 		}
-		else if (this.isSuitableTarget(this.target, false)) {
+		else if (this.isEntityTargetable(this.target, false)) {
 			return true;
 		}
 		else if (this.host.getRNG().nextInt(20) == 0) {
 			this.target = village.getNearestTargetPlayer(this.host);
-			return this.isSuitableTarget(this.target, false);
+			return this.isEntityTargetable(this.target, false);
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	/**

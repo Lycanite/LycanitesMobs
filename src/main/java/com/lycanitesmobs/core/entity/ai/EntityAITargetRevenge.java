@@ -62,7 +62,7 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
         	return false;
         if(!this.host.isAggressive() && this.host instanceof EntityCreatureTameable && !((EntityCreatureTameable)this.host).isTamed())
         	return false;*/
-        return i != this.revengeTime && this.isSuitableTarget(this.host.getRevengeTarget(), false);
+        return i != this.revengeTime && this.isEntityTargetable(this.host.getRevengeTarget(), false);
     }
 	
     

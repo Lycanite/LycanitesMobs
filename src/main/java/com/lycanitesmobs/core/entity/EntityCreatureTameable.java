@@ -336,19 +336,57 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
         }
         return super.getTeam();
     }
-    
-    @Override
+
+	/**
+	 * Returns if this creature is on the same team as the target entity. If PvP is disabled and this creature is tamed then it is considered on the same team as all players and their tames.
+	 * @param target The entity to check teams with.
+	 * @return True when on the same team.
+	 */
+	@Override
     public boolean isOnSameTeam(Entity target) {
         if(this.isTamed()) {
-            if(target == this.getOwner())
+        	// Check If Owner:
+            if(target == this.getPlayerOwner() || target == this.getOwner())
                 return true;
+
+            // Check Player PvP:
+			if(target instanceof EntityPlayer && (!this.getEntityWorld().getMinecraftServer().isPVPEnabled() || !this.isPVP())) {
+				return true;
+			}
+
+			// Check If Tameable:
             if(target instanceof EntityCreatureTameable) {
             	EntityCreatureTameable tamedTarget = (EntityCreatureTameable)target;
-            	if(tamedTarget.isTamed() && (!this.getEntityWorld().getMinecraftServer().isPVPEnabled()) || !this.isPVP() || tamedTarget.getOwner() == this.getOwner())
-            		return true;
+            	if(tamedTarget.isTamed()) {
+            		if(!this.getEntityWorld().getMinecraftServer().isPVPEnabled() || !this.isPVP() || tamedTarget.getPlayerOwner() == this.getPlayerOwner()) {
+						return true;
+					}
+				}
             }
-            if(this.getOwner() != null)
-                return this.getOwner().isOnSameTeam(target);
+			else if(target instanceof IEntityOwnable) {
+				IEntityOwnable tamedTarget = (IEntityOwnable)target;
+				if(tamedTarget.getOwner() != null) {
+					if(!this.getEntityWorld().getMinecraftServer().isPVPEnabled() || !this.isPVP() || tamedTarget.getOwner() == this.getOwner()) {
+						return true;
+					}
+				}
+			}
+
+			// Check Owner Teams:
+			if(this.getPlayerOwner() != null) {
+				if(this.getPlayerOwner().getRidingEntity() == target) {
+					return true;
+				}
+				return this.getPlayerOwner().isOnSameTeam(target);
+			}
+            else if(this.getOwner() != null) {
+				if(this.getOwner().getRidingEntity() == target) {
+					return true;
+				}
+				return this.getOwner().isOnSameTeam(target);
+			}
+
+			return false;
         }
         return super.isOnSameTeam(target);
     }
@@ -506,6 +544,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     //                       Taming
     // ==================================================
+	@Override
     public boolean isTamed() {
         try {
             return (this.getByteFromDataManager(TAMED) & TAMED_ID.IS_TAMED.id) != 0;

@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity.ai;
 
 import com.google.common.base.Predicate;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.api.Targeting;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -206,6 +207,9 @@ public abstract class EntityAITarget extends EntityAIBase {
         
         // Sight Check:
         if(this.checkSight && !checkTarget.isPotionActive(MobEffects.GLOWING) && !this.host.getEntitySenses().canSee(checkTarget))
+            return false;
+
+        if(!Targeting.isValidTarget(this.host, checkTarget))
             return false;
         
         // Nearby Check:

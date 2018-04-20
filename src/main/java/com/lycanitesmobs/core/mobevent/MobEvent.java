@@ -184,7 +184,11 @@ public class MobEvent {
 		int conditionsMet = 0;
 		int conditionsRequired = this.conditionsRequired > 0 ? this.conditionsRequired : this.conditions.size();
 		for(SpawnCondition condition : this.conditions) {
-			boolean met = condition.isMet(world, player);
+			BlockPos position = null;
+			if(player != null) {
+				position = player.getPosition();
+			}
+			boolean met = condition.isMet(world, player, position);
 			LycanitesMobs.printDebug("MobEvents", "Condition: " + condition + " " + (met ? "Passed" : "Failed"));
 			if(met) {
 				if(++conditionsMet >= conditionsRequired) {

@@ -123,7 +123,7 @@ public class DungeonSchematic {
 
 		// Biomes:
 		if(json.has("biomes"))
-			this.biomes = JSONHelper.getJsonBiomes(JSONHelper.getJsonStrings(json.get("biomes").getAsJsonArray()));
+			this.biomes = JSONHelper.getBiomesFromTags(JSONHelper.getJsonStrings(json.get("biomes").getAsJsonArray()));
 
 		// Themes:
 		if(json.has("themes")) {
@@ -231,7 +231,7 @@ public class DungeonSchematic {
 		}
 
 		for(SpawnCondition condition : this.conditions) {
-			if(!condition.isMet(world, null)) {
+			if(!condition.isMet(world, null, pos)) {
 				return false;
 			}
 		}

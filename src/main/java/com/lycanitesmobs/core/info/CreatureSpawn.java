@@ -48,8 +48,11 @@ public class CreatureSpawn {
 	/** The list of biome tags that this creature spawns in. Converts to a list of biomes on demand. **/
 	public List<String> biomeTags = new ArrayList<>();
 
-	/** The list of biomes that this creature spawns in. **/
-	public List<Biome> biomes = null;
+	/** The list of biomes generated from the list of biome tags. **/
+	public List<Biome> biomesFromTags = null;
+
+	/** The list of specific biomes that this creature spawns in. **/
+	public List<Biome> biomes = new ArrayList<>();
 
 	/** If true, the biome check will be ignored completely by this creature. **/
 	public boolean ignoreBiome = false;
@@ -138,9 +141,10 @@ public class CreatureSpawn {
 			this.ignoreBiome = json.get("ignoreBiome").getAsBoolean();
 		if(json.has("biomes")) {
 			this.biomeTags.clear();
-			this.biomes = null;
+			this.biomesFromTags = null;
 			this.biomeTags = JSONHelper.getJsonStrings(json.get("biomes").getAsJsonArray());
 		}
+		this.biomes = JSONHelper.getJsonBiomes(json);
 
 		if(json.has("spawnWeight"))
 			this.spawnWeight = json.get("spawnWeight").getAsInt();
@@ -182,16 +186,16 @@ public class CreatureSpawn {
 	 */
 	public void register(CreatureInfo creatureInfo) {
 		// Load Biomes:
-		if(this.biomes == null) {
-			this.biomes = JSONHelper.getJsonBiomes(this.biomeTags);
+		if(this.biomesFromTags == null) {
+			this.biomesFromTags = JSONHelper.getBiomesFromTags(this.biomeTags);
 		}
 
 		// Add Vanilla Spawns:
 		if(!CreatureManager.getInstance().spawnConfig.disableAllSpawning) {
 			if(this.enabled && this.spawnWeight > 0 && this.spawnGroupMax > 0) {
 				for(EnumCreatureType creatureType : this.creatureTypes) {
-					EntityRegistry.addSpawn(creatureInfo.entityClass, this.spawnWeight, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, this.biomes.toArray(new Biome[this.biomes.size()]));
-					for(Biome biome : this.biomes) {
+					EntityRegistry.addSpawn(creatureInfo.entityClass, this.spawnWeight, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, this.biomesFromTags.toArray(new Biome[this.biomesFromTags.size()]));
+					for(Biome biome : this.biomesFromTags) {
 						if(biome == Biomes.HELL) {
 							EntityRegistry.addSpawn(creatureInfo.entityClass, this.spawnWeight * 10, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin, CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMax, creatureType, biome);
 							break;
@@ -253,14 +257,24 @@ public class CreatureSpawn {
 		if(this.ignoreBiome) {
 			return true;
 		}
-		if(this.biomes == null) {
-			this.biomes = JSONHelper.getJsonBiomes(this.biomeTags);
+
+		// Biome Tags:
+		if(this.biomesFromTags == null) {
+			this.biomesFromTags = JSONHelper.getBiomesFromTags(this.biomeTags);
 		}
+		for(Biome validBiome : this.biomesFromTags) {
+			if(biomes.contains(validBiome)) {
+				return true;
+			}
+		}
+
+		// Biome IDs:
 		for(Biome validBiome : this.biomes) {
 			if(biomes.contains(validBiome)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 }

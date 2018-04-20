@@ -271,11 +271,11 @@ public class Spawner {
 
 
     /** Returns true if Triggers are allowed to operate for this Spawner. **/
-    public boolean canSpawn(World world, EntityPlayer player) {
+    public boolean canSpawn(World world, EntityPlayer player, BlockPos triggerPos) {
     	if(!SpawnerManager.getInstance().globalSpawnConditions.isEmpty()) {
 			LycanitesMobs.printDebug("JSONSpawner", "Global Conditions Required: " + SpawnerManager.getInstance().globalSpawnConditions.size());
 			for(SpawnCondition condition : SpawnerManager.getInstance().globalSpawnConditions) {
-				if(!condition.isMet(world, player)) {
+				if(!condition.isMet(world, player, triggerPos)) {
 					LycanitesMobs.printDebug("JSONSpawner", "Global Condition: " + condition + "Failed");
 					return false;
 				}
@@ -291,7 +291,7 @@ public class Spawner {
         int conditionsMet = 0;
         int conditionsRequired = this.conditionsRequired > 0 ? this.conditionsRequired : this.conditions.size();
         for(SpawnCondition condition : this.conditions) {
-        	boolean met = condition.isMet(world, player);
+        	boolean met = condition.isMet(world, player, triggerPos);
 			LycanitesMobs.printDebug("JSONSpawner", "Condition: " + condition + " " + (met ? "Passed" : "Failed"));
             if(met) {
                 if(++conditionsMet >= conditionsRequired) {
@@ -322,7 +322,7 @@ public class Spawner {
 		}
 
 		LycanitesMobs.printDebug("JSONSpawner", "~O==================== Spawner Triggered: " + this.name + " ====================O~");
-		if(!this.canSpawn(world, player)) {
+		if(!this.canSpawn(world, player, triggerPos)) {
 			LycanitesMobs.printDebug("JSONSpawner", "This Spawner Cannot Spawn");
 			return false;
 		}

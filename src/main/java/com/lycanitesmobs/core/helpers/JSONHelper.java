@@ -151,7 +151,7 @@ public class JSONHelper {
 		return materials;
 	}
 
-	public static List<Biome> getJsonBiomes(List<String> biomeTags) {
+	public static List<Biome> getBiomesFromTags(List<String> biomeTags) {
 		List<Biome> biomeList = new ArrayList<>();
 		for(String biomeEntry : biomeTags) {
 
@@ -205,6 +205,27 @@ public class JSONHelper {
 		}
 
 		return biomeList;
+	}
+
+	public static List<Biome> getJsonBiomes(JsonObject json) {
+		List<Biome> biomes = new ArrayList<>();
+		if(json.has("biomeIds")) {
+			biomes = getJsonBiomes(json.get("biomeIds").getAsJsonArray());
+		}
+		return biomes;
+	}
+
+	public static List<Biome> getJsonBiomes(JsonArray jsonArray) {
+		List<Biome> biomes = new ArrayList<>();
+		Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+		while (jsonIterator.hasNext()) {
+			Biome biome = GameRegistry.findRegistry(Biome.class).getValue(new ResourceLocation(jsonIterator.next().getAsString()));
+			if(biome != null) {
+				biomes.add(biome);
+			}
+		}
+
+		return biomes;
 	}
 
 	/* Can no longer access a list of all biomes types without reflection. This is the alternative for now. */

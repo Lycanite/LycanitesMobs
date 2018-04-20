@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 
@@ -41,11 +42,11 @@ public class GroupSpawnCondition extends SpawnCondition {
 
 
     @Override
-    public boolean isMet(World world, EntityPlayer player) {
+    public boolean isMet(World world, EntityPlayer player, BlockPos position) {
 		int conditionsMet = 0;
 		int conditionsRequired = this.conditionsRequired > 0 ? this.conditionsRequired : this.conditions.size();
 		for(SpawnCondition condition : this.conditions) {
-			boolean met = condition.isMet(world, player);
+			boolean met = condition.isMet(world, player, position);
 			if(met) {
 				if(++conditionsMet >= conditionsRequired) {
 					return true;

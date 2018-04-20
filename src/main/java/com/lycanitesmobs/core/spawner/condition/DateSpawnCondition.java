@@ -5,6 +5,7 @@ import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Calendar;
@@ -49,7 +50,7 @@ public class DateSpawnCondition extends SpawnCondition {
 
 
     @Override
-    public boolean isMet(World world, EntityPlayer player) {
+    public boolean isMet(World world, EntityPlayer player, BlockPos position) {
 		Calendar calendar = Calendar.getInstance();
 
     	// Check Month:
@@ -92,6 +93,6 @@ public class DateSpawnCondition extends SpawnCondition {
 			}
 		}
 
-        return super.isMet(world, player);
+        return super.isMet(world, player, position);
     }
 }

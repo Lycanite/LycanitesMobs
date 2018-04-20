@@ -4,10 +4,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class WorldSpawnCondition extends SpawnCondition {
 
@@ -16,6 +21,21 @@ public class WorldSpawnCondition extends SpawnCondition {
 
 	/** How the dimension ID list works. Can be whitelist or blacklist. **/
 	public String dimensionListType = "whitelist";
+
+	/** How the biomes from the biome tags list works. Can be whitelist or blacklist. **/
+	public String biomeTagListType = "whitelist";
+
+	/** The list of biome tags to filter this condition by. **/
+	public List<String> biomeTags = new ArrayList<>();
+
+	/** The list of biomes generated from the list of biome tags. **/
+	public List<Biome> biomesFromTags = null;
+
+	/** How the biomes from the biome ids list works. Can be whitelist or blacklist. **/
+	public String biomeIdListType = "whitelist";
+
+	/** The list of specific biomes that this creature spawns in. **/
+	public List<Biome> biomes = new ArrayList<>();
 
     /** The minimum world days that must have gone by, can accept fractions such as 5.25 for 5 and a quarter days. **/
     public double worldDayMin = -1;
@@ -61,6 +81,20 @@ public class WorldSpawnCondition extends SpawnCondition {
 		if(json.has("dimensionListType"))
 			this.dimensionListType = json.get("dimensionListType").getAsString();
 
+		if(json.has("biomes")) {
+			this.biomeTags.clear();
+			this.biomesFromTags = null;
+			this.biomeTags = JSONHelper.getJsonStrings(json.get("biomes").getAsJsonArray());
+		}
+
+		if(json.has("biomeTagListType"))
+			this.biomeTagListType = json.get("biomeTagListType").getAsString();
+
+		this.biomes = JSONHelper.getJsonBiomes(json);
+
+		if(json.has("biomeIdListType"))
+			this.biomeIdListType = json.get("biomeIdListType").getAsString();
+
 		if(json.has("worldDayMin"))
 			this.worldDayMin = json.get("worldDayMin").getAsInt();
 
@@ -93,7 +127,7 @@ public class WorldSpawnCondition extends SpawnCondition {
 
 
     @Override
-    public boolean isMet(World world, EntityPlayer player) {
+    public boolean isMet(World world, EntityPlayer player, BlockPos position) {
 		ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
 		int time = (int)Math.floor(world.getWorldTime() % 24000D);
 		int day = (int)Math.floor((worldExt.useTotalWorldTime ? world.getTotalWorldTime() : world.getWorldTime()) / 23999D);
@@ -164,6 +198,47 @@ public class WorldSpawnCondition extends SpawnCondition {
 			return false;
 		}
 
-        return super.isMet(world, player);
+		// Check Biomes:
+		if(!this.isAllowedBiome(world, position)) {
+			return false;
+		}
+
+        return super.isMet(world, player, position);
     }
+
+
+	/**
+	 * Returns if the biome of the provided position passes this condition.
+	 * @param world The world to get the biome from.
+	 * @param position The position to get the biome from, can be null.
+	 * @return True if the biome is allowed, false if not.
+	 */
+	public boolean isAllowedBiome(World world, BlockPos position) {
+		if(position != null) {
+			Biome biome = world.getBiome(position);
+
+			// Biome IDs:
+			if (!this.biomes.isEmpty()) {
+				if (this.biomes.contains(biome)) {
+					return !"blacklist".equalsIgnoreCase(this.biomeIdListType);
+				}
+			}
+
+			// Biome Tags:
+			if (!this.biomeTags.isEmpty()) {
+				if (this.biomesFromTags == null) {
+					this.biomesFromTags = JSONHelper.getBiomesFromTags(this.biomeTags);
+				}
+				if (this.biomesFromTags.contains(biome)) {
+					return !"blacklist".equalsIgnoreCase(this.biomeTagListType);
+				}
+			}
+		}
+
+		if(this.biomes.isEmpty() && this.biomeTags.isEmpty()) {
+			return true;
+		}
+
+		return "blacklist".equalsIgnoreCase(this.biomeIdListType) && "blacklist".equalsIgnoreCase(this.biomeTagListType);
+	}
 }

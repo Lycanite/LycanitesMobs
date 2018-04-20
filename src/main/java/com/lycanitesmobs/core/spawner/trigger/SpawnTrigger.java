@@ -115,7 +115,7 @@ public abstract class SpawnTrigger {
 	/** Triggers an actual spawn. **/
 	public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int chain) {
 		// Check Trigger Specific Conditions:
-		if(!this.triggerConditionsMet(world, player)) {
+		if(!this.triggerConditionsMet(world, player, triggerPos)) {
 			return false;
 		}
 
@@ -126,7 +126,7 @@ public abstract class SpawnTrigger {
 	}
 
 	/** Checks all Conditions specific to this Trigger. **/
-	public boolean triggerConditionsMet(World world, EntityPlayer player) {
+	public boolean triggerConditionsMet(World world, EntityPlayer player, BlockPos triggerPos) {
 		if(this.conditions.size() == 0) {
 			return true;
 		}
@@ -134,7 +134,7 @@ public abstract class SpawnTrigger {
 		int conditionsMet = 0;
 		int conditionsRequired = this.conditionsRequired > 0 ? this.conditionsRequired : this.conditions.size();
 		for(SpawnCondition condition : this.conditions) {
-			boolean met = condition.isMet(world, player);
+			boolean met = condition.isMet(world, player, triggerPos);
 			if(met) {
 				if(++conditionsMet >= conditionsRequired) {
 					return true;

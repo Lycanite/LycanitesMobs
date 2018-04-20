@@ -33,6 +33,14 @@
 		{
 			"mobId": "swampmobs:remobra",
 			"weight": 8
+		},
+		{
+			"mobId": "elementalmobs:eechetik",
+			"weight": 2
+		},
+		{
+			"mobId": "elementalmobs:xaphan",
+			"weight": 2
 		}
 	]
 }

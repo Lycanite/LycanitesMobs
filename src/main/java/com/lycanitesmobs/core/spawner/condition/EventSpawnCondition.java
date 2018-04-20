@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner.condition;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.ExtendedWorld;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EventSpawnCondition extends SpawnCondition {
@@ -33,7 +34,7 @@ public class EventSpawnCondition extends SpawnCondition {
 
 
     @Override
-    public boolean isMet(World world, EntityPlayer player) {
+    public boolean isMet(World world, EntityPlayer player, BlockPos position) {
         ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
         if(worldExt == null) {
             return false;
@@ -53,6 +54,6 @@ public class EventSpawnCondition extends SpawnCondition {
 			return false;
 		}
 
-		return super.isMet(world, player);
+		return super.isMet(world, player, position);
     }
 }

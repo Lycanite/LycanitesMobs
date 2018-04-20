@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.spawner.condition;
 
 import com.google.gson.JsonObject;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class SpawnCondition {
@@ -40,8 +41,14 @@ public abstract class SpawnCondition {
 	}
 
 
-    /** Returns true if this Spawn Condition is met allowing the Spawner to use its Triggers. **/
-    public boolean isMet(World world, EntityPlayer player) {
+    /**
+	 * Returns true if this Spawn Condition is met allowing the Spawner to use its Triggers.
+	 * @param world The world to check the conditions of or in.
+	 * @param player The player to check the conditions of, can be null for some types.
+	 * @param position The positon to check the conditions from, can be null for some types.
+	 * @return True if conditions are met.
+	 */
+    public boolean isMet(World world, EntityPlayer player, BlockPos position) {
         return true;
     }
 }

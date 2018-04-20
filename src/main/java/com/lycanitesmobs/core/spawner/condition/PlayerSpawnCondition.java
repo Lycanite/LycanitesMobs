@@ -5,6 +5,7 @@ import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -112,7 +113,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
 
 
     @Override
-    public boolean isMet(World world, EntityPlayer player) {
+    public boolean isMet(World world, EntityPlayer player, BlockPos position) {
 		if(player == null) {
 			return false;
 		}
@@ -210,6 +211,6 @@ public class PlayerSpawnCondition extends SpawnCondition {
 			return false;
 		}
 
-        return super.isMet(world, player);
+        return super.isMet(world, player, position);
     }
 }

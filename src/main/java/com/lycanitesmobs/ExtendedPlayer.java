@@ -3,6 +3,7 @@ package com.lycanitesmobs;
 import com.lycanitesmobs.core.VersionChecker;
 import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityPortal;
 import com.lycanitesmobs.core.info.Beastiary;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.GroupInfo;
@@ -69,6 +70,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public Map<Integer, SummonSet> summonSets = new HashMap<Integer, SummonSet>();
 	public int selectedSummonSet = 1;
 	public int summonSetMax = 5;
+	public EntityPortal staffPortal;
 
     // Initial Setup:
     private boolean initialSetup = false;

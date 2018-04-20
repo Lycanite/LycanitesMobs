@@ -84,8 +84,9 @@ public class EntityPortal extends EntityProjectileBase {
     // ========== Main Update ==========
     @Override
     public void onUpdate() {
-        if(this.shootingEntity != null || this.summoningPedestal != null)
-            this.projectileLife = 5;
+        if(this.shootingEntity != null || this.summoningPedestal != null) {
+			this.projectileLife = 5;
+		}
         super.onUpdate();
 
         // ==========Summoning Pedestal ==========
@@ -124,10 +125,15 @@ public class EntityPortal extends EntityProjectileBase {
 
             // Summoning Staff:
             else {
-                if(this.shootingEntity == null || !this.shootingEntity.isEntityAlive() || this.portalItem == null || this.portalItem.portalEntity != this) {
+                if(this.shootingEntity == null || !this.shootingEntity.isEntityAlive() || this.portalItem == null) {
                     this.setDead();
                     return;
                 }
+                ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(this.shootingEntity);
+				if(playerExt != null && playerExt.staffPortal != this) {
+					this.setDead();
+					return;
+				}
             }
     	}
     	

@@ -19,7 +19,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemStaffSummoning extends ItemScepter {
-	public EntityPortal portalEntity;
 	
 	// ==================================================
 	//                   Constructor
@@ -54,8 +53,12 @@ public class ItemStaffSummoning extends ItemScepter {
     }
     
     public void damageItemCharged(ItemStack itemStack, EntityLivingBase entity, float power) {
-    	if(this.portalEntity != null) {
-            this.damage_item(itemStack, this.portalEntity.summonAmount, entity);
+		ExtendedPlayer playerExt = null;
+		if(entity instanceof EntityPlayer) {
+			playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)entity);
+		}
+    	if(playerExt != null && playerExt.staffPortal != null) {
+            this.damage_item(itemStack, playerExt.staffPortal.summonAmount, entity);
     	}
     }
     
@@ -107,7 +110,13 @@ public class ItemStaffSummoning extends ItemScepter {
     @Override
     public void onPlayerStoppedUsing(ItemStack itemStack, World world, EntityLivingBase entity, int useRemaining) {
     	super.onPlayerStoppedUsing(itemStack, world, entity, useRemaining);
-		this.portalEntity = null;
+		ExtendedPlayer playerExt = null;
+		if(entity instanceof EntityPlayer) {
+			playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)entity);
+		}
+		if(playerExt != null) {
+			playerExt.staffPortal = null;
+		}
     }
 	
     
@@ -117,21 +126,20 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Start ==========
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        ItemStack itemStack = player.getHeldItem(hand);
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt != null) {
 			// Summon Selected Mob:
 			SummonSet summonSet = playerExt.getSelectedSummonSet();
 			if(summonSet.isUseable()) {
 				if(!player.getEntityWorld().isRemote) {
-			    	this.portalEntity = new EntityPortal(world, player, summonSet.getCreatureClass(), this);
-			    	this.portalEntity.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
-			    	world.spawnEntity(this.portalEntity);
+					playerExt.staffPortal = new EntityPortal(world, player, summonSet.getCreatureClass(), this);
+					playerExt.staffPortal.setLocationAndAngles(player.posX, player.posY, player.posZ, world.rand.nextFloat() * 360.0F, 0.0F);
+			    	world.spawnEntity(playerExt.staffPortal);
 				}
 			}
 			// Open Minion GUI If None Selected:
 			else {
-				this.portalEntity = null;
+				playerExt.staffPortal = null;
 				if(!player.getEntityWorld().isRemote)
 	    			playerExt.sendAllSummonSetsToPlayer();
 				if(player.getEntityWorld().isRemote)
@@ -162,8 +170,12 @@ public class ItemStaffSummoning extends ItemScepter {
     // ========== Charged ==========
     @Override
     public boolean chargedAttack(ItemStack itemStack, World world, EntityLivingBase entity, float power) {
-    	if(this.portalEntity != null) {
-			int successCount = this.portalEntity.summonCreatures();
+    	ExtendedPlayer playerExt = null;
+    	if(entity instanceof EntityPlayer) {
+			playerExt = ExtendedPlayer.getForPlayer((EntityPlayer)entity);
+		}
+    	if(playerExt != null && playerExt.staffPortal != null) {
+			int successCount = playerExt.staffPortal.summonCreatures();
             this.damage_item(itemStack, successCount, entity);
 			return successCount > 0;
 		}

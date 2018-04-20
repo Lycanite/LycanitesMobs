@@ -56,6 +56,8 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("roctreat"))).setTemptDistanceMin(4.0D));
         this.attackAI = new EntityAIAttackMelee(this).setLongMemory(false);
         this.tasks.addTask(5, this.attackAI);
+        this.tasks.addTask(6, this.aiSit);
+        this.tasks.addTask(7, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(0));
         this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
@@ -63,11 +65,14 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
 
         this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityCreeper.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+        this.targetTasks.addTask(2, new EntityAITargetOwnerRevenge(this));
+        this.targetTasks.addTask(3, new EntityAITargetOwnerAttack(this));
+        this.targetTasks.addTask(4, new EntityAITargetOwnerThreats(this));
+        this.targetTasks.addTask(5, new EntityAITargetRevenge(this).setHelpCall(true));
+        this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityCreeper.class));
+        this.targetTasks.addTask(7, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(7, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(7, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
     }
 	
 	
@@ -246,7 +251,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return false; }
+    public boolean petControlsEnabled() { return true; }
 
 
     // ==================================================

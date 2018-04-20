@@ -61,8 +61,10 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAIMate(this));
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ignibustreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(20.0F).setMinChaseDistance(10.0F));
+        this.tasks.addTask(3, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("ignibustreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(4, new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(20.0F).setMinChaseDistance(10.0F));
+        this.tasks.addTask(5, this.aiSit);
+        this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(7, new EntityAIFollowParent(this));
         this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(9, new EntityAIBeg(this));
@@ -199,7 +201,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return false; }
+    public boolean petControlsEnabled() { return true; }
     
     
     // ==================================================

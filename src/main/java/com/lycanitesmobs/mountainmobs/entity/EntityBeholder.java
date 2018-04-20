@@ -49,15 +49,20 @@ public class EntityBeholder extends EntityCreatureRideable {
         this.tasks.addTask(2, new EntityAIPlayerControl(this));
         this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("beholdertreat"))).setTemptDistanceMin(4.0D));
         this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.25D).setRange(40.0F).setMinChaseDistance(10.0F).setLongMemory(false));
-        this.tasks.addTask(6, new EntityAIWander(this).setPauseRate(30));
+		this.tasks.addTask(6, this.aiSit);
+		this.tasks.addTask(7, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
+        this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(30));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
         this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+		this.targetTasks.addTask(2, new EntityAITargetOwnerRevenge(this));
+		this.targetTasks.addTask(3, new EntityAITargetOwnerAttack(this));
+		this.targetTasks.addTask(4, new EntityAITargetOwnerThreats(this));
+        this.targetTasks.addTask(5, new EntityAITargetRevenge(this));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
 
@@ -121,7 +126,7 @@ public class EntityBeholder extends EntityCreatureRideable {
     // ==================================================
     //                     Pet Control
     // ==================================================
-    public boolean petControlsEnabled() { return false; }
+    public boolean petControlsEnabled() { return true; }
     
     
     // ==================================================

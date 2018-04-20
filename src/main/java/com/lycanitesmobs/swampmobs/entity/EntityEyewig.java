@@ -44,18 +44,23 @@ public class EntityEyewig extends EntityCreatureRideable {
         this.tasks.addTask(5, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(4.0F));
         this.rangedAttackAI = new EntityAIAttackRanged(this).setSpeed(0.75D).setStaminaTime(100).setRange(8.0F).setMinChaseDistance(4.0F).setMountedAttacking(false);
         this.tasks.addTask(6, rangedAttackAI);
-        this.tasks.addTask(8, new EntityAIWander(this));
+		this.tasks.addTask(7, this.aiSit);
+		this.tasks.addTask(8, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
+        this.tasks.addTask(9, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
         this.targetTasks.addTask(0, new EntityAITargetRiderRevenge(this));
         this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+		this.targetTasks.addTask(2, new EntityAITargetOwnerRevenge(this));
+		this.targetTasks.addTask(3, new EntityAITargetOwnerAttack(this));
+		this.targetTasks.addTask(4, new EntityAITargetOwnerThreats(this));
+        this.targetTasks.addTask(5, new EntityAITargetRevenge(this).setHelpCall(true));
+        this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(7, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
-            this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
+            this.targetTasks.addTask(7, new EntityAITargetAttack(this).setTargetClass(EntityChicken.class));
         }
     }
 	
@@ -195,6 +200,12 @@ public class EntityEyewig extends EntityCreatureRideable {
 	public boolean canBreatheUnderwater() {
 		return true;
 	}
+
+
+	// ==================================================
+	//                     Pet Control
+	// ==================================================
+	public boolean petControlsEnabled() { return true; }
     
     
     // ==================================================

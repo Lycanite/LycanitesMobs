@@ -50,24 +50,29 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIPlayerControl(this));
-        this.tasks.addTask(4, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("erepedetreat"))).setTemptDistanceMin(4.0D));
-        this.tasks.addTask(5, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(6.0F));
+        this.tasks.addTask(1, new EntityAIPlayerControl(this));
+        this.tasks.addTask(2, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("erepedetreat"))).setTemptDistanceMin(4.0D));
+        this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(6.0F));
+		this.tasks.addTask(4, this.aiSit);
+		this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(6, new EntityAIFollowParent(this).setSpeed(1.0D));
         this.tasks.addTask(7, new EntityAIWander(this));
         this.tasks.addTask(9, new EntityAIBeg(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
-        this.targetTasks.addTask(2, new EntityAITargetRevenge(this).setHelpCall(true));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
-        this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
+		this.targetTasks.addTask(0, new EntityAITargetOwnerRevenge(this));
+		this.targetTasks.addTask(1, new EntityAITargetOwnerAttack(this));
+		this.targetTasks.addTask(2, new EntityAITargetOwnerThreats(this));
+        this.targetTasks.addTask(3, new EntityAITargetRevenge(this).setHelpCall(true));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
+        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
             if(CreatureManager.getInstance().getCreature("Joust") != null)
-                this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
+                this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityJoust.class).setPackHuntingScale(1, 3));
             if(CreatureManager.getInstance().getCreature("JoustAlpha") != null)
-                this.targetTasks.addTask(3, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
+                this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityJoustAlpha.class).setPackHuntingScale(1, 1));
         }
 
         this.targetTasks.addTask(0, new EntityAITargetParent(this).setSightCheck(false).setDistance(32.0D));
@@ -178,6 +183,12 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
     public float getFallResistance() {
     	return 10;
     }
+
+
+	// ==================================================
+	//                     Pet Control
+	// ==================================================
+	public boolean petControlsEnabled() { return true; }
     
     
     // ==================================================

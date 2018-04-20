@@ -179,10 +179,14 @@ public class SpawnerEventListener {
 				triggerPositions.add(player.getPosition());
 				continue;
 			}
+			boolean nearOtherPlayers = false;
 			for(BlockPos triggerPosition : triggerPositions) {
-				if(MathHelper.sqrt(player.getDistanceSq(triggerPosition)) >= 100) {
-					triggerPositions.add(player.getPosition());
+				if(MathHelper.sqrt(player.getDistanceSq(triggerPosition)) <= 100) {
+					nearOtherPlayers = true;
 				}
+			}
+			if(!nearOtherPlayers) {
+				triggerPositions.add(player.getPosition());
 			}
 		}
 		for(BlockPos triggerPosition : triggerPositions) {

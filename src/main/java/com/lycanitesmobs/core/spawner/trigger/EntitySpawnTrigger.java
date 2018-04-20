@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner.trigger;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.entity.EntityList;
@@ -72,36 +73,38 @@ public abstract class EntitySpawnTrigger extends SpawnTrigger {
 	public boolean isMatchingEntity(EntityLivingBase killedEntity) {
 
 		// Check Entity Type:
-		if(this.entityTypes.contains(killedEntity.getCreatureAttribute())) {
-			if ("blacklist".equalsIgnoreCase(this.entityTypesListType)) {
-				return false;
-			}
-		}
-		else {
-			if ("whitelist".equalsIgnoreCase(this.entityTypesListType)) {
-				return false;
-			}
-		}
-
-		// Check Entity Id:
-		String entityId = EntityList.getEntityString(killedEntity);
-		if(killedEntity instanceof EntityCreatureBase) {
-			entityId = ((EntityCreatureBase)killedEntity).creatureInfo.getEntityId();
-		}
-		if(entityId == null) {
-			if ("whitelist".equalsIgnoreCase(this.entityIdsListType)) {
-				return false;
-			}
-		}
-		else {
-			if (this.entityIds.contains(entityId)) {
-				if ("blacklist".equalsIgnoreCase(this.entityIdsListType)) {
+		if(!this.entityTypes.isEmpty()) {
+			if (this.entityTypes.contains(killedEntity.getCreatureAttribute())) {
+				if ("blacklist".equalsIgnoreCase(this.entityTypesListType)) {
 					return false;
 				}
 			}
 			else {
+				if ("whitelist".equalsIgnoreCase(this.entityTypesListType)) {
+					return false;
+				}
+			}
+		}
+
+		// Check Entity Id:
+		if(!this.entityIds.isEmpty()) {
+			String entityId = EntityList.getKey(killedEntity).toString();
+			LycanitesMobs.printDebug("", "Entity ID is: " + entityId);
+			if (entityId == null) {
 				if ("whitelist".equalsIgnoreCase(this.entityIdsListType)) {
 					return false;
+				}
+			}
+			else {
+				if (this.entityIds.contains(entityId)) {
+					if ("blacklist".equalsIgnoreCase(this.entityIdsListType)) {
+						return false;
+					}
+				}
+				else {
+					if ("whitelist".equalsIgnoreCase(this.entityIdsListType)) {
+						return false;
+					}
 				}
 			}
 		}

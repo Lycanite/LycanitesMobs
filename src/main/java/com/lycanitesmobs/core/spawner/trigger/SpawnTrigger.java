@@ -39,8 +39,11 @@ public abstract class SpawnTrigger {
 		String type = json.get("type").getAsString();
 		SpawnTrigger spawnTrigger = null;
 
-		if("tick".equalsIgnoreCase(type)) {
-			spawnTrigger = new TickSpawnTrigger(spawner);
+		if("world".equalsIgnoreCase(type)) {
+			spawnTrigger = new WorldSpawnTrigger(spawner);
+		}
+		else if("player".equalsIgnoreCase(type) || "tick".equalsIgnoreCase(type)) { // Tick is now deprecated but should act like player for backwards compatibility.
+			spawnTrigger = new PlayerSpawnTrigger(spawner);
 		}
 		else if("entitySpawned".equalsIgnoreCase(type)) {
 			spawnTrigger = new EntitySpawnedSpawnTrigger(spawner);

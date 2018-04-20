@@ -129,11 +129,6 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
         if(this.getEntityWorld().getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)
             return (super.getBlockPathWeight(x, y, z) + 1) * waterWeight;
 
-        if(this.getAttackTarget() != null)
-            return super.getBlockPathWeight(x, y, z);
-        if(this.lavaContact())
-            return -999999.0F;
-
         return super.getBlockPathWeight(x, y, z);
     }
 

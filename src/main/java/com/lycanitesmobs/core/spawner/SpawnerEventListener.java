@@ -12,6 +12,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -35,7 +36,8 @@ public class SpawnerEventListener {
     protected static SpawnerEventListener INSTANCE;
     public static boolean testOnCreative = false;
 
-	public List<TickSpawnTrigger> tickSpawnTriggers = new ArrayList<>();
+	public List<WorldSpawnTrigger> worldSpawnTriggers = new ArrayList<>();
+	public List<PlayerSpawnTrigger> playerSpawnTriggers = new ArrayList<>();
 	public List<KillSpawnTrigger> killSpawnTriggers = new ArrayList<>();
 	public List<EntitySpawnedSpawnTrigger> entitySpawnedSpawnTriggers = new ArrayList<>();
 	public List<ChunkSpawnTrigger> chunkSpawnTriggers = new ArrayList<>();
@@ -61,8 +63,12 @@ public class SpawnerEventListener {
 	 * @return True on success, false if it failed to add (could happen if the Trigger type has no matching list created yet.
 	 */
 	public boolean addTrigger(SpawnTrigger spawnTrigger) {
-		if(spawnTrigger instanceof TickSpawnTrigger && !this.tickSpawnTriggers.contains(spawnTrigger)) {
-			this.tickSpawnTriggers.add((TickSpawnTrigger)spawnTrigger);
+		if(spawnTrigger instanceof WorldSpawnTrigger && !this.worldSpawnTriggers.contains(spawnTrigger)) {
+			this.worldSpawnTriggers.add((WorldSpawnTrigger)spawnTrigger);
+			return true;
+		}
+		if(spawnTrigger instanceof PlayerSpawnTrigger && !this.playerSpawnTriggers.contains(spawnTrigger)) {
+			this.playerSpawnTriggers.add((PlayerSpawnTrigger)spawnTrigger);
 			return true;
 		}
 		if(spawnTrigger instanceof KillSpawnTrigger && !this.killSpawnTriggers.contains(spawnTrigger)) {
@@ -111,8 +117,11 @@ public class SpawnerEventListener {
 	 * Removes a Spawn Trigger.
 	 */
 	public void removeTrigger(SpawnTrigger spawnTrigger) {
-		if(this.tickSpawnTriggers.contains(spawnTrigger)) {
-			this.tickSpawnTriggers.remove(spawnTrigger);
+		if(this.worldSpawnTriggers.contains(spawnTrigger)) {
+			this.worldSpawnTriggers.remove(spawnTrigger);
+		}
+		if(this.playerSpawnTriggers.contains(spawnTrigger)) {
+			this.playerSpawnTriggers.remove(spawnTrigger);
 		}
 		if(this.killSpawnTriggers.contains(spawnTrigger)) {
 			this.killSpawnTriggers.remove(spawnTrigger);
@@ -147,7 +156,7 @@ public class SpawnerEventListener {
 	// ==================================================
 	//               World Update Event
 	// ==================================================
-	/** This uses world update events to update Mob Event Spawn Triggers. **/
+	/** This uses world update events to update World and Mob Event Spawn Triggers. **/
 	@SubscribeEvent
 	public void onWorldUpdate(TickEvent.WorldTickEvent event) {
 		World world = event.world;
@@ -157,11 +166,36 @@ public class SpawnerEventListener {
 		if(worldExt == null)
 			return;
 
-		if(worldExt.getWorldEvent() == null)
+		// Only Tick On World Time Ticks:
+		if(worldExt.lastSpawnerTime == world.getTotalWorldTime()) {
 			return;
+		}
+		worldExt.lastSpawnerTime = world.getTotalWorldTime();
 
-		for(MobEventSpawnTrigger spawnTrigger : this.mobEventSpawnTriggers) {
-			spawnTrigger.onTick(world, worldExt.serverWorldEventPlayer);
+		// World Tick:
+		List<BlockPos> triggerPositions = new ArrayList<>();
+		for(EntityPlayer player : world.playerEntities) {
+			if(triggerPositions.isEmpty()) {
+				triggerPositions.add(player.getPosition());
+				continue;
+			}
+			for(BlockPos triggerPosition : triggerPositions) {
+				if(MathHelper.sqrt(player.getDistanceSq(triggerPosition)) >= 100) {
+					triggerPositions.add(player.getPosition());
+				}
+			}
+		}
+		for(BlockPos triggerPosition : triggerPositions) {
+			for (WorldSpawnTrigger spawnTrigger : this.worldSpawnTriggers) {
+				spawnTrigger.onTick(world, triggerPosition, worldExt.lastSpawnerTime);
+			}
+		}
+
+		// Mob Events:
+		if(worldExt.getWorldEvent() != null) {
+			for(MobEventSpawnTrigger spawnTrigger : this.mobEventSpawnTriggers) {
+				spawnTrigger.onTick(world, worldExt.serverWorldEventPlayer);
+			}
 		}
 	}
 	
@@ -187,7 +221,7 @@ public class SpawnerEventListener {
 		
 		// Custom Mob Spawning:
 		int tickOffset = 0;
-		for(TickSpawnTrigger spawnTrigger : this.tickSpawnTriggers) {
+		for(PlayerSpawnTrigger spawnTrigger : this.playerSpawnTriggers) {
 			spawnTrigger.onTick(player, entityUpdateTick - tickOffset);
 			tickOffset += 105;
 		}

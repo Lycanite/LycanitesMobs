@@ -24,17 +24,13 @@ public class ExtendedWorld extends WorldSavedData {
 
     /** The world INSTANCE to work with. **/
 	public World world;
-    public long lastEventUpdateTime = 0;
-    public boolean initialized = false;
+	public boolean initialized = false;
+	public long lastSpawnerTime = 0;
+	public long lastEventScheduleTime = 0;
+	public long lastEventUpdateTime = 0;
 
     // Mob Events World Config:
-    public boolean configLoaded = false;
     public boolean useTotalWorldTime = true;
-	//public int minEventsRandomDay = 0;
-    //public int minTicksUntilEvent = 60 * 60 * 20;
-    //public int maxTicksUntilEvent = 120 * 60 * 20;
-    //public boolean mobEventsEnabled = true;
-    //public boolean mobEventsRandom = true;
 	
 	// Mob Events:
     public Map<String, MobEventPlayerServer> serverMobEventPlayers = new HashMap<>();
@@ -106,7 +102,10 @@ public class ExtendedWorld extends WorldSavedData {
 		}
 		this.initialized = true;
 
-        this.lastEventUpdateTime = this.world.getTotalWorldTime() - 1;
+		// Initial Tick Times:
+        this.lastSpawnerTime = this.world.getTotalWorldTime() - 1;
+		this.lastEventScheduleTime = this.world.getTotalWorldTime() - 1;
+		this.lastEventUpdateTime = this.world.getTotalWorldTime() - 1;
 
 		// Start Saved Events:
 		if (!this.world.isRemote && !"".equals(this.getWorldEventName()) && this.serverWorldEventPlayer == null) {

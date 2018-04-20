@@ -43,7 +43,7 @@
 			"entityIdsListType": "whitelist"
 		},
 		{
-			"type": "tick",
+			"type": "player",
 			"count": 0,
 			"chance": 1,
 			"tickRate": 1,

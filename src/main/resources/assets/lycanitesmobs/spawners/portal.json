@@ -10,7 +10,7 @@
 	"conditions": [],
 	"triggers": [
 		{
-			"type": "tick",
+			"type": "world",
 			"chance": 0.9,
 			"tickRate": 1200
 		}

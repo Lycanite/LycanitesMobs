@@ -15,7 +15,7 @@
 	"conditions": [],
 	"triggers": [
 		{
-			"type": "tick",
+			"type": "player",
 			"count": 1,
 			"chance": 0.75,
 			"tickRate": 100,
@@ -27,7 +27,7 @@
 			]
 		},
 		{
-			"type": "tick",
+			"type": "player",
 			"count": 0,
 			"chance": 1,
 			"tickRate": 100,

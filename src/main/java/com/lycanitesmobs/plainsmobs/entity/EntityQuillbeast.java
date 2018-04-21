@@ -42,18 +42,14 @@ public class EntityQuillbeast extends EntityCreatureTameable implements IMob {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new EntityAITempt(this).setItem(new ItemStack(ObjectManager.getItem("quillbeasttreat"))).setTemptDistanceMin(4.0D));
-
         this.aiAttackMelee = new EntityAIAttackMelee(this).setLongMemory(true).setEnabled(false);
         this.tasks.addTask(2, this.aiAttackMelee);
-
         this.aiAttackRanged = new EntityAIAttackRanged(this).setSpeed(1.0D).setRange(16.0F).setMinChaseDistance(10.0F).setChaseTime(-1);
         this.tasks.addTask(2, this.aiAttackRanged);
-
+        this.tasks.addTask(3, this.aiSit);
+        this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.aiAvoid = new EntityAIAvoid(this).setNearSpeed(1.5D).setFarSpeed(1.3D).setNearDistance(5.0D).setFarDistance(9.0D);
-        this.tasks.addTask(3, this.aiAvoid);
-
-        this.tasks.addTask(4, this.aiSit);
-        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
+        this.tasks.addTask(5, this.aiAvoid);
         this.tasks.addTask(6, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));

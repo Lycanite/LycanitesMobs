@@ -13,7 +13,7 @@
 		"biomes": [],
 		"spawnWeight": 8,
 		"dungeonWeight": 200,
-		"spawnAreaLimit": 5,ó
+		"spawnAreaLimit": 5,
 		"spawnGroupMin": 1,
 		"spawnGroupMax": 3,
 		"spawnsInLight": false,

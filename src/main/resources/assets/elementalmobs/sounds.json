@@ -337,7 +337,14 @@
     },
     "entity.banshee.say": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/banshee/say", "stream": false}]
+        "sounds":
+        [
+            {"name": "elementalmobs:entity/banshee/say01", "stream": false},
+            {"name": "elementalmobs:entity/banshee/say02", "stream": false},
+            {"name": "elementalmobs:entity/banshee/say03", "stream": false},
+            {"name": "elementalmobs:entity/banshee/say04", "stream": false},
+            {"name": "elementalmobs:entity/banshee/say05", "stream": false}
+        ]
     },
     "entity.banshee.hurt": {
         "category": "hostile",
@@ -353,7 +360,11 @@
     },
     "entity.banshee.beg": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/banshee/beg", "stream": false}]
+        "sounds":
+        [
+            {"name": "elementalmobs:entity/banshee/beg01", "stream": false},
+            {"name": "elementalmobs:entity/banshee/beg02", "stream": false}
+        ]
     },
     "entity.banshee.tame": {
         "category": "hostile",

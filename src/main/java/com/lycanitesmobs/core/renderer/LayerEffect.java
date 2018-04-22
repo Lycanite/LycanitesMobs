@@ -63,7 +63,7 @@ public class LayerEffect extends LayerBase {
 		// Glow In Dark:
 		int i = entity.getBrightnessForRender();
 		if(this.glow) {
-			i = 15728880;
+			i = 0xf000f0;
 		}
 		int j = i % 65536;
 		int k = i / 65536;

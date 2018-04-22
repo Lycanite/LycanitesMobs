@@ -63,8 +63,8 @@
 			"item": "minecraft:skull",
 			"metadata": 1,
 			"minAmount": 1,
-			"maxAmount": 2,
-			"chance": 0.5
+			"maxAmount": 1,
+			"chance": 0.25
 		},
 		{
 			"item": "demonmobs:hellfirecharge",

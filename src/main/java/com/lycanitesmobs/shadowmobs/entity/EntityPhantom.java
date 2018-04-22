@@ -33,7 +33,7 @@ public class EntityPhantom extends EntityCreatureTameable implements IMob, IGrou
         this.hasAttackSound = false;
         this.setupMob();
         
-        // No Block Collision
+        // No Block Collision:
         this.noClip = true;
     }
 

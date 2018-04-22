@@ -2077,31 +2077,60 @@ public abstract class EntityCreatureBase extends EntityLiving {
         this.leap(range, leapHeight, target.getPosition());
     }
 
-    /**
-     * When called, this entity will leap towards the given target entity with the given height.
-     * This is very sensitive, a large distance or height can cause the entity to zoom off for thousands of blocks!
-     * If the target distance is greater than range, the leap will be cancelled.
-     * A distance of 1.0D is around 10 blocks forwards, a height of 0.5D is about 10 blocks up.
-     * Tip: Use a negative height for flying and swimming mobs so that they can swoop down in the air or water
-     **/
-    public void leap(float range, double leapHeight, BlockPos targetPos) {
-        if(targetPos == null)
-            return;
-        double distance = MathHelper.sqrt(targetPos.distanceSq(this.getPosition()));
-        if(distance > 2.0F && distance <= range) {
-            double xDist = targetPos.getX() - this.getPosition().getX();
-            double zDist = targetPos.getZ() - this.getPosition().getZ();
-            double xzDist = MathHelper.sqrt(xDist * xDist + zDist * zDist);
+	/**
+	 * When called, this entity will leap towards the given target entity with the given height.
+	 * This is very sensitive, a large distance or height can cause the entity to zoom off for thousands of blocks!
+	 * If the target distance is greater than range, the leap will be cancelled.
+	 * A distance of 1.0D is around 10 blocks forwards, a height of 0.5D is about 10 blocks up.
+	 * Tip: Use a negative height for flying and swimming mobs so that they can swoop down in the air or water
+	 **/
+	public void leap(float range, double leapHeight, BlockPos targetPos) {
+		if(targetPos == null)
+			return;
+		double distance = MathHelper.sqrt(targetPos.distanceSq(this.getPosition()));
+		if(distance > 2.0F && distance <= range) {
+			double xDist = targetPos.getX() - this.getPosition().getX();
+			double zDist = targetPos.getZ() - this.getPosition().getZ();
+			double xzDist = MathHelper.sqrt(xDist * xDist + zDist * zDist);
             /*this.motionX = xDist / xzDist * 0.5D * 0.8D + this.motionX * 0.2D;
             this.motionZ = zDist / xzDist * 0.5D * 0.8D + this.motionZ * 0.2D;
             this.motionY = leapHeight;*/
-            this.addVelocity(
-                    xDist / xzDist * 0.5D * 0.8D + this.motionX * 0.2D,
-                    leapHeight,
-                    zDist / xzDist * 0.5D * 0.8D + this.motionZ * 0.2D
-            );
-        }
-    }
+			this.addVelocity(
+					xDist / xzDist * 0.5D * 0.8D + this.motionX * 0.2D,
+					leapHeight,
+					zDist / xzDist * 0.5D * 0.8D + this.motionZ * 0.2D
+			);
+		}
+	}
+
+	// ========== Strafe ==========
+	/**
+	 * When called, this entity will strafe sideways with the given distance and height.
+	 * This is very sensitive, a large distance or height can cause the entity to zoom off for thousands of blocks!
+	 * A distance of 1.0D is around 10 blocks sideways, a height of 0.5D is about 10 blocks up.
+	 * Tip: Use a negative height for flying and swimming mobs so that they can swoop down in the air or water.
+	 **/
+	public void strafe(double distance, double leapHeight) {
+		boolean opposite = false;
+		if(distance < 0) {
+			distance = -distance;
+			opposite = true;
+		}
+		float yaw = this.rotationYaw + (opposite ? -90F : 90F);
+		float pitch = this.rotationPitch;
+		double angle = Math.toRadians(yaw);
+		double xAmount = -Math.sin(angle);
+		double yAmount = leapHeight;
+		double zAmount = Math.cos(angle);
+		if(this.isFlying()) {
+			yAmount = Math.sin(Math.toRadians(pitch)) * distance + this.motionY * 0.2D;
+		}
+		this.addVelocity(
+				xAmount * distance + this.motionX * 0.2D,
+				yAmount,
+				zAmount * distance + this.motionZ * 0.2D
+		);
+	}
     
     
     // ==================================================

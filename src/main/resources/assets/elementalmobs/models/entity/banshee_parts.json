@@ -1,0 +1,128 @@
+[
+  {
+    "name": "HandRight",
+    "parent": "",
+    "centerX": "-0.471",
+    "centerY": "0.942",
+    "centerZ": "-0.011"
+  },
+  {
+    "name": "EyeRight",
+    "parent": "HandRight",
+    "centerX": "-0.609",
+    "centerY": "0.759",
+    "centerZ": "0.596"
+  },
+  {
+    "name": "FingerRight02",
+    "parent": "HandRight",
+    "centerX": "-0.486",
+    "centerY": "1.043",
+    "centerZ": "0.428"
+  },
+  {
+    "name": "FingerRight03",
+    "parent": "HandRight",
+    "centerX": "-0.65",
+    "centerY": "1.052",
+    "centerZ": "0.428"
+  },
+  {
+    "name": "FingerRight01",
+    "parent": "HandRight",
+    "centerX": "-0.42",
+    "centerY": "0.979",
+    "centerZ": "0.452"
+  },
+  {
+    "name": "FingerRight04",
+    "parent": "HandRight",
+    "centerX": "-0.785",
+    "centerY": "1.007",
+    "centerZ": "0.461"
+  },
+  {
+    "name": "FingerRight05",
+    "parent": "HandRight",
+    "centerX": "-0.506",
+    "centerY": "0.468",
+    "centerZ": "0.449"
+  },
+  {
+    "name": "HandLeft",
+    "parent": "",
+    "centerX": "0.471",
+    "centerY": "0.942",
+    "centerZ": "-0.011"
+  },
+  {
+    "name": "FingerLeft05",
+    "parent": "HandLeft",
+    "centerX": "0.506",
+    "centerY": "0.468",
+    "centerZ": "0.449"
+  },
+  {
+    "name": "FingerLeft04",
+    "parent": "HandLeft",
+    "centerX": "0.785",
+    "centerY": "1.007",
+    "centerZ": "0.461"
+  },
+  {
+    "name": "FingerLeft01",
+    "parent": "HandLeft",
+    "centerX": "0.42",
+    "centerY": "0.979",
+    "centerZ": "0.452"
+  },
+  {
+    "name": "FingerLeft03",
+    "parent": "HandLeft",
+    "centerX": "0.65",
+    "centerY": "1.052",
+    "centerZ": "0.428"
+  },
+  {
+    "name": "FingerLeft02",
+    "parent": "HandLeft",
+    "centerX": "0.486",
+    "centerY": "1.043",
+    "centerZ": "0.428"
+  },
+  {
+    "name": "EyeLeft",
+    "parent": "HandLeft",
+    "centerX": "0.609",
+    "centerY": "0.759",
+    "centerZ": "0.596"
+  },
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "0.9",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.341",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Hair02",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.521",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Hair01",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.791",
+    "centerZ": "-0.0"
+  }
+]

@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -81,13 +82,15 @@ public class DirectNavigator {
 
     // ========== DistanceTo Target Position ==========
     public double distanceToTargetPosition(){
-        return this.host.getDistance(targetPosition.getX(), targetPosition.getY(), targetPosition.getZ());
+        return this.host.getDistance(this.targetPosition.getX(), this.targetPosition.getY(), this.targetPosition.getZ());
     }
 	
 	// ========== Is At Target Position ==========
 	public boolean atTargetPosition(){
-		if(targetPosition != null)
-			return distanceToTargetPosition() < (this.host.width / 2);
+		if(targetPosition != null) {
+			double speed = this.host.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 2;
+			return this.distanceToTargetPosition() <= (this.host.width + speed);
+		}
 		return true;
 	}
 	
@@ -97,21 +100,22 @@ public class DirectNavigator {
   	// ==================================================
     private double randomStrafeAngle = 0;
 	public void updateFlight() {
-		if(this.targetPosition == null)
-            return;
-        if(this.randomStrafeAngle <= 0 && this.host.getRNG().nextDouble() <= 0.25D)
+		if(this.targetPosition == null || this.atTargetPosition()) {
+			return;
+		}
+        /*if(this.randomStrafeAngle <= 0 && this.host.getRNG().nextDouble() <= 0.25D)
             this.randomStrafeAngle = this.host.getRNG().nextBoolean() ? 90D : -90D;
         if(this.randomStrafeAngle > 0)
-            this.randomStrafeAngle -= 0.5D;
+            this.randomStrafeAngle -= 0.5D;*/
+		double speed = this.host.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 2;
 
-        BlockPos pos = this.host.getFacingPosition(this.targetPosition.getX(), this.targetPosition.getY(), this.targetPosition.getZ(), 1.0D, this.randomStrafeAngle);
-        //double dirX = (double)this.targetPosition.getX() + 0.5D - this.host.posX;
-        double dirX = pos.getX() - this.host.posX;
-        double dirY = (double)this.targetPosition.getY() + 0.1D - this.host.posY;
-        //double dirZ = (double)this.targetPosition.getZ() + 0.5D - this.host.posZ;
-        double dirZ = pos.getZ() - this.host.posZ;
+		BlockPos pos = this.host.getFacingPosition(this.targetPosition.getX(), this.targetPosition.getY(), this.targetPosition.getZ(), 1.0D, this.randomStrafeAngle);
+		//double dirX = (double)this.targetPosition.getX() + 0.5D - this.host.posX;
+		double dirX = pos.getX() - this.host.posX;
+		double dirY = (double)this.targetPosition.getY() + 0.1D - this.host.posY;
+		//double dirZ = (double)this.targetPosition.getZ() + 0.5D - this.host.posZ;
+		double dirZ = pos.getZ() - this.host.posZ;
 
-        double speed = this.host.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 2;
 		this.host.motionX += ((Math.signum(dirX) * speed - this.host.motionX) * 0.10000000149011612D*0.3D) * this.speedModifier;
 		this.host.motionY += ((Math.signum(dirY) * speed - this.host.motionY) * 0.10000000149011612D*0.3D) * this.speedModifier;
 		this.host.motionZ += ((Math.signum(dirZ) * speed - this.host.motionZ) * 0.10000000149011612D*0.3D) * this.speedModifier;

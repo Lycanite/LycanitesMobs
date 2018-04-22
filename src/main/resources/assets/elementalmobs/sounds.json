@@ -335,6 +335,30 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/vapula/tame", "stream": false}]
     },
+    "entity.banshee.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/banshee/say", "stream": false}]
+    },
+    "entity.banshee.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/banshee/hurt", "stream": false}]
+    },
+    "entity.banshee.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/banshee/death", "stream": false}]
+    },
+    "entity.banshee.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/banshee/attack", "stream": false}]
+    },
+    "entity.banshee.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/banshee/beg", "stream": false}]
+    },
+    "entity.banshee.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/banshee/tame", "stream": false}]
+    },
     "entity.tremor.say": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/tremor/say", "stream": false}]

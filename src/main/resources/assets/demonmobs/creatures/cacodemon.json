@@ -91,7 +91,7 @@
 		{
 			"item": "demonmobs:soulstonedemonic",
 			"minAmount": 1,
-			"maxAmount": 3,
+			"maxAmount": 1,
 			"chance": 1,
 			"subspecies": 3
 		}

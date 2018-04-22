@@ -64,7 +64,7 @@ public class PotionEffects {
 		boolean invulnerable = false;
 		if(entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)entity;
-			invulnerable = player.capabilities.isCreativeMode;
+			invulnerable = player.isCreative() || player.isSpectator();
 		}
 
 

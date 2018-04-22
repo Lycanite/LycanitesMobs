@@ -195,6 +195,9 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         if(fusable instanceof EntityJengu) {
             return EntityReiver.class;
         }
+        if(fusable instanceof EntityGeonach) {
+            return EntityBanshee.class;
+        }
 		if(fusable instanceof EntityArgus) {
 			return EntityWraith.class;
 		}

@@ -9,9 +9,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidBlock;
+import scala.Int;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BlockSpawnLocation extends SpawnLocation {
     /** A list of blocks to either spawn in or not spawn in depending on if it is a blacklist or whitelist. **/
@@ -28,6 +31,9 @@ public class BlockSpawnLocation extends SpawnLocation {
 
 	/** The minimum amount of blocks that must be found in an area for the location to return any positions. Default -1 (ignore). **/
 	public int blockCost = -1;
+
+	/** If set (above 0), tthe amount of each block in the blocks list must be found. Default: 0 (disabled) **/
+	public int requiredBlockTypes = 0;
 
 
 	@Override
@@ -48,6 +54,9 @@ public class BlockSpawnLocation extends SpawnLocation {
 		if(json.has("blockCost"))
 			this.blockCost = json.get("blockCost").getAsInt();
 
+		if(json.has("requiredBlockTypes"))
+			this.requiredBlockTypes = json.get("requiredBlockTypes").getAsInt();
+
 		super.loadFromJSON(json);
 	}
 
@@ -55,6 +64,7 @@ public class BlockSpawnLocation extends SpawnLocation {
     @Override
     public List<BlockPos> getSpawnPositions(World world, EntityPlayer player, BlockPos triggerPos) {
         List<BlockPos> spawnPositions = new ArrayList<>();
+		Map<Block, Integer> validBlocksFound = new HashMap<>();
 
         for (int y = triggerPos.getY() - this.rangeMax.getY(); y <= triggerPos.getY() + this.rangeMax.getY(); y++) {
             // Y Limits:
@@ -94,6 +104,17 @@ public class BlockSpawnLocation extends SpawnLocation {
 					// Check Block:
 					if(this.isValidBlock(world, spawnPos)) {
 						spawnPositions.add(spawnPos);
+
+						// Require All:
+						if(this.requiredBlockTypes > 0) {
+							Block block = world.getBlockState(spawnPos).getBlock();
+							if(!validBlocksFound.containsKey(block)) {
+								validBlocksFound.put(block, 1);
+							}
+							else {
+								validBlocksFound.put(block, validBlocksFound.get(block) + 1);
+							}
+						}
 					}
 				}
 			}
@@ -103,6 +124,18 @@ public class BlockSpawnLocation extends SpawnLocation {
 		if(this.blockCost > 0) {
 			if (spawnPositions.size() < this.blockCost) {
 				return new ArrayList<>();
+			}
+		}
+
+		// Require All Block Types:
+		if(this.requiredBlockTypes > 0) {
+        	if(validBlocksFound.size() < this.blocks.size()) {
+        		return new ArrayList<>();
+			}
+			for(int blocksFoundOfType : validBlocksFound.values()) {
+        		if(blocksFoundOfType < this.requiredBlockTypes) {
+					return new ArrayList<>();
+				}
 			}
 		}
 

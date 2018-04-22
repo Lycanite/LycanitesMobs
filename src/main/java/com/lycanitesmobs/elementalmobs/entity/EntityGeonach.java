@@ -1,6 +1,5 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.api.IGroupRock;
 import com.lycanitesmobs.core.config.ConfigBase;
@@ -15,9 +14,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -265,6 +262,9 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 		}
 		if(fusable instanceof EntityJengu) {
 			return EntitySpriggan.class;
+		}
+		if(fusable instanceof EntityDjinn) {
+			return EntityBanshee.class;
 		}
 		if(fusable instanceof EntityAegis) {
 			return EntityVapula.class;

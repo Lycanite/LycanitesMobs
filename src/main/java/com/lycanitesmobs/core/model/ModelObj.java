@@ -8,6 +8,7 @@ import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.modelloader.obj.ObjObject;
 import com.lycanitesmobs.core.modelloader.obj.TessellatorModel;
 import com.lycanitesmobs.core.renderer.LayerBase;
+import com.lycanitesmobs.elementalmobs.entity.EntityBanshee;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -205,7 +206,9 @@ public class ModelObj extends ModelCustom {
 
 		// Animation States:
         this.currentModelState = this.getModelState(entity);
-        this.updateAttackProgress(entity);
+		if(layer == null) {
+			this.updateAttackProgress(entity);
+		}
 
         // Generate Animation Frames:
         for(ObjObject part : this.wavefrontParts) {
@@ -409,12 +412,12 @@ public class ModelObj extends ModelCustom {
 
         if(this.currentModelState.attackAnimationPlaying) {
             if (this.currentModelState.attackAnimationIncreasing) {
-                this.currentModelState.attackAnimationProgress = Math.min(this.currentModelState.attackAnimationProgress + this.currentModelState.attackAnimationSpeed, 1F);
+                this.currentModelState.attackAnimationProgress = Math.min(this.currentModelState.attackAnimationProgress + this.currentModelState.attackAnimationSpeed / 4, 1F);
                 if (this.currentModelState.attackAnimationProgress >= 1)
                     this.currentModelState.attackAnimationIncreasing = false;
             }
             else {
-                this.currentModelState.attackAnimationProgress = Math.max(this.currentModelState.attackAnimationProgress - this.currentModelState.attackAnimationSpeed, 0F);
+                this.currentModelState.attackAnimationProgress = Math.max(this.currentModelState.attackAnimationProgress - this.currentModelState.attackAnimationSpeed / 4, 0F);
                 if (this.currentModelState.attackAnimationProgress <= 0) {
                     this.currentModelState.attackAnimationPlaying = false;
                 }

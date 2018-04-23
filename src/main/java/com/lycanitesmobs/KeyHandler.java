@@ -2,6 +2,7 @@ package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.gui.*;
 import com.lycanitesmobs.core.gui.*;
+import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryIndex;
 import com.lycanitesmobs.core.network.MessagePlayerAttack;
 import com.lycanitesmobs.core.network.MessagePlayerControl;
 import net.minecraft.client.Minecraft;
@@ -86,7 +87,8 @@ public class KeyHandler {
 
 		// Beastiary:
 		if(this.beastiary.isPressed()) {
-			GUIBeastiary.openToPlayer(this.mc.player);
+			//GUIBeastiary.openToPlayer(this.mc.player);
+			GuiBeastiaryIndex.openToPlayer(this.mc.player);
 		}
 
 		// Pet Manager:

@@ -1,9 +1,9 @@
 package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.gui.*;
+import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryIndex;
 import com.lycanitesmobs.core.tileentity.TileEntityBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.gui.*;
 import com.lycanitesmobs.core.inventory.ContainerCreature;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,16 +16,24 @@ public class GuiHandler implements IGuiHandler {
 	public static GuiHandler instance;
 	
 	// GUI IDs:
-    public static enum GuiType {
-		TILEENTITY((byte)0), ENTITY((byte)1), ITEM((byte)2), PLAYER((byte)3);
+    public enum GuiType {
+		TILEENTITY((byte)0), ENTITY((byte)1), ITEM((byte)2), BEASTIARY((byte)3), PLAYER((byte)4);
 		public byte id;
-		private GuiType(byte i) { id = i; }
+		GuiType(byte i) { id = i; }
 	}
-    public static enum PlayerGuiType {
-		LM_MAIN_MENU((byte)0), BEASTIARY((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6);
+
+	public enum Beastiary {
+		INDEX((byte)0), BEASTIARY((byte)1), PETS((byte)2), SUMMONING((byte)3), ELEMENTS((byte)4);
 		public byte id;
-		private PlayerGuiType(byte i) { id = i; }
+		Beastiary(byte i) { id = i; }
 	}
+
+	public enum PlayerGuiType {
+		BEASTIARY((byte)0), LM_MAIN_MENU((byte)0), BEASTIARY_OLD((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6);
+		public byte id;
+		PlayerGuiType(byte i) { id = i; }
+	}
+
     
     // ==================================================
     //                     Constructor
@@ -60,11 +68,6 @@ public class GuiHandler implements IGuiHandler {
 			// No item GUIs just yet.
 		}
 		
-		// ========== Player ==========
-		else if(id == GuiType.PLAYER.id) {
-			return null;
-		}
-		
 		return null;
 	}
     
@@ -92,13 +95,26 @@ public class GuiHandler implements IGuiHandler {
 		else if(id == GuiType.ITEM.id) {
 			// No item GUIs just yet.
 		}
+
+		// ========== Beastiary ==========
+		else if(id == GuiType.BEASTIARY.id) {
+			if(x == Beastiary.INDEX.id) {
+				return new GuiBeastiaryIndex(player);
+			}
+			if(x == Beastiary.BEASTIARY.id) {
+				return new GuiBeastiaryIndex(player);
+			}
+		}
 		
 		// ========== Player ==========
 		else if(id == GuiType.PLAYER.id) {
+			if(x == PlayerGuiType.BEASTIARY.id) {
+				return new GUIBeastiary(player);
+			}
 			if(x == PlayerGuiType.LM_MAIN_MENU.id) {
 				return new GUILMMainMenu(player);
 			}
-			if(x == PlayerGuiType.BEASTIARY.id) {
+			if(x == PlayerGuiType.BEASTIARY_OLD.id) {
 				return new GUIBeastiary(player);
 			}
 			if(x == PlayerGuiType.PET_MANAGER.id) {

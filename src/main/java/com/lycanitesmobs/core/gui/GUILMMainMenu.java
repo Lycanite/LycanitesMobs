@@ -116,8 +116,10 @@ public class GUILMMainMenu extends GUIBaseScreen {
         int nextY = this.windowY + buttonHeight + buttonSpacing;
 
 		// Beastiary:
-        button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY.id, buttonX, nextY, buttonWidth, buttonHeight, "Beastiary");
+        button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY_OLD.id, buttonXLeft, nextY, buttonWidth, buttonHeight, "Beastiary");
     	this.buttonList.add(button);
+		button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY.id, buttonXRight, nextY, buttonWidth, buttonHeight, "New Beastiary");
+		this.buttonList.add(button);
 
 		// Pet & Mount Managers:
 		nextY += buttonHeight + buttonSpacing;
@@ -150,7 +152,7 @@ public class GUILMMainMenu extends GUIBaseScreen {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {
-			if(guiButton.id == GuiHandler.PlayerGuiType.BEASTIARY.id) {
+			if(guiButton.id == GuiHandler.PlayerGuiType.BEASTIARY_OLD.id) {
 				GUIBeastiary.openToPlayer(this.player);
 			}
 			if(guiButton.id == GuiHandler.PlayerGuiType.PET_MANAGER.id) {

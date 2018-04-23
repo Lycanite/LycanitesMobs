@@ -60,6 +60,9 @@ public class ClientProxy extends CommonProxy {
 		// ========== Add GUI Textures ==========
 		GroupInfo group = LycanitesMobs.group;
 		AssetManager.addTexture("GUIInventoryCreature", group, "textures/guis/inventory_creature.png");
+
+		AssetManager.addTexture("GUIBeastiaryBackground", group, "textures/guis/beastiary/background.png");
+
 		AssetManager.addTexture("GUILMMainMenu", group, "textures/guis/lmmainmenu.png");
 		AssetManager.addTexture("GUIBeastiary", group, "textures/guis/beastiary.png");
 		AssetManager.addTexture("GUIPet", group, "textures/guis/pet.png");

@@ -8,9 +8,6 @@ import com.lycanitesmobs.core.gui.*;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
@@ -22,6 +19,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
 
+	public ScaledResolution scaledResolution;
 	public int centerX;
 	public int centerY;
 	public int windowWidth;
@@ -62,15 +60,36 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 
 
 	/**
+	 * Returns a scaled x coordinate.
+	 * @param x The x float to scale where 1.0 is the entire GUI width.
+	 * @return A scaled x position.
+	 */
+	public int getScaledX(float x) {
+		if(this.scaledResolution == null) {
+			this.scaledResolution = new ScaledResolution(this.mc);
+		}
+		return Math.round((float)scaledResolution.getScaledWidth() * x);
+	}
+
+
+	/**
+	 * Returns a scaled y coordinate based on the scaled width with an aspect ratio applied to it.
+	 * @param y The y float to scale where 1.0 is the entire GUI height.
+	 * @return A scaled y position.
+	 */
+	public int getScaledY(float y) {
+		float baseHeight = Math.round((float)this.getScaledX(y) * (1080F / 1920F));
+		return Math.round(baseHeight * y);
+	}
+
+
+	/**
 	 * Initializes this gui, called when first opening or on window resizing.
 	 */
 	@Override
 	public void initGui() {
-		ScaledResolution scaledResolution = new ScaledResolution(this.mc);
-		float baseWidth = scaledResolution.getScaledWidth();
-		LycanitesMobs.printDebug("", "Scaled Width: " + baseWidth);
-		this.windowWidth = Math.round(baseWidth * 0.9F);
-		this.windowHeight = Math.round((float)this.windowWidth * (1080F / 1920F));
+		this.windowWidth = this.getScaledX(0.95F);
+		this.windowHeight = this.getScaledY(0.95F);
 		this.halfX = this.windowWidth / 2;
 		this.halfY = this.windowHeight / 2;
 		this.windowX = (this.width / 2) - (this.windowWidth / 2);
@@ -101,7 +120,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 		GuiButton button;
 
 		// Top Menu:
-		button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY_OLD.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Beastiary");
+		button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Beastiary");
 		this.buttonList.add(button);
 		button = new GuiButton(GuiHandler.PlayerGuiType.PET_MANAGER.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Pets");
 		this.buttonList.add(button);
@@ -141,20 +160,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	 * @param partialTicks Ticks for animation.
 	 */
 	public void drawBackground(int x, int y, float partialTicks) {
-		this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiaryBackground"));
-		//this.drawTexturedModalRect(this.windowX, this.windowY, 0, 0, this.windowWidth, this.windowHeight);
-		x = this.windowX;
-		y = this.windowY;
-		double width = this.windowWidth;
-		double height = this.windowHeight;
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buffer = tessellator.getBuffer();
-		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos(x, y + height, this.zLevel).tex(0, 1).endVertex();
-		buffer.pos(x + width, y + height, this.zLevel).tex(1, 1).endVertex();
-		buffer.pos(x + width, y, this.zLevel).tex(1, 0).endVertex();
-		buffer.pos(x, y, this.zLevel).tex(0, 0).endVertex();
-		tessellator.draw();
+		this.drawTexture(AssetManager.getTexture("GUIBeastiaryBackground"), this.windowX, this.windowY, 1, 1, this.windowWidth, this.windowHeight);
 	}
 
 
@@ -185,7 +191,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {
-			if(guiButton.id == GuiHandler.PlayerGuiType.BEASTIARY_OLD.id) {
+			if(guiButton.id == GuiHandler.PlayerGuiType.BEASTIARY.id) {
 				GUIBeastiary.openToPlayer(this.player);
 			}
 			if(guiButton.id == GuiHandler.PlayerGuiType.PET_MANAGER.id) {

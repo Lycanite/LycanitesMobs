@@ -29,7 +29,7 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	public enum PlayerGuiType {
-		BEASTIARY((byte)0), LM_MAIN_MENU((byte)0), BEASTIARY_OLD((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6);
+		LM_MAIN_MENU((byte)0), BEASTIARY((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6);
 		public byte id;
 		PlayerGuiType(byte i) { id = i; }
 	}
@@ -114,7 +114,7 @@ public class GuiHandler implements IGuiHandler {
 			if(x == PlayerGuiType.LM_MAIN_MENU.id) {
 				return new GUILMMainMenu(player);
 			}
-			if(x == PlayerGuiType.BEASTIARY_OLD.id) {
+			if(x == PlayerGuiType.BEASTIARY.id) {
 				return new GUIBeastiary(player);
 			}
 			if(x == PlayerGuiType.PET_MANAGER.id) {

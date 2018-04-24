@@ -5,6 +5,7 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
 import com.lycanitesmobs.core.info.CreatureManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -344,6 +345,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	 */
 	@Override
     public boolean isOnSameTeam(Entity target) {
+		if(this.getEntityWorld().isRemote) {
+			return super.isOnSameTeam(target);
+		}
+
         if(this.isTamed()) {
         	// Check If Owner:
             if(target == this.getPlayerOwner() || target == this.getOwner())

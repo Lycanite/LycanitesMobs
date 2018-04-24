@@ -4,6 +4,7 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryIndex;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -116,9 +117,9 @@ public class GUILMMainMenu extends GUIBaseScreen {
         int nextY = this.windowY + buttonHeight + buttonSpacing;
 
 		// Beastiary:
-        button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY_OLD.id, buttonXLeft, nextY, buttonWidth, buttonHeight, "Beastiary");
+        button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY.id, buttonXLeft, nextY, buttonWidth, buttonHeight, "Beastiary");
     	this.buttonList.add(button);
-		button = new GuiButton(GuiHandler.PlayerGuiType.BEASTIARY.id, buttonXRight, nextY, buttonWidth, buttonHeight, "New Beastiary");
+		button = new GuiButton(102, buttonXRight, nextY, buttonWidth, buttonHeight, "New Beastiary");
 		this.buttonList.add(button);
 
 		// Pet & Mount Managers:
@@ -152,7 +153,7 @@ public class GUILMMainMenu extends GUIBaseScreen {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {
-			if(guiButton.id == GuiHandler.PlayerGuiType.BEASTIARY_OLD.id) {
+			if(guiButton.id == GuiHandler.PlayerGuiType.BEASTIARY.id) {
 				GUIBeastiary.openToPlayer(this.player);
 			}
 			if(guiButton.id == GuiHandler.PlayerGuiType.PET_MANAGER.id) {
@@ -176,6 +177,9 @@ public class GUILMMainMenu extends GUIBaseScreen {
 				try {
 					this.openURI(new URI(LycanitesMobs.websitePatreon));
 				} catch (URISyntaxException e) {}
+			}
+			if(guiButton.id == 102) {
+				GuiBeastiaryIndex.openToPlayer(this.player);
 			}
 		}
 		super.actionPerformed(guiButton);

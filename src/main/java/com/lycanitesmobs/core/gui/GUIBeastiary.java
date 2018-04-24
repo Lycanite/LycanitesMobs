@@ -38,7 +38,7 @@ public class GUIBeastiary extends GUIBaseScreen {
 		
 	public static void openToPlayer(EntityPlayer player) {
 		if(player != null && player.getEntityWorld() != null)
-			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.getEntityWorld(), GuiHandler.PlayerGuiType.BEASTIARY_OLD.id, 0, 0);
+			player.openGui(LycanitesMobs.instance, GuiHandler.GuiType.PLAYER.id, player.getEntityWorld(), GuiHandler.PlayerGuiType.BEASTIARY.id, 0, 0);
 	}
 	
 	// ==================================================

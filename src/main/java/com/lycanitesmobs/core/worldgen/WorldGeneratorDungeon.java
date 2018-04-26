@@ -18,7 +18,8 @@ import java.util.Random;
 import java.util.UUID;
 
 public class WorldGeneratorDungeon implements IWorldGenerator {
-	public boolean enabled = false;
+	public boolean enabled;
+	public int dungeonDistance = 35;
 
     // ==================================================
     //                    Constructors
@@ -26,7 +27,8 @@ public class WorldGeneratorDungeon implements IWorldGenerator {
     public WorldGeneratorDungeon() {
 		ConfigBase config = ConfigBase.getConfig(LycanitesMobs.group, "general");
 		this.enabled = config.getBool("Dungeons", "Dungeons Enabled", this.enabled, "If false, all Lycanites Mobs Dungeons are disabled, set to true to enable the Dungeon System. (The JSON files are still loaded but don't do anything.)");
-    }
+		this.dungeonDistance = config.getInt("Dungeons", "Dungeon Distance", this.dungeonDistance, "The average distance in chunks that dungeons are spaced apart from each other.");
+	}
 
 
     // ==================================================
@@ -45,7 +47,7 @@ public class WorldGeneratorDungeon implements IWorldGenerator {
 
 		try {
 			ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
-			int dungeonSizeMax = 35;
+			int dungeonSizeMax = this.dungeonDistance;
 			List<DungeonInstance> nearbyDungeons = extendedWorld.getNearbyDungeonInstances(chunkPos, dungeonSizeMax * 2);
 
 			// Create New Instances:

@@ -32,7 +32,7 @@ public class GUIBeastiaryGroupList extends GuiScrollingList {
 		
 		int groupIndex = 0;
 		for(GroupInfo group : CreatureManager.getInstance().loadedGroups) {
-			if(parentGUI.playerExt.beastiary.hasCreatureFromGroup(group)) {
+			if(parentGUI.playerExt.beastiary.getCreaturesDescovered(group) > 0) {
 				this.groupList.put(groupIndex++, group);
 			}
 		}

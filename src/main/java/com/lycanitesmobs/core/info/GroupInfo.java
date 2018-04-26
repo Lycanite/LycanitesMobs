@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.info;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.config.ConfigSpawning;
 import com.lycanitesmobs.core.config.ConfigSpawning.SpawnDimensionSet;
 import net.minecraft.world.biome.Biome;

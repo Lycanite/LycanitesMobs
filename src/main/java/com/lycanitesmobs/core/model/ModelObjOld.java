@@ -124,6 +124,14 @@ public class ModelObjOld extends ModelCustom {
             }
 		}
 
+		// GUI Render:
+		if(entity instanceof EntityCreatureBase) {
+			EntityCreatureBase creature = (EntityCreatureBase)entity;
+			if(creature.onlyRenderTicks >= 0) {
+				loop = creature.onlyRenderTicks;
+			}
+		}
+
         // Render and Animate Each Part:
         for(ObjObject part : this.wavefrontParts) {
     		if(part.getName() == null)

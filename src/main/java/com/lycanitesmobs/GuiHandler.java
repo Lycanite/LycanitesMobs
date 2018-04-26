@@ -1,7 +1,7 @@
 package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.gui.*;
-import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryIndex;
+import com.lycanitesmobs.core.gui.beastiary.*;
 import com.lycanitesmobs.core.tileentity.TileEntityBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.inventory.ContainerCreature;
@@ -23,7 +23,7 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	public enum Beastiary {
-		INDEX((byte)0), BEASTIARY((byte)1), PETS((byte)2), SUMMONING((byte)3), ELEMENTS((byte)4);
+		INDEX((byte)0), CREATURES((byte)1), PETS((byte)2), SUMMONING((byte)3), ELEMENTS((byte)4);
 		public byte id;
 		Beastiary(byte i) { id = i; }
 	}
@@ -101,8 +101,17 @@ public class GuiHandler implements IGuiHandler {
 			if(x == Beastiary.INDEX.id) {
 				return new GuiBeastiaryIndex(player);
 			}
-			if(x == Beastiary.BEASTIARY.id) {
-				return new GuiBeastiaryIndex(player);
+			if(x == Beastiary.CREATURES.id) {
+				return new GuiBeastiaryCreatures(player);
+			}
+			if(x == Beastiary.PETS.id) {
+				return new GuiBeastiaryPets(player);
+			}
+			if(x == Beastiary.SUMMONING.id) {
+				return new GuiBeastiarySummoning(player);
+			}
+			if(x == Beastiary.ELEMENTS.id) {
+				return new GuiBeastiaryElements(player);
 			}
 		}
 		
@@ -113,9 +122,6 @@ public class GuiHandler implements IGuiHandler {
 			}
 			if(x == PlayerGuiType.LM_MAIN_MENU.id) {
 				return new GUILMMainMenu(player);
-			}
-			if(x == PlayerGuiType.BEASTIARY.id) {
-				return new GUIBeastiary(player);
 			}
 			if(x == PlayerGuiType.PET_MANAGER.id) {
 				return new GUIPetManager(player);

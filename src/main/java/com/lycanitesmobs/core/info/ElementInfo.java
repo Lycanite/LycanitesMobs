@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
@@ -88,6 +89,24 @@ public class ElementInfo {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Returns the display title of this element.
+	 * @return The title text.
+	 */
+	public String getTitle() {
+		return I18n.translateToLocal("element." + this.name + ".name");
+	}
+
+
+	/**
+	 * Returns the description of this element.
+	 * @return The description text.
+	 */
+	public String getDescription() {
+		return I18n.translateToLocal("element." + this.name + ".description");
 	}
 
 

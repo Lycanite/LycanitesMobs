@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 
 public class Beastiary {
 	public ExtendedPlayer extendedPlayer;
-	public Map<String, CreatureKnowledge> creatureKnowledgeList = new HashMap<String, CreatureKnowledge>();
+	public Map<String, CreatureKnowledge> creatureKnowledgeList = new HashMap<>();
 	
     // ==================================================
     //                     Constructor
@@ -65,21 +65,27 @@ public class Beastiary {
 			return false;
 		return true;
 	}
+
 	
 	/**
-	 * Used to determine if any creatures from the specific group are in the players beastiary.
+	 * Returns how many creatures of the specified group the player has descovered.
 	 * @param group Group to check with.
 	 * @return True if the player has at least one creature form the specific group.
 	 */
-	public boolean hasCreatureFromGroup(GroupInfo group) {
-		if(this.creatureKnowledgeList.size() == 0)
-			return false;
-		for(Entry<String, CreatureKnowledge> creatureKnowledgeEntry : this.creatureKnowledgeList.entrySet()) {
-			if(creatureKnowledgeEntry.getValue() != null)
-				if(creatureKnowledgeEntry.getValue().creatureInfo.group == group)
-					return true;
+	public int getCreaturesDescovered(GroupInfo group) {
+		if(this.creatureKnowledgeList.size() == 0) {
+			return 0;
 		}
-		return false;
+
+		int creaturesDescovered = 0;
+		for(Entry<String, CreatureKnowledge> creatureKnowledgeEntry : this.creatureKnowledgeList.entrySet()) {
+			if(creatureKnowledgeEntry.getValue() != null) {
+				if (creatureKnowledgeEntry.getValue().creatureInfo.group == group) {
+					creaturesDescovered++;
+				}
+			}
+		}
+		return creaturesDescovered;
 	}
 	
 	

@@ -240,6 +240,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean extraAnimation01 = false;
     /** Holds Information for this mobs boss health should it be displayed in the boss health bar. Used by bosses and rare subspecies. **/
     public BossInfoServer bossInfo;
+    /** If positive, this creature entity is only being used for rendering in a GUI, etc and should play animation based off of this instead. **/
+    public float onlyRenderTicks = -1;
 	
 	// Data Manager:
     protected static final DataParameter<Byte> TARGET = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);

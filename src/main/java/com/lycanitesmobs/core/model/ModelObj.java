@@ -204,6 +204,14 @@ public class ModelObj extends ModelCustom {
 			}
 		}
 
+		// GUI Render:
+		if(entity instanceof EntityCreatureBase) {
+			EntityCreatureBase creature = (EntityCreatureBase)entity;
+			if(creature.onlyRenderTicks >= 0) {
+				loop = creature.onlyRenderTicks;
+			}
+		}
+
 		// Animation States:
         this.currentModelState = this.getModelState(entity);
 		if(layer == null) {

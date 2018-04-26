@@ -1,6 +1,6 @@
 # Group Info
 elementalmobs.name=Elemental Creatures
-elementalmobs.description=Living embodiments of the raw elements that makeup the world.
+elementalmobs.description=Living embodiments of the raw elements that make up the world.
 #
 # Entites
 entity.elementalmobs.cinder.name=Cinder
@@ -124,7 +124,7 @@ achievement.vapula.learn.desc=Add a Vapula to your Beastiary.
 achievement.vapula.summon=Team Building
 achievement.vapula.summon.desc=Summon a Vapula.
 entity.elementalmobs.banshee.name=Banshee
-entity.elementalmobs.banshee.description=Banshees are terrifying Phase Elementals that haunted eerie and abandoned places.
+entity.elementalmobs.banshee.description=Banshees are terrifying Phase Elementals that haunt eerie and abandoned places.
 achievement.banshee.kill=Silence
 achievement.banshee.kill.desc=Slay a Banshee.
 achievement.banshee.learn=Phase Elementals

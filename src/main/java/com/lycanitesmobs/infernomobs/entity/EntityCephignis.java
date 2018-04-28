@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -41,7 +40,7 @@ public class EntityCephignis extends EntityCreatureAgeable implements IAnimals, 
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
         this.fleeHealthPercent = 1.0F;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.setupMob();
 
         this.setPathPriority(PathNodeType.LAVA, 0F);

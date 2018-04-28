@@ -26,8 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -65,7 +63,7 @@ public class EntityYale extends EntityCreatureAgeable implements IAnimals, IGrou
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         this.fleeHealthPercent = 1.0F;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.setupMob();
         
         // Add Dyes to the Color Mixer:

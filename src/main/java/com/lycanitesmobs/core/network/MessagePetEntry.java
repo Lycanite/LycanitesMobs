@@ -25,6 +25,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
     public String summonType;
 	public byte behaviour;
 	public int petEntryEntityID;
+	public String petEntryEntityName;
 	public int respawnTime;
 	public int respawnTimeMax;
 	public boolean isRespawning;
@@ -44,6 +45,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         this.summonType = summonSet.summonType;
 		this.behaviour = summonSet.getBehaviourByte();
 		this.petEntryEntityID = petEntry.entity != null ? petEntry.entity.getEntityId() : 0;
+		this.petEntryEntityName = petEntry.entityName;
 		this.respawnTime = petEntry.respawnTime;
 		this.respawnTimeMax = petEntry.respawnTimeMax;
 		this.isRespawning = petEntry.isRespawning;
@@ -61,22 +63,19 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         // Server Side:
         if(ctx.side == Side.SERVER) {
             IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getEntityWorld();
-            mainThread.addScheduledTask(new Runnable() {
-                @Override
-                public void run() {
-                    EntityPlayer player = ctx.getServerHandler().player;
-                    ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-                    PetManager petManager = playerExt.petManager;
-                    PetEntry petEntry = petManager.getEntry(message.petEntryID);
-                    if(petEntry == null)
-                        return;
-                    petEntry.setSpawningActive(message.spawningActive);
-                    petEntry.teleportEntity = message.teleportEntity;
-                    SummonSet summonSet = petEntry.summonSet;
-                    summonSet.readFromPacket(message.summonType, message.behaviour);
-                    petEntry.onBehaviourUpdate();
-                }
-            });
+            mainThread.addScheduledTask(() -> {
+				EntityPlayer player = ctx.getServerHandler().player;
+				ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+				PetManager petManager = playerExt.petManager;
+				PetEntry petEntry = petManager.getEntry(message.petEntryID);
+				if(petEntry == null)
+					return;
+				petEntry.setSpawningActive(message.spawningActive);
+				petEntry.teleportEntity = message.teleportEntity;
+				SummonSet summonSet = petEntry.summonSet;
+				summonSet.readFromPacket(message.summonType, message.behaviour);
+				petEntry.onBehaviourUpdate();
+			});
             return null;
         }
 
@@ -99,6 +98,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
             entity = player.getEntityWorld().getEntityByID(message.petEntryEntityID);
         }
         petEntry.entity = entity;
+        petEntry.entityName = message.petEntryEntityName;
         petEntry.respawnTime = message.respawnTime;
         petEntry.respawnTimeMax = message.respawnTimeMax;
         petEntry.isRespawning = message.isRespawning;
@@ -123,6 +123,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         this.summonType = packet.readString(256);
         this.behaviour = packet.readByte();
         this.petEntryEntityID = packet.readInt();
+		this.petEntryEntityName = packet.readString(256);
         this.respawnTime = packet.readInt();
         this.respawnTimeMax = packet.readInt();
         this.isRespawning = packet.readBoolean();
@@ -146,6 +147,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         packet.writeString(this.summonType);
         packet.writeByte(this.behaviour);
         packet.writeInt(this.petEntryEntityID);
+		packet.writeString(this.petEntryEntityName);
         packet.writeInt(this.respawnTime);
         packet.writeInt(this.respawnTimeMax);
         packet.writeBoolean(this.isRespawning);

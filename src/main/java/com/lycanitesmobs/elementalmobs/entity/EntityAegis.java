@@ -36,7 +36,7 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
         this.hasAttackSound = true;
         
         this.setupMob();
-
+		this.isAggressiveByDefault = false;
         this.stepHeight = 1.0F;
 
 		this.chestProtection = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Aegis Chest Protection", this.chestProtection, "Set to false to stop Aegis from protecting village chests.");

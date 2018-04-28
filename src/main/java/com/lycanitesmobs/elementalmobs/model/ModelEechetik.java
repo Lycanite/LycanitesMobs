@@ -109,7 +109,7 @@ public class ModelEechetik extends ModelTemplateElemental {
 					(float)-Math.toDegrees(MathHelper.cos((loop + loopOffset) * 0.2F) * 0.1F)
 			);
 		}
-		else if(partName.contains("antennarights")) {
+		else if(partName.contains("antennaright")) {
 			this.rotate(
 					(float)Math.toDegrees(MathHelper.sin(loop * 0.067F) * 0.1F),
 					0,

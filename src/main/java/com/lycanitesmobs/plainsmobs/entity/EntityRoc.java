@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -158,8 +157,9 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     /** Returns how high above attack targets this mob should fly when chasing. **/
     @Override
     public double getFlightOffset() {
-        if(this.hasPickupEntity())
-            return 5D;
+        if(this.hasPickupEntity()) {
+			return 5D;
+		}
         return super.getFlightOffset();
     }
     
@@ -234,13 +234,15 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     public void pickupEntity(EntityLivingBase entity) {
         super.pickupEntity(entity);
         if(this.getEntityWorld().getBlockState(this.getPosition()) != null && this.getEntityWorld().canBlockSeeSky(this.getPosition()))
-            this.leap(1.0F, 2.0D);
+            this.leap(0.5F, 4.0D);
     }
     
     @Override
     public double[] getPickupOffset(Entity entity) {
     	return new double[]{0, -1.0D, 0};
     }
+
+    @Override
     public boolean canPickupEntity(EntityLivingBase entity) {
         if(this.creeperDropCooldown > 0 || this.hasPickupEntity())
             return false;

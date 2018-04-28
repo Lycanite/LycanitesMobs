@@ -9,15 +9,11 @@ import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -37,7 +33,7 @@ public class EntityAspid extends EntityCreatureAgeable implements IAnimals, IGro
         this.babySpawnChance = 0.1D;
         this.attackTime = 10;
         this.fleeHealthPercent = 1.0F;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.setupMob();
     }
 

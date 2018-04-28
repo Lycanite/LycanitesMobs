@@ -2,7 +2,6 @@ package com.lycanitesmobs.forestmobs.entity;
 
 import com.lycanitesmobs.api.IGroupHeavy;
 import com.lycanitesmobs.core.entity.ai.*;
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
@@ -13,9 +12,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -34,7 +31,7 @@ public class EntityArisaur extends EntityCreatureAgeable implements IAnimals, IG
         this.canGrow = true;
         this.babySpawnChance = 0.1D;
         this.fleeHealthPercent = 1.0F;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.solidCollision = true;
         this.setupMob();
     }

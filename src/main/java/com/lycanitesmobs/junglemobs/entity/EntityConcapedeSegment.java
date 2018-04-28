@@ -48,7 +48,7 @@ public class EntityConcapedeSegment extends EntityCreatureAgeable implements IAn
 
         this.canGrow = true;
         this.babySpawnChance = 0D;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.setupMob();
     }
 

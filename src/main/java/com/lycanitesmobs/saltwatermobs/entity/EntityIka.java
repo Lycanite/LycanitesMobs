@@ -1,6 +1,5 @@
 package com.lycanitesmobs.saltwatermobs.entity;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
@@ -11,9 +10,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -37,7 +34,7 @@ public class EntityIka extends EntityCreatureAgeable implements IAnimals, IGroup
         this.babySpawnChance = 0.01D;
         this.canGrow = true;
         this.fleeHealthPercent = 1.0F;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.setupMob();
     }
 

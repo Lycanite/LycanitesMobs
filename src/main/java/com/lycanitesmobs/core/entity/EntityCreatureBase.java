@@ -149,7 +149,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The battle range of this boss mob, anything out of this range cannot harm the boss. This will also affect other things related to the boss. **/
     public int bossRange = 60;
 	/** Whether or not this mob is hostile by default. Use isHostile() when check if this mob is hostile. **/
-	public boolean isHostileByDefault = true;
+	public boolean isAggressiveByDefault = true;
     /** Whether if this mob is on fire, it should spread it to other entities when melee attacking. **/
 	public boolean spreadFire = false;
     /** Used to check if the mob was stealth last update. **/
@@ -2743,7 +2743,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.extraMobBehaviour != null)
     		if(this.extraMobBehaviour.aggressiveOverride)
     			return true;
-    	return true;
+    	return this.isAggressiveByDefault;
     }
     
     /** Returns true if this mob should defend other entities that cry for help. Used mainly by the revenge AI. **/
@@ -2926,7 +2926,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	// ==================================================
     /** Returns whether or not this mob is hostile towards players, changes if a mob is tamed, etc too. **/
     public boolean isHostile() {
-    	return this.isHostileByDefault;
+    	return this.isAggressive();
     }
     
     /** Overrides the vanilla method when check for EnumCreatureType.monster, it will return true if this mob is hostile and false if it is not regardless of this creature's actual EnumCreatureType. Takes tameable mobs into account too. **/
@@ -3001,9 +3001,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
     }
     /** Returns how high above attack targets this mob should fly when chasing. **/
     public double getFlightOffset() {
-        /*if(!this.isFlying())
-            return 0;
-        return 0.25D;*/
         return 0D;
     }
     /** Returns true if this mob is currently flying. **/

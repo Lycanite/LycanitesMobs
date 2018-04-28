@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.entity.ai;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IGroupAnimal;
 import com.lycanitesmobs.api.Targeting;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;

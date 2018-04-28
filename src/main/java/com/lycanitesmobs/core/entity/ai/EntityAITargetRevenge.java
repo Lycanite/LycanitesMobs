@@ -98,9 +98,6 @@ public class EntityAITargetRevenge extends EntityAITargetAttack {
             e.printStackTrace();
         }
 
-        if(!this.host.isAggressive()) {
-        	return;
-		}
         super.startExecuting();
     }
 }

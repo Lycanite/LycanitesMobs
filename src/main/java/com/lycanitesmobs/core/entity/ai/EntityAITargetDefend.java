@@ -64,11 +64,6 @@ public class EntityAITargetDefend extends EntityAITarget {
 			return false;
 		}
 
-		// Aggressive Check:
-		if(!this.host.isAggressive()) {
-			return false;
-		}
-
 		// Has Target Check:
 		EntityLivingBase targetTarget = target.getRevengeTarget();
 		if(target instanceof EntityCreature) {
@@ -110,10 +105,6 @@ public class EntityAITargetDefend extends EntityAITarget {
     	// Owner Check:
     	if(this.host.getOwner() != null)
     		return false;
-    	
-    	// Aggressive Check:
-    	if(!this.host.isAggressive())
-            return false;
         
         double distance = this.getTargetDistance() - this.host.width;
         double heightDistance = 4.0D - this.host.height;

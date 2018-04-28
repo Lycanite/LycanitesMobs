@@ -71,23 +71,6 @@ public class GUIPetList extends GuiScrollingList {
             if(this.isSelected(index))
                 super.drawGradientRect(boxLeft, boxTop, boxRight, boxBottom, 0x99FFEE, 0x99FFEE);
             super.drawGradientRect(boxLeft, boxTop, boxRight, boxBottom, 0x448877, 0x448877);
-			/*GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			tessellator.startDrawingQuads();
-			if(this.isSelected(index)) {
-				tessellator.setColorRGBA(192, 255, 232, 255);
-				tessellator.addVertexWithUV((double) boxLeft, (double) (boxTop + boxBottom + 2), 0.0D, 0.0D, 1.0D);
-				tessellator.addVertexWithUV((double) boxRight, (double) (boxTop + boxBottom + 2), 0.0D, 1.0D, 1.0D);
-				tessellator.addVertexWithUV((double) boxRight, (double) (boxTop - 2), 0.0D, 1.0D, 0.0D);
-				tessellator.addVertexWithUV((double) boxLeft, (double) (boxTop - 2), 0.0D, 0.0D, 0.0D);
-			}
-			tessellator.setColorRGBA(64, 128, 96, 32);
-			tessellator.addVertexWithUV((double) (boxLeft + 1), (double) (boxTop + boxBottom + 1), 0.0D, 0.0D, 1.0D);
-			tessellator.addVertexWithUV((double) (boxRight - 1), (double) (boxTop + boxBottom + 1), 0.0D, 1.0D, 1.0D);
-			tessellator.addVertexWithUV((double) (boxRight - 1), (double) (boxTop - 1), 0.0D, 1.0D, 0.0D);
-			tessellator.addVertexWithUV((double) (boxLeft + 1), (double) (boxTop - 1), 0.0D, 0.0D, 0.0D);
-			tessellator.draw();
-			GL11.glEnable(GL11.GL_TEXTURE_2D);*/
 
 			// Active Level Texture:
 			levelBarU -= levelBarWidth;

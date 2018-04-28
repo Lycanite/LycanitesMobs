@@ -5,7 +5,6 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
 import com.lycanitesmobs.core.info.CreatureManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -38,7 +37,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	public float hunger = this.getCreatureHungerMax();
 	public float stamina = this.getStaminaMax();
 	public float staminaRecovery = 0.5F;
-	public boolean isMobWhenNotTamed = true;
 	public float sittingGuardRange = 16F;
 
     // Owner:
@@ -849,14 +847,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     // ==================================================
     //                     Abilities
     // ==================================================
-    /** Returns whether or not this mob is hostile towards players, changes if a mob is tamed, etc too. **/
-    @Override
-    public boolean isHostile() {
-    	if(this.isMobWhenNotTamed)
-			return !this.isTamed();
-    	return super.isHostile();
-    }
-    
     /** Overrides the vanilla method when check for EnumCreatureType.monster, it will return true if this mob is hostile and false if it is not regardless of this creature's actual EnumCreatureType. Takes tameable mobs into account too. **/
     @Override
 	public boolean isCreatureType(EnumCreatureType type, boolean forSpawnCount) {

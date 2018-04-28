@@ -8,6 +8,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.gui.GUIBaseScreen;
 import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.pets.PetEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -31,6 +32,9 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	public ExtendedPlayer playerExt;
 	public EntityLivingBase creaturePreviewEntity;
 	public float creaturePreviewTicks = 0;
+
+	public CreatureInfo displayCreature;
+	public PetEntry displayPet;
 
 	public ScaledResolution scaledResolution;
 	public int centerX;
@@ -74,15 +78,6 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	 */
 	public String getTitle() {
 		return "Beastiary";
-	}
-
-
-	/**
-	 * Returns the font renderer.
-	 * @return The font renderer to use.
-	 */
-	public FontRenderer getFontRenderer() {
-		return this.fontRenderer;
 	}
 
 
@@ -146,7 +141,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 		this.colLeftCenterY = this.colLeftY + Math.round(this.colLeftHeight / 2);
 
 		// Right Column:
-		this.colRightX = this.windowX + this.getScaledX(500F / 1920F);
+		this.colRightX = this.windowX + this.getScaledX(480F / 1920F);
 		this.colRightY = this.windowY + this.getScaledY(420F / 1080F);
 		this.colRightWidth = this.getScaledX(1220F / 1920F);
 		this.colRightHeight = this.getScaledX(400F / 1080F);
@@ -218,7 +213,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	 * @param partialTicks Ticks for animation.
 	 */
 	public void drawBackground(int mouseX, int mouseY, float partialTicks) {
-		this.drawTexture(AssetManager.getTexture("GUIBeastiaryBackground"), this.windowX, this.windowY, 1, 1, this.windowWidth, this.windowHeight);
+		this.drawTexture(AssetManager.getTexture("GUIBeastiaryBackground"), this.windowX, this.windowY, this.zLevel, 1, 1, this.windowWidth, this.windowHeight);
 	}
 
 
@@ -327,7 +322,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 		int level = creatureInfo.summonCost;
 		if(level <= 20) {
 			for (int currentLevel = 0; currentLevel < level; currentLevel++) {
-				this.drawTexturedModalRect(x + (width * currentLevel), y, u, v, width, height);
+				this.drawTexturedTiled(AssetManager.getTexture("GUIBeastiary"),x + (width * currentLevel), y, 0, u, v, width, height, 1);
 			}
 		}
 	}

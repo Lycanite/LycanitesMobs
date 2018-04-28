@@ -42,7 +42,6 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
         
         // Stats:
         this.stepHeight = 1.0F;
-        this.isMobWhenNotTamed = true;
     }
 
     // ========== Init AI ==========

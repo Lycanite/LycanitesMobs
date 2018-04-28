@@ -10,8 +10,6 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +37,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.hasAttackSound = false;
         this.fleeHealthPercent = 1.0F;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.setupMob();
     }
 

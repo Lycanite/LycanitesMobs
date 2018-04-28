@@ -7,12 +7,9 @@ import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -33,7 +30,7 @@ public class EntityNymph extends EntityCreatureTameable implements IGroupPlant {
         this.hasAttackSound = false;
 
 		this.fleeHealthPercent = 1.0F;
-		this.isHostileByDefault = false;
+		this.isAggressiveByDefault = false;
         this.setupMob();
 
         this.stepHeight = 1.0F;

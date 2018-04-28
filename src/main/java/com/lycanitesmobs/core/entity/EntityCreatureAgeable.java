@@ -301,7 +301,6 @@ public abstract class EntityCreatureAgeable extends EntityCreatureBase {
 		if(!this.canBreed())
 			return false;
         this.loveTime = this.loveTimeMax;
-        this.setAttackTarget(null);
         return true;
 	}
 	

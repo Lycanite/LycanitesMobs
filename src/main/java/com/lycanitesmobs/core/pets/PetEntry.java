@@ -83,8 +83,9 @@ public class PetEntry {
         CreatureInfo creatureInfo = entity.creatureInfo;
         String entryName = petType + "-" + player.getName() + "-" + creatureInfo.getName() + "-" + UUID.randomUUID().toString();
         PetEntry petEntry = new PetEntry(entryName, petType, player, creatureInfo.getName());
-        if(entity.hasCustomName())
-            petEntry.setEntityName(entity.getCustomNameTag());
+        if(entity.hasCustomName()) {
+			petEntry.setEntityName(entity.getCustomNameTag());
+		}
         petEntry.setEntitySubspeciesID(entity.getSubspeciesIndex());
         petEntry.setEntitySize(entity.sizeScale);
         petEntry.setColor("000000");
@@ -207,8 +208,9 @@ public class PetEntry {
     // ==================================================
     public String getDisplayName() {
         String displayName = this.summonSet.getCreatureInfo().getTitle();
-        if(!"".equals(this.entityName))
-            displayName = this.entityName + " (" + displayName + ")";
+        if(this.entityName != null && !"".equals(this.entityName)) {
+			displayName = this.entityName + " (" + displayName + ")";
+		}
         return displayName;
     }
 
@@ -294,6 +296,10 @@ public class PetEntry {
                     this.entityHealth = entityLiving.getHealth();
                     this.entityMaxHealth = entityLiving.getMaxHealth();
                 }
+
+                if(entity.hasCustomName()) {
+                	this.entityName = this.entity.getCustomNameTag();
+				}
             }
         }
 
@@ -388,8 +394,9 @@ public class PetEntry {
                 entityCreature.setTemporary(this.temporaryDuration);
 
             // Entity Name and Appearance:
-            if(this.entityName != null && !"".equals(this.entityName))
-                entityCreature.setCustomNameTag(this.entityName);
+            if(this.entityName != null && !"".equals(this.entityName)) {
+				entityCreature.setCustomNameTag(this.entityName);
+			}
             entityCreature.setSizeScale(this.entitySize);
             entityCreature.applySubspecies(this.subspeciesID, false);
 
@@ -557,8 +564,15 @@ public class PetEntry {
     // ========== Save Entity NBT ==========
     /** If this PetEntry currently has an active entity, this will save that entity's NBT data to this PetEntry's record of it. **/
     public void saveEntityNBT() {
-        if(this.entityNBT == null)
-                this.entityNBT = new NBTTagCompound();
+    	if(this.entity == null) {
+    		return;
+		}
+
+        if(this.entityNBT == null) {
+			this.entityNBT = new NBTTagCompound();
+		}
+
+		// Creature Base:
         if(this.entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreatureBase = (EntityCreatureBase)this.entity;
 
@@ -573,11 +587,12 @@ public class PetEntry {
                 this.entityNBT.setInteger("Age", entityCreatureAgeable.getGrowingAge());
             }
         }
-//        if(this.entity != null) {
-//            if(this.entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).hasCustomNameTag())
-//                this.entityName = ((EntityCreatureBase)entity).getCustomNameTag();
-//            this.entity.writeToNBT(this.entityNBT);
-//        }
+
+        // Update Pet Name:
+		if(this.entity instanceof EntityCreatureBase && this.entity.hasCustomName()) {
+			this.entityName = this.entity.getCustomNameTag();
+		}
+		this.entity.writeToNBT(this.entityNBT);
     }
 
     // ========== Load Entity NBT ==========

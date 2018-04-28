@@ -1,6 +1,5 @@
 package com.lycanitesmobs.core.gui.beastiary;
 
-import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
@@ -34,8 +33,8 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 	@Override
 	public String getTitle() {
-		if(this.creatureList != null && this.creatureList.selectedCreature != null) {
-			return this.creatureList.selectedCreature.getTitle();
+		if(this.creatureList != null && this.displayCreature != null) {
+			return this.displayCreature.getTitle();
 		}
 		if(this.groupList != null && this.groupList.selectedGroup != null) {
 			return I18n.translateToLocal(this.groupList.selectedGroup.filename + ".name"); //TODO Add getTitle() to GroupInfo
@@ -50,21 +49,23 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 		this.groupList = new GuiGroupList(this, this.colLeftWidth, this.colLeftHeight, this.colLeftY,this.colLeftY + this.colLeftHeight, this.colLeftX);
 		int creatureListheight = this.colRightHeight;
-		this.creatureList = new GuiCreatureList(this, this.groupList, this.getScaledX(240F / 1920F), creatureListheight, this.colRightY + 20,this.colRightY + creatureListheight, this.colRightX);
+		this.creatureList = new GuiCreatureList(GuiCreatureList.Type.KNOWLEDGE, this, this.groupList, this.getScaledX(260F / 1920F), creatureListheight, this.colRightY + 20,this.colRightY + creatureListheight, this.colRightX);
 	}
 
 
 	@Override
-	public void drawBackground(int x, int y, float partialTicks) {
-		super.drawBackground(x, y, partialTicks);
+	public void drawBackground(int mouseX, int mouseY, float partialTicks) {
+		super.drawBackground(mouseX, mouseY, partialTicks);
 	}
 
 
 	@Override
-	protected void updateControls(int x, int y, float partialTicks) {
-		this.groupList.drawScreen(x, y, partialTicks);
+	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
+		super.updateControls(mouseX, mouseY, partialTicks);
+
+		this.groupList.drawScreen(mouseX, mouseY, partialTicks);
 		if(this.groupList.selectedGroup != null) {
-			this.creatureList.drawScreen(x, y, partialTicks);
+			this.creatureList.drawScreen(mouseX, mouseY, partialTicks);
 		}
 	}
 
@@ -72,41 +73,39 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 	@Override
 	public void drawForeground(int mouseX, int mouseY, float partialTicks) {
 		super.drawForeground(mouseX, mouseY, partialTicks);
+
 		int marginX = this.getScaledX(240F / 1920F) + 8;
 		int nextX = this.colRightX + marginX;
 		int nextY = this.colRightY + 20;
 		int width = this.colRightWidth - marginX;
 
 		// Creature Display:
-		if(this.creatureList.selectedCreature != null) {
+		if(this.displayCreature != null) {
 			// Model:
-			this.renderCreature(this.creatureList.selectedCreature, this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + 100, mouseX, mouseY, partialTicks);
+			this.renderCreature(this.displayCreature, this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + 100, mouseX, mouseY, partialTicks);
 
 			// Level:
 			String text = I18n.translateToLocal("creature.stat.cost") + ": ";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
-			this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIBeastiary"));
-			this.drawLevel(this.creatureList.selectedCreature, nextX + this.getFontRenderer().getStringWidth(text), nextY);
+			this.drawLevel(this.displayCreature, nextX + this.getFontRenderer().getStringWidth(text), nextY);
 
 			// Element:
 			nextY += 12 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
 			text = I18n.translateToLocal("creature.stat.element") + ": ";
-			text += this.creatureList.selectedCreature.element != null ? this.creatureList.selectedCreature.element.getTitle() : "None";
+			text += this.displayCreature.element != null ? this.displayCreature.element.getTitle() : "None";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 
 			// Summary:
 			nextY += 12 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = this.creatureList.selectedCreature.getDescription();
-			this.getFontRenderer().drawSplitString(text, nextX + 1,  nextY+ 1, width, 0x444444);
-			this.getFontRenderer().drawSplitString(text, nextX, nextY, width, 0xFFFFFF);
+			text = this.displayCreature.getDescription();
+			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
 		}
 
 		// Group Display:
 		else if(this.groupList.selectedGroup != null) {
 			// Description:
 			String text = I18n.translateToLocal(this.groupList.selectedGroup.filename + ".description");
-			this.getFontRenderer().drawSplitString(text, nextX + 1,  nextY+ 1, width, 0x444444);
-			this.getFontRenderer().drawSplitString(text, nextX, nextY, width, 0xFFFFFF);
+			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
 
 			// Descovered:
 			nextY += 12 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
@@ -119,8 +118,7 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 		// Base Display:
 		else {
 			String text = I18n.translateToLocal("gui.beastiary.selectacreature");
-			this.getFontRenderer().drawSplitString(text, nextX + 1,  nextY+ 1, width, 0x444444);
-			this.getFontRenderer().drawSplitString(text, nextX, nextY, width, 0xFFFFFF);
+			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
 		}
 	}
 

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -73,9 +74,22 @@ public class ModelSpectre extends ModelTemplateElemental {
 	public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
 		super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
 
+		// Pulling:
 		boolean isPulling = false;
 		if(entity instanceof EntitySpectre) {
 			isPulling = ((EntitySpectre)entity).canPull();
+		}
+
+		// Loop Offset:
+		float loopOffset = 0;
+		if(partName.contains("upper")) {
+			loopOffset += 10;
+		}
+		else if(partName.contains("middle")) {
+			loopOffset += 20;
+		}
+		else if(partName.contains("lower")) {
+			loopOffset += 30;
 		}
 
 		if("effect01".equals(partName)) {
@@ -97,6 +111,21 @@ public class ModelSpectre extends ModelTemplateElemental {
 			this.scale(effectScale, effectScale, effectScale);
 		}
 
+		else if(partName.contains("armleft")) {
+			this.rotate(
+					(float)Math.toDegrees(MathHelper.sin(loop * 0.034F) * 0.05F),
+					(float)Math.toDegrees(MathHelper.sin((loop + (loopOffset / 2)) * 0.1F) * 0.25F) - 10,
+					(float)-Math.toDegrees(MathHelper.cos((loop + (loopOffset / 2)) * 0.09F) * 0.1F)
+			);
+		}
+		else if(partName.contains("armright")) {
+			this.rotate(
+					(float)Math.toDegrees(MathHelper.sin(loop * 0.034F) * 0.05F),
+					(float)-Math.toDegrees(MathHelper.sin((loop + (loopOffset / 2)) * 0.1F) * 0.25F) + 10,
+					(float)Math.toDegrees(MathHelper.cos((loop + (loopOffset / 2)) * 0.09F) * 0.1F)
+			);
+		}
+
 		else if(partName.contains("mouthleft")) {
 			this.rotate((float)Math.cos(loop / 10) * 4, (float)Math.cos(loop / 10) * 4, 0);
 		}
@@ -108,7 +137,7 @@ public class ModelSpectre extends ModelTemplateElemental {
 			this.rotate(0, (float)Math.cos(loop / 10) * 10 + (isPulling ? 90 : 0), 0);
 		}
 		else if(partName.contains("mawright")) {
-			this.rotate(0, -(float)Math.cos(loop / 10) * 10 - (isPulling ? 90 : 0), 0);
+			this.rotate(0, -(float) Math.cos(loop / 10) * 10 - (isPulling ? 90 : 0), 0);
 		}
 	}
 

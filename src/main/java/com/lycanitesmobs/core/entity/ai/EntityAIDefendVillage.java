@@ -18,8 +18,8 @@ public class EntityAIDefendVillage extends EntityAITargetAttack {
 	/**
 	 * Returns whether the EntityAIBase should begin execution.
 	 */
-	public boolean shouldExecute()
-	{
+	@Override
+	public boolean shouldExecute() {
 		if(this.host.getOwner() != null) {
 			return false;
 		}
@@ -50,6 +50,7 @@ public class EntityAIDefendVillage extends EntityAITargetAttack {
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
+	@Override
 	public void startExecuting() {
 		super.startExecuting();
 	}

@@ -14,9 +14,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -35,7 +33,7 @@ public class EntityMaka extends EntityCreatureAgeable implements IAnimals, IGrou
         this.babySpawnChance = 0.1D;
         this.attackTime = 10;
         this.fleeHealthPercent = 1.0F;
-        this.isHostileByDefault = false;
+        this.isAggressiveByDefault = false;
         this.setupMob();
     }
 

@@ -21,8 +21,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
     public int petEntryID;
     public String petEntryType;
     public boolean spawningActive;
-    public boolean teleportEntity;
-    public String summonType;
+	public boolean teleportEntity;
+	public String summonType;
+	public int subspecies;
 	public byte behaviour;
 	public int petEntryEntityID;
 	public String petEntryEntityName;
@@ -43,6 +44,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         this.teleportEntity = petEntry.teleportEntity;
         SummonSet summonSet = petEntry.summonSet;
         this.summonType = summonSet.summonType;
+        this.subspecies = petEntry.subspeciesID;
 		this.behaviour = summonSet.getBehaviourByte();
 		this.petEntryEntityID = petEntry.entity != null ? petEntry.entity.getEntityId() : 0;
 		this.petEntryEntityName = petEntry.entityName;
@@ -73,7 +75,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
 				petEntry.setSpawningActive(message.spawningActive);
 				petEntry.teleportEntity = message.teleportEntity;
 				SummonSet summonSet = petEntry.summonSet;
-				summonSet.readFromPacket(message.summonType, message.behaviour);
+				summonSet.readFromPacket(message.summonType, 0, message.behaviour);
 				petEntry.onBehaviourUpdate();
 			});
             return null;
@@ -91,8 +93,9 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         }
         petEntry.setSpawningActive(message.spawningActive);
         petEntry.teleportEntity = message.teleportEntity;
+        petEntry.subspeciesID = message.subspecies;
 		SummonSet summonSet = petEntry.summonSet;
-		summonSet.readFromPacket(message.summonType, message.behaviour);
+		summonSet.readFromPacket(message.summonType, 0, message.behaviour);
         Entity entity = null;
         if(message.petEntryEntityID != 0) {
             entity = player.getEntityWorld().getEntityByID(message.petEntryEntityID);
@@ -121,6 +124,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         this.spawningActive = packet.readBoolean();
         this.teleportEntity = packet.readBoolean();
         this.summonType = packet.readString(256);
+		this.subspecies = packet.readInt();
         this.behaviour = packet.readByte();
         this.petEntryEntityID = packet.readInt();
 		this.petEntryEntityName = packet.readString(256);
@@ -145,6 +149,7 @@ public class MessagePetEntry implements IMessage, IMessageHandler<MessagePetEntr
         packet.writeBoolean(this.spawningActive);
         packet.writeBoolean(this.teleportEntity);
         packet.writeString(this.summonType);
+		packet.writeInt(this.subspecies);
         packet.writeByte(this.behaviour);
         packet.writeInt(this.petEntryEntityID);
 		packet.writeString(this.petEntryEntityName);

@@ -11,6 +11,7 @@ public class SummonSet {
 	
 	// Summoning Details:
 	public String summonType = "";
+	public int subspecies = 0;
     public boolean summonableOnly = true;
 	public boolean sitting = false;
 	public boolean following = true;
@@ -61,6 +62,14 @@ public class SummonSet {
 		else {
 			this.summonType = null;
 		}
+	}
+
+	public void setSubspecies(int subspecies) {
+		this.subspecies = subspecies;
+	}
+
+	public int getSubspecies() {
+		return this.subspecies;
 	}
 	
 	public boolean getSitting() {
@@ -133,8 +142,9 @@ public class SummonSet {
 	/** Returns the class of the creature to summon. **/
 	public Class getCreatureClass() {
 		CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(this.summonType);
-		if(creatureInfo == null)
+		if(creatureInfo == null) {
 			return null;
+		}
 		return creatureInfo.entityClass;
 	}
 	
@@ -142,8 +152,9 @@ public class SummonSet {
 	// ==================================================
     //                        Sync
     // ==================================================
-	public void readFromPacket(String summonType, byte behaviour) {
+	public void readFromPacket(String summonType, int subspecies, byte behaviour) {
 		this.setSummonType(summonType);
+		this.setSubspecies(subspecies);
 		this.setBehaviourByte(behaviour);
 	}
 
@@ -175,6 +186,9 @@ public class SummonSet {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
 		if(nbtTagCompound.hasKey("SummonType"))
     		this.setSummonType(nbtTagCompound.getString("SummonType"));
+
+		if(nbtTagCompound.hasKey("Subspecies"))
+			this.setSubspecies(nbtTagCompound.getInteger("Subspecies"));
     	
     	if(nbtTagCompound.hasKey("Sitting"))
     		this.sitting = nbtTagCompound.getBoolean("Sitting");
@@ -196,6 +210,8 @@ public class SummonSet {
     /** Writes a list of Creature Knowledge to a player's NBTTag. **/
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
 		nbtTagCompound.setString("SummonType", this.summonType);
+
+		nbtTagCompound.setInteger("Subspecies", this.getSubspecies());
     	
     	nbtTagCompound.setBoolean("Sitting", this.sitting);
     	

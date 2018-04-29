@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "fire",
+	"elements": [
+		"fire",
+		"acid"
+	],
 	"peaceful": false,
 	"summonable": false,
 	"tameable": true,

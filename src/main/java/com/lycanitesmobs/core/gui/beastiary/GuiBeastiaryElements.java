@@ -49,7 +49,7 @@ public class GuiBeastiaryElements extends GuiBeastiary {
 	public void drawForeground(int x, int y, float partialTicks) {
 		super.drawForeground(x, y, partialTicks);
 
-		String info = "All was fine until the Fire Nation attacked!";
+		String info = "This page will feature information about the Elements used by Creatures along with what each Buff and Debuff does. Coming Soon!";
 		this.fontRenderer.drawSplitString(info, colRightX + 1, colRightY + 12 + 1, colRightWidth, 0x444444);
 		this.fontRenderer.drawSplitString(info, colRightX, colRightY + 12, colRightWidth, 0xFFFFFF);
 	}

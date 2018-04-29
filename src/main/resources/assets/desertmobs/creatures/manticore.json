@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "quake",
+	"elements": [
+		"order",
+		"quake"
+	],
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,

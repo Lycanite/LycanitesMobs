@@ -6,6 +6,7 @@ import com.lycanitesmobs.arcticmobs.ArcticMobs;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.info.ElementInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -124,8 +125,9 @@ public class BlockIcefire extends BlockFireBase {
         PotionEffect effectSlowness = new PotionEffect(MobEffects.SLOWNESS, 5 * 20, 0);
         if(entity instanceof EntityCreatureBase) {
             EntityCreatureBase entityCreature = (EntityCreatureBase)entity;
-            if(!entityCreature.creatureInfo.element.canFreeze())
+            if(!entityCreature.canFreeze()) {
                 return;
+            }
             entityCreature.addPotionEffect(effectSlowness);
         }
         if(entity instanceof EntityLivingBase) {

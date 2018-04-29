@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummonSet, IMessage> {
 	public byte summonSetID;
+	public int subpsecies;
 	public String summonType;
 	public byte behaviour;
 	
@@ -26,6 +27,7 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
 	public MessageSummonSet(ExtendedPlayer playerExt, byte summonSetID) {
 		this.summonSetID = summonSetID;
 		this.summonType = playerExt.getSummonSet(summonSetID).summonType;
+		this.subpsecies = playerExt.getSummonSet(summonSetID).subspecies;
 		this.behaviour = playerExt.getSummonSet(summonSetID).getBehaviourByte();
 	}
 	
@@ -41,16 +43,13 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
         // Server Side:
         if(ctx.side == Side.SERVER) {
             IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getEntityWorld();
-            mainThread.addScheduledTask(new Runnable() {
-                @Override
-                public void run() {
-                    EntityPlayer player = ctx.getServerHandler().player;
-                    ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+            mainThread.addScheduledTask(() -> {
+				EntityPlayer player = ctx.getServerHandler().player;
+				ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 
-                    SummonSet summonSet = playerExt.getSummonSet(message.summonSetID);
-                    summonSet.readFromPacket(message.summonType, message.behaviour);
-                }
-            });
+				SummonSet summonSet = playerExt.getSummonSet(message.summonSetID);
+				summonSet.readFromPacket(message.summonType, message.subpsecies, message.behaviour);
+			});
             return null;
         }
 
@@ -60,7 +59,7 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
         if(playerExt == null) return null;
 
 		SummonSet summonSet = playerExt.getSummonSet(message.summonSetID);
-		summonSet.readFromPacket(message.summonType, message.behaviour);
+		summonSet.readFromPacket(message.summonType, message.subpsecies, message.behaviour);
 		return null;
 	}
 	
@@ -76,6 +75,7 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
 		PacketBuffer packet = new PacketBuffer(buf);
         this.summonSetID = packet.readByte();
         this.summonType = packet.readString(256);
+		this.subpsecies = packet.readInt();
         this.behaviour = packet.readByte();
 	}
 	
@@ -91,6 +91,7 @@ public class MessageSummonSet implements IMessage, IMessageHandler<MessageSummon
 		PacketBuffer packet = new PacketBuffer(buf);
         packet.writeByte(this.summonSetID);
         packet.writeString(this.summonType);
+		packet.writeInt(this.subpsecies);
         packet.writeByte(this.behaviour);
 	}
 	

@@ -9,6 +9,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.info.ElementInfo;
 import com.lycanitesmobs.core.info.ObjectLists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,9 +17,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -127,7 +126,9 @@ public class EntityWarg extends EntityCreatureRideable implements IGroupPredator
                         }
                     }
                     if(doDamage) {
-                        this.creatureInfo.element.debuffEntity(possibleTarget, this.getEffectDuration(1), this.getEffectAmplifier(1));
+                        for(ElementInfo element : this.creatureInfo.elements) {
+							element.debuffEntity(possibleTarget, this.getEffectDuration(1), this.getEffectAmplifier(1));
+						}
                     }
                 }
             }

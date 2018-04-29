@@ -1,15 +1,29 @@
 package com.lycanitesmobs.core.gui.beastiary;
 
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.gui.GUIButtonCreature;
+import com.lycanitesmobs.core.gui.beastiary.list.GuiCreatureList;
+import com.lycanitesmobs.core.gui.beastiary.list.GuiPetTypeList;
+import com.lycanitesmobs.core.gui.beastiary.list.GuiSubspeciesList;
+import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.translation.I18n;
 
 import java.io.IOException;
 
 public class GuiBeastiarySummoning extends GuiBeastiary {
+	public GuiCreatureList petList;
+	public GuiSubspeciesList subspeciesList;
 
-
+	private int summoningSlotIdStart = 200;
+	private int petCommandIdStart = 300;
 
 	/**
 	 * Opens this GUI up to the provided player.
@@ -34,31 +48,286 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 
 
 	@Override
-	public void drawBackground(int x, int y, float partialTicks) {
-		super.drawBackground(x, y, partialTicks);
+	public void initControls() {
+		super.initControls();
+
+		int petListHeight = this.colLeftHeight;
+		int petListY = this.colLeftY;
+		this.petList = new GuiCreatureList(GuiCreatureList.Type.SUMMONABLE, this, null, this.colLeftWidth, petListHeight, petListY, petListY + petListHeight, this.colLeftX);
+
+		int subspeciesListHeight = 80;
+		int subspeciesListY = this.colRightY + 70;
+		this.subspeciesList = new GuiSubspeciesList(this, true, 90, subspeciesListHeight, subspeciesListY, subspeciesListY + subspeciesListHeight, this.colRightX);
+
+		int summoningSlots = this.playerExt.summonSetMax;
+		int buttonSpacing = 2;
+		int buttonWidth = 32;
+		int buttonHeight = 32;
+		int buttonX = this.colRightX + Math.round((float)this.colRightWidth / 2) - Math.round((buttonWidth + buttonSpacing) * ((float)summoningSlots / 2));
+		int buttonY = this.colRightY + 10;
+
+		// Summoning Slots:
+		int tabSpacing = buttonSpacing;
+		for(int i = 1; i <= summoningSlots; i++) {
+			String buttonText = String.valueOf(i);
+			CreatureInfo creatureInfo = this.playerExt.getSummonSet(i).getCreatureInfo();
+			buttonX += tabSpacing;
+			GuiButton tabButton = new GUIButtonCreature(this.summoningSlotIdStart + i, buttonX, buttonY, buttonWidth, buttonHeight, buttonText, creatureInfo);
+			this.buttonList.add(tabButton);
+			if(i == this.playerExt.selectedSummonSet) {
+				tabButton.enabled = false;
+			}
+			tabSpacing = buttonWidth + buttonSpacing;
+		}
+
+		int buttonMarginX = 2 + Math.max(Math.max(this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.actions")), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.stance"))), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.movement")));
+		buttonWidth = 80;
+		buttonHeight = 20;
+		buttonX = this.colRightX + buttonMarginX;
+		buttonY = this.colRightY + this.colRightHeight - ((buttonHeight + buttonSpacing) * 3);
+
+		// Actions:
+		GuiButton button = new GuiButton(EntityCreatureBase.PET_COMMAND.PVP.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.pvp"));
+		this.buttonList.add(button);
+
+		// Stance:
+		buttonX = this.colRightX + buttonMarginX;
+		buttonY += buttonHeight + 2;
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.PASSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.passive"));
+		this.buttonList.add(button);
+
+		buttonX += buttonWidth + buttonSpacing;
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.DEFENSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.defensive"));
+		this.buttonList.add(button);
+
+		buttonX += buttonWidth + buttonSpacing;
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.ASSIST.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.assist"));
+		this.buttonList.add(button);
+
+		buttonX += buttonWidth + buttonSpacing;
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.aggressive"));
+		this.buttonList.add(button);
+
+		// Movement:
+		buttonX = this.colRightX + buttonMarginX;
+		buttonY += buttonHeight + 2;
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.FOLLOW.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.follow"));
+		this.buttonList.add(button);
+
+		buttonX += buttonWidth + buttonSpacing;
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.WANDER.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.wander"));
+		this.buttonList.add(button);
+
+		buttonX += buttonWidth + buttonSpacing;
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.SIT.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.sit"));
+		this.buttonList.add(button);
 	}
 
 
 	@Override
-	protected void updateControls(int x, int y, float partialTicks) {
-
+	public void drawBackground(int mouseX, int mouseY, float partialTicks) {
+		super.drawBackground(mouseX, mouseY, partialTicks);
 	}
 
 
 	@Override
-	public void drawForeground(int x, int y, float partialTicks) {
-		super.drawForeground(x, y, partialTicks);
+	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
+		super.updateControls(mouseX, mouseY, partialTicks);
 
-		String info = "Minions and stuff!";
-		this.fontRenderer.drawSplitString(info, colRightX + 1, colRightY + 12 + 1, colRightWidth, 0x444444);
-		this.fontRenderer.drawSplitString(info, colRightX, colRightY + 12, colRightWidth, 0xFFFFFF);
+		this.petList.drawScreen(mouseX, mouseY, partialTicks);
+		this.subspeciesList.drawScreen(mouseX, mouseY, partialTicks);
+
+		// Update Buttons:
+		for(GuiButton button : this.buttonList) {
+
+			// Summoning Slots:
+			if(button.id >= this.summoningSlotIdStart && button.id < this.petCommandIdStart) {
+				button.enabled = button.id - this.summoningSlotIdStart != this.playerExt.selectedSummonSet;
+				if(button instanceof GUIButtonCreature) {
+					GUIButtonCreature buttonCreature = (GUIButtonCreature)button;
+					buttonCreature.creatureInfo = this.playerExt.getSummonSet(button.id - this.summoningSlotIdStart).getCreatureInfo();
+				}
+			}
+
+			// Pet Commands:
+			else if(button.id >= this.petCommandIdStart) {
+				if (this.playerExt.getSelectedSummonSet() != null) {
+					button.visible = true;
+
+					// Actions:
+					if (button.id == EntityCreatureBase.PET_COMMAND.PVP.id + this.petCommandIdStart) {
+						if (this.playerExt.getSelectedSummonSet().getPVP()) {
+							button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + I18n.translateToLocal("common.yes");
+						}
+						else {
+							button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + I18n.translateToLocal("common.no");
+						}
+					}
+
+					// Stance:
+					else if (button.id == EntityCreatureBase.PET_COMMAND.PASSIVE.id + this.petCommandIdStart) {
+						button.enabled = !this.playerExt.getSelectedSummonSet().passive;
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.getSelectedSummonSet().getPassive() && !this.playerExt.getSelectedSummonSet().getAssist() && !this.playerExt.getSelectedSummonSet().getAggressive());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.ASSIST.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.getSelectedSummonSet().getPassive() && this.playerExt.getSelectedSummonSet().getAssist() && !this.playerExt.getSelectedSummonSet().getAggressive());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.getSelectedSummonSet().getPassive() && this.playerExt.getSelectedSummonSet().getAggressive());
+					}
+
+					// Movement:
+					else if (button.id == EntityCreatureBase.PET_COMMAND.FOLLOW.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.getSelectedSummonSet().getSitting() && this.playerExt.getSelectedSummonSet().getFollowing());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.WANDER.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.getSelectedSummonSet().getSitting() && !this.playerExt.getSelectedSummonSet().getFollowing());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.SIT.id + this.petCommandIdStart) {
+						button.enabled = !(this.playerExt.getSelectedSummonSet().getSitting());
+					}
+				}
+				else {
+					button.visible = false;
+				}
+			}
+		}
 	}
 
 
 	@Override
-	protected void actionPerformed(GuiButton guiButton) throws IOException {
+	public void drawForeground(int mouseX, int mouseY, float partialTicks) {
+		super.drawForeground(mouseX, mouseY, partialTicks);
+
+		int marginX = 0;
+		int nextX = this.colRightX + marginX;
+		int nextY = this.colRightY + 44;
+		int width = this.colRightWidth - marginX;
+		CreatureInfo selectedCreature = this.playerExt.getSelectedSummonSet().getCreatureInfo();
+
+		// Model:
+		if(selectedCreature != null) {
+			this.renderCreature(selectedCreature, this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + Math.round((float) this.colRightHeight / 2), mouseX, mouseY, partialTicks);
+		}
+
+		// Player Summoning Focus:
+		String text = I18n.translateToLocal("gui.beastiary.player.focus") + ": ";
+		this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
+		int barX = nextX + this.getFontRenderer().getStringWidth(text);
+		int focusMax = Math.round((float)this.playerExt.summonFocusMax / this.playerExt.summonFocusCharge);
+		int focusAvailable = (int)Math.floor((double)this.playerExt.summonFocus / this.playerExt.summonFocusCharge);
+		float focusFilling = ((float)this.playerExt.summonFocus / this.playerExt.summonFocusCharge) - focusAvailable;
+		this.drawBar(AssetManager.getTexture("GUIPetSpiritEmpty"), barX, nextY, 0, 9, 9, focusMax, 10);
+		this.drawBar(AssetManager.getTexture("GUIPetSpiritUsed"), barX, nextY, 0, 9, 9, focusAvailable, 10);
+		if(focusFilling > 0) {
+			this.drawTexture(AssetManager.getTexture("GUIPetSpiritFilling"), barX + (9 * focusAvailable), nextY, 0, focusFilling, 1, focusFilling * 9, 9);
+		}
+
+		// Creature Display:
+		if(selectedCreature != null) {
+			// Focus Cost:
+			nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
+			text = I18n.translateToLocal("creature.stat.focus") + ": ";
+			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
+			this.drawLevel(selectedCreature, AssetManager.getTexture("GUIPetLevel"), nextX + this.getFontRenderer().getStringWidth(text), nextY);
+		}
+
+		// Base Display:
+		else {
+			nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
+			text = I18n.translateToLocal("gui.beastiary.selectapet");
+			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
+		}
+
+		// Button Titles:
+		int buttonHeight = 20;
+		int buttonSpacing = 2;
+		int buttonY = this.colRightY + this.colRightHeight - ((buttonHeight + buttonSpacing) * 3);
+		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.actions"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+		buttonY += buttonHeight + buttonSpacing;
+		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.stance"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+		buttonY += buttonHeight + buttonSpacing;
+		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.movement"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+	}
 
 
-		super.actionPerformed(guiButton);
+	@Override
+	protected void actionPerformed(GuiButton button) throws IOException {
+		SummonSet summonSet = this.playerExt.getSelectedSummonSet();
+		if(summonSet != null) {
+
+			// Summoning Slots:
+			if(button.id >= this.summoningSlotIdStart && button.id < this.petCommandIdStart) {
+				this.playerExt.setSelectedSummonSet(button.id - this.summoningSlotIdStart);
+			}
+
+			// Pet Commands:
+			else if (button.id >= this.petCommandIdStart) {
+				int petCommandId = button.id - this.petCommandIdStart;
+
+				// Actions:
+				if (petCommandId == EntityCreatureBase.PET_COMMAND.PVP.id) {
+					summonSet.pvp = !summonSet.pvp;
+				}
+
+				// Stance:
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.PASSIVE.id) {
+					summonSet.passive = true;
+					summonSet.assist = false;
+					summonSet.aggressive = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id) {
+					summonSet.passive = false;
+					summonSet.assist = false;
+					summonSet.aggressive = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.ASSIST.id) {
+					summonSet.passive = false;
+					summonSet.assist = true;
+					summonSet.aggressive = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id) {
+					summonSet.passive = false;
+					summonSet.assist = true;
+					summonSet.aggressive = true;
+				}
+
+				// Movement:
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.FOLLOW.id) {
+					summonSet.following = true;
+					summonSet.sitting = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.WANDER.id) {
+					summonSet.following = false;
+					summonSet.sitting = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.SIT.id) {
+					summonSet.following = false;
+					summonSet.sitting = true;
+				}
+
+				this.playerExt.sendSummonSetToServer((byte) this.playerExt.selectedSummonSet);
+				if (this.playerExt.selectedPet == null) {
+					openToPlayer(this.player);
+				}
+				return;
+			}
+		}
+
+		super.actionPerformed(button);
+	}
+
+
+	@Override
+	public int getDisplaySubspecies(CreatureInfo creatureInfo) {
+		return this.playerExt.getSelectedSummonSet().subspecies;
+	}
+
+
+	@Override
+	public void playCreatureSelectSound(CreatureInfo creatureInfo) {
+		this.player.getEntityWorld().playSound(this.player, this.player.posX, this.player.posY, this.player.posZ, AssetManager.getSound(creatureInfo.getName() + "_tame"), SoundCategory.NEUTRAL, 1, 1);
 	}
 }

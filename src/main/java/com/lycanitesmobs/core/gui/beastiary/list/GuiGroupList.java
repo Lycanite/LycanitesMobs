@@ -9,8 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GuiGroupList extends GuiCreatureFilterList {
 	private Map<Integer, GroupInfo> groupList = new HashMap<>();
@@ -34,7 +33,10 @@ public class GuiGroupList extends GuiCreatureFilterList {
 		this.groupList.clear();
 
 		int groupIndex = 0;
-		for(GroupInfo group : CreatureManager.getInstance().loadedGroups) {
+		List<GroupInfo> groups = new ArrayList<>();
+		groups.addAll(CreatureManager.getInstance().loadedGroups);
+		groups.sort(Comparator.comparing(GroupInfo::getTitle));
+		for(GroupInfo group : groups) {
 			if(this.parentGui.playerExt.beastiary.getCreaturesDescovered(group) > 0) {
 				this.groupList.put(groupIndex++, group);
 			}

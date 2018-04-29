@@ -206,8 +206,10 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     // ========== Minion Behaviour ==========
     /** Applies the minion behaviour to the summoned player owned minion. **/
     public void applyMinionBehaviour(EntityCreatureTameable minion) {
-        if(this.summonSet != null)
+        if(this.summonSet != null) {
             this.summonSet.applyBehaviour(minion);
+            minion.applySubspecies(this.summonSet.subspecies, true);
+        }
         this.minions.add(minion);
         minion.setHome(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 20);
     }

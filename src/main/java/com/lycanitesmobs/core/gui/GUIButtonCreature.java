@@ -8,10 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GUIButtonCreature extends GUIBaseButton {
 	public CreatureInfo creatureInfo;
-	
-	// ==================================================
-  	//                    Constructor
-  	// ==================================================
+
 	public GUIButtonCreature(int buttonID, int x, int y, String text, CreatureInfo creatureInfo) {
         super(buttonID, x, y, 32, 32, text);
         this.creatureInfo = creatureInfo;
@@ -22,10 +19,7 @@ public class GUIButtonCreature extends GUIBaseButton {
         this.creatureInfo = creatureInfo;
     }
 	
-	
-	// ==================================================
-  	//                   Draw Button
-  	// ==================================================
+
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if(this.visible) {
@@ -40,7 +34,7 @@ public class GUIButtonCreature extends GUIBaseButton {
             int buttonY = this.y;
             mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIInventoryCreature"));
             this.drawTexturedModalRect(buttonX, buttonY, 193, 187 - (hoverState * 32), this.width, this.height);
-            if(creatureInfo != null) {
+            if(this.creatureInfo != null) {
 	            Minecraft.getMinecraft().getTextureManager().bindTexture(creatureInfo.getIcon());
 	    		this.drawTexturedModalRect(buttonX + 8, buttonY + 8, 0, 0, 16, 16, 16);
             }

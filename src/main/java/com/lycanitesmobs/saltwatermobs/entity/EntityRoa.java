@@ -107,11 +107,13 @@ public class EntityRoa extends EntityCreatureRideable implements IMob, IGroupPre
             this.whirlpoolEnergy = Math.min(this.whirlpoolEnergy, this.whirlpoolEnergyMax);
             if(this.canWhirlpool()) {
                 for (Entity entity : this.getNearbyEntities(Entity.class, null, this.whirlpoolRange)) {
-                    if (entity == this || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy)
+                    if (entity == this || entity.getClass() == this.getClass() || entity == this.getControllingPassenger() || entity instanceof IGroupBoss || entity instanceof IGroupHeavy)
                         continue;
                     if(entity instanceof EntityLivingBase) {
                         EntityLivingBase entityLivingBase = (EntityLivingBase)entity;
-                        if(entityLivingBase.isPotionActive(ObjectManager.getPotionEffect("weight")) || !this.canAttackEntity(entityLivingBase) || !entity.isInWater())
+                        if(entityLivingBase.isPotionActive(ObjectManager.getPotionEffect("weight")) || !this.canAttackEntity(entityLivingBase))
+                            continue;
+                        if(!entity.isInWater() && !this.spawnEventType.equalsIgnoreCase("sharknado"))
                             continue;
                     }
                     EntityPlayerMP player = null;

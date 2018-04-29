@@ -8,9 +8,9 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.EntityCreatureRideable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
+import com.lycanitesmobs.core.helpers.JSONHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.stats.StatBase;
@@ -25,7 +25,6 @@ import java.util.List;
 
 /** Contains various information about a creature from default spawn information to stats, etc. **/
 public class CreatureInfo {
-	public static ElementInfo DEFAULT_ELEMENT = new ElementInfo();
 
 	// Core Info:
 	/** The name of this mob. Lowercase, no space, used for language entries and for generating the entity id, etc. Required. **/
@@ -82,11 +81,11 @@ public class CreatureInfo {
 	/** The Subspecies that this creature can use. **/
 	public Map<Integer, Subspecies> subspecies = new HashMap<>();
 
-	/** The name of the Element of this creature, affects buffs and debuffs amongst other things. **/
-	protected String elementName;
+	/** The names of the Elements of this creature, affects buffs and debuffs amongst other things. **/
+	protected List<String> elementNames = new ArrayList<>();
 
-	/** The Element of this creature, affects buffs and debuffs amongst other things. **/
-	public ElementInfo element;
+	/** The Elements of this creature, affects buffs and debuffs amongst other things. **/
+	public List<ElementInfo> elements = new ArrayList<>();
 
 
 	// Creature Difficulty:
@@ -132,7 +131,6 @@ public class CreatureInfo {
 	public CreatureInfo(GroupInfo group) {
 		this.group = group;
 		this.creatureSpawn = new CreatureSpawn();
-		this.element = DEFAULT_ELEMENT;
 	}
 
 
@@ -200,7 +198,13 @@ public class CreatureInfo {
 				this.subspecies.put(subspecies.index, subspecies);
 			}
 		}
-		this.elementName = json.get("element").getAsString();
+		this.elementNames.clear();
+		if(json.has("element")) {
+			this.elementNames.add(json.get("element").getAsString());
+		}
+		if(json.has("elements")) {
+			this.elementNames = JSONHelper.getJsonStrings(json.get("elements").getAsJsonArray());
+		}
 
 		if(json.has("peaceful"))
 			this.peaceful = json.get("peaceful").getAsBoolean();
@@ -232,9 +236,13 @@ public class CreatureInfo {
 			return;
 
 		// Element:
-		this.element = ElementManager.getInstance().getElement(this.elementName);
-		if(this.element == null) {
-			throw new RuntimeException("[Creature] Unable to initialise Creature Info for " + this.getName() + " as the element " + this.elementName + " cannot be found.");
+		this.elements.clear();
+		for(String elementName : this.elementNames) {
+			ElementInfo element = ElementManager.getInstance().getElement(elementName);
+			if (element == null) {
+				throw new RuntimeException("[Creature] Unable to initialise Creature Info for " + this.getName() + " as the element " + this.elementNames + " cannot be found.");
+			}
+			this.elements.add(element);
 		}
 
 		// Item Drops:
@@ -378,6 +386,27 @@ public class CreatureInfo {
 			texture = AssetManager.getTexture(this.getName() + "_icon");
 		}
 		return texture;
+	}
+
+
+	/**
+	 * Returns a comma separated list of Elements used by this Creature.
+	 * @return The Elements used by this Creature.
+	 */
+	public String getElementNames() {
+		if(this.elements.isEmpty()) {
+			return "None";
+		}
+		String elementNames = "";
+		boolean firstElement = true;
+		for(ElementInfo element : this.elements) {
+			if(!firstElement) {
+				elementNames += ", ";
+			}
+			firstElement = false;
+			elementNames += element.getTitle();
+		}
+		return elementNames;
 	}
 
 

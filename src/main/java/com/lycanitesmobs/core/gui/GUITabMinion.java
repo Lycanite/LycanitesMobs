@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.gui;
 
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.gui.beastiary.GuiBeastiarySummoning;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,7 +15,7 @@ public class GUITabMinion extends GUITab {
     @Override
     public void onTabClicked () {
     	if(ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player) != null)
-    		GUIMinion.openToPlayer(Minecraft.getMinecraft().player, ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player).selectedSummonSet);
+    		GuiBeastiarySummoning.openToPlayer(Minecraft.getMinecraft().player);
     }
 
     @Override

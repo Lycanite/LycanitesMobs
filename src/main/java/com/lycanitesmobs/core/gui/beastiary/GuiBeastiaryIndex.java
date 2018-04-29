@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class GuiBeastiaryIndex extends GuiBeastiary {
 
@@ -26,7 +28,7 @@ public class GuiBeastiaryIndex extends GuiBeastiary {
 
 	@Override
 	public String getTitle() {
-		return "Index";
+		return I18n.translateToLocal("gui.beastiary.index.title");
 	}
 
 
@@ -36,22 +38,45 @@ public class GuiBeastiaryIndex extends GuiBeastiary {
 
 
 	@Override
-	public void drawBackground(int x, int y, float partialTicks) {
-		super.drawBackground(x, y, partialTicks);
+	protected void initControls() {
+		super.initControls();
+
+		int menuWidth = this.colRightWidth;
+
+		int buttonCount = 2;
+		int buttonPadding = 2;
+		int buttonWidth = Math.round((float)(menuWidth / buttonCount)) - buttonPadding;
+		int buttonWidthPadded = buttonWidth + buttonPadding;
+		int buttonHeight = 20;
+		int buttonX = this.colRightX + buttonPadding;
+		int buttonY = this.colRightY + this.colRightHeight - buttonHeight;
+		GuiButton button;
+
+		// Links:
+		button = new GuiButton(100, buttonX, buttonY, buttonWidth, buttonHeight, "Website");
+		this.buttonList.add(button);
+		button = new GuiButton(101, buttonX + buttonWidthPadded, buttonY, buttonWidth, buttonHeight, "Patreon");
+		this.buttonList.add(button);
 	}
 
 
 	@Override
-	protected void updateControls(int x, int y, float partialTicks) {
-
+	public void drawBackground(int mouseX, int mouseY, float partialTicks) {
+		super.drawBackground(mouseX, mouseY, partialTicks);
 	}
 
 
 	@Override
-	public void drawForeground(int x, int y, float partialTicks) {
-		super.drawForeground(x, y, partialTicks);
+	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
+		super.updateControls(mouseX, mouseY, partialTicks);
+	}
 
-		String info = "This will be the brand new amazing Beastiary for Lycanites Mobs with improved Pet Management, better summoning controls and more info such as items that creatures drop, where and how creatures spawn and info on elements including their buffs and debuffs!";
+
+	@Override
+	public void drawForeground(int mouseX, int mouseY, float partialTicks) {
+		super.drawForeground(mouseX, mouseY, partialTicks);
+
+		String info = I18n.translateToLocal("gui.beastiary.index.description");
 		this.fontRenderer.drawSplitString(info, colRightX + 1, colRightY + 12 + 1, colRightWidth, 0x444444);
 		this.fontRenderer.drawSplitString(info, colRightX, colRightY + 12, colRightWidth, 0xFFFFFF);
 	}
@@ -59,7 +84,19 @@ public class GuiBeastiaryIndex extends GuiBeastiary {
 
 	@Override
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
-
+		if(guiButton != null) {
+			if(guiButton.id == 100) {
+				try {
+					this.openURI(new URI(LycanitesMobs.website));
+				} catch (URISyntaxException e) {}
+			}
+			if(guiButton.id == 101) {
+				try {
+					this.openURI(new URI(LycanitesMobs.websitePatreon));
+				} catch (URISyntaxException e) {}
+			}
+			super.actionPerformed(guiButton);
+		}
 
 		super.actionPerformed(guiButton);
 	}

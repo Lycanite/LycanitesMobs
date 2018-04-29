@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.gui.beastiary.list.GuiPetTypeList;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.pets.PetEntry;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.translation.I18n;
@@ -20,6 +21,8 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 	public GuiCreatureFilterList petTypeList;
 	public GuiCreatureList petList;
 	private int petCommandIdStart = 200;
+	private int releaseConfirmId = 300;
+	private int releaseCancelId = 301;
 
 	/**
 	 * Opens this GUI up to the provided player.
@@ -41,7 +44,11 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 	@Override
 	public String getTitle() {
 		if(this.playerExt.selectedPet != null) {
-			return this.playerExt.selectedPet.getDisplayName();
+			String title = this.playerExt.selectedPet.getDisplayName();
+			if(this.playerExt.selectedPet.releaseEntity) {
+				title = I18n.translateToLocal("gui.pet.release") + " " + title;
+			}
+			return title;
 		}
 		return "Pets";
 	}
@@ -62,7 +69,7 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 		int buttonWidth = 80;
 		int buttonHeight = 20;
 		int buttonSpacing = 2;
-		int buttonMarginX = Math.max(Math.max(this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.actions")), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.stance"))), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.movement")));
+		int buttonMarginX = 2 + Math.max(Math.max(this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.actions")), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.stance"))), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.movement")));
 		int buttonX = this.colRightX + buttonMarginX;
 		int buttonY = this.colRightY + this.colRightHeight - ((buttonHeight + buttonSpacing) * 3);
 
@@ -113,6 +120,16 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 		buttonX += buttonWidth + buttonSpacing;
 		button = new GuiButton(EntityCreatureBase.PET_COMMAND.SIT.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.sit"));
 		this.buttonList.add(button);
+
+		// Release Confirmation:
+		buttonX = this.colRightX + Math.round((float)this.colRightWidth / 2) - (buttonWidth + buttonSpacing);
+		buttonY = this.colRightY + Math.round((float)this.colRightHeight / 2) - Math.round((float)buttonHeight / 2);
+		button = new GuiButton(this.releaseConfirmId, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("common.yes"));
+		this.buttonList.add(button);
+
+		buttonX += buttonSpacing;
+		button = new GuiButton(this.releaseCancelId, buttonX + buttonWidth, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("common.no"));
+		this.buttonList.add(button);
 	}
 
 
@@ -131,54 +148,62 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 
 		// Update Buttons:
 		for(GuiButton button : this.buttonList) {
-			if(this.playerExt.selectedPet != null) {
-				button.visible = true;
+			// Pet Controls:
+			if(button.id >= this.petCommandIdStart && button.id < this.releaseConfirmId) {
+				if (this.playerExt.selectedPet != null && !this.playerExt.selectedPet.releaseEntity) {
+					button.visible = true;
 
-				// Actions:
-				if(button.id == EntityCreatureBase.PET_COMMAND.ACTIVE.id + this.petCommandIdStart) {
-					if(!this.playerExt.selectedPet.spawningActive) {
-						button.displayString = I18n.translateToLocal("gui.pet.summon");
+					// Actions:
+					if (button.id == EntityCreatureBase.PET_COMMAND.ACTIVE.id + this.petCommandIdStart) {
+						if (!this.playerExt.selectedPet.spawningActive) {
+							button.displayString = I18n.translateToLocal("gui.pet.summon");
+						}
+						else {
+							button.displayString = I18n.translateToLocal("gui.pet.dismiss");
+						}
 					}
-					else {
-						button.displayString = I18n.translateToLocal("gui.pet.dismiss");
+					else if (button.id == EntityCreatureBase.PET_COMMAND.PVP.id + this.petCommandIdStart) {
+						if (this.playerExt.selectedPet.summonSet.getPVP()) {
+							button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + I18n.translateToLocal("common.yes");
+						}
+						else {
+							button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + I18n.translateToLocal("common.no");
+						}
 					}
-				}
-				else if(button.id == EntityCreatureBase.PET_COMMAND.PVP.id + this.petCommandIdStart) {
-					if(this.playerExt.selectedPet.summonSet.getPVP()) {
-						button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + I18n.translateToLocal("common.yes");
-					}
-					else {
-						button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + I18n.translateToLocal("common.no");
-					}
-				}
 
-				// Stance:
-				else if(button.id == EntityCreatureBase.PET_COMMAND.PASSIVE.id + this.petCommandIdStart) {
-					button.enabled = !this.playerExt.selectedPet.summonSet.passive;
-				}
-				else if(button.id == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id + this.petCommandIdStart) {
-					button.enabled = !(!this.playerExt.selectedPet.summonSet.getPassive() && !this.playerExt.selectedPet.summonSet.getAssist() && !this.playerExt.selectedPet.summonSet.getAggressive());
-				}
-				else if(button.id == EntityCreatureBase.PET_COMMAND.ASSIST.id + this.petCommandIdStart) {
-					button.enabled = !(!this.playerExt.selectedPet.summonSet.getPassive() && this.playerExt.selectedPet.summonSet.getAssist() && !this.playerExt.selectedPet.summonSet.getAggressive());
-				}
-				else if(button.id == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id + this.petCommandIdStart) {
-					button.enabled = !(!this.playerExt.selectedPet.summonSet.getPassive() && this.playerExt.selectedPet.summonSet.getAggressive());
-				}
+					// Stance:
+					else if (button.id == EntityCreatureBase.PET_COMMAND.PASSIVE.id + this.petCommandIdStart) {
+						button.enabled = !this.playerExt.selectedPet.summonSet.passive;
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.selectedPet.summonSet.getPassive() && !this.playerExt.selectedPet.summonSet.getAssist() && !this.playerExt.selectedPet.summonSet.getAggressive());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.ASSIST.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.selectedPet.summonSet.getPassive() && this.playerExt.selectedPet.summonSet.getAssist() && !this.playerExt.selectedPet.summonSet.getAggressive());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.selectedPet.summonSet.getPassive() && this.playerExt.selectedPet.summonSet.getAggressive());
+					}
 
-				// Movement:
-				else if(button.id == EntityCreatureBase.PET_COMMAND.FOLLOW.id + this.petCommandIdStart) {
-					button.enabled = !(!this.playerExt.selectedPet.summonSet.getSitting() && this.playerExt.selectedPet.summonSet.getFollowing());
+					// Movement:
+					else if (button.id == EntityCreatureBase.PET_COMMAND.FOLLOW.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.selectedPet.summonSet.getSitting() && this.playerExt.selectedPet.summonSet.getFollowing());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.WANDER.id + this.petCommandIdStart) {
+						button.enabled = !(!this.playerExt.selectedPet.summonSet.getSitting() && !this.playerExt.selectedPet.summonSet.getFollowing());
+					}
+					else if (button.id == EntityCreatureBase.PET_COMMAND.SIT.id + this.petCommandIdStart) {
+						button.enabled = !(this.playerExt.selectedPet.summonSet.getSitting());
+					}
 				}
-				else if(button.id == EntityCreatureBase.PET_COMMAND.WANDER.id + this.petCommandIdStart) {
-					button.enabled = !(!this.playerExt.selectedPet.summonSet.getSitting() && !this.playerExt.selectedPet.summonSet.getFollowing());
-				}
-				else if(button.id == EntityCreatureBase.PET_COMMAND.SIT.id + this.petCommandIdStart) {
-					button.enabled = !(this.playerExt.selectedPet.summonSet.getSitting());
+				else {
+					button.visible = false;
 				}
 			}
-			else {
-				button.visible = false;
+
+			// Release Confirmation:
+			else if(button.id == this.releaseConfirmId || button.id == this.releaseCancelId) {
+				button.visible = this.playerExt.selectedPet != null && this.playerExt.selectedPet.releaseEntity;
 			}
 		}
 	}
@@ -192,6 +217,11 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 		int nextX = this.colRightX + marginX;
 		int nextY = this.colRightY + 20;
 		int width = this.colRightWidth - marginX;
+
+		// Model:
+		if(this.playerExt.selectedPet != null) {
+			this.renderCreature(this.playerExt.selectedPet.getCreatureInfo(), this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + Math.round((float) this.colRightHeight / 2), mouseX, mouseY, partialTicks);
+		}
 
 		// Player Spirit:
 		String text = I18n.translateToLocal("gui.beastiary.player.spirit") + ": ";
@@ -210,9 +240,6 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 
 		// Creature Display:
 		if(this.playerExt.selectedPet != null) {
-			// Model:
-			this.renderCreature(this.playerExt.selectedPet.getCreatureInfo(), this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + Math.round((float)this.colRightHeight / 2), mouseX, mouseY, partialTicks);
-
 			// Spirit:
 			nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
 			text = I18n.translateToLocal("creature.stat.spirit") + ": ";
@@ -254,82 +281,109 @@ public class GuiBeastiaryPets extends GuiBeastiary {
 		int buttonHeight = 20;
 		int buttonSpacing = 2;
 		int buttonY = this.colRightY + this.colRightHeight - ((buttonHeight + buttonSpacing) * 3);
-		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.actions"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
-		buttonY += buttonHeight + buttonSpacing;
-		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.stance"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
-		buttonY += buttonHeight + buttonSpacing;
-		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.movement"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+		if(this.playerExt.selectedPet != null && !this.playerExt.selectedPet.releaseEntity) {
+			this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.actions"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+			buttonY += buttonHeight + buttonSpacing;
+			this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.stance"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+			buttonY += buttonHeight + buttonSpacing;
+			this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.movement"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+		}
+
+		// Release Confirmation:
+		if(this.playerExt.selectedPet != null && this.playerExt.selectedPet.releaseEntity) {
+			text = I18n.translateToLocal("gui.pet.release.confirm");
+			nextX = this.colRightX;
+			nextY = this.colRightY + Math.round((float) this.colRightHeight / 2) - Math.round((float) buttonHeight / 2) - this.getFontRenderer().getWordWrappedHeight(text, this.colRightWidth) - 2;
+			this.drawSplitString(text, nextX, nextY, this.colRightWidth, 0xFFFFFF, true);
+		}
 	}
 
 
 	@Override
-	protected void actionPerformed(GuiButton guiButton) throws IOException {
-		if(this.playerExt.selectedPet != null && this.playerExt.selectedPet.summonSet != null && guiButton.id >= this.petCommandIdStart) {
+	protected void actionPerformed(GuiButton button) throws IOException {
+		if(this.playerExt.selectedPet != null && this.playerExt.selectedPet.summonSet != null) {
 			PetEntry petEntry = this.playerExt.selectedPet;
-			int petCommandId = guiButton.id - this.petCommandIdStart;
 
-			// Actions:
-			if(petCommandId == EntityCreatureBase.PET_COMMAND.ACTIVE.id) {
-				petEntry.spawningActive = !petEntry.spawningActive;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.TELEPORT.id) {
-				petEntry.teleportEntity = true;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.PVP.id) {
-				petEntry.summonSet.pvp = !petEntry.summonSet.pvp;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.RELEASE.id) {
-				if(!petEntry.releaseEntity) {
+			// Pet Commands;
+			if(button.id >= this.petCommandIdStart && button.id < this.releaseConfirmId) {
+				int petCommandId = button.id - this.petCommandIdStart;
+
+				// Actions:
+				if (petCommandId == EntityCreatureBase.PET_COMMAND.ACTIVE.id) {
+					petEntry.spawningActive = !petEntry.spawningActive;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.TELEPORT.id) {
+					petEntry.teleportEntity = true;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.PVP.id) {
+					petEntry.summonSet.pvp = !petEntry.summonSet.pvp;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.RELEASE.id) {
 					petEntry.releaseEntity = true;
 				}
+
+				// Stance:
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.PASSIVE.id) {
+					petEntry.summonSet.passive = true;
+					petEntry.summonSet.assist = false;
+					petEntry.summonSet.aggressive = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id) {
+					petEntry.summonSet.passive = false;
+					petEntry.summonSet.assist = false;
+					petEntry.summonSet.aggressive = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.ASSIST.id) {
+					petEntry.summonSet.passive = false;
+					petEntry.summonSet.assist = true;
+					petEntry.summonSet.aggressive = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id) {
+					petEntry.summonSet.passive = false;
+					petEntry.summonSet.assist = true;
+					petEntry.summonSet.aggressive = true;
+				}
+
+				// Movement:
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.FOLLOW.id) {
+					petEntry.summonSet.following = true;
+					petEntry.summonSet.sitting = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.WANDER.id) {
+					petEntry.summonSet.following = false;
+					petEntry.summonSet.sitting = false;
+				}
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND.SIT.id) {
+					petEntry.summonSet.following = false;
+					petEntry.summonSet.sitting = true;
+				}
+
+				this.playerExt.sendPetEntryToServer(petEntry);
+				if (this.playerExt.selectedPet == null) {
+					openToPlayer(this.player);
+				}
+				return;
+			}
+
+			// Release Confirmation:
+			else if(button.id == this.releaseCancelId) {
+				petEntry.releaseEntity = false;
+				return;
+			}
+			else if(button.id == this.releaseConfirmId) {
 				this.playerExt.selectedPet = null;
 				this.playerExt.sendPetEntryRemoveRequest(petEntry);
+				return;
 			}
-
-			// Stance:
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.PASSIVE.id) {
-				petEntry.summonSet.passive = true;
-				petEntry.summonSet.assist = false;
-				petEntry.summonSet.aggressive = false;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id) {
-				petEntry.summonSet.passive = false;
-				petEntry.summonSet.assist = false;
-				petEntry.summonSet.aggressive = false;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.ASSIST.id) {
-				petEntry.summonSet.passive = false;
-				petEntry.summonSet.assist = true;
-				petEntry.summonSet.aggressive = false;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id) {
-				petEntry.summonSet.passive = false;
-				petEntry.summonSet.assist = true;
-				petEntry.summonSet.aggressive = true;
-			}
-
-			// Movement:
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.FOLLOW.id) {
-				petEntry.summonSet.following = true;
-				petEntry.summonSet.sitting = false;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.WANDER.id) {
-				petEntry.summonSet.following = false;
-				petEntry.summonSet.sitting = false;
-			}
-			else if(petCommandId == EntityCreatureBase.PET_COMMAND.SIT.id) {
-				petEntry.summonSet.following = false;
-				petEntry.summonSet.sitting = true;
-			}
-
-			this.playerExt.sendPetEntryToServer(petEntry);
-			if(this.playerExt.selectedPet == null) {
-				openToPlayer(this.player);
-			}
-			return;
 		}
 
-		super.actionPerformed(guiButton);
+		super.actionPerformed(button);
+	}
+
+
+	@Override
+	public int getDisplaySubspecies(CreatureInfo creatureInfo) {
+		return this.playerExt.selectedPet.subspeciesID;
 	}
 
 

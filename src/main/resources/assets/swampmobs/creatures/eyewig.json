@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "arbour",
+	"elements": [
+		"arbour",
+		"shadow"
+	],
 	"peaceful": false,
 	"summonable": false,
 	"tameable": true,

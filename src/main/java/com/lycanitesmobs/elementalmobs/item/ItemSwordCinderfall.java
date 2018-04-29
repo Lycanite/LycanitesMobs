@@ -56,6 +56,7 @@ public class ItemSwordCinderfall extends ItemSwordBase {
                     entityTameable.setSitting(false);
                     entityTameable.setFollowing(true);
                     entityTameable.setPassive(false);
+					entityTameable.setAssist(true);
                     entityTameable.setAggressive(true);
                     entityTameable.setPVP(entityHit instanceof EntityPlayer);
                 }

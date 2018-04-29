@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "arbour",
+	"elements": [
+		"acid",
+		"poison"
+	],
 	"peaceful": false,
 	"summonable": false,
 	"tameable": false,

@@ -2452,7 +2452,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         	// Element Effects:
 			if(target instanceof EntityLivingBase && this.creatureStats.getAmplifier() >= 0) {
-				this.creatureInfo.element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
+				for(ElementInfo element : this.creatureInfo.elements) {
+					element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
+				}
 			}
 
 			this.setJustAttacked();
@@ -2496,7 +2498,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 		// Element Effects:
 		if(success && target instanceof EntityLivingBase && this.creatureStats.getAmplifier() >= 0) {
-			this.creatureInfo.element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
+			for(ElementInfo element : this.creatureInfo.elements) {
+				element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
+			}
 		}
 
 		return success;
@@ -3632,7 +3636,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns whether or not the specified potion effect can be applied to this entity. **/
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        return this.creatureInfo.element.isEffectApplicable(potionEffect);
+		for(ElementInfo element : this.creatureInfo.elements) {
+			if(!element.isEffectApplicable(potionEffect)) {
+				return false;
+			}
+		}
+		return true;
     }
 
     /** Returns whether or not this entity can be set on fire, this will block both the damage and the fire effect, use isDamageTypeApplicable() to block fire but keep the effect. **/
@@ -3640,7 +3649,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this.extraMobBehaviour != null)
     		if(this.extraMobBehaviour.fireImmunityOverride)
     			return false;
-    	return this.creatureInfo.element.canBurn();
+		for(ElementInfo element : this.creatureInfo.elements) {
+			if(!element.canBurn()) {
+				return false;
+			}
+		}
+		return true;
     }
 
     /** Returns true if this mob should be damaged by the sun. **/
@@ -3651,7 +3665,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(this instanceof IGroupIce) {
     		return false;
 		}
-		return this.creatureInfo.element.canFreeze();
+		for(ElementInfo element : this.creatureInfo.elements) {
+			if(!element.canFreeze()) {
+				return false;
+			}
+		}
+		return true;
     }
 
     /** Returns true if this mob should be damaged by water. **/

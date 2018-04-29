@@ -289,14 +289,15 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public SummonSet getSummonSet(int setID) {
 		if(setID <= 0) {
 			LycanitesMobs.printWarning("", "Attempted to access set " + setID + " but the minimum ID is 1. Player: " + this.player);
-			return null;
+			return this.getSummonSet(1);
 		}
 		else if(setID > this.summonSetMax) {
 			LycanitesMobs.printWarning("", "Attempted to access set " + setID + " but the maximum set ID is " + this.summonSetMax + ". Player: " + this.player);
-			return null;
+			return this.getSummonSet(this.summonSetMax);
 		}
-		if(!this.summonSets.containsKey(setID))
+		if(!this.summonSets.containsKey(setID)) {
 			this.summonSets.put(setID, new SummonSet(this));
+		}
 		return this.summonSets.get(setID);
 	}
 

@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "crystal",
+	"elements": [
+		"frost",
+		"crystal"
+	],
 	"peaceful": false,
 	"summonable": false,
 	"tameable": true,

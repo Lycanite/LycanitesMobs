@@ -115,8 +115,9 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         if(CreatureManager.getInstance().getCreature("wraith").enabled) {
             if (this.nearbyCreatureCount(CreatureManager.getInstance().getCreature("wraith").entityClass, 64D) < 10) {
                 float random = this.rand.nextFloat();
-                if (random <= 0.1F)
+                if (random <= 0.1F) {
                     this.spawnAlly(this.posX - 2 + (random * 4), this.posY, this.posZ - 2 + (random * 4));
+                }
             }
         }
     }
@@ -130,7 +131,6 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         if(this.getAttackTarget() != null) {
             minion.setRevengeTarget(this.getAttackTarget());
         }
-        minion.chargeAttack();
         minion.setSizeScale(this.sizeScale);
     }
 	

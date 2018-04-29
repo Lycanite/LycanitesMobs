@@ -59,7 +59,7 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 		int subspeciesListHeight = Math.round((float)this.colRightHeight * 0.3f);
 		int subspeciesListY = creatureListY + 8 + creatureListHeight;
-		this.subspeciesList = new GuiSubspeciesList(this, this.getScaledX(260F / 1920F), subspeciesListHeight, subspeciesListY,subspeciesListY + subspeciesListHeight, this.colRightX);
+		this.subspeciesList = new GuiSubspeciesList(this, false, this.getScaledX(260F / 1920F), subspeciesListHeight, subspeciesListY,subspeciesListY + subspeciesListHeight, this.colRightX);
 	}
 
 
@@ -97,7 +97,7 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 			// Element:
 			String text = I18n.translateToLocal("creature.stat.element") + ": ";
-			text += this.playerExt.selectedCreature.element != null ? this.playerExt.selectedCreature.element.getTitle() : "None";
+			text += this.playerExt.selectedCreature.elements != null ? this.playerExt.selectedCreature.getElementNames() : "None";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 
 			// Subspecies:

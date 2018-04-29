@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "order",
+	"elements": [
+		"order",
+		"chaos"
+	],
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,

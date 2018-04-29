@@ -469,7 +469,7 @@ public class EventListener {
 					event.getLeft().add("");
 					event.getLeft().add("Target Creature: " + mouseOverCreature.getName());
 					event.getLeft().add("Distance To player: " + mouseOverCreature.getDistance(Minecraft.getMinecraft().player));
-					event.getLeft().add("Element: " + (mouseOverCreature.creatureInfo != null ? mouseOverCreature.creatureInfo.element.getTitle() : "None"));
+					event.getLeft().add("Elements: " + mouseOverCreature.creatureInfo.getElementNames());
 					event.getLeft().add("Subspecies: " + mouseOverCreature.getSubspeciesIndex());
 					event.getLeft().add("Level: " + mouseOverCreature.getLevel());
 					event.getLeft().add("Size: " + mouseOverCreature.sizeScale);

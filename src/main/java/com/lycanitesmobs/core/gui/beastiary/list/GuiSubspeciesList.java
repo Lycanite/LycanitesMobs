@@ -14,6 +14,7 @@ public class GuiSubspeciesList extends GuiScrollingList {
 	private GuiBeastiary parentGui;
 	private CreatureInfo creature;
 	private Map<Integer, Integer> subspeciesList = new HashMap<>();
+	private boolean summoning;
 
 	/**
 	 * Constructor
@@ -24,9 +25,10 @@ public class GuiSubspeciesList extends GuiScrollingList {
 	 * @param bottom The y position that the list stops at.
 	 * @param x The x position of the list.
 	 */
-	public GuiSubspeciesList(GuiBeastiary parentGui, int width, int height, int top, int bottom, int x) {
+	public GuiSubspeciesList(GuiBeastiary parentGui, boolean summoning, int width, int height, int top, int bottom, int x) {
 		super(Minecraft.getMinecraft(), width, height, top, bottom, x, 24, width, height);
 		this.parentGui = parentGui;
+		this.summoning = summoning;
 		this.refreshList();
 	}
 
@@ -38,7 +40,12 @@ public class GuiSubspeciesList extends GuiScrollingList {
 		// Clear:
 		this.subspeciesList.clear();
 
-		this.creature = this.parentGui.playerExt.selectedCreature;
+		if(!this.summoning) {
+			this.creature = this.parentGui.playerExt.selectedCreature;
+		}
+		else {
+			this.creature = this.parentGui.playerExt.getSelectedSummonSet().getCreatureInfo();
+		}
 		if(this.creature == null) {
 			return;
 		}
@@ -60,21 +67,40 @@ public class GuiSubspeciesList extends GuiScrollingList {
 	@Override
 	protected void elementClicked(int index, boolean doubleClick) {
 		this.selectedIndex = index;
-		this.parentGui.playerExt.selectedSubspecies = this.subspeciesList.get(index);
+		if(!this.summoning) {
+			this.parentGui.playerExt.selectedSubspecies = this.subspeciesList.get(index);
+		}
+		else {
+			this.parentGui.playerExt.getSelectedSummonSet().setSubspecies(index);
+			this.parentGui.playerExt.sendSummonSetToServer((byte)this.parentGui.playerExt.selectedSummonSet);
+		}
 	}
 
 
 	@Override
 	protected boolean isSelected(int index) {
-		return this.parentGui.playerExt.selectedSubspecies == this.subspeciesList.get(index);
+		if(!this.summoning) {
+			return this.parentGui.playerExt.selectedSubspecies == this.subspeciesList.get(index);
+		}
+		else {
+			return this.parentGui.playerExt.getSelectedSummonSet().getSubspecies() == index;
+		}
 	}
 	
 
 	@Override
 	protected void drawBackground() {
-		if(this.creature != this.parentGui.playerExt.selectedCreature) {
-			this.refreshList();
+		if(!this.summoning) {
+			if(this.creature != this.parentGui.playerExt.selectedCreature) {
+				this.refreshList();
+			}
 		}
+		else {
+			if(this.creature != this.parentGui.playerExt.getSelectedSummonSet().getCreatureInfo()) {
+				this.refreshList();
+			}
+		}
+
 	}
 
 
@@ -93,6 +119,9 @@ public class GuiSubspeciesList extends GuiScrollingList {
 		int nameY = boxTop + 6;
 		if(subspecies == null) {
 			this.parentGui.getFontRenderer().drawString("Normal", this.left + 20, nameY, 0xFFFFFF);
+			return;
+		}
+		if("rare".equals(subspecies.type)) {
 			return;
 		}
 		this.parentGui.getFontRenderer().drawString(subspecies.getTitle(), this.left + 20, nameY, 0xFFFFFF);

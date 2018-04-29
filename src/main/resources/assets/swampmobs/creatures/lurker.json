@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "poison",
+	"elements": [
+		"poison",
+		"shadow"
+	],
 	"peaceful": false,
 	"summonable": false,
 	"tameable": true,

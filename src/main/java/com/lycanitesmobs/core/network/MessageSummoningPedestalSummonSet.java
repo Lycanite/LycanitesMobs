@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHandler<MessageSummoningPedestalSummonSet, IMessage> {
 	public String summonType;
+	public int subpsecies;
 	public byte behaviour;
     public int x;
     public int y;
@@ -28,6 +29,7 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
 	public MessageSummoningPedestalSummonSet() {}
 	public MessageSummoningPedestalSummonSet(SummonSet summonSet, int x, int y, int z) {
 		this.summonType = summonSet.summonType;
+		this.subpsecies = summonSet.subspecies;
 		this.behaviour = summonSet.getBehaviourByte();
         this.x = x;
         this.y = y;
@@ -47,21 +49,18 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
         if(ctx.side != Side.SERVER)
             return null;
         IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getEntityWorld();
-        mainThread.addScheduledTask(new Runnable() {
-            @Override
-            public void run() {
-                EntityPlayer player = ctx.getServerHandler().player;
-                TileEntity tileEntity = player.getEntityWorld().getTileEntity(new BlockPos(message.x, message.y, message.z));
-                TileEntitySummoningPedestal summoningPedestal = null;
-                if(tileEntity instanceof TileEntitySummoningPedestal)
-                    summoningPedestal = (TileEntitySummoningPedestal)tileEntity;
-                if(summoningPedestal == null)
-                    return;
-                if(summoningPedestal.summonSet == null)
-                    summoningPedestal.summonSet = new SummonSet(null);
-                summoningPedestal.summonSet.readFromPacket(message.summonType, message.behaviour);
-            }
-        });
+        mainThread.addScheduledTask(() -> {
+			EntityPlayer player = ctx.getServerHandler().player;
+			TileEntity tileEntity = player.getEntityWorld().getTileEntity(new BlockPos(message.x, message.y, message.z));
+			TileEntitySummoningPedestal summoningPedestal = null;
+			if(tileEntity instanceof TileEntitySummoningPedestal)
+				summoningPedestal = (TileEntitySummoningPedestal)tileEntity;
+			if(summoningPedestal == null)
+				return;
+			if(summoningPedestal.summonSet == null)
+				summoningPedestal.summonSet = new SummonSet(null);
+			summoningPedestal.summonSet.readFromPacket(message.summonType, message.subpsecies, message.behaviour);
+		});
         return null;
 	}
 	
@@ -79,6 +78,7 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
         this.y = packet.readInt();
         this.z = packet.readInt();
         this.summonType = packet.readString(256);
+        this.subpsecies = packet.readInt();
         this.behaviour = packet.readByte();
 	}
 	
@@ -96,6 +96,7 @@ public class MessageSummoningPedestalSummonSet implements IMessage, IMessageHand
         packet.writeInt(this.y);
         packet.writeInt(this.z);
         packet.writeString(this.summonType);
+        packet.writeInt(this.subpsecies);
         packet.writeByte(this.behaviour);
 	}
 	

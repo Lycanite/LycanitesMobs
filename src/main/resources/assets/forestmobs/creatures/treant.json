@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "arbour",
+	"elements": [
+		"arbour",
+		"electric"
+	],
 	"peaceful": false,
 	"summonable": false,
 	"tameable": false,

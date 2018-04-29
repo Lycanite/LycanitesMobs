@@ -164,6 +164,10 @@ gui.beastiary.soulgazerinfo=You currently do not have any creatures added to you
 gui.beastiary.selectacreature=Select a group and then select a creature.
 gui.beastiary.website=View On Website
 #
+# Index:
+gui.beastiary.index.title=Index
+gui.beastiary.index.description=Welcome to the Lycanites Mobs Beastiary! Here you can look up all creatures that you have gained knownledge of to better equip yourself against the threats that loom out yonder! You can also manage any pets, mounts and familiars that you may have tamed and then soulbound to yourself. You can also manage what minions you want to summon!
+#
 # Pets:
 gui.beastiary.player.spirit=Your Spirit
 gui.beastiary.pets=Pets
@@ -171,6 +175,9 @@ gui.beastiary.mounts=Mounts
 gui.beastiary.familiars=Familiars
 gui.beastiary.selectapet=Select a pet from the menu on the left to manage it.
 gui.beastiary.empty=You have no soulbound pets yet. You can soulbind a pet by crafting a Soulstone and using it on your pet. Soulbound pets can be managed here where they can be summoned and dismissed and will even respawn after dying.
+#
+# Summoning:
+gui.beastiary.player.focus=Your Summoning Focus
 #
 # Old Pet Manager:
 gui.petmanager.name=Pet Manager

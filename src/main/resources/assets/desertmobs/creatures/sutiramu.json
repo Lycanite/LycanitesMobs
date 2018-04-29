@@ -51,7 +51,10 @@
 			"type": "uncommon"
 		}
 	],
-	"element": "crystal",
+	"elements": [
+		"crystal",
+		"quake"
+	],
 	"peaceful": false,
 	"summonable": true,
 	"tameable": false,

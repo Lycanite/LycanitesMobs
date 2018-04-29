@@ -10,8 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.client.GuiScrollingList;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.text.Collator;
+import java.util.*;
 
 public class GuiCreatureList extends GuiScrollingList {
 	public enum Type {
@@ -25,6 +25,7 @@ public class GuiCreatureList extends GuiScrollingList {
 	private GuiCreatureFilterList filterList;
 	private Map<Integer, CreatureInfo> creatureList = new HashMap<>();
 	private Map<Integer, PetEntry> petList = new HashMap<>();
+	private boolean releaseRefresh;
 
 	/**
 	 * Constructor
@@ -60,7 +61,10 @@ public class GuiCreatureList extends GuiScrollingList {
 
 		// Creature Knowledge List:
 		if(this.listType == Type.KNOWLEDGE || this.listType == Type.SUMMONABLE) {
-			for(String creatureName : this.parentGui.playerExt.getBeastiary().creatureKnowledgeList.keySet()) {
+			List<String> creatures = new ArrayList<>();
+			creatures.addAll(this.parentGui.playerExt.getBeastiary().creatureKnowledgeList.keySet());
+			creatures.sort(Collator.getInstance(new Locale("US")));
+			for(String creatureName : creatures) {
 				CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(creatureName.toLowerCase());
 				if(this.listType == Type.SUMMONABLE && !creatureInfo.isSummonable()) {
 					continue;
@@ -80,7 +84,10 @@ public class GuiCreatureList extends GuiScrollingList {
 			else if(this.listType == Type.FAMILIAR) {
 				petType = "familiar";
 			}
-			for(PetEntry petEntry : this.parentGui.playerExt.petManager.getEntryList(petType)) {
+			List<PetEntry> creatures = new ArrayList<>();
+			creatures.addAll(this.parentGui.playerExt.petManager.getEntryList(petType));
+			creatures.sort(Comparator.comparing(PetEntry::getDisplayName));
+			for(PetEntry petEntry : creatures) {
 				CreatureInfo creatureInfo = petEntry.getCreatureInfo();
 				if (creatureInfo != null && (this.filterList == null || this.filterList.canListCreature(creatureInfo, this.listType))) {
 					this.petList.put(creatureIndex++, petEntry);
@@ -105,9 +112,12 @@ public class GuiCreatureList extends GuiScrollingList {
 	@Override
 	protected void elementClicked(int index, boolean doubleClick) {
 		this.selectedIndex = index;
-		if(this.listType == Type.KNOWLEDGE || this.listType == Type.SUMMONABLE) {
+		if(this.listType == Type.KNOWLEDGE) {
 			this.parentGui.playerExt.selectedCreature = this.creatureList.get(index);
 			this.parentGui.playerExt.selectedSubspecies = 0;
+		}
+		else if(this.listType == Type.SUMMONABLE) {
+			this.parentGui.playerExt.getSelectedSummonSet().setSummonType(this.creatureList.get(index).getName());
 		}
 		else if(this.listType == Type.PET || this.listType == Type.MOUNT || this.listType == Type.FAMILIAR) {
 			this.parentGui.playerExt.selectedPet = this.petList.get(index);
@@ -117,8 +127,11 @@ public class GuiCreatureList extends GuiScrollingList {
 
 	@Override
 	protected boolean isSelected(int index) {
-		if(this.listType == Type.KNOWLEDGE || this.listType == Type.SUMMONABLE) {
+		if(this.listType == Type.KNOWLEDGE) {
 			return this.parentGui.playerExt.selectedCreature != null && this.parentGui.playerExt.selectedCreature.equals(this.creatureList.get(index));
+		}
+		else if(this.listType == Type.SUMMONABLE) {
+			return this.parentGui.playerExt.getSelectedSummonSet().getCreatureInfo() != null && this.parentGui.playerExt.getSelectedSummonSet().getCreatureInfo().equals(this.creatureList.get(index));
 		}
 		else if(this.listType == Type.PET || this.listType == Type.MOUNT || this.listType == Type.FAMILIAR) {
 			return this.parentGui.playerExt.selectedPet != null && this.parentGui.playerExt.selectedPet.equals(this.petList.get(index));
@@ -128,7 +141,14 @@ public class GuiCreatureList extends GuiScrollingList {
 	
 
 	@Override
-	protected void drawBackground() {}
+	protected void drawBackground() {
+		if(this.listType == Type.PET || this.listType == Type.MOUNT ||this.listType == Type.FAMILIAR) {
+			if(this.parentGui.playerExt.selectedPet != null && this.releaseRefresh != this.parentGui.playerExt.selectedPet.releaseEntity) {
+				this.releaseRefresh = this.parentGui.playerExt.selectedPet.releaseEntity;
+				this.refreshList();
+			}
+		}
+	}
 
 
     @Override

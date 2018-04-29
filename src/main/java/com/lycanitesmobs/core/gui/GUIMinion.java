@@ -212,7 +212,7 @@ public class GUIMinion extends GUIBaseScreen {
         		GuiButton button = (GuiButton)buttonObj;
         		
         		// Behaviour Buttons:
-        		if(button.id < this.tabButtonID) {
+        		if(button.id < tabButtonID) {
 	        		if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
 	        			button.displayString = I18n.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 	        		
@@ -230,8 +230,8 @@ public class GUIMinion extends GUIBaseScreen {
         		}
         		
         		// Tabs:
-        		if(button.id >= this.tabButtonID) {
-        			button.enabled = button.id - this.tabButtonID != this.editSet;
+        		if(button.id >= tabButtonID) {
+        			button.enabled = button.id - tabButtonID != this.editSet;
         		}
         	}
         }

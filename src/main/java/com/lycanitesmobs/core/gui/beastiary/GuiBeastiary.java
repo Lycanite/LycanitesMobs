@@ -138,7 +138,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 		// Right Column:
 		this.colRightX = this.windowX + this.getScaledX(480F / 1920F);
 		this.colRightY = this.windowY + this.getScaledY(420F / 1080F);
-		this.colRightWidth = this.getScaledX(1220F / 1920F);
+		this.colRightWidth = this.getScaledX(1260F / 1920F);
 		this.colRightHeight = this.getScaledX(400F / 1080F);
 		this.colRightCenterX = this.colRightX + Math.round(this.colRightWidth / 2);
 		this.colRightCenterY = this.colRightY + Math.round(this.colRightHeight / 2);
@@ -157,7 +157,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 		int menuY = this.windowY + menuPadding;
 		int menuWidth = this.windowWidth - (menuPadding * 2);
 
-		int buttonCount = 7;
+		int buttonCount = 5;
 		int buttonPadding = 2;
 		int buttonX = menuX + buttonPadding;
 		int buttonWidth = Math.round((float)(menuWidth / buttonCount)) - (buttonPadding * 2);
@@ -175,10 +175,6 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 		button = new GuiButton(GuiHandler.Beastiary.SUMMONING.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Summoning");
 		this.buttonList.add(button);
 		button = new GuiButton(GuiHandler.Beastiary.ELEMENTS.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Elements");
-		this.buttonList.add(button);
-		button = new GuiButton(100, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Website");
-		this.buttonList.add(button);
-		button = new GuiButton(101, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Patreon");
 		this.buttonList.add(button);
 	}
 
@@ -217,7 +213,9 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	 * @param partialTicks Ticks for animation.
 	 */
 	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
-
+		for(GuiButton button : this.buttonList) {
+			button.drawButton(this.mc, mouseX, mouseY, partialTicks);
+		}
 	}
 
 
@@ -256,16 +254,6 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 			}
 			if(guiButton.id == GuiHandler.Beastiary.ELEMENTS.id) {
 				GuiBeastiaryElements.openToPlayer(this.player);
-			}
-			if(guiButton.id == 100) {
-				try {
-					this.openURI(new URI(LycanitesMobs.website));
-				} catch (URISyntaxException e) {}
-			}
-			if(guiButton.id == 101) {
-				try {
-					this.openURI(new URI(LycanitesMobs.websitePatreon));
-				} catch (URISyntaxException e) {}
 			}
 		}
 
@@ -330,7 +318,7 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 			// Subspecies:
 			boolean subspeciesMatch = true;
 			if(this.creaturePreviewEntity instanceof EntityCreatureBase) {
-				subspeciesMatch = ((EntityCreatureBase)this.creaturePreviewEntity).getSubspeciesIndex() == this.playerExt.selectedSubspecies;
+				subspeciesMatch = ((EntityCreatureBase)this.creaturePreviewEntity).getSubspeciesIndex() == this.getDisplaySubspecies(creatureInfo);
 			}
 
 			// Create New:
@@ -338,12 +326,13 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 				this.creaturePreviewEntity = creatureInfo.entityClass.getConstructor(new Class[]{World.class}).newInstance(this.player.getEntityWorld());
 				this.creaturePreviewEntity.onGround = true;
 				if (this.creaturePreviewEntity instanceof EntityCreatureBase) {
-					((EntityCreatureBase) this.creaturePreviewEntity).setSubspecies(this.playerExt.selectedSubspecies, false);
+					((EntityCreatureBase) this.creaturePreviewEntity).setSubspecies(this.getDisplaySubspecies(creatureInfo), false);
 					((EntityCreatureBase) this.creaturePreviewEntity).updateSize();
 				}
 				if (this.creaturePreviewEntity instanceof EntityCreatureAgeable) {
 					((EntityCreatureAgeable) this.creaturePreviewEntity).setGrowingAge(0);
 				}
+				this.onCreateDisplayEntity(creatureInfo, this.creaturePreviewEntity);
 				this.playCreatureSelectSound(creatureInfo);
 			}
 
@@ -409,10 +398,27 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 
 
 	/**
+	 * Gets the Subspecies to use for the display creature.
+	 * @param creatureInfo The Creature Info being displayed.
+	 */
+	public int getDisplaySubspecies(CreatureInfo creatureInfo) {
+		return this.playerExt.selectedSubspecies;
+	}
+
+
+	/**
 	 * Plays an idle or tame sound of the provided creature when it is selected in the GUI.
 	 * @param creatureInfo The creature to play the sound from.
 	 */
 	public void playCreatureSelectSound(CreatureInfo creatureInfo) {
 		this.player.getEntityWorld().playSound(this.player, this.player.posX, this.player.posY, this.player.posZ, AssetManager.getSound(creatureInfo.getName() + "_say"), SoundCategory.NEUTRAL, 1, 1);
 	}
+
+
+	/**
+	 * Called when a display entity is created.
+	 * @param creatureInfo The Creature Info used to create the entity.
+	 * @param entity The display entity instance.
+	 */
+	public void onCreateDisplayEntity(CreatureInfo creatureInfo, EntityLivingBase entity) {}
 }

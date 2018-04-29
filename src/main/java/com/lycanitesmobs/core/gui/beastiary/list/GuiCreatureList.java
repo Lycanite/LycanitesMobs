@@ -1,9 +1,10 @@
 package com.lycanitesmobs.core.gui.beastiary.list;
 
+import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.gui.beastiary.GuiBeastiary;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
-import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.pets.PetEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -21,8 +22,7 @@ public class GuiCreatureList extends GuiScrollingList {
 
 	private Type listType;
 	private GuiBeastiary parentGui;
-	private GuiGroupList groupList;
-	private GroupInfo currentGroup;
+	private GuiCreatureFilterList filterList;
 	private Map<Integer, CreatureInfo> creatureList = new HashMap<>();
 	private Map<Integer, PetEntry> petList = new HashMap<>();
 
@@ -30,18 +30,21 @@ public class GuiCreatureList extends GuiScrollingList {
 	 * Constructor
 	 * @param listType The type of contents to show in this list.
 	 * @param parentGui The Beastiary GUI using this list.
-	 * @param groupList A creature group list to restrict this list by, if null every creature is listed.
+	 * @param filterList A creature filter list to restrict this list by, if null every creature is listed.
 	 * @param width The width of the list.
 	 * @param height The height of the list.
 	 * @param top The y position that the list starts at.
 	 * @param bottom The y position that the list stops at.
 	 * @param x The x position of the list.
 	 */
-	public GuiCreatureList(Type listType, GuiBeastiary parentGui, GuiGroupList groupList, int width, int height, int top, int bottom, int x) {
+	public GuiCreatureList(Type listType, GuiBeastiary parentGui, GuiCreatureFilterList filterList, int width, int height, int top, int bottom, int x) {
 		super(Minecraft.getMinecraft(), width, height, top, bottom, x, 24, width, height);
 		this.listType = listType;
 		this.parentGui = parentGui;
-		this.groupList = groupList;
+		this.filterList = filterList;
+		if(this.filterList != null) {
+			this.filterList.addFilteredList(this);
+		}
 		this.refreshList();
 	}
 
@@ -51,17 +54,8 @@ public class GuiCreatureList extends GuiScrollingList {
 	 */
 	public void refreshList() {
 		// Clear:
-		this.parentGui.displayCreature = null;
 		this.creatureList.clear();
-		this.parentGui.displayPet = null;
 		this.petList.clear();
-
-		// Group Check:
-		this.currentGroup = null;
-		if(this.groupList != null) {
-			this.currentGroup = this.groupList.selectedGroup;
-		}
-		
 		int creatureIndex = 0;
 
 		// Creature Knowledge List:
@@ -71,7 +65,7 @@ public class GuiCreatureList extends GuiScrollingList {
 				if(this.listType == Type.SUMMONABLE && !creatureInfo.isSummonable()) {
 					continue;
 				}
-				if (creatureInfo != null && (this.currentGroup == null || creatureInfo.group == this.currentGroup)) {
+				if (creatureInfo != null && (this.filterList == null || this.filterList.canListCreature(creatureInfo, this.listType))) {
 					this.creatureList.put(creatureIndex++, creatureInfo);
 				}
 			}
@@ -88,7 +82,7 @@ public class GuiCreatureList extends GuiScrollingList {
 			}
 			for(PetEntry petEntry : this.parentGui.playerExt.petManager.getEntryList(petType)) {
 				CreatureInfo creatureInfo = petEntry.getCreatureInfo();
-				if (creatureInfo != null && (this.currentGroup == null || creatureInfo.group == this.currentGroup)) {
+				if (creatureInfo != null && (this.filterList == null || this.filterList.canListCreature(creatureInfo, this.listType))) {
 					this.petList.put(creatureIndex++, petEntry);
 				}
 			}
@@ -110,11 +104,13 @@ public class GuiCreatureList extends GuiScrollingList {
 
 	@Override
 	protected void elementClicked(int index, boolean doubleClick) {
+		this.selectedIndex = index;
 		if(this.listType == Type.KNOWLEDGE || this.listType == Type.SUMMONABLE) {
-			this.parentGui.displayCreature = this.creatureList.get(index);
+			this.parentGui.playerExt.selectedCreature = this.creatureList.get(index);
+			this.parentGui.playerExt.selectedSubspecies = 0;
 		}
 		else if(this.listType == Type.PET || this.listType == Type.MOUNT || this.listType == Type.FAMILIAR) {
-			this.parentGui.displayPet = this.petList.get(index);
+			this.parentGui.playerExt.selectedPet = this.petList.get(index);
 		}
 	}
 
@@ -122,28 +118,22 @@ public class GuiCreatureList extends GuiScrollingList {
 	@Override
 	protected boolean isSelected(int index) {
 		if(this.listType == Type.KNOWLEDGE || this.listType == Type.SUMMONABLE) {
-			return this.parentGui.displayCreature != null && this.parentGui.displayCreature.equals(this.creatureList.get(index));
+			return this.parentGui.playerExt.selectedCreature != null && this.parentGui.playerExt.selectedCreature.equals(this.creatureList.get(index));
 		}
 		else if(this.listType == Type.PET || this.listType == Type.MOUNT || this.listType == Type.FAMILIAR) {
-			return this.parentGui.displayPet != null && this.parentGui.displayPet.equals(this.petList.get(index));
+			return this.parentGui.playerExt.selectedPet != null && this.parentGui.playerExt.selectedPet.equals(this.petList.get(index));
 		}
 		return false;
 	}
 	
 
 	@Override
-	protected void drawBackground() {
-		if(this.groupList != null) {
-			if (this.currentGroup != this.groupList.selectedGroup) {
-				this.refreshList();
-			}
-		}
-	}
+	protected void drawBackground() {}
 
 
     @Override
     protected int getContentHeight() {
-        return this.getSize() * 24;
+        return this.getSize() * this.slotHeight;
     }
 
 
@@ -165,12 +155,12 @@ public class GuiCreatureList extends GuiScrollingList {
 
 			// Level:
 			if (this.listType == Type.SUMMONABLE) {
-				this.parentGui.drawLevel(creatureInfo, this.left + 18, boxTop + 10);
+				this.parentGui.drawLevel(creatureInfo, AssetManager.getTexture("GUIPetLevel"), this.left + 18, boxTop + 10);
 			}
 
 			// Icon:
 			if (creatureInfo.getIcon() != null) {
-				this.parentGui.drawTexturedTiled(creatureInfo.getIcon(), this.left + 2, boxTop + 2, 0, 0, 0, 16, 16, 16);
+				this.parentGui.drawTexture(creatureInfo.getIcon(), this.left + 2, boxTop + 2, 0, 1, 1, 16, 16);
 			}
 		}
 
@@ -190,13 +180,23 @@ public class GuiCreatureList extends GuiScrollingList {
 
 			// Level:
 			if (this.listType == Type.PET || this.listType == Type.MOUNT) {
-				this.parentGui.drawLevel(petEntry.getCreatureInfo(), this.left + 18, boxTop + 10);
+				this.parentGui.drawLevel(petEntry.getCreatureInfo(), AssetManager.getTexture("GUIPetLevel"), this.left + 18, boxTop + 10);
 			}
 
 			// Icon:
 			if (petEntry.getCreatureInfo().getIcon() != null) {
-				this.parentGui.drawTexturedTiled(petEntry.getCreatureInfo().getIcon(), this.left + 2, boxTop + 2, 0, 0, 0, 16, 16, 16);
+				this.parentGui.drawTexture(petEntry.getCreatureInfo().getIcon(), this.left + 2, boxTop + 2, 0, 1, 1, 16, 16);
 			}
 		}
+	}
+
+
+	/**
+	 * Changes the type of creatures that this list should display. Also refreshes this list.
+	 * @param listType The new list type to use.
+	 */
+	public void changeType(Type listType) {
+		this.listType = listType;
+		this.refreshList();
 	}
 }

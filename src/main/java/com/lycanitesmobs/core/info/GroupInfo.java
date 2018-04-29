@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.info;
 
 import com.lycanitesmobs.core.config.ConfigSpawning;
 import com.lycanitesmobs.core.config.ConfigSpawning.SpawnDimensionSet;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -98,6 +99,15 @@ public class GroupInfo {
 
         groups.put(this.name, this);
     }
+
+
+	/**
+	 * Returns the display title of this group.
+	 * @return The text to display.
+	 */
+	public String getTitle() {
+    	return I18n.translateToLocal(this.filename + ".name");
+	}
 
 
     // ==================================================

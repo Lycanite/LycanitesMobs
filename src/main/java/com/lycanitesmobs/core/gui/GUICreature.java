@@ -154,26 +154,66 @@ public class GUICreature extends GUIBaseContainer {
         int buttonHeight = 20;
         int buttonX = backX + this.xSize;
         int buttonY = backY;
+
+		String buttonText = I18n.translateToLocal("gui.pet.follow");
+		buttonY += buttonSpacing;
+		GuiButton button = new GuiButton(EntityCreatureBase.PET_COMMAND.FOLLOW.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText);
+		if(pet.isFollowing() && !pet.isSitting()) {
+			button.enabled = false;
+		}
+		this.buttonList.add(button);
+
+		buttonText = I18n.translateToLocal("gui.pet.wander");
+		buttonY += buttonHeight + (buttonSpacing * 2);
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.WANDER.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText);
+		if(!pet.isFollowing() && !pet.isSitting()) {
+			button.enabled = false;
+		}
+		this.buttonList.add(button);
         
-        String buttonText = I18n.translateToLocal("gui.pet.sitting") + ": " + (pet.isSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
-        buttonY += buttonSpacing;
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
-        
-        buttonText = I18n.translateToLocal("gui.pet.movement") + ": " + (pet.isFollowing() ? I18n.translateToLocal("gui.pet.follow") : I18n.translateToLocal("gui.pet.wander"));
+        buttonText = I18n.translateToLocal("gui.pet.sit");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.SIT.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText);
+		if(!pet.isFollowing() && pet.isSitting()) {
+			button.enabled = false;
+		}
+        this.buttonList.add(button);
         
-        buttonText = I18n.translateToLocal("gui.pet.passive") + ": " + (pet.isPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
+        buttonText = I18n.translateToLocal("gui.pet.passive");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.PASSIVE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText);
+		if(pet.isPassive()) {
+			button.enabled = false;
+		}
+        this.buttonList.add(button);
+
+		buttonText = I18n.translateToLocal("gui.pet.defensive");
+		buttonY += buttonHeight + (buttonSpacing * 2);
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.DEFENSIVE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText);
+		if(!pet.isPassive() && !pet.isAssisting() && !pet.isAggressive()) {
+			button.enabled = false;
+		}
+		this.buttonList.add(button);
+
+		buttonText = I18n.translateToLocal("gui.pet.assist");
+		buttonY += buttonHeight + (buttonSpacing * 2);
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.ASSIST.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText);
+		if(!pet.isPassive() && pet.isAssisting() && !pet.isAggressive()) {
+			button.enabled = false;
+		}
+		this.buttonList.add(button);
         
-        buttonText = I18n.translateToLocal("gui.pet.stance") + ": " + (pet.isAggressive() ? I18n.translateToLocal("gui.pet.aggressive") : I18n.translateToLocal("gui.pet.defensive"));
+        buttonText = I18n.translateToLocal("gui.pet.aggressive");
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText);
+		if(!pet.isPassive() && pet.isAggressive()) {
+			button.enabled = false;
+		}
+        this.buttonList.add(button);
         
         buttonText = I18n.translateToLocal("gui.pet.pvp") + ": " + (pet.isPVP() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.PET_COMMAND.PVP.id, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
     }
 	
 	

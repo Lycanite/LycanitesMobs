@@ -8,20 +8,18 @@ import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.gui.GUIBaseScreen;
 import com.lycanitesmobs.core.info.CreatureInfo;
-import com.lycanitesmobs.core.pets.PetEntry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.net.URI;
@@ -32,9 +30,6 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	public ExtendedPlayer playerExt;
 	public EntityLivingBase creaturePreviewEntity;
 	public float creaturePreviewTicks = 0;
-
-	public CreatureInfo displayCreature;
-	public PetEntry displayPet;
 
 	public ScaledResolution scaledResolution;
 	public int centerX;
@@ -196,8 +191,6 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	 */
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-
 		this.drawBackground(mouseX, mouseY, partialTicks);
 		this.drawForeground(mouseX, mouseY, partialTicks);
 		this.updateControls(mouseX, mouseY, partialTicks);
@@ -219,6 +212,9 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 
 	/**
 	 * Updates buttons and other controls for this GUI.
+	 * @param mouseX The x position of the mouse cursor.
+	 * @param mouseY The y position of the mouse cursor.
+	 * @param partialTicks Ticks for animation.
 	 */
 	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
 
@@ -311,19 +307,14 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 	/**
 	 * Draws a level bar for the provided creature info.
 	 * @param creatureInfo The creature info to get stats from.
+	 * @param texture The texture to use as a level dot/star.
 	 * @param x The x position to draw from.
 	 * @param y The y position to draw from.
 	 */
-	public void drawLevel(CreatureInfo creatureInfo, int x, int y) {
-		int width = 9;
-		int height = 9;
-		int u = 256 - (width * 2);
-		int v = 256 - height;
+	public void drawLevel(CreatureInfo creatureInfo, ResourceLocation texture, int x, int y) {
 		int level = creatureInfo.summonCost;
-		if(level <= 20) {
-			for (int currentLevel = 0; currentLevel < level; currentLevel++) {
-				this.drawTexturedTiled(AssetManager.getTexture("GUIBeastiary"),x + (width * currentLevel), y, 0, u, v, width, height, 1);
-			}
+		if(level <= 10) {
+			this.drawBar(texture, x, y, 0, 9, 9, level, 10);
 		}
 	}
 
@@ -336,19 +327,32 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 		}
 
 		try {
+			// Subspecies:
+			boolean subspeciesMatch = true;
+			if(this.creaturePreviewEntity instanceof EntityCreatureBase) {
+				subspeciesMatch = ((EntityCreatureBase)this.creaturePreviewEntity).getSubspeciesIndex() == this.playerExt.selectedSubspecies;
+			}
+
 			// Create New:
-			if(this.creaturePreviewEntity == null || this.creaturePreviewEntity.getClass() != creatureInfo.entityClass) {
+			if(this.creaturePreviewEntity == null || this.creaturePreviewEntity.getClass() != creatureInfo.entityClass || !subspeciesMatch) {
 				this.creaturePreviewEntity = creatureInfo.entityClass.getConstructor(new Class[]{World.class}).newInstance(this.player.getEntityWorld());
 				this.creaturePreviewEntity.onGround = true;
+				if (this.creaturePreviewEntity instanceof EntityCreatureBase) {
+					((EntityCreatureBase) this.creaturePreviewEntity).setSubspecies(this.playerExt.selectedSubspecies, false);
+					((EntityCreatureBase) this.creaturePreviewEntity).updateSize();
+				}
 				if (this.creaturePreviewEntity instanceof EntityCreatureAgeable) {
 					((EntityCreatureAgeable) this.creaturePreviewEntity).setGrowingAge(0);
 				}
+				this.playCreatureSelectSound(creatureInfo);
 			}
 
 			// Render:
 			if(this.creaturePreviewEntity != null) {
 				int creatureSize = 70;
-				int scale = Math.round((1.8F / Math.max(this.creaturePreviewEntity.height, this.creaturePreviewEntity.width)) * creatureSize);
+				float creatureWidth = this.creaturePreviewEntity.width;
+				float creatureHeight = this.creaturePreviewEntity.height;
+				int scale = Math.round((1.8F / Math.max(creatureWidth, creatureHeight)) * creatureSize);
 				int posX = x;
 				int posY = y + 32 + creatureSize;
 				float lookX = (float)posX - mouseX;
@@ -401,5 +405,14 @@ public abstract class GuiBeastiary extends GUIBaseScreen {
 			LycanitesMobs.printWarning("", "An exception occurred when trying to preview a creature in the Beastiary.");
 			e.printStackTrace();
 		}
+	}
+
+
+	/**
+	 * Plays an idle or tame sound of the provided creature when it is selected in the GUI.
+	 * @param creatureInfo The creature to play the sound from.
+	 */
+	public void playCreatureSelectSound(CreatureInfo creatureInfo) {
+		this.player.getEntityWorld().playSound(this.player, this.player.posX, this.player.posY, this.player.posZ, AssetManager.getSound(creatureInfo.getName() + "_say"), SoundCategory.NEUTRAL, 1, 1);
 	}
 }

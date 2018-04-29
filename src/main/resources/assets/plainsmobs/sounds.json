@@ -259,6 +259,10 @@
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/morock/attack", "stream": false}]
     },
+    "entity.morock.step": {
+        "category": "hostile",
+        "sounds": [{"name": "plainsmobs:entity/morock/step", "stream": false}]
+    },
     "entity.morock.fly": {
         "category": "hostile",
         "sounds": [{"name": "plainsmobs:entity/morock/fly", "stream": false}]

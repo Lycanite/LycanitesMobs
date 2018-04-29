@@ -1,6 +1,7 @@
 package com.lycanitesmobs.core.gui.beastiary.list;
 
 import com.lycanitesmobs.core.gui.beastiary.GuiBeastiary;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.client.Minecraft;
@@ -11,10 +12,7 @@ import net.minecraftforge.fml.client.GuiScrollingList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GuiGroupList extends GuiScrollingList {
-	public GroupInfo selectedGroup;
-
-	private GuiBeastiary parentGui;
+public class GuiGroupList extends GuiCreatureFilterList {
 	private Map<Integer, GroupInfo> groupList = new HashMap<>();
 
 	/**
@@ -26,17 +24,13 @@ public class GuiGroupList extends GuiScrollingList {
 	 * @param x The x position of the list.
 	 */
 	public GuiGroupList(GuiBeastiary parentGui, int width, int height, int top, int bottom, int x) {
-		super(Minecraft.getMinecraft(), width, height, top, bottom, x, 24, width, height);
-		this.parentGui = parentGui;
+		super(parentGui, width, height, top, bottom, x);
 		this.refreshList();
 	}
 
 
-	/**
-	 * Reloads all items in this list.
-	 */
+	@Override
 	public void refreshList() {
-		this.selectedGroup = null;
 		this.groupList.clear();
 
 		int groupIndex = 0;
@@ -56,13 +50,14 @@ public class GuiGroupList extends GuiScrollingList {
 
 	@Override
 	protected void elementClicked(int index, boolean doubleClick) {
-		this.selectedGroup = this.groupList.get(index);
+		this.parentGui.playerExt.selectedGroup = this.groupList.get(index);
+		super.elementClicked(index, doubleClick);
 	}
 
 
 	@Override
 	protected boolean isSelected(int index) {
-		return this.selectedGroup != null && this.selectedGroup.equals(this.groupList.get(index));
+		return this.parentGui.playerExt.selectedGroup != null && this.parentGui.playerExt.selectedGroup.equals(this.groupList.get(index));
 	}
 	
 
@@ -81,7 +76,16 @@ public class GuiGroupList extends GuiScrollingList {
 		GroupInfo group = this.groupList.get(index);
 		if(group == null) {
 			return;
-		} //TODO Add getTitle() to GroupInfo
-		this.parentGui.getFontRenderer().drawString(I18n.translateToLocal(group.filename + ".name"), this.left + 2 , boxTop + 4, 0xFFFFFF, true);
+		}
+		this.parentGui.getFontRenderer().drawString(group.getTitle(), this.left + 2 , boxTop + 4, 0xFFFFFF, true);
+	}
+
+
+	@Override
+	public boolean canListCreature(CreatureInfo creatureInfo, GuiCreatureList.Type listType) {
+		if(this.parentGui.playerExt.selectedGroup == null || creatureInfo == null) {
+			return false;
+		}
+		return creatureInfo.group.equals(this.parentGui.playerExt.selectedGroup);
 	}
 }

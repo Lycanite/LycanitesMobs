@@ -14,8 +14,7 @@
       "item": "minecraft:bone"
     },
     "T": {
-      "item": "minecraft:dye",
-      "data": 0
+      "item": "saltwatermobs:ikameatcooked"
     }
   }
 }

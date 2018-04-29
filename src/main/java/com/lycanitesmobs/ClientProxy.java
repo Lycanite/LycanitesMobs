@@ -61,7 +61,16 @@ public class ClientProxy extends CommonProxy {
 		GroupInfo group = LycanitesMobs.group;
 		AssetManager.addTexture("GUIInventoryCreature", group, "textures/guis/inventory_creature.png");
 
+		// Beastiary:
 		AssetManager.addTexture("GUIBeastiaryBackground", group, "textures/guis/beastiary/background.png");
+		AssetManager.addTexture("GUIPetLevel", group, "textures/guis/beastiary/level.png");
+		AssetManager.addTexture("GUIPetSpirit", group, "textures/guis/beastiary/spirit.png");
+		AssetManager.addTexture("GUIPetSpiritEmpty", group, "textures/guis/beastiary/spirit_empty.png");
+		AssetManager.addTexture("GUIPetSpiritUsed", group, "textures/guis/beastiary/spirit_used.png");
+		AssetManager.addTexture("GUIPetSpiritFilling", group, "textures/guis/beastiary/spirit_filling.png");
+		AssetManager.addTexture("GUIPetBarHealth", group, "textures/guis/beastiary/bar_health.png");
+		AssetManager.addTexture("GUIPetBarRespawn", group, "textures/guis/beastiary/bar_respawn.png");
+		AssetManager.addTexture("GUIPetBarEmpty", group, "textures/guis/beastiary/bar_empty.png");
 
 		AssetManager.addTexture("GUILMMainMenu", group, "textures/guis/lmmainmenu.png");
 		AssetManager.addTexture("GUIBeastiary", group, "textures/guis/beastiary.png");

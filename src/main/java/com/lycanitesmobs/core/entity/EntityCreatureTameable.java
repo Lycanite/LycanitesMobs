@@ -54,9 +54,9 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     /** Used for the TAMED WATCHER_ID, this holds a series of booleans that describe the tamed status as well as instructed behaviour. **/
 	public static enum TAMED_ID {
 		IS_TAMED((byte)1), MOVE_SIT((byte)2), MOVE_FOLLOW((byte)4),
-		STANCE_PASSIVE((byte)8), STANCE_AGGRESSIVE((byte)16), PVP((byte)32);
+		STANCE_PASSIVE((byte)8), STANCE_AGGRESSIVE((byte)16), STANCE_ASSIST((byte)32), PVP((byte)64);
 		public final byte id;
-	    private TAMED_ID(byte value) { this.id = value; }
+	    TAMED_ID(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
 	}
 	
@@ -287,31 +287,43 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		return;
     	if(player != this.getOwner())
     		return;
-    	
-    	if(guiCommandID == GUI_COMMAND_ID.SITTING.id) {
-    		this.setSitting(!this.isSitting());
-    		this.playTameSound();
-    	}
-    	
-    	if(guiCommandID == GUI_COMMAND_ID.FOLLOWING.id) {
-    		this.setFollowing(!this.isFollowing());
-    		this.playTameSound();
-    	}
-    	
-    	if(guiCommandID == GUI_COMMAND_ID.PASSIVE.id) {
-    		this.setPassive(!this.isPassive());
-    		this.playTameSound();
-    	}
-    	
-    	if(guiCommandID == GUI_COMMAND_ID.STANCE.id) {
-    		this.setAggressive(!this.isAggressive());
-    		this.playTameSound();
-    	}
-    	
-    	if(guiCommandID == GUI_COMMAND_ID.PVP.id) {
-    		this.setPVP(!this.isPVP());
-    		this.playTameSound();
-    	}
+
+    	// Pet Commands:
+    	if(guiCommandID == PET_COMMAND.PVP.id) {
+			this.setPVP(!this.isPVP());
+		}
+		else if(guiCommandID == PET_COMMAND.PASSIVE.id) {
+			this.setPassive(true);
+		}
+		else if(guiCommandID == PET_COMMAND.DEFENSIVE.id) {
+			this.setPassive(false);
+			this.setAssist(false);
+			this.setAggressive(false);
+		}
+		else if(guiCommandID == PET_COMMAND.ASSIST.id) {
+			this.setPassive(false);
+			this.setAssist(true);
+			this.setAggressive(false);
+		}
+		else if(guiCommandID == PET_COMMAND.AGGRESSIVE.id) {
+			this.setPassive(false);
+			this.setAssist(true);
+			this.setAggressive(true);
+		}
+		else if(guiCommandID == PET_COMMAND.FOLLOW.id) {
+			this.setSitting(false);
+			this.setFollowing(true);
+		}
+		else if(guiCommandID == PET_COMMAND.WANDER.id) {
+			this.setSitting(false);
+			this.setFollowing(false);
+		}
+		else if(guiCommandID == PET_COMMAND.SIT.id) {
+			this.setSitting(true);
+			this.setFollowing(false);
+		}
+
+		this.playTameSound();
 
         // Update Pet Entry Summon Set:
         if(this.petEntry != null && this.petEntry.summonSet != null) {
@@ -567,7 +579,6 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
             this.dataManager.set(TAMED, (byte) (tamed - (tamed & TAMED_ID.IS_TAMED.id)));
         }
         this.setAlwaysRenderNameTag(isTamed);
-        this.refreshStats();
     }
     
     public boolean isTamingItem(ItemStack itemstack) {
@@ -609,6 +620,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	 * Called when this creature is first tamed by a player, this clears movement, targets, etc and sets default the pet behaviour.
 	 */
 	public void onTamedByPlayer() {
+		this.refreshStats();
 		this.clearMovement();
 		this.setAttackTarget(null);
 		this.setSitting(false);
@@ -716,6 +728,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
     
     // ========== Agressiveness ==========
+	@Override
     public boolean isAggressive() {
     	if(!this.isTamed())
     		return super.isAggressive();
@@ -723,14 +736,34 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     }
 
     public void setAggressive(boolean set) {
-    	if(!this.petControlsEnabled())
-    		set = false;
+    	if(!this.petControlsEnabled()) {
+			set = false;
+		}
         byte tamedStatus = this.getByteFromDataManager(TAMED);
         if(set)
             this.dataManager.set(TAMED, (byte) (tamedStatus | TAMED_ID.STANCE_AGGRESSIVE.id));
         else
             this.dataManager.set(TAMED, (byte) (tamedStatus - (tamedStatus & TAMED_ID.STANCE_AGGRESSIVE.id)));
     }
+
+	// ========== Assist ==========
+	public boolean isAssisting() {
+		if(!this.isTamed()) {
+			return false;
+		}
+		return (this.getByteFromDataManager(TAMED) & TAMED_ID.STANCE_ASSIST.id) != 0;
+	}
+
+	public void setAssist(boolean set) {
+		if(!this.petControlsEnabled()) {
+			set = true;
+		}
+		byte tamedStatus = this.getByteFromDataManager(TAMED);
+		if(set)
+			this.dataManager.set(TAMED, (byte) (tamedStatus | TAMED_ID.STANCE_ASSIST.id));
+		else
+			this.dataManager.set(TAMED, (byte) (tamedStatus - (tamedStatus & TAMED_ID.STANCE_ASSIST.id)));
+	}
     
     // ========== PvP ==========
     public boolean isPVP() {

@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.model.ModelObjOld;
 import com.lycanitesmobs.demonmobs.DemonMobs;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -68,10 +69,13 @@ public class ModelCacodemon extends ModelObjOld {
 		}
 		
     	// Mouth:
-    	if(partName.equals("topmouth"))
-			rotate(-5F, rotY, rotZ);
-		if(partName.equals("bottommouth"))
-			rotate(5F, rotY, rotZ);
+		float mouthIdle = (float)Math.toDegrees(MathHelper.cos(loop * 0.05F) * 0.1F);
+    	if(partName.equals("topmouth")) {
+			rotate(-5F - mouthIdle, rotY, rotZ);
+		}
+		if(partName.equals("bottommouth")) {
+			rotate(5F + mouthIdle, rotY, rotZ);
+		}
     	
 		// Attack:
     	if((entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())

@@ -52,18 +52,14 @@ public class WorldMobEventEffect extends MobEventEffect {
 
 			// Day Time:
 			if (this.dayTime >= 0) {
-				if (world.provider.getWorldTime() < this.dayTime) {
-					world.provider.setWorldTime(this.dayTime);
+				int dayTime = 23999;
+				long currentTime = world.provider.getWorldTime();
+				int targetTime = this.dayTime;
+				long excessTime = currentTime % dayTime;
+				if (excessTime > targetTime) {
+					targetTime += dayTime;
 				}
-
-			/*int dayTime = 23999;
-			long currentTime = world.provider.getWorldTime();
-			int targetTime = this.dayTime;
-			long excessTime = currentTime % dayTime;
-			if (excessTime > targetTime) {
-				targetTime += dayTime;
-			}
-			world.provider.setWorldTime(currentTime - excessTime + targetTime);*/
+				world.provider.setWorldTime(currentTime - excessTime + targetTime);
 			}
 		}
 	}

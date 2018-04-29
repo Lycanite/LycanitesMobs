@@ -1,10 +1,13 @@
 package com.lycanitesmobs.core.gui.beastiary;
 
+import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.gui.beastiary.list.GuiCreatureList;
 import com.lycanitesmobs.core.gui.beastiary.list.GuiGroupList;
+import com.lycanitesmobs.core.gui.beastiary.list.GuiSubspeciesList;
+import com.lycanitesmobs.core.info.Subspecies;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
@@ -14,6 +17,7 @@ import java.io.IOException;
 public class GuiBeastiaryCreatures extends GuiBeastiary {
 	public GuiGroupList groupList;
 	public GuiCreatureList creatureList;
+	public GuiSubspeciesList subspeciesList;
 
 	/**
 	 * Opens this GUI up to the provided player.
@@ -33,11 +37,11 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 	@Override
 	public String getTitle() {
-		if(this.creatureList != null && this.displayCreature != null) {
-			return this.displayCreature.getTitle();
+		if(this.creatureList != null && this.playerExt.selectedCreature != null) {
+			return this.playerExt.selectedCreature.getTitle();
 		}
-		if(this.groupList != null && this.groupList.selectedGroup != null) {
-			return I18n.translateToLocal(this.groupList.selectedGroup.filename + ".name"); //TODO Add getTitle() to GroupInfo
+		if(this.groupList != null && this.playerExt.selectedGroup != null) {
+			return I18n.translateToLocal(this.playerExt.selectedGroup.filename + ".name"); //TODO Add getTitle() to GroupInfo
 		}
 		return "Creatures";
 	}
@@ -48,8 +52,14 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 		super.initControls();
 
 		this.groupList = new GuiGroupList(this, this.colLeftWidth, this.colLeftHeight, this.colLeftY,this.colLeftY + this.colLeftHeight, this.colLeftX);
-		int creatureListheight = this.colRightHeight;
-		this.creatureList = new GuiCreatureList(GuiCreatureList.Type.KNOWLEDGE, this, this.groupList, this.getScaledX(260F / 1920F), creatureListheight, this.colRightY + 20,this.colRightY + creatureListheight, this.colRightX);
+
+		int creatureListHeight = Math.round((float)this.colRightHeight * 0.6f);
+		int creatureListY = this.colRightY + 20;
+		this.creatureList = new GuiCreatureList(GuiCreatureList.Type.KNOWLEDGE, this, this.groupList, this.getScaledX(260F / 1920F), creatureListHeight, creatureListY,creatureListY + creatureListHeight, this.colRightX);
+
+		int subspeciesListHeight = Math.round((float)this.colRightHeight * 0.3f);
+		int subspeciesListY = creatureListY + 8 + creatureListHeight;
+		this.subspeciesList = new GuiSubspeciesList(this, this.getScaledX(260F / 1920F), subspeciesListHeight, subspeciesListY,subspeciesListY + subspeciesListHeight, this.colRightX);
 	}
 
 
@@ -64,8 +74,9 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 		super.updateControls(mouseX, mouseY, partialTicks);
 
 		this.groupList.drawScreen(mouseX, mouseY, partialTicks);
-		if(this.groupList.selectedGroup != null) {
+		if(this.playerExt.selectedGroup != null) {
 			this.creatureList.drawScreen(mouseX, mouseY, partialTicks);
+			this.subspeciesList.drawScreen(mouseX, mouseY, partialTicks);
 		}
 	}
 
@@ -80,38 +91,51 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 		int width = this.colRightWidth - marginX;
 
 		// Creature Display:
-		if(this.displayCreature != null) {
+		if(this.playerExt.selectedCreature != null) {
 			// Model:
-			this.renderCreature(this.displayCreature, this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + 100, mouseX, mouseY, partialTicks);
-
-			// Level:
-			String text = I18n.translateToLocal("creature.stat.cost") + ": ";
-			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
-			this.drawLevel(this.displayCreature, nextX + this.getFontRenderer().getStringWidth(text), nextY);
+			this.renderCreature(this.playerExt.selectedCreature, this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + 100, mouseX, mouseY, partialTicks);
 
 			// Element:
-			nextY += 12 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = I18n.translateToLocal("creature.stat.element") + ": ";
-			text += this.displayCreature.element != null ? this.displayCreature.element.getTitle() : "None";
+			String text = I18n.translateToLocal("creature.stat.element") + ": ";
+			text += this.playerExt.selectedCreature.element != null ? this.playerExt.selectedCreature.element.getTitle() : "None";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 
+			// Subspecies:
+			nextY += 2 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
+			text = I18n.translateToLocal("creature.stat.subspecies") + ": ";
+			boolean firstSubspecies = true;
+			for(Subspecies subspecies : this.playerExt.selectedCreature.subspecies.values()) {
+				if(!firstSubspecies) {
+					text += ", ";
+				}
+				firstSubspecies = false;
+				text += subspecies.getTitle();
+			}
+			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
+
+			// Level:
+			nextY += 2 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
+			text = I18n.translateToLocal("creature.stat.cost") + ": ";
+			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
+			this.drawLevel(this.playerExt.selectedCreature, AssetManager.getTexture("GUIPetLevel"),nextX + this.getFontRenderer().getStringWidth(text), nextY);
+
 			// Summary:
-			nextY += 12 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = this.displayCreature.getDescription();
+			nextY += 2 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
+			text = this.playerExt.selectedCreature.getDescription();
 			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
 		}
 
 		// Group Display:
-		else if(this.groupList.selectedGroup != null) {
+		else if(this.playerExt.selectedGroup != null) {
 			// Description:
-			String text = I18n.translateToLocal(this.groupList.selectedGroup.filename + ".description");
+			String text = I18n.translateToLocal(this.playerExt.selectedGroup.filename + ".description");
 			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
 
 			// Descovered:
 			nextY += 12 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
 			text = I18n.translateToLocal("beastiary.creatures.descovered") + ": ";
-			text += this.playerExt.getBeastiary().getCreaturesDescovered(this.groupList.selectedGroup);
-			text += "/" + ObjectManager.entityLists.get(this.groupList.selectedGroup.filename).IDtoClassMapping.size();
+			text += this.playerExt.getBeastiary().getCreaturesDescovered(this.playerExt.selectedGroup);
+			text += "/" + ObjectManager.entityLists.get(this.playerExt.selectedGroup.filename).IDtoClassMapping.size();
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 		}
 

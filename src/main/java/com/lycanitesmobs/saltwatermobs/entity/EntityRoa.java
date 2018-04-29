@@ -1,5 +1,6 @@
 package com.lycanitesmobs.saltwatermobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.*;
 import com.lycanitesmobs.core.config.ConfigBase;

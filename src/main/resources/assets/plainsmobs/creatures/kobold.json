@@ -82,6 +82,12 @@
 			"minAmount": 1,
 			"maxAmount": 1,
 			"chance": 0.01
+		},
+		{
+			"item": "minecraft:rabbit",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.5
 		}
 	],
 	"sizeScale": 1,

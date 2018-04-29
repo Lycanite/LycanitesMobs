@@ -30,6 +30,8 @@ public class EntityAITargetOwnerAttack extends EntityAITarget {
     		return false;
     	if(this.host.isSitting())
     		return false;
+		if(!this.host.isAssisting())
+			return false;
     	if(this.host.getOwner() == null)
     		return false;
 

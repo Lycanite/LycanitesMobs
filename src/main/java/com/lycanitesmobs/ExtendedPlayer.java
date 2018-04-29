@@ -36,11 +36,17 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public EntityPlayer player;
 	public Beastiary beastiary;
 	public GroupInfo beastiaryGroup;
-	public CreatureInfo beastiaryCreature;
 	public String beastiaryCategory;
 	public PetManager petManager;
 	public long timePlayed = 0;
-	
+
+	// Beastiary Menu:
+	public GroupInfo selectedGroup;
+	public CreatureInfo selectedCreature;
+	public int selectedSubspecies = 0;
+	public int selectedPetType = 0;
+	public PetEntry selectedPet;
+
 	public long currentTick = 0;
 	public boolean needsFirstSync = true;
 	/** Set for a few seconds after a player breaks a block. **/
@@ -53,7 +59,7 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public static enum CONTROL_ID {
 		JUMP((byte)1), MOUNT_ABILITY((byte)2), MOUNT_INVENTORY((byte)4), ATTACK((byte)8);
 		public byte id;
-		private CONTROL_ID(byte i) { id = i; }
+		CONTROL_ID(byte i) { id = i; }
 	}
     public boolean hasAttacked = false; // If true, this entity has attacked this tick.
 
@@ -64,11 +70,11 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	public int spiritReserved = 0;
 	
 	// Summoning:
+	public int selectedSummonSet = 1;
 	public int summonFocusCharge = 600;
 	public int summonFocusMax = (this.summonFocusCharge * 10);
 	public int summonFocus = this.summonFocusMax;
-	public Map<Integer, SummonSet> summonSets = new HashMap<Integer, SummonSet>();
-	public int selectedSummonSet = 1;
+	public Map<Integer, SummonSet> summonSets = new HashMap<>();
 	public int summonSetMax = 5;
 	public EntityPortal staffPortal;
 

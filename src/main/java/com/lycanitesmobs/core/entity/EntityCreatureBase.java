@@ -288,7 +288,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public enum CMD_PRIOR {
 		OVERRIDE(0), IMPORTANT(1), EQUIPPING(2), ITEM_USE(3), EMPTY_HAND(4), MAIN(5);
 		public final int id;
-	    private CMD_PRIOR(int value) { this.id = value; }
+	    CMD_PRIOR(int value) { this.id = value; }
 	    public int getValue() { return id; }
 	}
 	
@@ -297,7 +297,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public enum GUI_COMMAND_ID {
 		CLOSE((byte)0), SITTING((byte)1), FOLLOWING((byte)2), PASSIVE((byte)3), STANCE((byte)4), PVP((byte)5), TELEPORT((byte)6), SPAWNING((byte)7), RELEASE((byte)8);
 		public byte id;
-		private GUI_COMMAND_ID(byte i) { id = i; }
+		GUI_COMMAND_ID(byte i) { id = i; }
+	}
+
+	// GUI Commands:
+	/** A list of pet command IDs to be used by pet or creature GUIs via a network packet. **/
+	public enum PET_COMMAND {
+		ACTIVE((byte)0), TELEPORT((byte)1), PVP((byte)2), RELEASE((byte)3), PASSIVE((byte)4), DEFENSIVE((byte)5), ASSIST((byte)6), AGGRESSIVE((byte)7), FOLLOW((byte)8), WANDER((byte)9), SIT((byte)10), FLEE((byte)11);
+		public byte id;
+		PET_COMMAND(byte i) { id = i; }
 	}
 	
 	// Items:
@@ -835,21 +843,23 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.isTemporary && this.temporaryDuration-- <= 0)
         	return true;
 
-        // Mob Event Despawning:
-        if(this.getLeashed() || this.isPersistant()) {
-        	this.spawnEventType = "";
-        	this.spawnEventCount = -1;
-        }
-        else {
-        	if(!this.creatureInfo.peaceful && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL && !this.hasCustomName())
-            	return true;
+		// Peaceful:
+		if(!this.creatureInfo.peaceful && this.getEntityWorld().getDifficulty() == EnumDifficulty.PEACEFUL && !this.hasCustomName()) {
+			return true;
+		}
 
-        	ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.getEntityWorld());
-        	if(worldExt != null) {
-        		if(!"".equals(this.spawnEventType) && this.spawnEventCount >= 0 && this.spawnEventCount != worldExt.getWorldEventCount())
-        			return true;
-        	}
-        }
+		// Mob Event Despawning:
+		ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.getEntityWorld());
+		if(worldExt != null) {
+			if(!"".equals(this.spawnEventType) && this.spawnEventCount >= 0 && this.spawnEventCount != worldExt.getWorldEventCount()) {
+				if(this.getLeashed() || this.isPersistant()) {
+					this.spawnEventType = "";
+					this.spawnEventCount = -1;
+					return false;
+				}
+				return true;
+			}
+		}
         return false;
     }
 
@@ -1098,7 +1108,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		return startingLevelMin;
 	}
 
-	/** Sets adn applies the level of this mob refreshing stats, higher levels have higher stats. **/
+	/** Sets and applies the level of this mob refreshing stats, higher levels have higher stats. **/
 	public void applyLevel(int level) {
 		this.setLevel(level);
 		this.refreshStats();

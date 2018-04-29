@@ -250,12 +250,12 @@ public class GUIBeastiary extends GUIBaseScreen {
 	}
 	
 	public void selectCreature(CreatureInfo mobInfo) {
-		this.playerExt.beastiaryCreature = mobInfo;
+		this.playerExt.selectedCreature = mobInfo;
 		this.updateSelectedCreature();
 	}
 	
 	public CreatureInfo getSelectedCreature() {
-		return this.playerExt.beastiaryCreature;
+		return this.playerExt.selectedCreature;
 	}
 	
 	public void updateSelectedCreature() {

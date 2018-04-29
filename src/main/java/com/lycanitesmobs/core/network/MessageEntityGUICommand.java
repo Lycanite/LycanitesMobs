@@ -38,18 +38,15 @@ public class MessageEntityGUICommand implements IMessage, IMessageHandler<Messag
 	public IMessage onMessage(final MessageEntityGUICommand message, final MessageContext ctx) {
 		if(ctx.side != Side.SERVER) return null;
         IThreadListener mainThread = (WorldServer)ctx.getServerHandler().player.getEntityWorld();
-        mainThread.addScheduledTask(new Runnable() {
-            @Override
-            public void run() {
-                EntityPlayer player = ctx.getServerHandler().player;
-                World world = player.getEntityWorld();
-                Entity entity = world.getEntityByID(message.entityID);
-                if (entity instanceof EntityCreatureTameable) {
-                    EntityCreatureTameable pet = (EntityCreatureTameable) entity;
-                    pet.performGUICommand(player, message.guiCommandID);
-                }
-            }
-        });
+        mainThread.addScheduledTask(() -> {
+			EntityPlayer player = ctx.getServerHandler().player;
+			World world = player.getEntityWorld();
+			Entity entity = world.getEntityByID(message.entityID);
+			if (entity instanceof EntityCreatureTameable) {
+				EntityCreatureTameable pet = (EntityCreatureTameable) entity;
+				pet.performGUICommand(player, message.guiCommandID);
+			}
+		});
 		return null;
 	}
 	

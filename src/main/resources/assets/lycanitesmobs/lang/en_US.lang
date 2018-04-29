@@ -164,18 +164,26 @@ gui.beastiary.soulgazerinfo=You currently do not have any creatures added to you
 gui.beastiary.selectacreature=Select a group and then select a creature.
 gui.beastiary.website=View On Website
 #
-# Pet Manager:
+# Pets:
+gui.beastiary.player.spirit=Your Spirit
+gui.beastiary.pets=Pets
+gui.beastiary.mounts=Mounts
+gui.beastiary.familiars=Familiars
+gui.beastiary.selectapet=Select a pet from the menu on the left to manage it.
+gui.beastiary.empty=You have no soulbound pets yet. You can soulbind a pet by crafting a Soulstone and using it on your pet. Soulbound pets can be managed here where they can be summoned and dismissed and will even respawn after dying.
+#
+# Old Pet Manager:
 gui.petmanager.name=Pet Manager
 gui.petmanager.empty=No Pets
 gui.petmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed pets to yourself using a Soulstone. Once soulbound, you can summon and dismiss your pet at will, they will also respawn over time should they die!
 gui.petmanager.removed=Your %creature% has been unbound, it will still exist in the world but will no longer revive after death.
 #
-# Mount Manager:
+# Old Mount Manager:
 gui.mountmanager.name=Mount Manager
 gui.mountmanager.empty=No Mounts
 gui.mountmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed mounts to yourself where you can summon and dismiss them at will allowing you to have a small inventory of various mounts!
 #
-# Minion Manager:
+# Old Minion Manager:
 gui.minion.name=Minion Manager
 gui.minion.empty=No Summonable Creatures
 gui.minion.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
@@ -184,25 +192,29 @@ gui.minionmanager.empty=No Summonable Creatures
 gui.minionmanager.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
 gui.summoningpedestal.name=Summoning Pedestal
 #
-# Familiar Manager:
+# Old Familiar Manager:
 gui.familiarmanager.name=Familiar Manager
 gui.familiarmanager.empty=No Familiars
 gui.familiarmanager.info=You don't have any familiars. Familiars are special minions that will always be by your side. Familiars are given to Patreon donaters as thanks for supporting this mod.
 #
 # Pet/Minion:
-gui.pet.sitting=Sitting
-gui.pet.movement=Movement
-gui.pet.follow=Follow
-gui.pet.wander=Wander
-gui.pet.passive=Passive
+gui.pet.actions=Actions
 gui.pet.stance=Stance
-gui.pet.aggressive=Aggressive
-gui.pet.defensive=Defensive
-gui.pet.pvp=PVP
+gui.pet.movement=Movement
 gui.pet.active=Active
+gui.pet.summon=Summon
+gui.pet.dismiss=Dismiss
 gui.pet.teleport=Teleport
+gui.pet.pvp=PVP
 gui.pet.release=Release
 gui.pet.release.confirm=Are you sure you want to release this pet? Once released the creature will despawn for good, any items it has will be dropped.
+gui.pet.passive=Passive
+gui.pet.defensive=Defensive
+gui.pet.assist=Assist
+gui.pet.aggressive=Aggressive
+gui.pet.follow=Follow
+gui.pet.wander=Wander
+gui.pet.sit=Sit
 #
 # Mounts:
 gui.mount.controls=Press %control% to use mount ability
@@ -412,5 +424,10 @@ equipment.feature.summon.count=Amount:
 #
 #
 # ========== Creatures ==========
-creature.stat.cost=Summoning Cost
 creature.stat.element=Element
+creature.stat.subspecies=Subspecies
+creature.stat.cost=Summoning Cost
+creature.stat.spirit=Summoning Spirit Cost
+creature.stat.focus=Summoning Focus Cost
+creature.stat.health=Health
+creature.stat.respawning=Respawning

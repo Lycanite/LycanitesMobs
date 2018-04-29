@@ -242,8 +242,9 @@ public class PetEntry {
 	public void onUpdate(World world) {
         // Client Side Update:
         if(world.isRemote) {
-            if(this.isRespawning && this.respawnTime > 0)
+            if(this.isRespawning && this.respawnTime > 0) {
                 this.respawnTime--;
+            }
             return;
         }
 

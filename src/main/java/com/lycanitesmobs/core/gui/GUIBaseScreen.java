@@ -3,9 +3,11 @@ package com.lycanitesmobs.core.gui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GUIBaseScreen extends GuiScreen {
 
@@ -54,7 +56,14 @@ public class GUIBaseScreen extends GuiScreen {
 	 * @param width The width of the texture.
 	 * @param height The height of the texture.
 	 */
-    public void drawTexture(ResourceLocation texture, int x, int y, float z, int u, int v, int width, int height) {
+    public void drawTexture(ResourceLocation texture, float x, float y, float z, float u, float v, float width, float height) {
+		GlStateManager.enableBlend();
+		GlStateManager.disableDepth();
+		GlStateManager.depthMask(false);
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.disableAlpha();
+
 		this.mc.getTextureManager().bindTexture(texture);
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
@@ -64,6 +73,11 @@ public class GUIBaseScreen extends GuiScreen {
 		buffer.pos(x + width, y, z).tex(u, 0).endVertex();
 		buffer.pos(x, y, z).tex(0, 0).endVertex();
 		tessellator.draw();
+
+		GlStateManager.disableBlend();
+		GlStateManager.enableDepth();
+		GlStateManager.depthMask(true);
+		GlStateManager.enableAlpha();
     }
 
 
@@ -79,18 +93,52 @@ public class GUIBaseScreen extends GuiScreen {
 	 * @param height The height of the texture.
 	 * @param resolution The resolution (width or height) of the texture.
 	 */
-	public void drawTexturedTiled(ResourceLocation texture, int x, int y, float z, int u, int v, int width, int height, int resolution) {
+	public void drawTexturedTiled(ResourceLocation texture, float x, float y, float z, float u, float v, float width, float height, float resolution) {
+		GlStateManager.enableBlend();
+		GlStateManager.disableDepth();
+		GlStateManager.depthMask(false);
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.disableAlpha();
+
 		this.mc.getTextureManager().bindTexture(texture);
 		float scaleX = 0.00390625F * resolution;
 		float scaleY = scaleX;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
-		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos((double)(x + 0), (double)(y + height), z).tex((double)((float)(u + 0) * scaleX), (double)((float)(v + height) * scaleY)).endVertex();
-		buffer.pos((double)(x + width), (double)(y + height), z).tex((double)((float)(u + width) * scaleX), (double)((float)(v + height) * scaleY)).endVertex();
-		buffer.pos((double)(x + width), (double)(y + 0), z).tex((double)((float)(u + width) * scaleX), (double)((float)(v + 0) * scaleY)).endVertex();
-		buffer.pos((double)(x + 0), (double)(y + 0), z).tex((double)((float)(u + 0) * scaleX), (double)((float)(v + 0) * scaleY)).endVertex();
+		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		buffer.pos((double)(x + 0), (double)(y + height), z).tex((double)((u + 0) * scaleX), (double)((v + height) * scaleY)).endVertex();
+		buffer.pos((double)(x + width), (double)(y + height), z).tex((double)((u + width) * scaleX), (double)((v + height) * scaleY)).endVertex();
+		buffer.pos((double)(x + width), (double)(y + 0), z).tex((double)((u + width) * scaleX), (double)((v + 0) * scaleY)).endVertex();
+		buffer.pos((double)(x + 0), (double)(y + 0), z).tex((double)((u + 0) * scaleX), (double)((v + 0) * scaleY)).endVertex();
 		tessellator.draw();
+	}
+
+
+	/**
+	 *
+	 * @param texture The texture resource location.
+	 * @param x The x position to draw at.
+	 * @param y The y position to draw at.
+	 * @param z The z position to draw at.
+	 * @param width The width of each bar segment.
+	 * @param height The height of each bar segment.
+	 * @param segments How many segments to draw.
+	 * @param segmentLimit How many segments to draw up to before squishing them. If negative the bar is draw backwards.
+	 */
+	public void drawBar(ResourceLocation texture, int x, int y, float z, float width, float height, int segments, int segmentLimit) {
+		boolean reverse = segmentLimit < 0;
+		if(reverse) {
+			segmentLimit = -segmentLimit;
+		}
+		// TODO segmentLimit
+		for (int i = 0; i < segments; i++) {
+			int currentSegment = i;
+			if(reverse) {
+				currentSegment = segmentLimit - i - 1;
+			}
+			this.drawTexture(texture, x + (width * currentSegment), y, z, 1, 1, width, height);
+		}
 	}
 
 

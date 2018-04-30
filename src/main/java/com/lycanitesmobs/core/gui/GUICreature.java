@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.List;
 
-public class GUICreature extends GUIBaseContainer {
+public class GuiCreature extends GuiBaseContainer {
 	public EntityCreatureBase creature;
 	public InventoryCreature creatureInventory;
 	public InventoryPlayer playerInventory;
@@ -26,7 +26,7 @@ public class GUICreature extends GUIBaseContainer {
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUICreature(EntityCreatureBase creature, InventoryPlayer playerInventory) {
+	public GuiCreature(EntityCreatureBase creature, InventoryPlayer playerInventory) {
 		super(new ContainerCreature(creature, playerInventory));
 		this.creature = creature;
 		this.creatureInventory = creature.inventory;

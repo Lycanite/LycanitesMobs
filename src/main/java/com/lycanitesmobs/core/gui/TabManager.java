@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabManager {
-	public static ArrayList<GUITab> tabList = new ArrayList<GUITab>();
+	public static ArrayList<GuiTab> tabList = new ArrayList<GuiTab>();
 
-    public static void registerTab (GUITab tab) {
+    public static void registerTab (GuiTab tab) {
         tabList.add(tab);
     }
 
-    public static ArrayList<GUITab> getTabList () {
+    public static ArrayList<GuiTab> getTabList () {
         return tabList;
     }
     
@@ -49,7 +49,7 @@ public class TabManager {
     public static void updateTabValues (int cornerX, int cornerY, Class<?> selectedButton) {
         int count = 2;
         for(int i = 0; i < tabList.size(); i++) {
-        	GUITab t = tabList.get(i);
+        	GuiTab t = tabList.get(i);
 
             if(t.shouldAddToList()) {
                 t.id = count;
@@ -62,7 +62,7 @@ public class TabManager {
     }
 
     public static void addTabsToList (List buttonList) {
-        for(GUITab tab : tabList) {
+        for(GuiTab tab : tabList) {
             if(tab.shouldAddToList()) {
                 buttonList.add(tab);
             }

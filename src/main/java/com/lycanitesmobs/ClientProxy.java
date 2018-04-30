@@ -4,7 +4,7 @@ import com.lycanitesmobs.core.block.BlockFluidBase;
 import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.entity.EntityHitArea;
 import com.lycanitesmobs.core.entity.EntityPortal;
-import com.lycanitesmobs.core.gui.GUITabMain;
+import com.lycanitesmobs.core.gui.GuiTabMain;
 import com.lycanitesmobs.core.gui.GuiOverlay;
 import com.lycanitesmobs.core.gui.TabManager;
 import com.lycanitesmobs.core.info.GroupInfo;
@@ -24,7 +24,6 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAir;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -82,7 +81,7 @@ public class ClientProxy extends CommonProxy {
 		AssetManager.addTexture("GUIEquipmentForge", group, "textures/guis/equipmentforge.png");
 
 		// ========== Add GUI Tabs ==========
-		TabManager.registerTab(new GUITabMain(0));
+		TabManager.registerTab(new GuiTabMain(0));
     }
 
 

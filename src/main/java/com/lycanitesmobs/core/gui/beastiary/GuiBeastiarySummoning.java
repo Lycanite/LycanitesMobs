@@ -4,14 +4,12 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.gui.GUIButtonCreature;
+import com.lycanitesmobs.core.gui.GuiButtonCreature;
 import com.lycanitesmobs.core.gui.beastiary.list.GuiCreatureList;
-import com.lycanitesmobs.core.gui.beastiary.list.GuiPetTypeList;
 import com.lycanitesmobs.core.gui.beastiary.list.GuiSubspeciesList;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.pets.SummonSet;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.translation.I18n;
@@ -72,7 +70,7 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 			String buttonText = String.valueOf(i);
 			CreatureInfo creatureInfo = this.playerExt.getSummonSet(i).getCreatureInfo();
 			buttonX += tabSpacing;
-			GuiButton tabButton = new GUIButtonCreature(this.summoningSlotIdStart + i, buttonX, buttonY, buttonWidth, buttonHeight, buttonText, creatureInfo);
+			GuiButton tabButton = new GuiButtonCreature(this.summoningSlotIdStart + i, buttonX, buttonY, buttonWidth, buttonHeight, buttonText, creatureInfo);
 			this.buttonList.add(tabButton);
 			if(i == this.playerExt.selectedSummonSet) {
 				tabButton.enabled = false;
@@ -143,8 +141,8 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 			// Summoning Slots:
 			if(button.id >= this.summoningSlotIdStart && button.id < this.petCommandIdStart) {
 				button.enabled = button.id - this.summoningSlotIdStart != this.playerExt.selectedSummonSet;
-				if(button instanceof GUIButtonCreature) {
-					GUIButtonCreature buttonCreature = (GUIButtonCreature)button;
+				if(button instanceof GuiButtonCreature) {
+					GuiButtonCreature buttonCreature = (GuiButtonCreature)button;
 					buttonCreature.creatureInfo = this.playerExt.getSummonSet(button.id - this.summoningSlotIdStart).getCreatureInfo();
 				}
 			}

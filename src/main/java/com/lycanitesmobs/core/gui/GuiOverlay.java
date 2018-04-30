@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
-public class GuiOverlay extends GUIBase {
+public class GuiOverlay extends GuiBase {
 	public Minecraft mc;
 	
 	private int mountMessageTimeMax = 10 * 20;

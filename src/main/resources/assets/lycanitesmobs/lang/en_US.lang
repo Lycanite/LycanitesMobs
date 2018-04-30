@@ -399,13 +399,11 @@ element.void.name=Void
 # ========== Key Bindings ==========
 key.mount.ability=Mount Ability
 key.mount.inventory=Mount Inventory
-key.lycanitesmobs.menu=Lycanites Mobs Main Menu
+key.index=Beastiary Index
 key.beastiary=Beastiary
-key.pet.manager=Pet Manager
-key.mount.manager=Mount Manager
-key.familiar.manager=Familiar Manager
-key.minion.manager=Minion Manager
-key.minion.select=Minion Selection
+key.pets=Pets
+key.summoning=Summoning
+key.minions=Minion Selection
 #
 #
 #

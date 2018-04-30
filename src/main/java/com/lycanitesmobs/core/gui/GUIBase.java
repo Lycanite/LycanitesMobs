@@ -5,12 +5,12 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
-public class GUIBase extends Gui {
+public class GuiBase extends Gui {
 
     // ==================================================
     //                    Constructor
     // ==================================================
-    public GUIBase() {
+    public GuiBase() {
         super();
     }
 

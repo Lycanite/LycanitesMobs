@@ -5,7 +5,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public abstract class GUITab extends GUIBaseButton {
+public abstract class GuiTab extends GuiBaseButton {
 	public ResourceLocation texture = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
     public ResourceLocation icon = null;
     public static int startX = 0;
@@ -15,7 +15,7 @@ public abstract class GUITab extends GUIBaseButton {
     
     public int tabID = 0;
 
-    public GUITab(int id, int posX, int posY, ResourceLocation icon) {
+    public GuiTab(int id, int posX, int posY, ResourceLocation icon) {
         super(550 + id, posX, posY, tabWidth, tabHeight, "");
         this.icon = icon;
         this.tabID = id;

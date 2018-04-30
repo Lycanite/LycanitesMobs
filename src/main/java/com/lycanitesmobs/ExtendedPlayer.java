@@ -401,11 +401,11 @@ public class ExtendedPlayer implements IExtendedPlayer {
     //                 Request GUI Data
     // ==================================================
 	public void requestGUI(byte guiID) {
-		if(guiID == GuiHandler.PlayerGuiType.PET_MANAGER.id)
+		if(guiID == GuiHandler.Beastiary.PETS.id)
 			this.sendPetEntriesToPlayer("pet");
-		if(guiID == GuiHandler.PlayerGuiType.MOUNT_MANAGER.id)
+		if(guiID == GuiHandler.Beastiary.PETS.id)
 			this.sendPetEntriesToPlayer("mount");
-        if(guiID == GuiHandler.PlayerGuiType.FAMILIAR_MANAGER.id)
+        if(guiID == GuiHandler.Beastiary.PETS.id)
             this.sendPetEntriesToPlayer("familiar");
 	}
 

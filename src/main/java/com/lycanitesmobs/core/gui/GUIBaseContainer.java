@@ -6,12 +6,12 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.Container;
 
-public abstract class GUIBaseContainer extends GuiContainer {
+public abstract class GuiBaseContainer extends GuiContainer {
 
     // ==================================================
     //                    Constructor
     // ==================================================
-    public GUIBaseContainer(Container container) {
+    public GuiBaseContainer(Container container) {
         super(container);
     }
 

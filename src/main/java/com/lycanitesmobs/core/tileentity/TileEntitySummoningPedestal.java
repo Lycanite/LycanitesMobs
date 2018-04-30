@@ -8,9 +8,8 @@ import com.lycanitesmobs.core.network.MessageSummoningPedestalStats;
 import com.lycanitesmobs.core.network.MessageSummoningPedestalSummonSet;
 import com.lycanitesmobs.core.container.ContainerSummoningPedestal;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.gui.GUISummoningPedestal;
+import com.lycanitesmobs.core.gui.GuiSummoningPedestal;
 import com.lycanitesmobs.core.pets.SummonSet;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -357,7 +356,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     @Override
     public Object getGUI(EntityPlayer player) {
         if(this.getWorld().isRemote)
-            return new GUISummoningPedestal(player, this);
+            return new GuiSummoningPedestal(player, this);
         return new ContainerSummoningPedestal(this);
     }
 }

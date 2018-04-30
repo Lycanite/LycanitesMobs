@@ -29,7 +29,7 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	public enum PlayerGuiType {
-		LM_MAIN_MENU((byte)0), BEASTIARY((byte)1), PET_MANAGER((byte)2), MOUNT_MANAGER((byte)3), FAMILIAR_MANAGER((byte)4), MINION_MANAGER((byte)5), MINION_SELECTION((byte)6);
+		MINION_SELECTION((byte)0);
 		public byte id;
 		PlayerGuiType(byte i) { id = i; }
 	}
@@ -88,7 +88,7 @@ public class GuiHandler implements IGuiHandler {
 		else if(id == GuiType.ENTITY.id) {
 			Entity entity = world.getEntityByID(x);
 			if(entity instanceof EntityCreatureBase)
-				return new GUICreature((EntityCreatureBase)entity, player.inventory);
+				return new GuiCreature((EntityCreatureBase)entity, player.inventory);
 		}
 		
 		// ========== Item ==========
@@ -114,29 +114,11 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiBeastiaryElements(player);
 			}
 		}
-		
+
 		// ========== Player ==========
 		else if(id == GuiType.PLAYER.id) {
-			if(x == PlayerGuiType.BEASTIARY.id) {
-				return new GUIBeastiary(player);
-			}
-			if(x == PlayerGuiType.LM_MAIN_MENU.id) {
-				return new GUILMMainMenu(player);
-			}
-			if(x == PlayerGuiType.PET_MANAGER.id) {
-				return new GUIPetManager(player);
-			}
-			if(x == PlayerGuiType.MOUNT_MANAGER.id) {
-				return new GUIMountManager(player);
-			}
-            if(x == PlayerGuiType.FAMILIAR_MANAGER.id) {
-                return new GUIFamiliar(player);
-            }
-            if(x == PlayerGuiType.MINION_MANAGER.id) {
-                return new GUIMinion(player, y);
-            }
 			if(x == PlayerGuiType.MINION_SELECTION.id) {
-				return new GUIMinionSelection(player);
+				return new GuiMinionSelection(player);
 			}
 		}
 		

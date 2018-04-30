@@ -6,10 +6,10 @@ import com.lycanitesmobs.core.gui.beastiary.GuiBeastiarySummoning;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-public class GUITabMinion extends GUITab {
+public class GuiTabMinion extends GuiTab {
 	
-	public GUITabMinion(int id) {
-        super(id, GUITab.startX, GUITab.startY, new ResourceLocation(LycanitesMobs.modid, "textures/items/summoningstaff.png"));
+	public GuiTabMinion(int id) {
+        super(id, GuiTab.startX, GuiTab.startY, new ResourceLocation(LycanitesMobs.modid, "textures/items/summoningstaff.png"));
     }
 
     @Override

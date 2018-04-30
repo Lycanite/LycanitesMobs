@@ -1,8 +1,10 @@
 package com.lycanitesmobs;
 
 import com.lycanitesmobs.core.gui.*;
-import com.lycanitesmobs.core.gui.*;
+import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryCreatures;
 import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryIndex;
+import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryPets;
+import com.lycanitesmobs.core.gui.beastiary.GuiBeastiarySummoning;
 import com.lycanitesmobs.core.network.MessagePlayerAttack;
 import com.lycanitesmobs.core.network.MessagePlayerControl;
 import net.minecraft.client.Minecraft;
@@ -27,13 +29,12 @@ public class KeyHandler {
 	
 	public KeyBinding mountAbility = new KeyBinding(I18n.translateToLocal("key.mount.ability"), Keyboard.KEY_X, "Lycanites Mobs");
 	public KeyBinding mountInventory = new KeyBinding(I18n.translateToLocal("key.mount.inventory"), Keyboard.KEY_NONE, "Lycanites Mobs");
+
 	public KeyBinding beastiary = new KeyBinding(I18n.translateToLocal("key.beastiary"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding lmMainMenu = new KeyBinding(I18n.translateToLocal("key.lycanitesmobs.menu"), Keyboard.KEY_G, "Lycanites Mobs");
-	public KeyBinding petManager = new KeyBinding(I18n.translateToLocal("key.pet.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding mountManager = new KeyBinding(I18n.translateToLocal("key.mount.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-    public KeyBinding familiarManager = new KeyBinding(I18n.translateToLocal("key.familiar.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding minionManager = new KeyBinding(I18n.translateToLocal("key.minion.manager"), Keyboard.KEY_NONE, "Lycanites Mobs");
-	public KeyBinding minionSelection = new KeyBinding(I18n.translateToLocal("key.minion.select"), Keyboard.KEY_R, "Lycanites Mobs");
+	public KeyBinding index = new KeyBinding(I18n.translateToLocal("key.index"), Keyboard.KEY_G, "Lycanites Mobs");
+	public KeyBinding pets = new KeyBinding(I18n.translateToLocal("key.pets"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding summoning = new KeyBinding(I18n.translateToLocal("key.summoning"), Keyboard.KEY_NONE, "Lycanites Mobs");
+	public KeyBinding minionSelection = new KeyBinding(I18n.translateToLocal("key.minions"), Keyboard.KEY_R, "Lycanites Mobs");
 	
 	// ==================================================
     //                     Constructor
@@ -43,15 +44,13 @@ public class KeyHandler {
 		instance = this;
 		
 		// Register Keys:
-		ClientRegistry.registerKeyBinding(mountAbility);
-		ClientRegistry.registerKeyBinding(mountInventory);
-		ClientRegistry.registerKeyBinding(lmMainMenu);
-		ClientRegistry.registerKeyBinding(beastiary);
-		ClientRegistry.registerKeyBinding(petManager);
-		ClientRegistry.registerKeyBinding(mountManager);
-        ClientRegistry.registerKeyBinding(familiarManager);
-		ClientRegistry.registerKeyBinding(minionManager);
-		ClientRegistry.registerKeyBinding(minionSelection);
+		ClientRegistry.registerKeyBinding(this.mountAbility);
+		ClientRegistry.registerKeyBinding(this.mountInventory);
+		ClientRegistry.registerKeyBinding(this.index);
+		ClientRegistry.registerKeyBinding(this.beastiary);
+		ClientRegistry.registerKeyBinding(this.pets);
+		ClientRegistry.registerKeyBinding(this.summoning);
+		ClientRegistry.registerKeyBinding(this.minionSelection);
 	}
 	
 	
@@ -81,39 +80,28 @@ public class KeyHandler {
 		}
 
 		// LM Main Menu:
-		if(this.lmMainMenu.isPressed()) {
-			GUILMMainMenu.openToPlayer(this.mc.player);
+		if(this.index.isPressed()) {
+			GuiBeastiaryIndex.openToPlayer(this.mc.player);
 		}
 
 		// Beastiary:
 		if(this.beastiary.isPressed()) {
-			//GUIBeastiary.openToPlayer(this.mc.player);
-			GuiBeastiaryIndex.openToPlayer(this.mc.player);
+			GuiBeastiaryCreatures.openToPlayer(this.mc.player);
 		}
 
 		// Pet Manager:
-		if(this.petManager.isPressed()) {
-			GUIPetManager.openToPlayer(this.mc.player);
+		if(this.pets.isPressed()) {
+			GuiBeastiaryPets.openToPlayer(this.mc.player);
 		}
-
-		// Mount Manager:
-		if(this.mountManager.isPressed()) {
-			GUIMountManager.openToPlayer(this.mc.player);
-		}
-
-        // Familiar Manager:
-        if(this.familiarManager.isPressed()) {
-            GUIFamiliar.openToPlayer(this.mc.player);
-        }
 
 		// Minion Manager:
-		if(this.minionManager.isPressed()) {
-			GUIMinion.openToPlayer(this.mc.player, playerExt.selectedSummonSet);
+		if(this.summoning.isPressed()) {
+			GuiBeastiarySummoning.openToPlayer(this.mc.player);
 		}
 		
 		// Minion Selection: Closes If Not Holding:
 		try {
-			if ((!Keyboard.isKeyDown(this.minionSelection.getKeyCode()) && !Mouse.isButtonDown(this.minionSelection.getKeyCode())) && this.mc.currentScreen instanceof GUIMinionSelection) {
+			if ((!Keyboard.isKeyDown(this.minionSelection.getKeyCode()) && !Mouse.isButtonDown(this.minionSelection.getKeyCode())) && this.mc.currentScreen instanceof GuiMinionSelection) {
 				this.mc.player.closeScreen();
 			}
 		}
@@ -124,7 +112,7 @@ public class KeyHandler {
 			// ========== HUD Controls ==========
 			// Minion Selection:
 			if(this.minionSelection.isPressed()) {
-				GUIMinionSelection.openToPlayer(this.mc.player);
+				GuiMinionSelection.openToPlayer(this.mc.player);
 			}
 			
 			

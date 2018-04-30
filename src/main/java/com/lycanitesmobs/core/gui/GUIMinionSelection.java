@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-public class GUIMinionSelection extends GUIBaseScreen {
+public class GuiMinionSelection extends GuiBaseScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
 	
@@ -39,7 +39,7 @@ public class GUIMinionSelection extends GUIBaseScreen {
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIMinionSelection(EntityPlayer player) {
+	public GuiMinionSelection(EntityPlayer player) {
 		super();
 		this.player = player;
 		this.playerExt = ExtendedPlayer.getForPlayer(player);
@@ -106,23 +106,23 @@ public class GUIMinionSelection extends GUIBaseScreen {
         int offset = 32;
         
         creatureInfo = this.playerExt.getSummonSet(1).getCreatureInfo();
-        button = new GUIButtonCreature(1, buttonX, buttonY - Math.round(offset * 2), buttonWidth, buttonHeight, "" + 1, creatureInfo);
+        button = new GuiButtonCreature(1, buttonX, buttonY - Math.round(offset * 2), buttonWidth, buttonHeight, "" + 1, creatureInfo);
     	this.buttonList.add(button);
     	
         creatureInfo = this.playerExt.getSummonSet(2).getCreatureInfo();
-        button = new GUIButtonCreature(2, buttonX + Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 2, creatureInfo);
+        button = new GuiButtonCreature(2, buttonX + Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 2, creatureInfo);
     	this.buttonList.add(button);
     	
         creatureInfo = this.playerExt.getSummonSet(3).getCreatureInfo();
-        button = new GUIButtonCreature(3, buttonX + Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 3, creatureInfo);
+        button = new GuiButtonCreature(3, buttonX + Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 3, creatureInfo);
     	this.buttonList.add(button);
     	
         creatureInfo = this.playerExt.getSummonSet(4).getCreatureInfo();
-        button = new GUIButtonCreature(4, buttonX - Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 4, creatureInfo);
+        button = new GuiButtonCreature(4, buttonX - Math.round(offset * 1), buttonY +  Math.round(offset * 1.75F), buttonWidth, buttonHeight, "" + 4, creatureInfo);
     	this.buttonList.add(button);
     	
         creatureInfo = this.playerExt.getSummonSet(5).getCreatureInfo();
-        button = new GUIButtonCreature(5, buttonX - Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 5, creatureInfo);
+        button = new GuiButtonCreature(5, buttonX - Math.round(offset * 2), buttonY - Math.round(offset * 0.5F), buttonWidth, buttonHeight, "" + 5, creatureInfo);
     	this.buttonList.add(button);
         
         /*for(int setID = 1; setID <= 5; setID++) {

@@ -6,7 +6,7 @@ import com.lycanitesmobs.GuiHandler;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import com.lycanitesmobs.core.gui.GUIBaseScreen;
+import com.lycanitesmobs.core.gui.GuiBaseScreen;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -23,9 +23,8 @@ import net.minecraft.world.World;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
-public abstract class GuiBeastiary extends GUIBaseScreen {
+public abstract class GuiBeastiary extends GuiBaseScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
 	public EntityLivingBase creaturePreviewEntity;

@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-public class GuiEquipmentForge extends GUIBaseContainer {
+public class GuiEquipmentForge extends GuiBaseContainer {
 	public InventoryPlayer playerInventory;
 	public TileEntityEquipmentForge equipmentForge;
 	public String currentMode = "empty";

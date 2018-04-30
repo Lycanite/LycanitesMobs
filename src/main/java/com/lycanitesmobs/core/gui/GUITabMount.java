@@ -4,10 +4,10 @@ import com.lycanitesmobs.KeyHandler;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
 
-public class GUITabMount extends GUITab {
+public class GuiTabMount extends GuiTab {
 	
-	public GUITabMount(int id) {
-        super(id, GUITab.startX, GUITab.startY, new ResourceLocation("textures/items/saddle.png"));
+	public GuiTabMount(int id) {
+        super(id, GuiTab.startX, GuiTab.startY, new ResourceLocation("textures/items/saddle.png"));
     }
 
     @Override

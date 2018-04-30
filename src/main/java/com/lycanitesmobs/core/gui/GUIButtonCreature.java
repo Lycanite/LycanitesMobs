@@ -6,15 +6,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.opengl.GL11;
 
-public class GUIButtonCreature extends GUIBaseButton {
+public class GuiButtonCreature extends GuiBaseButton {
 	public CreatureInfo creatureInfo;
 
-	public GUIButtonCreature(int buttonID, int x, int y, String text, CreatureInfo creatureInfo) {
+	public GuiButtonCreature(int buttonID, int x, int y, String text, CreatureInfo creatureInfo) {
         super(buttonID, x, y, 32, 32, text);
         this.creatureInfo = creatureInfo;
     }
 	
-	public GUIButtonCreature(int buttonID, int x, int y, int w, int h, String text, CreatureInfo creatureInfo) {
+	public GuiButtonCreature(int buttonID, int x, int y, int w, int h, String text, CreatureInfo creatureInfo) {
         super(buttonID, x, y, w, h, text);
         this.creatureInfo = creatureInfo;
     }

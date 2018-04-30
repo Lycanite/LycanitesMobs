@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-public class GUIBaseManager extends GUIBaseScreen {
+public class GUIBaseManager extends GuiBaseScreen {
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
 	public String type;
@@ -239,7 +239,7 @@ public class GUIBaseManager extends GUIBaseScreen {
         int buttonX = this.windowX + 6;
         int buttonY = this.windowY;
 
-		this.buttonList.add(new GUITabMain(this.tabButtonID, buttonX, buttonY - 24));
+		this.buttonList.add(new GuiTabMain(this.tabButtonID, buttonX, buttonY - 24));
 
 		buttonX = this.centerX + buttonSpacing;
 		int buttonXRight = buttonX + buttonWidth + buttonSpacing;
@@ -275,7 +275,7 @@ public class GUIBaseManager extends GUIBaseScreen {
 				GuiButton button = (GuiButton)buttonObj;
 
 				// Tab:
-				if(button instanceof GUITabMain) {
+				if(button instanceof GuiTabMain) {
 					button.enabled = true;
 					button.visible = true;
 					continue;
@@ -303,7 +303,7 @@ public class GUIBaseManager extends GUIBaseScreen {
 
         // Behaviour Buttons:
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
-            button.displayString = I18n.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.sit") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
             button.displayString = (this.summonSet.getFollowing() ? I18n.translateToLocal("gui.pet.follow") : I18n.translateToLocal("gui.pet.wander"));
@@ -426,9 +426,9 @@ public class GUIBaseManager extends GUIBaseScreen {
         this.playerExt.sendSummonSetToServer((byte)this.editSet);
         for(Object buttonObj : this.buttonList) {
             GuiButton button = (GuiButton)buttonObj;
-            if(button instanceof GUIButtonCreature && button.id == this.editSet + this.tabButtonID) {
+            if(button instanceof GuiButtonCreature && button.id == this.editSet + this.tabButtonID) {
                 CreatureInfo creatureInfo = this.playerExt.getSummonSet(this.editSet).getCreatureInfo();
-                ((GUIButtonCreature)button).creatureInfo = creatureInfo;
+                ((GuiButtonCreature)button).creatureInfo = creatureInfo;
             }
         }
     }

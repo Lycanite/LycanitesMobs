@@ -6,18 +6,18 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GUIButtonTab extends GUIBaseButton {
+public class GuiButtonTab extends GuiBaseButton {
 	ResourceLocation texture;
 	
 	// ==================================================
   	//                    Constructor
   	// ==================================================
-	public GUIButtonTab(int buttonID, int x, int y, ResourceLocation texture) {
+	public GuiButtonTab(int buttonID, int x, int y, ResourceLocation texture) {
         super(buttonID, x, y, 32, 32, "");
         this.texture = texture;
     }
 	
-	public GUIButtonTab(int buttonID, int x, int y, int w, int h, ResourceLocation texture) {
+	public GuiButtonTab(int buttonID, int x, int y, int w, int h, ResourceLocation texture) {
         super(buttonID, x, y, w, h, "");
         this.texture = texture;
     }

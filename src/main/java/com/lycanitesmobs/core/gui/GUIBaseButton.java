@@ -5,12 +5,12 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
-public class GUIBaseButton extends GuiButton {
+public class GuiBaseButton extends GuiButton {
 
     // ==================================================
     //                    Constructor
     // ==================================================
-    public GUIBaseButton(int buttonID, int x, int y, int width, int height, String text) {
+    public GuiBaseButton(int buttonID, int x, int y, int width, int height, String text) {
         super(buttonID, x, y, width, height, text);
     }
 

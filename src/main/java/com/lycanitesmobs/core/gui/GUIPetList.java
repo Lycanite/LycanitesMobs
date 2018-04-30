@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GUIPetList extends GuiScrollingList {
 	GUIBaseManager parentGUI;
-	List<PetEntry> petList = new ArrayList<PetEntry>();
+	List<PetEntry> petList = new ArrayList<>();
 
 	// ==================================================
   	//                    Constructor

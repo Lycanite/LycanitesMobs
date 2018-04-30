@@ -9,13 +9,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.opengl.GL11;
 
-public class GUISummoningPedestal extends GUIBaseManager {
+public class GuiSummoningPedestal extends GUIBaseManager {
     public TileEntitySummoningPedestal summoningPedestal;
 
     // ==================================================
     //                    Constructor
     // ==================================================
-    public GUISummoningPedestal(EntityPlayer player, TileEntitySummoningPedestal summoningPedestal) {
+    public GuiSummoningPedestal(EntityPlayer player, TileEntitySummoningPedestal summoningPedestal) {
         super(player, "minion");
         this.summoningPedestal = summoningPedestal;
         this.summonSet = this.summoningPedestal.summonSet;
@@ -38,7 +38,7 @@ public class GUISummoningPedestal extends GUIBaseManager {
         int listBottom = listTop + listHeight;
         int listX = this.windowX + (buttonSpacing * 2);
 
-        this.list = new GUISummoningPedestalList(this, this.playerExt, listWidth, listHeight, listTop, listBottom, listX);
+        this.list = new GuiSummoningPedestalList(this, this.playerExt, listWidth, listHeight, listTop, listBottom, listX);
         this.list.registerScrollButtons(this.buttonList, 51, 52);
     }
 
@@ -118,7 +118,7 @@ public class GUISummoningPedestal extends GUIBaseManager {
         int buttonX = this.windowX + 6;
         int buttonY = this.windowY;
 
-        this.buttonList.add(new GUITabMain(this.tabButtonID, buttonX, buttonY - 24));
+        this.buttonList.add(new GuiTabMain(this.tabButtonID, buttonX, buttonY - 24));
 
         buttonX = this.centerX + buttonSpacing;
         int buttonXRight = buttonX + buttonWidth + buttonSpacing;
@@ -142,7 +142,7 @@ public class GUISummoningPedestal extends GUIBaseManager {
     public void updateButtons(GuiButton button) {
         // Behaviour Buttons:
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
-            button.displayString = I18n.translateToLocal("gui.pet.sitting") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
+            button.displayString = I18n.translateToLocal("gui.pet.sit") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
             button.displayString = I18n.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));

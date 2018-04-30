@@ -5,13 +5,13 @@ import com.lycanitesmobs.core.gui.beastiary.GuiBeastiaryIndex;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-public class GUITabMain extends GUITab {
+public class GuiTabMain extends GuiTab {
 
-	public GUITabMain(int id) {
-        super(id, GUITab.startX, GUITab.startY, new ResourceLocation(LycanitesMobs.modid, "textures/items/soulgazer.png"));
+	public GuiTabMain(int id) {
+        super(id, GuiTab.startX, GuiTab.startY, new ResourceLocation(LycanitesMobs.modid, "textures/items/soulgazer.png"));
     }
 
-    public GUITabMain(int id, int x, int y) {
+    public GuiTabMain(int id, int x, int y) {
         super(id, x, y, new ResourceLocation(LycanitesMobs.modid, "textures/items/soulgazer.png"));
     }
 

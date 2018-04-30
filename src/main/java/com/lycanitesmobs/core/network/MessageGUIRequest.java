@@ -34,14 +34,11 @@ public class MessageGUIRequest implements IMessage, IMessageHandler<MessageGUIRe
 	public IMessage onMessage(final MessageGUIRequest message, final MessageContext ctx) {
 		if(ctx.side != Side.SERVER) return null;
         IThreadListener mainThread = (WorldServer)ctx.getServerHandler().player.getEntityWorld();
-        mainThread.addScheduledTask(new Runnable() {
-            @Override
-            public void run() {
-                EntityPlayer player = ctx.getServerHandler().player;
-                ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-                playerExt.requestGUI(message.guiID);
-            }
-        });
+        mainThread.addScheduledTask(() -> {
+			EntityPlayer player = ctx.getServerHandler().player;
+			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
+			playerExt.requestGUI(message.guiID);
+		});
 		return null;
 	}
 	

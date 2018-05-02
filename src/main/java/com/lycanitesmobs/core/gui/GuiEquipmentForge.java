@@ -18,19 +18,21 @@ public class GuiEquipmentForge extends GuiBaseContainer {
 	public String currentMode = "empty";
 	public boolean confirmation = false;
 
-	// ==================================================
-  	//                    Constructor
-  	// ==================================================
+	/**
+	 * Constructor
+	 * @param equipmentForge
+	 * @param playerInventory
+	 */
 	public GuiEquipmentForge(TileEntityEquipmentForge equipmentForge, InventoryPlayer playerInventory) {
 		super(new ContainerEquipmentForge(equipmentForge, playerInventory));
 		this.playerInventory = playerInventory;
 		this.equipmentForge = equipmentForge;
 	}
-	
-	
-	// ==================================================
-  	//                       Init
-  	// ==================================================
+
+
+	/**
+	 * Initializes this Forge GUI.
+	 */
 	@Override
 	public void initGui() {
 		super.initGui();
@@ -38,25 +40,30 @@ public class GuiEquipmentForge extends GuiBaseContainer {
         this.ySize = 166;
         int backX = (this.width - this.xSize) / 2;
         int backY = (this.height - this.ySize) / 2;
-		this.drawControls(backX, backY);
+		this.initControls(backX, backY);
 	}
-	
-	
-	// ==================================================
-  	//                    Foreground
-  	// ==================================================
+
+
+	/**
+	 * Draws the foreground GUI layer.
+	 * @param mouseX The x position of the mouse cursor.
+	 * @param mouseY The y position of the mouse cursor.
+	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j) {
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		this.fontRenderer.drawString(this.equipmentForge.getName(), 8, 6, 4210752);
         this.fontRenderer.drawString(I18n.translateToLocal(this.playerInventory.getName()), 8, this.ySize - 96 + 2, 4210752);
     }
-	
-	
-	// ==================================================
-  	//                    Background
-  	// ==================================================
+
+
+	/**
+	 * Draws the background GUI layer.
+	 * @param partialTicks Ticks used for animation.
+	 * @param mouseX The x position of the mouse cursor.
+	 * @param mouseY The y position of the mouse cursor.
+	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIEquipmentForge"));
         this.xSize = 176;
@@ -65,27 +72,15 @@ public class GuiEquipmentForge extends GuiBaseContainer {
         int backY = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(backX, backY, 0, 0, this.xSize, this.ySize);
 
-		this.drawFrames(backX, backY, i, j);
 		this.drawSlots(backX, backY);
 	}
-	
-	// ========== Draw Frames ===========
-	protected void drawFrames(int backX, int backY, int mouseX, int mouseY) {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIEquipmentForge"));
-        
-        // Status Frame:
-        int statusWidth = 90;
-        int statusHeight = 54;
-        this.drawTexturedModalRect(backX + 79, backY + 17, 0, 256 - statusHeight, statusWidth, statusHeight);
-        
-        // Creature Frame:
-        int creatureWidth = 54;
-        int creatureHeight = 54;
-        this.drawTexturedModalRect(backX - creatureWidth + 1, backY + 17, statusWidth, 256 - creatureHeight, creatureWidth, creatureHeight);
-	}
-	
-	// ========== Draw Slots ===========
+
+
+	/**
+	 * Draws each Equipment Slot.
+	 * @param backX
+	 * @param backY
+	 */
 	protected void drawSlots(int backX, int backY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIEquipmentForge"));
@@ -103,9 +98,14 @@ public class GuiEquipmentForge extends GuiBaseContainer {
 			this.drawTexturedModalRect(slotX, slotY, slotU, slotV, slotWidth, slotHeight);
 		}*/
 	}
-	
-	// ========== Draw Controls ===========
-	protected void drawControls(int backX, int backY) {
+
+
+	/**
+	 * Creates and initially positions controls such as buttons.
+	 * @param backX
+	 * @param backY
+	 */
+	protected void initControls(int backX, int backY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         int buttonSpacing = 2;
         int buttonWidth = 128;
@@ -123,11 +123,13 @@ public class GuiEquipmentForge extends GuiBaseContainer {
         buttonY += buttonSpacing;
         this.buttonList.add(new GuiButton(1, buttonX + buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
     }
-	
-	
-	// ==================================================
-  	//                     Actions
-  	// ==================================================
+
+
+	/**
+	 * Called when a control is interacted with by the user.
+	 * @param guiButton The button that was interacted with.
+	 * @throws IOException
+	 */
 	@Override
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		if(guiButton != null) {

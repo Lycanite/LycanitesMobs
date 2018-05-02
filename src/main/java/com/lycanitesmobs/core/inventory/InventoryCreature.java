@@ -545,7 +545,7 @@ public class InventoryCreature implements IInventory {
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
     	// Read Items:
         NonNullList<ItemStack> itemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbtTagCompound, itemStacks); // Reads ItemStack into a List from NBT Tag Compound.
+        ItemStackHelper.loadAllItems(nbtTagCompound, itemStacks); // Reads ItemStack into a List from "Items" tag.
 
     	for(int i = 0; i < itemStacks.size(); ++i) {
     		if(i < this.getSizeInventory()) {

@@ -16,21 +16,22 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 
 public class TileEntityEquipmentForge extends TileEntityBase implements IInventory {
-	protected NonNullList<ItemStack> itemStacks = NonNullList.withSize(24, ItemStack.EMPTY);
+	/** A list of item stacks in the forge. **/
+	protected NonNullList<ItemStack> itemStacks = NonNullList.withSize(ItemEquipment.PART_LIMIT + 1, ItemStack.EMPTY);
 
+	/** The level of the forge. **/
 	protected int level = 1;
 
-	// ========================================
-	//                  Remove
-	// ========================================
-	public void onRemove() {
+	/** If true, an existing Equipment Piece was placed in the forge first for editing. **/
+	protected boolean editing = false;
 
+
+	@Override
+	public void onRemove() {
+		// TODO Drop parts or piece.
 	}
 
 
-	// ========================================
-	//                  Update
-	// ========================================
 	@Override
 	public void update() {
 
@@ -41,6 +42,7 @@ public class TileEntityEquipmentForge extends TileEntityBase implements IInvento
 	public int getSizeInventory() {
 		return 0;
 	}
+
 
 	// ========================================
 	//                Inventory

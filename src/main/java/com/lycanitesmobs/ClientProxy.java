@@ -143,7 +143,7 @@ public class ClientProxy extends CommonProxy {
         }
 
         if(item instanceof ItemEquipmentPart) {
-			ForgeHooksClient.registerTESRItemStack(item, 0, TileEntityEquipmentPart.class);
+			ForgeHooksClient.registerTESRItemStack(item, 0, TileEntityEquipmentPart.class); // A deprecated yet the only way to render dynamic OBJ models that can be animated, rendered in stages, layers and mixed with other models.
 		}
 
         if(item instanceof ItemBase) {

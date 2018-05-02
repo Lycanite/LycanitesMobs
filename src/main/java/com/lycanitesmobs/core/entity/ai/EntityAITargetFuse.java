@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity.ai;
 
 import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.info.CreatureManager;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -97,8 +98,8 @@ public class EntityAITargetFuse extends EntityAITarget {
 			return false;
 
 		// Owner Check:
-		if(target instanceof EntityCreatureBase) {
-			if(this.host.getOwner() != ((EntityCreatureBase)target).getOwner()) {
+		if(this.host instanceof EntityCreatureTameable && target instanceof EntityCreatureTameable) {
+			if(((EntityCreatureTameable)this.host).getPlayerOwner() != ((EntityCreatureTameable)target).getPlayerOwner()) {
 				return false;
 			}
 		}

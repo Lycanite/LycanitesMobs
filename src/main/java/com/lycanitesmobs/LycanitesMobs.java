@@ -140,8 +140,8 @@ public class LycanitesMobs {
 		if(config.getBool("Potion Effects", "Enable Custom Effects", true, "Set to false to disable the custom potion effects.")) {
 			ObjectManager.addPotionEffect("paralysis", config, true, 0xFFFF00, false);
 			ObjectManager.addPotionEffect("penetration", config, true, 0x222222, false);
-			ObjectManager.addPotionEffect("recklessness", config, true, 0xFF0044, false);
-			ObjectManager.addPotionEffect("rage", config, true, 0xFF4400, false);
+			ObjectManager.addPotionEffect("recklessness", config, true, 0xFF0044, false); // TODO Implement
+			ObjectManager.addPotionEffect("rage", config, true, 0xFF4400, false); // TODO Implement
 			ObjectManager.addPotionEffect("weight", config, true, 0x000022, false);
 			ObjectManager.addPotionEffect("fear", config, false, 0x220022, false);
 			ObjectManager.addPotionEffect("decay", config, true, 0x110033, false);

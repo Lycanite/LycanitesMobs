@@ -57,9 +57,10 @@ public class ItemEquipmentPart extends ItemBase {
 	public int levelMax = 3;
 
 
-	// ==================================================
-	//                   Constructor
-	// ==================================================
+	/**
+	 * Constructor
+	 * @param groupInfo The group that this part belongs to.
+	 */
 	public ItemEquipmentPart(GroupInfo groupInfo) {
 		super();
 		this.group = groupInfo;
@@ -151,11 +152,11 @@ public class ItemEquipmentPart extends ItemBase {
 
 	@Override
 	public int getMetadata(ItemStack stack) {
-		ITEMSTACK_TO_RENDER = stack; // A sad hack for getting the item to render, hopefully a proper way will become available.
+		ITEMSTACK_TO_RENDER = stack; // Render hack.
 		return super.getMetadata(stack);
 	}
 
-	/** Gets or creates an NBT Compund for the provided itemstack. **/
+	/** Gets or creates an NBT Compound for the provided itemstack. **/
 	public NBTTagCompound getTagCompound(ItemStack itemStack) {
 		if(itemStack.hasTagCompound()) {
 			return itemStack.getTagCompound();
@@ -163,6 +164,10 @@ public class ItemEquipmentPart extends ItemBase {
 		return new NBTTagCompound();
 	}
 
+
+	// ==================================================
+	//                   Equipment Part
+	// ==================================================
 	/** Sets up this equipment part, this is called when the provided stack is dropped and needs to have its level randomized, etc. **/
 	public void initializePart(World world, ItemStack itemStack) {
 		NBTTagCompound nbt = this.getTagCompound(itemStack);

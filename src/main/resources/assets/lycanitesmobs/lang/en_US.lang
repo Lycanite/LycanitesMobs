@@ -159,50 +159,40 @@ itemGroup.lycanitesmobs.equipmentparts=Lycanites Mobs: Equipment Parts
 #
 # Beastiary:
 gui.beastiary.name=Beastiary
-gui.beastiary.empty=No Creatures
-gui.beastiary.soulgazerinfo=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find.
-gui.beastiary.selectacreature=Select a group and then select a creature.
-gui.beastiary.website=View On Website
+gui.beastiary.player.spirit=Your Spirit
+gui.beastiary.player.focus=Your Summoning Focus
 #
 # Index:
 gui.beastiary.index.title=Index
 gui.beastiary.index.description=Welcome to the Lycanites Mobs Beastiary! Here you can look up all creatures that you have gained knownledge of to better equip yourself against the threats that loom out yonder! You can also manage any pets, mounts and familiars that you may have tamed and then soulbound to yourself. You can also manage what minions you want to summon!
 #
+# Creatures:
+gui.beastiary.creatures=Creatures
+gui.beastiary.creatures.empty.title=No Creatures
+gui.beastiary.creatures.empty.info=You currently do not have any creatures added to your Beastiary. To discover new creatures you must craft a Soulgazer and then use it on any creatures that you find or kill many of them.
+gui.beastiary.creatures.descovered=Creatures Descovered
+gui.beastiary.creatures.select=Select a group and then select a creature.
+gui.beastiary.website=View On Website
+#
 # Pets:
-gui.beastiary.player.spirit=Your Spirit
 gui.beastiary.pets=Pets
 gui.beastiary.mounts=Mounts
 gui.beastiary.familiars=Familiars
-gui.beastiary.selectapet=Select a pet from the menu on the left to manage it.
-gui.beastiary.empty=You have no soulbound pets yet. You can soulbind a pet by crafting a Soulstone and using it on your pet. Soulbound pets can be managed here where they can be summoned and dismissed and will even respawn after dying.
+gui.beastiary.pets.select=Select a pet from the menu on the left to manage it.
+gui.beastiary.pets.empty.title=No Soulbound Pets
+gui.beastiary.pets.empty.info=You have no soulbound pets yet. You can soulbind a pet by crafting a Soulstone and using it on your pet. Soulbound pets can be managed here where they can be summoned and dismissed and will even respawn after dying.
 #
 # Summoning:
-gui.beastiary.player.focus=Your Summoning Focus
+gui.beastiary.summoning=Summoning
+gui.beastiary.summoning.empty.title=No Summonable Creatures Descovered
+gui.beastiary.summoning.empty.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
 #
-# Old Pet Manager:
-gui.petmanager.name=Pet Manager
-gui.petmanager.empty=No Pets
-gui.petmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed pets to yourself using a Soulstone. Once soulbound, you can summon and dismiss your pet at will, they will also respawn over time should they die!
-gui.petmanager.removed=Your %creature% has been unbound, it will still exist in the world but will no longer revive after death.
+# Elements:
+gui.beastiary.elements=Elements
+gui.beastiary.elements.comingsoon=This page will feature information about the Elements used by Creatures along with what each Buff and Debuff does. Coming Soon!
 #
-# Old Mount Manager:
-gui.mountmanager.name=Mount Manager
-gui.mountmanager.empty=No Mounts
-gui.mountmanager.info=Some creatures can be tamed as either Pets or Mounts. You can craft various treats in order to tame these creatures. You can then soulbind tamed mounts to yourself where you can summon and dismiss them at will allowing you to have a small inventory of various mounts!
-#
-# Old Minion Manager:
-gui.minion.name=Minion Manager
-gui.minion.empty=No Summonable Creatures
-gui.minion.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
-gui.minionmanager.name=Minion Manager
-gui.minionmanager.empty=No Summonable Creatures
-gui.minionmanager.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
+# Summoning Pedestal:
 gui.summoningpedestal.name=Summoning Pedestal
-#
-# Old Familiar Manager:
-gui.familiarmanager.name=Familiar Manager
-gui.familiarmanager.empty=No Familiars
-gui.familiarmanager.info=You don't have any familiars. Familiars are special minions that will always be by your side. Familiars are given to Patreon donaters as thanks for supporting this mod.
 #
 # Pet/Minion:
 gui.pet.actions=Actions

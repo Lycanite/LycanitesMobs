@@ -15,16 +15,23 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import java.io.IOException;
 import java.net.URI;
 
 public abstract class GuiBeastiary extends GuiBaseScreen {
+	/** A snapshot of the users GUI Scale setting so it can be restored on closing the Beastiary. **/
+	static int OPENED_GUI_SCALE;
+	/** Set to true when any Beastiary GUI is active in order to prevent the GUI Scaling going out of sync. **/
+	static boolean GUI_ACTIVE;
+
 	public EntityPlayer player;
 	public ExtendedPlayer playerExt;
 	public EntityLivingBase creaturePreviewEntity;
@@ -63,6 +70,25 @@ public abstract class GuiBeastiary extends GuiBaseScreen {
 		super();
 		this.player = player;
 		this.playerExt = ExtendedPlayer.getForPlayer(player);
+
+		this.mc = Minecraft.getMinecraft();
+		if(this.mc.gameSettings.guiScale != 2 || GUI_ACTIVE) {
+			OPENED_GUI_SCALE = this.mc.gameSettings.guiScale;
+			this.mc.gameSettings.setOptionValue(GameSettings.Options.GUI_SCALE, 2 - OPENED_GUI_SCALE);
+		}
+		else {
+			GUI_ACTIVE = true;
+		}
+	}
+
+
+	@Override
+	public void onGuiClosed() {
+		if(this.mc.gameSettings.guiScale == 2 && !GUI_ACTIVE) {
+			this.mc.gameSettings.setOptionValue(GameSettings.Options.GUI_SCALE, OPENED_GUI_SCALE - 2);
+		}
+		GUI_ACTIVE = false;
+		super.onGuiClosed();
 	}
 
 
@@ -114,6 +140,11 @@ public abstract class GuiBeastiary extends GuiBaseScreen {
 	 */
 	@Override
 	public void initGui() {
+		super.initGui();
+		if(this.scaledResolution == null) {
+			this.scaledResolution = new ScaledResolution(this.mc);
+		}
+
 		this.zLevel = -1000F;
 
 		// Main Window:
@@ -165,15 +196,15 @@ public abstract class GuiBeastiary extends GuiBaseScreen {
 		GuiButton button;
 
 		// Top Menu:
-		button = new GuiButton(GuiHandler.Beastiary.INDEX.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Index");
+		button = new GuiButton(GuiHandler.Beastiary.INDEX.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.beastiary.index.title"));
 		this.buttonList.add(button);
-		button = new GuiButton(GuiHandler.Beastiary.CREATURES.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Creatures");
+		button = new GuiButton(GuiHandler.Beastiary.CREATURES.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.beastiary.creatures"));
 		this.buttonList.add(button);
-		button = new GuiButton(GuiHandler.Beastiary.PETS.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Pets");
+		button = new GuiButton(GuiHandler.Beastiary.PETS.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.beastiary.pets"));
 		this.buttonList.add(button);
-		button = new GuiButton(GuiHandler.Beastiary.SUMMONING.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Summoning");
+		button = new GuiButton(GuiHandler.Beastiary.SUMMONING.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.beastiary.summoning"));
 		this.buttonList.add(button);
-		button = new GuiButton(GuiHandler.Beastiary.ELEMENTS.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, "Elements");
+		button = new GuiButton(GuiHandler.Beastiary.ELEMENTS.id, buttonX + (buttonWidthPadded * this.buttonList.size()), menuY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.beastiary.elements"));
 		this.buttonList.add(button);
 	}
 
@@ -225,7 +256,7 @@ public abstract class GuiBeastiary extends GuiBaseScreen {
 	 * @param partialTicks Ticks for animation.
 	 */
 	public void drawForeground(int mouseX, int mouseY, float partialTicks) {
-		String title = this.getTitle();
+		String title = "\u00A7l\u00A7n" + this.getTitle();
 		float width = this.getFontRenderer().getStringWidth(title);
 		this.getFontRenderer().drawString(title, this.colRightCenterX - Math.round(width / 2), this.colRightY, 0xFFFFFF, true);
 	}

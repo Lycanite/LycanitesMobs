@@ -43,7 +43,10 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 		if(this.groupList != null && this.playerExt.selectedGroup != null) {
 			return I18n.translateToLocal(this.playerExt.selectedGroup.filename + ".name"); //TODO Add getTitle() to GroupInfo
 		}
-		return "Creatures";
+		if(this.playerExt.getBeastiary().creatureKnowledgeList.isEmpty()) {
+			I18n.translateToLocal("gui.beastiary.creatures.empty.title");
+		}
+		return I18n.translateToLocal("gui.beastiary.creatures");
 	}
 
 
@@ -55,11 +58,11 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 		int creatureListHeight = Math.round((float)this.colRightHeight * 0.6f);
 		int creatureListY = this.colRightY + 20;
-		this.creatureList = new GuiCreatureList(GuiCreatureList.Type.KNOWLEDGE, this, this.groupList, this.getScaledX(260F / 1920F), creatureListHeight, creatureListY,creatureListY + creatureListHeight, this.colRightX);
+		this.creatureList = new GuiCreatureList(GuiCreatureList.Type.KNOWLEDGE, this, this.groupList, this.getScaledX(240F / 1920F), creatureListHeight, creatureListY,creatureListY + creatureListHeight, this.colRightX);
 
 		int subspeciesListHeight = Math.round((float)this.colRightHeight * 0.3f);
 		int subspeciesListY = creatureListY + 8 + creatureListHeight;
-		this.subspeciesList = new GuiSubspeciesList(this, false, this.getScaledX(260F / 1920F), subspeciesListHeight, subspeciesListY,subspeciesListY + subspeciesListHeight, this.colRightX);
+		this.subspeciesList = new GuiSubspeciesList(this, false, this.getScaledX(240F / 1920F), subspeciesListHeight, subspeciesListY,subspeciesListY + subspeciesListHeight, this.colRightX);
 	}
 
 
@@ -72,6 +75,10 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 	@Override
 	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
 		super.updateControls(mouseX, mouseY, partialTicks);
+
+		if(this.playerExt.getBeastiary().creatureKnowledgeList.isEmpty()) {
+			return;
+		}
 
 		this.groupList.drawScreen(mouseX, mouseY, partialTicks);
 		if(this.playerExt.selectedGroup != null) {
@@ -90,19 +97,25 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 		int nextY = this.colRightY + 20;
 		int width = this.colRightWidth - marginX;
 
+		if(this.playerExt.getBeastiary().creatureKnowledgeList.isEmpty()) {
+			String text = I18n.translateToLocal("gui.beastiary.creatures.empty.info");
+			this.drawSplitString(text, this.colRightX, nextY, this.colRightWidth, 0xFFFFFF, true);
+			return;
+		}
+
 		// Creature Display:
 		if(this.playerExt.selectedCreature != null) {
 			// Model:
 			this.renderCreature(this.playerExt.selectedCreature, this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + 100, mouseX, mouseY, partialTicks);
 
 			// Element:
-			String text = I18n.translateToLocal("creature.stat.element") + ": ";
+			String text = "\u00A7l" + I18n.translateToLocal("creature.stat.element") + ": " + "\u00A7r";
 			text += this.playerExt.selectedCreature.elements != null ? this.playerExt.selectedCreature.getElementNames() : "None";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 
 			// Subspecies:
 			nextY += 2 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = I18n.translateToLocal("creature.stat.subspecies") + ": ";
+			text = "\u00A7l" + I18n.translateToLocal("creature.stat.subspecies") + ": " + "\u00A7r";
 			boolean firstSubspecies = true;
 			for(Subspecies subspecies : this.playerExt.selectedCreature.subspecies.values()) {
 				if(!firstSubspecies) {
@@ -115,7 +128,7 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 			// Level:
 			nextY += 2 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = I18n.translateToLocal("creature.stat.cost") + ": ";
+			text = "\u00A7l" + I18n.translateToLocal("creature.stat.cost") + ": " + "\u00A7r";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 			this.drawLevel(this.playerExt.selectedCreature, AssetManager.getTexture("GUIPetLevel"),nextX + this.getFontRenderer().getStringWidth(text), nextY);
 
@@ -133,7 +146,7 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 			// Descovered:
 			nextY += 12 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = I18n.translateToLocal("beastiary.creatures.descovered") + ": ";
+			text = I18n.translateToLocal("gui.beastiary.creatures.descovered") + ": ";
 			text += this.playerExt.getBeastiary().getCreaturesDescovered(this.playerExt.selectedGroup);
 			text += "/" + ObjectManager.entityLists.get(this.playerExt.selectedGroup.filename).IDtoClassMapping.size();
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
@@ -141,8 +154,8 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 		// Base Display:
 		else {
-			String text = I18n.translateToLocal("gui.beastiary.selectacreature");
-			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
+			String text = I18n.translateToLocal("gui.beastiary.creatures.select");
+			this.drawSplitString(text, this.colRightX, nextY, this.colRightWidth, 0xFFFFFF, true);
 		}
 	}
 

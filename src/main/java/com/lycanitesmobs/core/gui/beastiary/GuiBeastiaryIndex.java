@@ -77,8 +77,7 @@ public class GuiBeastiaryIndex extends GuiBeastiary {
 		super.drawForeground(mouseX, mouseY, partialTicks);
 
 		String info = I18n.translateToLocal("gui.beastiary.index.description");
-		this.fontRenderer.drawSplitString(info, colRightX + 1, colRightY + 12 + 1, colRightWidth, 0x444444);
-		this.fontRenderer.drawSplitString(info, colRightX, colRightY + 12, colRightWidth, 0xFFFFFF);
+		this.drawSplitString(info, colRightX + 1, colRightY + 12 + 1, colRightWidth, 0xFFFFFF, true);
 	}
 
 

@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.gui;
 
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -24,7 +25,7 @@ public class GuiBaseScreen extends GuiScreen {
 	 * @return The font renderer to use.
 	 */
 	public FontRenderer getFontRenderer() {
-		return this.fontRenderer;
+		return LycanitesMobs.proxy.getFontRenderer();
 	}
 
 
@@ -39,7 +40,9 @@ public class GuiBaseScreen extends GuiScreen {
 	 */
     public void drawSplitString(String str, int x, int y, int wrapWidth, int textColor, boolean shadow) {
 		if(shadow) {
-			this.getFontRenderer().drawSplitString(str, x + 1, y + 1, wrapWidth, 0x444444);
+			GlStateManager.translate(0.5f,0.5f, 0);
+			this.getFontRenderer().drawSplitString(str, x, y, wrapWidth, 0x444444);
+			GlStateManager.translate(-0.5f,-0.5f, 0);
 		}
 		this.getFontRenderer().drawSplitString(str, x,  y, wrapWidth, textColor);
 	}

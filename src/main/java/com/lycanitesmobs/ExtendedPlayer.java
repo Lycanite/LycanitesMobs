@@ -315,8 +315,9 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	/** Use to make sure that the target summoning set ID is valid, it will return it if it is or the best next set ID if it isn't. **/
 	public int validateSummonSetID(int targetSetID) {
 		targetSetID = Math.max(Math.min(targetSetID, this.summonSetMax), 1);
-		while(!this.getSummonSet(targetSetID).isUseable() && targetSetID > 1)
+		while(!this.getSummonSet(targetSetID).isUseable() && targetSetID > 1 && !"".equals(this.getSummonSet(targetSetID).summonType)) {
 			targetSetID--;
+		}
 		return targetSetID;
 	}
 	

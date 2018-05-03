@@ -41,7 +41,10 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 
 	@Override
 	public String getTitle() {
-		return "Summoning";
+		if(this.playerExt.beastiary.getSummonableList().isEmpty()) {
+			return I18n.translateToLocal("gui.beastiary.summoning.empty.title");
+		}
+		return I18n.translateToLocal("gui.beastiary.summoning");
 	}
 
 
@@ -78,7 +81,7 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 			tabSpacing = buttonWidth + buttonSpacing;
 		}
 
-		int buttonMarginX = 2 + Math.max(Math.max(this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.actions")), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.stance"))), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.movement")));
+		int buttonMarginX = 10 + Math.max(Math.max(this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.actions")), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.stance"))), this.getFontRenderer().getStringWidth(I18n.translateToLocal("gui.pet.movement")));
 		buttonWidth = 80;
 		buttonHeight = 20;
 		buttonX = this.colRightX + buttonMarginX;
@@ -131,6 +134,10 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 	@Override
 	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
 		super.updateControls(mouseX, mouseY, partialTicks);
+
+		if(this.playerExt.beastiary.getSummonableList().isEmpty()) {
+			return;
+		}
 
 		this.petList.drawScreen(mouseX, mouseY, partialTicks);
 		this.subspeciesList.drawScreen(mouseX, mouseY, partialTicks);
@@ -203,6 +210,14 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 		int nextX = this.colRightX + marginX;
 		int nextY = this.colRightY + 44;
 		int width = this.colRightWidth - marginX;
+
+		// Empty:
+		if(this.playerExt.beastiary.getSummonableList().isEmpty()) {
+			String text = I18n.translateToLocal("gui.beastiary.summoning.empty.info");
+			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
+			return;
+		}
+
 		CreatureInfo selectedCreature = this.playerExt.getSelectedSummonSet().getCreatureInfo();
 
 		// Model:
@@ -211,7 +226,7 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 		}
 
 		// Player Summoning Focus:
-		String text = I18n.translateToLocal("gui.beastiary.player.focus") + ": ";
+		String text = "\u00A7l" + I18n.translateToLocal("gui.beastiary.player.focus") + ": ";
 		this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 		int barX = nextX + this.getFontRenderer().getStringWidth(text);
 		int focusMax = Math.round((float)this.playerExt.summonFocusMax / this.playerExt.summonFocusCharge);
@@ -227,7 +242,7 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 		if(selectedCreature != null) {
 			// Focus Cost:
 			nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = I18n.translateToLocal("creature.stat.focus") + ": ";
+			text = "\u00A7l" + I18n.translateToLocal("creature.stat.focus") + ": ";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 			this.drawLevel(selectedCreature, AssetManager.getTexture("GUIPetLevel"), nextX + this.getFontRenderer().getStringWidth(text), nextY);
 		}
@@ -235,7 +250,7 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 		// Base Display:
 		else {
 			nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
-			text = I18n.translateToLocal("gui.beastiary.selectapet");
+			text = I18n.translateToLocal("gui.beastiary.summoning.select");
 			this.drawSplitString(text, nextX, nextY, width, 0xFFFFFF, true);
 		}
 
@@ -243,26 +258,26 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 		int buttonHeight = 20;
 		int buttonSpacing = 2;
 		int buttonY = this.colRightY + this.colRightHeight - ((buttonHeight + buttonSpacing) * 3);
-		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.actions"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+		this.getFontRenderer().drawString("\u00A7l" + I18n.translateToLocal("gui.pet.actions"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
 		buttonY += buttonHeight + buttonSpacing;
-		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.stance"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+		this.getFontRenderer().drawString("\u00A7l" + I18n.translateToLocal("gui.pet.stance"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
 		buttonY += buttonHeight + buttonSpacing;
-		this.getFontRenderer().drawString(I18n.translateToLocal("gui.pet.movement"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
+		this.getFontRenderer().drawString("\u00A7l" + I18n.translateToLocal("gui.pet.movement"), this.colRightX, buttonY + 6, 0xFFFFFF, true);
 	}
 
 
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
+		// Summoning Slots:
+		if(button.id >= this.summoningSlotIdStart && button.id < this.petCommandIdStart) {
+			this.playerExt.setSelectedSummonSet(button.id - this.summoningSlotIdStart);
+		}
+
 		SummonSet summonSet = this.playerExt.getSelectedSummonSet();
 		if(summonSet != null) {
 
-			// Summoning Slots:
-			if(button.id >= this.summoningSlotIdStart && button.id < this.petCommandIdStart) {
-				this.playerExt.setSelectedSummonSet(button.id - this.summoningSlotIdStart);
-			}
-
 			// Pet Commands:
-			else if (button.id >= this.petCommandIdStart) {
+			if (button.id >= this.petCommandIdStart) {
 				int petCommandId = button.id - this.petCommandIdStart;
 
 				// Actions:

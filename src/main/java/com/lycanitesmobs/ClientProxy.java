@@ -17,6 +17,7 @@ import com.lycanitesmobs.core.tileentity.TileEntityEquipmentPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -24,14 +25,18 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAir;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientProxy extends CommonProxy {
+	FontRenderer fontRenderer;
 
     public static IItemColor itemColor = (stack, tintIndex) -> {
 		Item item = stack.getItem();
@@ -40,6 +45,20 @@ public class ClientProxy extends CommonProxy {
 		ItemBase itemBase = (ItemBase)item;
 		return itemBase.getColorFromItemstack(stack, tintIndex);
 	};
+
+	/**
+	 * Returns the Font Renderer used by Lycnaites Mobs.
+	 * @return A sexy Font Renderer, thanks for the heads up CedKilleur!
+	 */
+	@SideOnly(Side.CLIENT)
+	@Override
+    public FontRenderer getFontRenderer() {
+		if(this.fontRenderer == null) {
+			ResourceLocation font = new ResourceLocation("textures/font/ascii.png");
+			this.fontRenderer = new FontRenderer(Minecraft.getMinecraft().gameSettings, font, Minecraft.getMinecraft().renderEngine, true);
+		}
+		return this.fontRenderer;
+	}
 
 	
 	// ========== Register Event Handlers ==========

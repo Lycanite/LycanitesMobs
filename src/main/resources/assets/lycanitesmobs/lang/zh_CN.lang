@@ -158,7 +158,7 @@ itemGroup.lycanitesmobs.creatures=恐怖生物|生物
 itemGroup.lycanitesmobs.equipmentparts=恐怖生物|装备
 #
 # Beastiary:
-gui.beastiary.name=Beastiary
+gui.beastiary.name=生物图鉴
 gui.beastiary.player.spirit=召唤力
 gui.beastiary.player.focus=召唤力点数
 #

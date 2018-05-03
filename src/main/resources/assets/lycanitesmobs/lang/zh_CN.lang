@@ -17,8 +17,8 @@ mobevent.bladeflurry.name=剑刃乱舞
 mobevent.boulderdash.name=原石冲击
 mobevent.cinderfall.name=熔渣陨落
 mobevent.dragonsroar.name=龙之怒吼
-mobevent.eruption.name=火山喷发
-mobevent.halloween.name=快乐万圣节
+mobevent.eruption.name=火山爆发
+mobevent.halloween.name=万圣节快乐
 mobevent.hellsfury.name=地狱之怒
 mobevent.marchofthegorgomites.name=魔鬼螨的进军
 mobevent.poopparty.name="投翔"派对
@@ -26,7 +26,7 @@ mobevent.primalfury.name=原始之怒
 mobevent.rahovart.name=拉赫凡特
 mobevent.raptorrampage.name=猛禽暴怒
 mobevent.reptileruckus.name=爬行生物骚动
-mobevent.roasting.name=你的头在熔渣火中燃烧
+mobevent.roasting.name=烈火洗礼
 mobevent.rootriot.name=树根暴动
 mobevent.rudolph.name=鲁道夫血渍的低语
 mobevent.saltytree.name=讽刺的树
@@ -159,50 +159,59 @@ itemGroup.lycanitesmobs.equipmentparts=恐怖生物|装备
 #
 # Beastiary:
 gui.beastiary.name=生物图鉴
-gui.beastiary.empty=没有生物
-gui.beastiary.soulgazerinfo=你当前没有添加任何生物到你的生物图鉴里。想发现新的生物你就必须制作灵魂凝视者然后在你找到的任何生物上使用它。
-gui.beastiary.selectacreature=选择一个生物组，然后选择一种生物。
-gui.beastiary.website=查看网站
+gui.beastiary.player.spirit=召唤力
+gui.beastiary.player.focus=召唤力点数
 #
-# Pet Manager:
-gui.petmanager.name=宠物管理
-gui.petmanager.empty=没有宠物
-gui.petmanager.info=一些宠物可以被驯服为宠物或者坐骑。你可以做对应的款待去驯服它们。你可以用灵魂石将你的宠物与你灵魂绑定。一次灵魂绑定，你可以按照你的意愿召唤或解绑宠物，它们也会在死亡时复活！
-gui.petmanager.removed=你的%creature%被解除绑定，它将继续存在于世界但死亡后不再复活。
+# Index:
+gui.beastiary.index.title=索引
+gui.beastiary.index.description=欢迎使用LycanitesMobs生物图鉴！你可在此查看并管理你所了解到的生物，以更好的适应这个模组的玩法！
 #
-# Mount Manager:
-gui.mountmanager.name=坐骑管理
-gui.mountmanager.empty=没有坐骑
-gui.mountmanager.info=一些宠物可以被驯服为宠物或者坐骑。你可以做对应的款待去驯服它们。你可以用灵魂石将你的坐骑与你灵魂绑定从而你可以按照你的意愿召唤或解绑坐骑并允许你拥有一定量的坐骑！
+# Creatures:
+gui.beastiary.creatures=生物图鉴
+gui.beastiary.creatures.empty.title=没有生物
+gui.beastiary.creatures.empty.info=你当前没有添加任何生物到你的生物图鉴里。想发现新的生物你就必须制作灵魂凝视者然后在你找到的任何生物上使用它。
+gui.beastiary.creatures.descovered=生物介绍
+gui.beastiary.creatures.select=请先选择一个对应的群系然后再进一步查看生物。
+gui.beastiary.website=访问网站
 #
-# Minion Manager:
-gui.minion.name=眷属管理
-gui.minion.empty=没有可以召唤的生物
-gui.minion.info=你的生物图鉴没有任何可以召唤的生物。继续探索，并不是每一个生物都可以被召唤。
-gui.minionmanager.name=眷属管理
-gui.minionmanager.empty=没有可以召唤的生物
-gui.minionmanager.info=你的生物图鉴尚未添加任何可以召唤的生物。继续探索，并不是每一个生物都可以被召唤。
+# Pets:
+gui.beastiary.pets=宠物管理
+gui.beastiary.mounts=坐骑
+gui.beastiary.familiars=妖精
+gui.beastiary.pets.select=从左边的菜单选择一只宠物来管理它。
+gui.beastiary.pets.empty.title=没有绑定宠物
+gui.beastiary.pets.empty.info=一些宠物可以被驯服为宠物或者坐骑。你可以做对应的款待去驯服它们。你可以用灵魂石将你的宠物与你灵魂绑定。一次灵魂绑定，你可以按照你的意愿召唤或解绑宠物，它们也会在死亡时复活！
+#
+# Summoning:
+gui.beastiary.summoning=眷属
+gui.beastiary.summoning.empty.title=没有可以召唤的生物
+gui.beastiary.summoning.empty.info=你的生物图鉴没有任何可以召唤的生物。请继续探索，并不是每一个生物都可以被召唤。
+#
+# Elements:
+gui.beastiary.elements=元素
+gui.beastiary.elements.comingsoon=你可以在此查看到有关构造这个世界相关元素的知识以及某些药水效果。
+#
+# Summoning Pedestal:
 gui.summoningpedestal.name=召唤基座
 #
-# Familiar Manager:
-gui.familiarmanager.name=妖精管理
-gui.familiarmanager.empty=没有妖精
-gui.familiarmanager.info=你没有任何妖精。妖精是一种特殊的眷属它们会随时呆在你的身边。妖精是赠给为这个模组提供了捐赠的募资者们的特殊生物。
-#
 # Pet/Minion:
-gui.pet.sitting=坐下
+gui.pet.actions=活动
+gui.pet.stance=站立
 gui.pet.movement=移动
+gui.pet.active=启用
+gui.pet.summon=召唤
+gui.pet.dismiss=禁用
+gui.pet.teleport=瞬移
+gui.pet.pvp=PVP
+gui.pet.release=放生
+gui.pet.release.confirm=你确定要放生这种宠物？一但放生这只宠物将会消失，它身上所持有的物品也将掉落。
+gui.pet.passive=被动
+gui.pet.defensive=防守
+gui.pet.assist=协作
+gui.pet.aggressive=主动
 gui.pet.follow=跟随
 gui.pet.wander=游荡
-gui.pet.passive=被动
-gui.pet.stance=站立
-gui.pet.aggressive=主动
-gui.pet.defensive=防守
-gui.pet.pvp=PVP
-gui.pet.active=活跃
-gui.pet.teleport=瞬移
-gui.pet.release=解除
-gui.pet.release.confirm=你确定你要解除这种宠物的？一但解除这只宠物将会消失，它身上的持有物将会掉落。
+gui.pet.sit=坐下
 #
 # Mounts:
 gui.mount.controls=按下%control%使用坐骑能力
@@ -380,13 +389,11 @@ element.void=虚空
 # ========== Key Bindings ==========
 key.mount.ability=坐骑能力
 key.mount.inventory=坐骑物品栏
-key.lycanitesmobs.menu=恐怖生物菜单
+key.index=索引
 key.beastiary=生物图鉴
-key.pet.manager=宠物管理
-key.mount.manager=坐骑管理
-key.familiar.manager=精灵管理
-key.minion.manager=眷属管理
-key.minion.select=眷属选择
+key.pets=宠物
+key.summoning=眷属
+key.minions=眷属管理
 #
 #
 #
@@ -408,3 +415,14 @@ equipment.feature.harvest.range=范围：
 equipment.feature.summon=Summons:
 equipment.feature.summon.chance=概率：
 equipment.feature.summon.count=Amount:
+#
+#
+#
+# ========== Creatures ==========
+creature.stat.element=元素
+creature.stat.subspecies=亚种
+creature.stat.cost=召唤消耗
+creature.stat.spirit=召唤灵魂消耗
+creature.stat.focus=召唤指数消耗
+creature.stat.health=生命
+creature.stat.respawning=重生

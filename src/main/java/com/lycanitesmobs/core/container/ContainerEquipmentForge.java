@@ -16,12 +16,13 @@ public class ContainerEquipmentForge extends ContainerBase {
 		this.equipmentForge = equipmentForge;
 
 		// Player Inventory
-		this.drawPlayerSlots(playerInventory, 0, 0);
+		this.addPlayerSlots(playerInventory, 0, 0);
 
 		// Forge Inventory
 		this.inventoryStart = this.inventorySlots.size();
 		if(equipmentForge.getInventorySize() > 0) {
-			this.drawSlotsByColumn(equipmentForge, 8 + (18 * 4), 18, 5, 0, equipmentForge.getInventorySize() - 1);
+			// TODO Add Equipment Slots In Equipment Shape and Add Child Slots
+			this.addSlotsByColumn(equipmentForge, 8 + (18 * 4), 18, 5, 0, equipmentForge.getInventorySize() - 1);
 		}
 		this.inventoryFinish = this.inventorySlots.size() - 1;
 	}

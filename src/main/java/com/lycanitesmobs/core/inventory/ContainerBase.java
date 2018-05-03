@@ -36,17 +36,17 @@ public class ContainerBase extends Container {
 	 * @param y The starting y position of the grid.
 	 * @param slotIndex The inventory index for this slot.
 	 */
-	public Slot drawSlot(IInventory inventory, int slotIndex, int x, int y) {
+	public Slot addSlot(IInventory inventory, int slotIndex, int x, int y) {
 		return this.addSlotToContainer(new SlotBase(inventory, slotIndex, x, y));
 	}
 	
-	public void drawPlayerSlots(InventoryPlayer playerInventory, int offsetX, int offsetY) {
+	public void addPlayerSlots(InventoryPlayer playerInventory, int offsetX, int offsetY) {
 		// Player Hotbar:
 		this.playerInventoryStart = this.inventorySlots.size();
-		this.drawSlotGrid(playerInventory, 8, 142, 1, 0, 8);
+		this.addSlotGrid(playerInventory, 8, 142, 1, 0, 8);
 		
 		// Player Inventory:
-		this.drawSlotGrid(playerInventory, 8, 84, 3, 9, 35);
+		this.addSlotGrid(playerInventory, 8, 84, 3, 9, 35);
 		this.playerInventoryFinish = this.inventorySlots.size() - 1;
 	}
 	
@@ -62,7 +62,7 @@ public class ContainerBase extends Container {
 	 * @param start The starting slot index to draw (0 is the first slot).
 	 * @param finish The finishing slot index to draw (use -1 for the last slot index).
 	 */
-	public void drawSlotGrid(IInventory inventory, int x, int y, int totalRows, int start, int finish) {
+	public void addSlotGrid(IInventory inventory, int x, int y, int totalRows, int start, int finish) {
 		// Assess Grid Shape:
 		int totalSlots = (finish - start) + 1;
 		if(totalSlots < 1)
@@ -75,22 +75,22 @@ public class ContainerBase extends Container {
 		int slot = 0;
 		for(row = 0; row < totalRows; row++) {
 			for(int column = 0; column < totalColumns; column++) {
-				this.drawSlot(inventory, start + slot, x + (column * 18), y + (row * 18));
+				this.addSlot(inventory, start + slot, x + (column * 18), y + (row * 18));
 				slot++;
 			}
 		}
 		row++;
 		for(int column = 0; column < excessSlots; column++) {
-			this.drawSlot(inventory, start + slot, x + (column * 18), y + (row * 18));
+			this.addSlot(inventory, start + slot, x + (column * 18), y + (row * 18));
 			slot++;
 		}
 			
 	}
-	public void drawSlotGrid(IInventory inventory, int x, int y, int totalRows) {
-		this.drawSlotGrid(inventory, x, y, totalRows, 0);
+	public void addSlotGrid(IInventory inventory, int x, int y, int totalRows) {
+		this.addSlotGrid(inventory, x, y, totalRows, 0);
 	}
-	public void drawSlotGrid(IInventory inventory, int x, int y, int totalRows, int start) {
-		this.drawSlotGrid(inventory, x, y, totalRows, start, inventory.getSizeInventory() - 1);
+	public void addSlotGrid(IInventory inventory, int x, int y, int totalRows, int start) {
+		this.addSlotGrid(inventory, x, y, totalRows, start, inventory.getSizeInventory() - 1);
 	}
 	
 	/**
@@ -101,7 +101,7 @@ public class ContainerBase extends Container {
 	 * @param start The starting slot index to draw (0 is the first slot).
 	 * @param finish The finishing slot index to draw (use -1 for the last slot index).
 	 */
-	public void drawSlotsByColumn(IInventory inventory, int x, int y, int columnMax, int start, int finish) {
+	public void addSlotsByColumn(IInventory inventory, int x, int y, int columnMax, int start, int finish) {
 		int row = 0;
 		int column = 0;
 		for(int slot = 0; slot <= finish; slot++) {
@@ -109,7 +109,7 @@ public class ContainerBase extends Container {
 				row++;
 				column = 0;
 			}
-			this.drawSlot(inventory, start + slot, x + (column * 18), y + (row * 18));
+			this.addSlot(inventory, start + slot, x + (column * 18), y + (row * 18));
 			column++;
 		}
 	}

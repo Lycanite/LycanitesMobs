@@ -13,7 +13,7 @@ public class ContainerCreature extends ContainerBase {
   	// ==================================================
 	public ContainerCreature(EntityCreatureBase creature, InventoryPlayer playerInventory) {
 		super();
-		this.drawPlayerSlots(playerInventory, 0, 0);
+		this.addPlayerSlots(playerInventory, 0, 0);
 		this.creature = creature;
 		
 		// Creature Equipment:
@@ -24,7 +24,7 @@ public class ContainerCreature extends ContainerBase {
 		// Creature Inventory
 		this.inventoryStart = this.inventorySlots.size();
 		if(creature.inventory.getItemSlotsSize() > 0)
-			this.drawSlotsByColumn(creature.inventory, 8 + (18 * 4), 18, 5, 0, creature.inventory.getActiveItemSlotsSize() - 1);
+			this.addSlotsByColumn(creature.inventory, 8 + (18 * 4), 18, 5, 0, creature.inventory.getActiveItemSlotsSize() - 1);
 		this.inventoryFinish = this.inventorySlots.size() - 1;
 	}
 	
@@ -35,11 +35,11 @@ public class ContainerCreature extends ContainerBase {
 	public void drawCreatureEquipment(EntityCreatureBase creature, int equipX, int equipY) {
 		// Creature Accessories:
 		if(creature instanceof EntityCreatureRideable) {
-			this.drawSlot(creature.inventory, creature.inventory.getSlotFromType("saddle"), equipX, equipY);
+			this.addSlot(creature.inventory, creature.inventory.getSlotFromType("saddle"), equipX, equipY);
 			equipY += 18;
 		}
 		if(creature.getBagSize() > 0) {
-			this.drawSlot(creature.inventory, creature.inventory.getSlotFromType("bag"), equipX, equipY);
+			this.addSlot(creature.inventory, creature.inventory.getSlotFromType("bag"), equipX, equipY);
 			equipY += 18;
 		}
 		// Weapon and Dye slots will go here.
@@ -48,15 +48,15 @@ public class ContainerCreature extends ContainerBase {
 		equipX += 18;
 		equipY = 18;
 		if(creature.inventory.useAdvancedArmor()) {
-			this.drawSlot(creature.inventory, creature.inventory.getSlotFromType("head"), equipX, equipY);
+			this.addSlot(creature.inventory, creature.inventory.getSlotFromType("head"), equipX, equipY);
 			equipY += 18;
 		}
-		this.drawSlot(creature.inventory, creature.inventory.getSlotFromType("chest"), equipX, equipY);
+		this.addSlot(creature.inventory, creature.inventory.getSlotFromType("chest"), equipX, equipY);
 		equipY += 18;
 		if(creature.inventory.useAdvancedArmor()) {
-			this.drawSlot(creature.inventory, creature.inventory.getSlotFromType("legs"), equipX, equipY);
+			this.addSlot(creature.inventory, creature.inventory.getSlotFromType("legs"), equipX, equipY);
 			equipY += 18;
-			this.drawSlot(creature.inventory, creature.inventory.getSlotFromType("feet"), equipX, equipY);
+			this.addSlot(creature.inventory, creature.inventory.getSlotFromType("feet"), equipX, equipY);
 			equipY += 18;
 		}
 	}

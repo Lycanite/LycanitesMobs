@@ -112,17 +112,7 @@ public class Subspecies {
 
 		rareHealthBars = config.getBool("Mob Variations", "Subspecies Rare Health Bars", rareHealthBars, "If set to true, rare subspecies such as the Lunar Grue or Celestial Geonach will display boss health bars.");
     }
-
-
-	/**
-	 * Constructor for creating a specialized subspecies not related to other subspecies without a type).
-	 * @param setName The name of the Subspecies Set.
-	 * @param setWeight The Weight of the Subspecies.
-	 */
-	public Subspecies(String setName, int setWeight) {
-        this.name = setName.toLowerCase();
-        this.weight = setWeight;
-    }
+    
 
 	/**
 	 * Constructor for creating a Subspecies based on a type ('uncommon', 'rare', etc).

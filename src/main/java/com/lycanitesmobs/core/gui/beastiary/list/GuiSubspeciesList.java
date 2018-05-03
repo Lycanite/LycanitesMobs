@@ -53,6 +53,12 @@ public class GuiSubspeciesList extends GuiScrollingList {
 		this.subspeciesList.put(0, 0);
 		int index = 1;
 		for(int subspeciesIndex : this.creature.subspecies.keySet()) {
+			if(this.summoning) {
+				Subspecies subspecies = this.creature.subspecies.get(subspeciesIndex);
+				if (subspecies != null && "rare".equals(subspecies.type)) {
+					continue;
+				}
+			}
 			this.subspeciesList.put(index++, subspeciesIndex);
 		}
 	}
@@ -119,9 +125,6 @@ public class GuiSubspeciesList extends GuiScrollingList {
 		int nameY = boxTop + 6;
 		if(subspecies == null) {
 			this.parentGui.getFontRenderer().drawString("Normal", this.left + 20, nameY, 0xFFFFFF);
-			return;
-		}
-		if("rare".equals(subspecies.type)) {
 			return;
 		}
 		this.parentGui.getFontRenderer().drawString(subspecies.getTitle(), this.left + 20, nameY, 0xFFFFFF);

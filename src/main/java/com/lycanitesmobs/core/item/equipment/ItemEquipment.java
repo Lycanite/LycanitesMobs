@@ -127,6 +127,23 @@ public class ItemEquipment extends ItemBase {
 	}
 
 
+	/**
+	 * Adds an Equipment Part ItemStack to the provided Equipment ItemStack.
+	 * @param itemStackEquipment The Equipment ItemStack to add a part to.
+	 * @param itemStackEquipmentPart The Equipment Part ItemStack to add.
+	 * @param slotIndex The slot index to connect the part to.
+	 */
+	public void addEquipmentPart(ItemStack itemStackEquipment, ItemStack itemStackEquipmentPart, int slotIndex) {
+		if(slotIndex >= PART_LIMIT) {
+			return;
+		}
+		NonNullList<ItemStack> itemStacks = this.getEquipmentPartStacks(itemStackEquipment);
+		itemStacks.add(slotIndex, itemStackEquipmentPart);
+		NBTTagCompound nbt = this.getTagCompound(itemStackEquipment);
+		ItemStackHelper.saveAllItems(nbt, itemStacks);
+	}
+
+
 	// ==================================================
 	//                      Visuals
 	// ==================================================

@@ -9,10 +9,13 @@ import com.lycanitesmobs.core.gui.GuiOverlay;
 import com.lycanitesmobs.core.gui.TabManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.item.ItemBase;
+import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.model.EquipmentPartModelLoader;
 import com.lycanitesmobs.core.renderer.EquipmentPartRenderer;
+import com.lycanitesmobs.core.renderer.EquipmentRenderer;
 import com.lycanitesmobs.core.renderer.RenderRegister;
+import com.lycanitesmobs.core.tileentity.TileEntityEquipment;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentPart;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -116,8 +119,9 @@ public class ClientProxy extends CommonProxy {
     public void registerRenders(GroupInfo groupInfo) {
 
         // Equipment Parts:
-		ModelLoaderRegistry.registerLoader(new EquipmentPartModelLoader());
+		ModelLoaderRegistry.registerLoader(new EquipmentPartModelLoader()); // TODO Unused?
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEquipmentPart.class, new EquipmentPartRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEquipment.class, new EquipmentRenderer());
 
 		// Special Entites:
         groupInfo.specialClasses.add(EntityHitArea.class);
@@ -163,6 +167,10 @@ public class ClientProxy extends CommonProxy {
 
         if(item instanceof ItemEquipmentPart) {
 			ForgeHooksClient.registerTESRItemStack(item, 0, TileEntityEquipmentPart.class); // A deprecated yet the only way to render dynamic OBJ models that can be animated, rendered in stages, layers and mixed with other models.
+		}
+
+		if(item instanceof ItemEquipment) {
+			ForgeHooksClient.registerTESRItemStack(item, 0, TileEntityEquipment.class); // A deprecated yet the only way to render dynamic OBJ models that can be animated, rendered in stages, layers and mixed with other models.
 		}
 
         if(item instanceof ItemBase) {

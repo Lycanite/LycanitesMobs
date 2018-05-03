@@ -3,14 +3,17 @@ package com.lycanitesmobs.core.gui;
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.container.ContainerEquipmentForge;
+import com.lycanitesmobs.core.inventory.ContainerBase;
 import com.lycanitesmobs.core.network.MessageTileEntityButton;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.List;
 
 public class GuiEquipmentForge extends GuiBaseContainer {
 	public InventoryPlayer playerInventory;
@@ -85,7 +88,7 @@ public class GuiEquipmentForge extends GuiBaseContainer {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(AssetManager.getTexture("GUIEquipmentForge"));
         
-		/*ContainerBase container = (ContainerBase)this.inventorySlots;
+		ContainerBase container = (ContainerBase)this.inventorySlots;
 		List<Slot> forgeSlots = container.inventorySlots.subList(container.inventoryStart, container.inventoryFinish);
 		int slotWidth = 18;
 		int slotHeight = 18;
@@ -96,7 +99,7 @@ public class GuiEquipmentForge extends GuiBaseContainer {
 			int slotY = backY + forgeSlot.yPos - 1;
 			int slotV = slotVBase;
 			this.drawTexturedModalRect(slotX, slotY, slotU, slotV, slotWidth, slotHeight);
-		}*/
+		}
 	}
 
 

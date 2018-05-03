@@ -55,7 +55,7 @@ public class GuiSubspeciesList extends GuiScrollingList {
 		for(int subspeciesIndex : this.creature.subspecies.keySet()) {
 			if(this.summoning) {
 				Subspecies subspecies = this.creature.subspecies.get(subspeciesIndex);
-				if (subspecies != null && "rare".equals(subspecies.type)) {
+				if (subspecies != null && "rare".equals(subspecies.rarity)) {
 					continue;
 				}
 			}

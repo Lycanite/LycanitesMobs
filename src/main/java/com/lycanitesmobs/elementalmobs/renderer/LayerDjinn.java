@@ -4,12 +4,10 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.RenderCreature;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
@@ -37,7 +35,7 @@ public class LayerDjinn extends LayerBase {
     public ResourceLocation getLayerTexture(EntityCreatureBase entity) {
 		String textureName = entity.getTextureName();
 		if(entity.getSubspecies() != null) {
-			textureName += "_" + entity.getSubspecies().name;
+			textureName += "_" + entity.getSubspecies().color;
 		}
 		textureName += "_ribbon";
 		if(AssetManager.getTexture(textureName) == null)

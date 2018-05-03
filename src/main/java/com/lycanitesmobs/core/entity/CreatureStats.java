@@ -295,7 +295,7 @@ public class CreatureStats {
 	 */
 	protected double getSubspeciesMultiplier(String stat) {
 		if(this.entity.getSubspecies() != null) {
-			return Subspecies.statMultipliers.get(this.entity.getSubspecies().type.toUpperCase() + "-" + stat.toUpperCase());
+			return Subspecies.statMultipliers.get(this.entity.getSubspecies().rarity.toUpperCase() + "-" + stat.toUpperCase());
 
 		}
 		return 1;

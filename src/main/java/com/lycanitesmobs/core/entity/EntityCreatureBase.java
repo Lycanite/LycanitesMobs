@@ -1187,12 +1187,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 		if(this.subspecies != null) {
 			float scaledExp = this.creatureInfo.experience;
-			if ("uncommon".equals(this.subspecies.type))
+			if ("uncommon".equals(this.subspecies.rarity))
 				scaledExp = Math.round((float) (this.creatureInfo.experience * Subspecies.uncommonExperienceScale));
-			else if ("rare".equals(this.subspecies.type))
+			else if ("rare".equals(this.subspecies.rarity))
 				scaledExp = Math.round((float) (this.creatureInfo.experience * Subspecies.rareExperienceScale));
 			this.experienceValue = Math.round(scaledExp);
-			if ("rare".equals(this.subspecies.type)) {
+			if ("rare".equals(this.subspecies.rarity)) {
 				this.damageLimit = 40;
 			}
 		}
@@ -4056,7 +4056,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public ResourceLocation getTexture(String suffix) {
 		String textureName = this.getTextureName();
 		if(this.getSubspecies() != null) {
-			textureName += "_" + this.getSubspecies().name;
+			textureName += "_" + this.getSubspecies().color;
 		}
 		if(!"".equals(suffix)) {
 			textureName += "_" + suffix;

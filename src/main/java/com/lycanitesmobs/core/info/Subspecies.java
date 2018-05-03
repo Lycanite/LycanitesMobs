@@ -1,15 +1,19 @@
 package com.lycanitesmobs.core.info;
 
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.entity.CreatureStats;
-import com.lycanitesmobs.core.entity.EntityCreatureBase;
+import com.lycanitesmobs.core.helpers.JSONHelper;
+import com.lycanitesmobs.core.spawner.condition.SpawnCondition;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class Subspecies {
     // ========== Subspecies Global ==========
@@ -52,20 +56,30 @@ public class Subspecies {
     /** The index of this subspecies in MobInfo. Set by MobInfo when added. Should never be 0 as that is used by the default and will result in this subspecies being ignored. **/
     public int index;
 
-    /** The name of this subspecies. **/
-    public String name;
+	/** The skin of this subspecies. **/
+	public String skin;
 
-    /** The type of this subspecies. **/
-    public String type;
+    /** The color of this subspecies. **/
+    public String color;
+
+    /** The rarity of this subspecies. **/
+    public String rarity;
 
     /** The weight of this subspecies, used when randomly determining the subspecies of a mob. A base species uses the static baseSpeciesWeight value. **/
     public int weight;
 
+    /** Higher priority Subspecies will always spawn in place of lower priority ones if they can spawn regardless of weight. Only increase this above 0 if a subspecies has conditions otherwise they will stop standard/base Subspecies from showing up. **/
+    public int priority = 0;
 
-    // ==================================================
-    //        Load Global Settings From Config
-    // ==================================================
-    public static void loadGlobalSettings(ConfigBase config) {
+    /** A list of Spawn Conditions required for this subspecies to spawn. **/
+    public List<SpawnCondition> spawnConditions = new ArrayList<>();
+
+
+	/**
+	 * Loads global Subspecies config values, etc.
+	 * @param config The config instance to load values from.
+	 */
+	public static void loadGlobalSettings(ConfigBase config) {
         baseSpeciesWeight = config.getInt("Mob Variations", "Subspecies Base Weight", baseSpeciesWeight, "The weight of base subspecies (regular mobs).");
         commonWeights.put("uncommon", config.getInt("Mob Variations", "Subspecies Uncommon Weight", commonWeights.get("uncommon"), "The weight of uncommon subspecies (such as Azure, Verdant, Scarlet, etc)."));
         commonWeights.put("rare", config.getInt("Mob Variations", "Subspecies Rare Weight", commonWeights.get("rare"), "The weight of rare subspecies (such as Lunar or Celestial)."));
@@ -112,26 +126,86 @@ public class Subspecies {
 
 		rareHealthBars = config.getBool("Mob Variations", "Subspecies Rare Health Bars", rareHealthBars, "If set to true, rare subspecies such as the Lunar Grue or Celestial Geonach will display boss health bars.");
     }
-    
+
+
+    public static Subspecies createFromJSON(JsonObject json) {
+		// Rarity:
+		String rarity = "uncommon";
+		if(json.has("rarity")) {
+			rarity = json.get("rarity").getAsString().toLowerCase();
+		}
+		else if(json.has("type")) {
+			rarity = json.get("type").getAsString().toLowerCase();
+		}
+
+		// Skin:
+		String skin = null;
+		if(json.has("skin")) {
+			skin = json.get("skin").getAsString().toLowerCase();
+		}
+
+		// Color:
+		String color = null;
+		if(json.has("color")) {
+			color = json.get("color").getAsString().toLowerCase();
+		}
+		else if(json.has("name")) {
+			color = json.get("name").getAsString().toLowerCase();
+		}
+
+		if(skin == null && color == null) {
+			throw new RuntimeException("Invalid subspecies added with no Skin and/or Color defined! At least one value must be set.");
+		}
+		Subspecies subspecies = new Subspecies(skin, color, rarity);
+		subspecies.index = json.get("index").getAsInt();
+
+		// Priority:
+		if(json.has("priority")) {
+			subspecies.priority = json.get("priority").getAsInt();
+		}
+
+		// Conditions:
+		if(json.has("conditions")) {
+			JsonArray jsonArray = json.get("conditions").getAsJsonArray();
+			Iterator<JsonElement> jsonIterator = jsonArray.iterator();
+			while (jsonIterator.hasNext()) {
+				JsonObject conditionJson = jsonIterator.next().getAsJsonObject();
+				SpawnCondition spawnCondition = SpawnCondition.createFromJSON(conditionJson);
+				subspecies.spawnConditions.add(spawnCondition);
+			}
+		}
+
+		return subspecies;
+	}
+
 
 	/**
-	 * Constructor for creating a Subspecies based on a type ('uncommon', 'rare', etc).
-	 * @param name The name of the Subspecies.
-	 * @param type The type of the Subspecies.
+	 * Constructor for creating a color/skin Subspecies based on a rarity.
+	 * @param skin The skin of the Subspecies. Can be null or default skin.
+	 * @param color The color of the Subspecies. Can be null for default color.
+	 * @param rarity The rarity of the Subspecies ('common', 'uncommon' or 'rare'.
 	 */
-	public Subspecies(String name, String type) {
-        this.name = name.toLowerCase();
-        this.type = type;
-        this.weight = commonWeights.get(type);
+	public Subspecies(@Nullable String skin, @Nullable String color, String rarity) {
+        this.color = color.toLowerCase();
+        this.skin = skin.toLowerCase();
+        this.rarity = rarity;
+        this.weight = commonWeights.get(rarity);
     }
 
 
 	/**
 	 * Gets the display name of this Subspecies.
-	 * @return The Subpsecies title.
+	 * @return The Subspecies title.
 	 */
 	public String getTitle() {
-        return I18n.translateToLocal("subspecies." + this.name + ".name");
+		String subspeciesKey = "";
+		if(this.skin != null) {
+			subspeciesKey += "." + this.skin;
+		}
+		if(this.color != null) {
+			subspeciesKey += "." + this.color;
+		}
+        return I18n.translateToLocal("subspecies" + subspeciesKey + ".name");
     }
 
 
@@ -142,18 +216,38 @@ public class Subspecies {
 	public boolean canSpawn(EntityLivingBase entityLiving) {
 		if(entityLiving != null) {
 			World world = entityLiving.getEntityWorld();
+
+			// Spawn Day Limit:
 			int day = (int)Math.floor(world.getTotalWorldTime() / 23999D);
 			int spawnDayMin = 0;
-			if("uncommon".equalsIgnoreCase(this.type)) {
+			if("uncommon".equalsIgnoreCase(this.rarity)) {
 				spawnDayMin = uncommonSpawnDayMin;
 			}
-			else if("rare".equalsIgnoreCase(this.type)) {
+			else if("rare".equalsIgnoreCase(this.rarity)) {
 				spawnDayMin = rareSpawnDayMin;
 			}
 			if(day < spawnDayMin) {
 				return false;
 			}
+
+			// Check Conditions:
+			for(SpawnCondition condition : this.spawnConditions) {
+				if(!condition.isMet(world, null, entityLiving.getPosition())) {
+					return false;
+				}
+			}
 		}
 		return true;
+	}
+
+
+	@Override
+	public String toString() {
+		String subspeciesName = this.color != null ? this.color : "normal";
+		if(this.skin != null) {
+			subspeciesName += " - " + this.skin;
+		}
+		subspeciesName += " - " + this.weight;
+		return subspeciesName;
 	}
 }

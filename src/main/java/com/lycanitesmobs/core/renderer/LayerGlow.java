@@ -1,15 +1,12 @@
 package com.lycanitesmobs.core.renderer;
 
 import com.lycanitesmobs.AssetManager;
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector4f;
 
@@ -36,7 +33,7 @@ public class LayerGlow extends LayerBase {
     public ResourceLocation getLayerTexture(EntityCreatureBase entity) {
 		String textureName = entity.getTextureName();
 		if(entity.getSubspecies() != null) {
-			textureName += "_" + entity.getSubspecies().name;
+			textureName += "_" + entity.getSubspecies().color;
 		}
 		textureName += "_glow";
 		if(AssetManager.getTexture(textureName) == null)

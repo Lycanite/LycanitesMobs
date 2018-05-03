@@ -189,15 +189,18 @@ public class CreatureInfo {
 
 		if(json.has("boss"))
 			this.boss = json.get("boss").getAsBoolean();
+
+		// Subspecies:
 		if(json.has("subspecies")) {
-			Iterator<JsonElement> jsonIterator = json.get("subspecies").getAsJsonArray().iterator();
-			while(jsonIterator.hasNext()) {
-				JsonObject jsonObject = jsonIterator.next().getAsJsonObject();
-				Subspecies subspecies = new Subspecies(jsonObject.get("name").getAsString().toLowerCase(), jsonObject.get("type").getAsString().toLowerCase());
-				subspecies.index = jsonObject.get("index").getAsInt();
+			Iterator<JsonElement> subspeciesEntries = json.get("subspecies").getAsJsonArray().iterator();
+			while(subspeciesEntries.hasNext()) {
+				JsonObject jsonObject = subspeciesEntries.next().getAsJsonObject();
+				Subspecies subspecies = Subspecies.createFromJSON(jsonObject);
 				this.subspecies.put(subspecies.index, subspecies);
 			}
 		}
+
+		// Elements:
 		this.elementNames.clear();
 		if(json.has("element")) {
 			this.elementNames.add(json.get("element").getAsString());
@@ -479,21 +482,39 @@ public class CreatureInfo {
 
 		// Get Viable Subspecies:
 		List<Subspecies> possibleSubspecies = new ArrayList<>();
+		int highestPriority = 0;
 		for(Subspecies subspeciesEntry : this.subspecies.values()) {
 			if(subspeciesEntry.canSpawn(entity)) {
 				possibleSubspecies.add(subspeciesEntry);
+				if(subspeciesEntry.priority > highestPriority) {
+					highestPriority = subspeciesEntry.priority;
+				}
 			}
 		}
 		if(possibleSubspecies.isEmpty()) {
 			LycanitesMobs.printDebug("Subspecies", "No species allowed, will be base species.");
 			return null;
 		}
-		LycanitesMobs.printDebug("Subspecies", "Subspecies Allowed: " + possibleSubspecies.size());
+
+		// Filter Priorities:
+		if(highestPriority > 0) {
+			for(Subspecies subspeciesEntry : possibleSubspecies.toArray(new Subspecies[possibleSubspecies.size()])) {
+				if(subspeciesEntry.priority < highestPriority) {
+					possibleSubspecies.remove(subspeciesEntry);
+				}
+			}
+		}
+
+		LycanitesMobs.printDebug("Subspecies", "Subspecies Allowed: " + possibleSubspecies.size() + " Highest Priority: " + highestPriority);
 
 		// Get Weights:
 		int baseSpeciesWeightScaled = Subspecies.baseSpeciesWeight;
-		if(rare)
-			baseSpeciesWeightScaled /= 4;
+		if(rare) {
+			baseSpeciesWeightScaled = Math.round((float)baseSpeciesWeightScaled / 4);
+		}
+		if(highestPriority > 0) {
+			baseSpeciesWeightScaled = 0;
+		}
 		int totalWeight = baseSpeciesWeightScaled;
 		for(Subspecies subspeciesEntry : possibleSubspecies) {
 			totalWeight += subspeciesEntry.weight;
@@ -501,7 +522,7 @@ public class CreatureInfo {
 		LycanitesMobs.printDebug("Subspecies", "Total Weight: " + totalWeight);
 
 		// Roll and Check Default:
-		int roll = entity.getRNG().nextInt(totalWeight);
+		int roll = entity.getRNG().nextInt(totalWeight) + 1;
 		LycanitesMobs.printDebug("Subspecies", "Rolled: " + roll);
 		if(roll <= baseSpeciesWeightScaled) {
 			LycanitesMobs.printDebug("Subspecies", "Base species selected: " + baseSpeciesWeightScaled);
@@ -513,7 +534,7 @@ public class CreatureInfo {
 		for(Subspecies subspeciesEntry : possibleSubspecies) {
 			checkWeight += subspeciesEntry.weight;
 			if(roll <= checkWeight) {
-				LycanitesMobs.printDebug("Subspecies", "Subspecies selected: " + subspeciesEntry.name + " - " + subspeciesEntry.weight);
+				LycanitesMobs.printDebug("Subspecies", "Subspecies selected: " + subspeciesEntry.toString());
 				return subspeciesEntry;
 			}
 		}

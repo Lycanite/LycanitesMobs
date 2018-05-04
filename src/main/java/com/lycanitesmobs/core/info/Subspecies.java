@@ -186,8 +186,8 @@ public class Subspecies {
 	 * @param rarity The rarity of the Subspecies ('common', 'uncommon' or 'rare'.
 	 */
 	public Subspecies(@Nullable String skin, @Nullable String color, String rarity) {
-        this.color = color.toLowerCase();
-        this.skin = skin.toLowerCase();
+        this.color = color;
+        this.skin = skin;
         this.rarity = rarity;
         this.weight = commonWeights.get(rarity);
     }

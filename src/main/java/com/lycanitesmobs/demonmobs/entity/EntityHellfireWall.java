@@ -69,7 +69,7 @@ public class EntityHellfireWall extends EntityProjectileBase {
     // ==================================================
     @Override
     public void onUpdate() {
-        super.onUpdate();
+    	super.onUpdate();
 
         Vec3d vec3 = new Vec3d(this.posX, this.posY, this.posZ);
         Vec3d vec31 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
@@ -85,6 +85,11 @@ public class EntityHellfireWall extends EntityProjectileBase {
                 this.onImpact(new RayTraceResult(entity));
             }
         }
+    }
+
+    @Override
+    public boolean handleWaterMovement() {
+        return false;
     }
 
     //========== Entity Living Collision ==========

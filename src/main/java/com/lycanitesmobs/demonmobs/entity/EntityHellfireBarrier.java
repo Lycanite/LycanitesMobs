@@ -15,8 +15,8 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
 
 	// Properties:
     public EntityHellfireWall[][] hellfireWalls;
-    protected int hellfireWidth = 10;
-    protected int hellfireHeight = 5;
+    protected int hellfireWidth = 5;
+    protected int hellfireHeight = 3;
     protected int hellfireSize = 10;
     public boolean wall = false;
     public int time = 0;
@@ -93,15 +93,15 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
                     }
 
                     double rotationRadians = Math.toRadians(this.rotation);
-                    double x = (((float)col / this.hellfireWidth) * (this.hellfireSize * 10)) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
-                    double z = (((float)col / this.hellfireWidth) * (this.hellfireSize * 10)) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
+                    double x = (((float)col / this.hellfireWidth) * (this.hellfireSize * (this.hellfireWidth - 1))) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
+                    double z = (((float)col / this.hellfireWidth) * (this.hellfireSize * (this.hellfireWidth - 1))) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
                     hellfireWalls[row][col].posX = this.posX + x;
                     hellfireWalls[row][col].posY = this.posY + (this.hellfireSize * row);
                     hellfireWalls[row][col].posZ = this.posZ + z;
                     hellfireWalls[row][col].projectileLife = 2 * 20;
 
                     this.getEntityWorld().spawnEntity(hellfireWalls[row][col]);
-                    hellfireWalls[row][col].setProjectileScale(this.hellfireSize * 2);
+                    hellfireWalls[row][col].setProjectileScale(this.hellfireSize * 2.5F);
                 }
             }
         }
@@ -111,8 +111,8 @@ public class EntityHellfireBarrier extends EntityProjectileBase {
             for(int col = 0; col < this.hellfireWidth; col++) {
 
                 double rotationRadians = Math.toRadians(this.rotation);
-                double x = (((float)col / this.hellfireWidth) * (this.hellfireSize * 10)) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
-                double z = (((float)col / this.hellfireWidth) * (this.hellfireSize * 10)) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
+                double x = (((float)col / this.hellfireWidth) * (this.hellfireSize * (this.hellfireWidth - 1))) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
+                double z = (((float)col / this.hellfireWidth) * (this.hellfireSize * (this.hellfireWidth - 1))) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
                 hellfireWalls[row][col].posX = this.posX + x;
                 hellfireWalls[row][col].posY = this.posY + (this.hellfireSize * row);
                 hellfireWalls[row][col].posZ = this.posZ + z;

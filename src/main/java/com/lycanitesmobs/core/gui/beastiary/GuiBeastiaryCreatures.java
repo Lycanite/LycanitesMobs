@@ -7,6 +7,7 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.gui.beastiary.list.GuiCreatureList;
 import com.lycanitesmobs.core.gui.beastiary.list.GuiGroupList;
 import com.lycanitesmobs.core.gui.beastiary.list.GuiSubspeciesList;
+import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.Subspecies;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -105,6 +106,8 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 
 		// Creature Display:
 		if(this.playerExt.selectedCreature != null) {
+			CreatureKnowledge creatureKnowledge = this.playerExt.beastiary.getCreatureKnowledge(this.playerExt.selectedCreature.getName());
+
 			// Model:
 			this.renderCreature(this.playerExt.selectedCreature, this.colRightX + (marginX / 2) + (this.colRightWidth / 2), this.colRightY + 100, mouseX, mouseY, partialTicks);
 
@@ -131,6 +134,13 @@ public class GuiBeastiaryCreatures extends GuiBeastiary {
 			text = "\u00A7l" + I18n.translateToLocal("creature.stat.cost") + ": " + "\u00A7r";
 			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 			this.drawLevel(this.playerExt.selectedCreature, AssetManager.getTexture("GUIPetLevel"),nextX + this.getFontRenderer().getStringWidth(text), nextY);
+
+			// Knowledge Rank:
+			nextY += 2 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
+			text = "\u00A7l" + I18n.translateToLocal("creature.stat.knowledge") + ": " + "\u00A7r";
+			this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
+			this.drawBar(AssetManager.getTexture("GUIPetSpiritEmpty"), nextX + this.getFontRenderer().getStringWidth(text), nextY, 0, 9, 9, 3, 10);
+			this.drawBar(AssetManager.getTexture("GUIPetSpiritUsed"), nextX + this.getFontRenderer().getStringWidth(text), nextY, 0, 9, 9, creatureKnowledge.rank, 10);
 
 			// Summary:
 			nextY += 2 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);

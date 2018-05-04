@@ -302,13 +302,13 @@ public class ExtendedPlayer implements IExtendedPlayer {
 	}
 
 	public SummonSet getSelectedSummonSet() {
-		if(this.selectedSummonSet != this.validateSummonSetID(this.selectedSummonSet))
-			this.setSelectedSummonSet(this.selectedSummonSet); // This is a fail safe and shouldn't really happen, it will fix the current set ID if it is invalid, resending packets too.
+		//if(this.selectedSummonSet != this.validateSummonSetID(this.selectedSummonSet))
+			//this.setSelectedSummonSet(this.selectedSummonSet); // This is a fail safe and shouldn't really happen, it will fix the current set ID if it is invalid, resending packets too.
 		return this.getSummonSet(this.selectedSummonSet);
 	}
 
 	public void setSelectedSummonSet(int targetSetID) {
-		targetSetID = validateSummonSetID(targetSetID);
+		//targetSetID = validateSummonSetID(targetSetID);
 		this.selectedSummonSet = targetSetID;
 	}
 	

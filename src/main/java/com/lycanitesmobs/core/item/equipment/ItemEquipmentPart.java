@@ -164,6 +164,13 @@ public class ItemEquipmentPart extends ItemBase {
 		return new NBTTagCompound();
 	}
 
+	@SideOnly(Side.CLIENT)
+	@Nullable
+	@Override
+	public net.minecraft.client.gui.FontRenderer getFontRenderer(ItemStack stack) {
+		return LycanitesMobs.proxy.getFontRenderer();
+	}
+
 
 	// ==================================================
 	//                   Equipment Part

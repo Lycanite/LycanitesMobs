@@ -53,11 +53,12 @@ public class GuiSubspeciesList extends GuiScrollingList {
 		this.subspeciesList.put(0, 0);
 		int index = 1;
 		for(int subspeciesIndex : this.creature.subspecies.keySet()) {
-			if(this.summoning) {
-				Subspecies subspecies = this.creature.subspecies.get(subspeciesIndex);
-				if (subspecies != null && "rare".equals(subspecies.rarity)) {
-					continue;
-				}
+			if(!this.parentGui.playerExt.getBeastiary().hasKnowledgeRank(this.creature.getName(), 2)) {
+				continue;
+			}
+			Subspecies subspecies = this.creature.subspecies.get(subspeciesIndex);
+			if (subspecies != null && "rare".equals(subspecies.rarity)) {
+				continue;
 			}
 			this.subspeciesList.put(index++, subspeciesIndex);
 		}

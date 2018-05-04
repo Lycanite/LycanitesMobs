@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.entity;
 
 import com.google.common.base.Optional;
 import com.lycanitesmobs.AssetManager;
+import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.ai.EntityAISit;
 import com.lycanitesmobs.core.info.CreatureManager;
@@ -604,6 +605,10 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 				player.addStat(ObjectManager.getStat(this.creatureInfo.getName() + ".tame"), 1);
 				if (this.timeUntilPortal > this.getPortalCooldown()) {
 					this.timeUntilPortal = this.getPortalCooldown();
+				}
+				ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+				if(extendedPlayer != null) {
+					extendedPlayer.getBeastiary().discoverCreature(this, 2, false);
 				}
 			}
 			else {

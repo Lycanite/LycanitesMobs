@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class MessageCreatureKnowledge implements IMessage, IMessageHandler<MessageCreatureKnowledge, IMessage> {
 	public String creatureName;
-	public double completion;
+	public int rank;
 	
 	
 	// ==================================================
@@ -22,7 +22,7 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 	public MessageCreatureKnowledge() {}
 	public MessageCreatureKnowledge(CreatureKnowledge creatureKnowledge) {
 		this.creatureName = creatureKnowledge.creatureName;
-		this.completion = creatureKnowledge.completion;
+		this.rank = creatureKnowledge.rank;
 	}
 	
 	
@@ -40,7 +40,7 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 		if(playerExt == null)
 			return null;
 		
-		playerExt.beastiary.addToKnowledgeList(new CreatureKnowledge(playerExt.beastiary, message.creatureName, message.completion));
+		playerExt.beastiary.addCreatureKnowledge(new CreatureKnowledge(playerExt.beastiary, message.creatureName, message.rank));
 		return null;
 	}
 	
@@ -56,7 +56,7 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 		PacketBuffer packet = new PacketBuffer(buf);
 		try {
 			this.creatureName = packet.readString(256);
-			this.completion = packet.readDouble();
+			this.rank = packet.readInt();
 		}
 		catch(Exception e) {
 			LycanitesMobs.printWarning("", "There was a problem decoding the packet: " + packet + ".");
@@ -75,7 +75,7 @@ public class MessageCreatureKnowledge implements IMessage, IMessageHandler<Messa
 	public void toBytes(ByteBuf buf) {
 		PacketBuffer packet = new PacketBuffer(buf);
 		packet.writeString(this.creatureName);
-        packet.writeDouble(this.completion);
+        packet.writeInt(this.rank);
 	}
 	
 }

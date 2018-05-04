@@ -35,8 +35,8 @@ public class ConfigBase {
             configVersions = "0.0.0.0".split("\\.");
         boolean oldVersion = false;
         for(int i = 0; i < 4; i++) {
-            int minVerNum = NumberUtils.isNumber(minVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(minVersions[i].replaceAll("[^\\d.]", "")) : 0;
-            int currentVerNum = NumberUtils.isNumber(configVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(configVersions[i].replaceAll("[^\\d.]", "")) : 0;
+            int minVerNum = NumberUtils.isCreatable(minVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(minVersions[i].replaceAll("[^\\d.]", "")) : 0;
+            int currentVerNum = NumberUtils.isCreatable(configVersions[i].replaceAll("[^\\d.]", "")) ? Integer.parseInt(configVersions[i].replaceAll("[^\\d.]", "")) : 0;
             if(currentVerNum < minVerNum) {
                 oldVersion = true;
                 break;
@@ -69,7 +69,7 @@ public class ConfigBase {
 
 	// ========== Config Collections ==========
 	// Configurations:
-	public static Map<String, ConfigBase> configs = new HashMap<String, ConfigBase>();
+	public static Map<String, ConfigBase> configs = new HashMap<>();
 	
 	// Register Config:
 	public static void registerConfig(ConfigBase config) {
@@ -96,7 +96,7 @@ public class ConfigBase {
     public String configName;
     public String fileName;
     public String configFileName;
-	public List<IConfigListener> updateListeners = new ArrayList<IConfigListener>();
+	public List<IConfigListener> updateListeners = new ArrayList<>();
 	
 	
 	// ========== Constructor ==========

@@ -194,10 +194,13 @@ public class EntityPortal extends EntityProjectileBase {
   	//                 Summon Creatures
   	// ==================================================
     public int summonCreatures() {
-    	if(this.getEntityWorld().isRemote)
-    		return 1;
-        if(this.summonClass == null)
-            return 0;
+    	if(this.getEntityWorld().isRemote) {
+			return 1;
+		}
+        if(this.summonClass == null) {
+			return 0;
+		}
+
     	for(int i = 0; i < this.summonAmount; i++) {
 	    	Entity entity = null;
 			try {
@@ -206,9 +209,11 @@ public class EntityPortal extends EntityProjectileBase {
 				LycanitesMobs.printWarning("", "A none Entity class type was passed to an EntityPortal, only entities can be summoned from portals!");
 				e.printStackTrace();
 			}
-	    	if(entity == null)
-	    		return 0;
+	    	if(entity == null) {
+				return 0;
+			}
 	    	entity.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rand.nextFloat() * 360.0F, 0.0F);
+
 	    	if(entity instanceof EntityCreatureBase) {
                 EntityCreatureBase entityCreature = (EntityCreatureBase) entity;
 

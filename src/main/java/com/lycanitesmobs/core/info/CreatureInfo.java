@@ -19,6 +19,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -454,6 +455,7 @@ public class CreatureInfo {
 	 * @param index The index of the subspecies for this creature.
 	 * @return Creature subspecies.
 	 */
+	@Nullable
 	public Subspecies getSubspecies(int index) {
 		if(!this.subspecies.containsKey(index)) {
 			return null;

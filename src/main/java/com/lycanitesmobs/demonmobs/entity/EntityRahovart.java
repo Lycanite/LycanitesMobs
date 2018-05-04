@@ -159,8 +159,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         updateHellfireOrbs(this, this.updateTick, 5, this.hellfireEnergy, 10, this.hellfireOrbs);
 
         // Update Phases:
-        if(!this.getEntityWorld().isRemote)
-            this.updatePhases();
+        if(!this.getEntityWorld().isRemote) {
+			this.updatePhases();
+		}
 
         // Player Targets and No Player Healing:
         if(!this.getEntityWorld().isRemote && this.updateTick % 200 == 0) {
@@ -215,7 +216,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
                 for (EntityBehemoth minion : this.hellfireBehemothMinions.toArray(new EntityBehemoth[this.hellfireBehemothMinions.size()])) {
                     minion.hellfireEnergy = 0;
                 }
-                this.hellfireBehemothMinions = new ArrayList<EntityBehemoth>();
+                this.hellfireBehemothMinions = new ArrayList<>();
             }
             this.hellfireWallTime = 0;
             this.hellfireBarrierCleanup();
@@ -569,6 +570,9 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
     // ========== Hellfire Barrier ==========
     public void hellfireBarrierAttack(double angle) {
+    	if(this.hellfireBarriers.size() >= 10) {
+    		return;
+		}
         this.setJustAttacked();
         this.playAttackSound();
 

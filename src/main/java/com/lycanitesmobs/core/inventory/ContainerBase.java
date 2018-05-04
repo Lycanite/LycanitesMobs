@@ -121,7 +121,7 @@ public class ContainerBase extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotID) {
 		ItemStack itemStack = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(slotID);
+		Slot slot = this.inventorySlots.get(slotID);
 		if(slot == null || !slot.getHasStack())
 			return itemStack;
 		
@@ -132,8 +132,8 @@ public class ContainerBase extends Container {
         if(this.isPlayerSlot(slotID)) {
         	if(this.specialStart >= 0 && this.specialFinish >= 0) {
         		for(int i = this.specialStart; i <= this.specialFinish; i++) {
-        			if(i < inventorySlots.size()) {
-        				Slot targetSlot = (Slot)inventorySlots.get(i);
+        			if(i < this.inventorySlots.size()) {
+        				Slot targetSlot = this.inventorySlots.get(i);
 	        			if(targetSlot.isItemValid(itemStack)) {
 		        			if(!this.mergeItemStack(slotStack, i, i + 1, false)) {
 			        			return ItemStack.EMPTY;

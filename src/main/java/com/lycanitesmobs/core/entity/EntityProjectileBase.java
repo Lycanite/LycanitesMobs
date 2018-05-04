@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +27,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 public class EntityProjectileBase extends EntityThrowable {
 	public String entityName = "projectile";
 	public GroupInfo group;
+	public long updateTick;
 	
 	// Properties:
     public boolean movement = true;
@@ -88,6 +90,8 @@ public class EntityProjectileBase extends EntityThrowable {
  	// ==================================================
     @Override
     public void onUpdate() {
+    	this.updateTick++;
+
         if(!this.movement) {
             this.inGround = false;
             this.timeUntilPortal = this.getPortalCooldown();
@@ -95,7 +99,9 @@ public class EntityProjectileBase extends EntityThrowable {
         double initX = this.posX;
         double initY = this.posY;
         double initZ = this.posZ;
-        super.onUpdate();
+
+		super.onUpdate();
+
         if(!this.movement) {
             this.posX = initX;
             this.posY = initY;
@@ -133,6 +139,15 @@ public class EntityProjectileBase extends EntityThrowable {
                 this.animationFrame++;
         }
     }
+
+	/**
+	 * This is an expensive check for when there are a lot of projectiles. The isLavaProof death check is checked on impact instead for significantly greater performance.
+	 * @return Always false for performance.
+	 */
+	@Override
+	public boolean isInLava() {
+		return false;
+	}
 	
     
     // ==================================================
@@ -143,6 +158,9 @@ public class EntityProjectileBase extends EntityThrowable {
     protected float getGravityVelocity() {
     	return 0.03F;
     }
+
+    @Override
+	public void spawnRunningParticles() {}
     
     
     // ==================================================
@@ -233,19 +251,23 @@ public class EntityProjectileBase extends EntityThrowable {
      	
      	// Block Hit:
      	else {
-     		int i = rayTraceResult.getBlockPos().getX();
-     		int j = rayTraceResult.getBlockPos().getY();
-            int k = rayTraceResult.getBlockPos().getZ();
-            BlockPos blockPos = new BlockPos(i, j, k);
+			int i = rayTraceResult.getBlockPos().getX();
+			int j = rayTraceResult.getBlockPos().getY();
+			int k = rayTraceResult.getBlockPos().getZ();
+			BlockPos blockPos = new BlockPos(i, j, k);
 			IBlockState blockState = this.getEntityWorld().getBlockState(blockPos);
-            if(blockState != null) {
-            	if(blockState.getBlock() instanceof BlockTallGrass || blockState.getBlock() == Blocks.DOUBLE_PLANT) {
-            		if(this.cutsGrass) {
-						world.destroyBlock(blockPos, false);
-					}
+			if (blockState.getBlock() instanceof BlockTallGrass || blockState.getBlock() == Blocks.DOUBLE_PLANT) {
+				if (this.cutsGrass) {
+					world.destroyBlock(blockPos, false);
 				}
-				else {
-					collided = blockState.getMaterial().isSolid();
+			}
+			else {
+				collided = blockState.getMaterial().isSolid();
+				if (!this.waterProof && blockState.getMaterial() == Material.WATER) {
+					collided = true;
+				}
+				if (!this.lavaProof && blockState.getMaterial() == Material.LAVA) {
+					collided = true;
 				}
 			}
              

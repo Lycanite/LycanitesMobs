@@ -18,7 +18,7 @@ import java.util.Map;
 public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeastiary, IMessage> {
 	public int entryAmount = 0;
 	public String[] creatureNames;
-	public double[] completions;
+	public int[] ranks;
 	
 	
 	// ==================================================
@@ -29,11 +29,11 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 		this.entryAmount = Math.min(201, beastiary.creatureKnowledgeList.size());
 		if(this.entryAmount > 0) {
 			this.creatureNames = new String[this.entryAmount];
-			this.completions = new double[this.entryAmount];
+			this.ranks = new int[this.entryAmount];
 			int i = 0;
 			for(CreatureKnowledge creatureKnowledge : beastiary.creatureKnowledgeList.values()) {
 				this.creatureNames[i] = creatureKnowledge.creatureName;
-				this.completions[i] = creatureKnowledge.completion;
+				this.ranks[i] = creatureKnowledge.rank;
 				i++;
 			}
 		}
@@ -53,15 +53,14 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 		ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
 		if(playerExt == null) return null;
 		if(message.entryAmount < 0) return null;
-		
-		Map<String, CreatureKnowledge> newKnowledgeList = new HashMap<String, CreatureKnowledge>();
+
+		playerExt.getBeastiary().creatureKnowledgeList.clear();
 		for(int i = 0; i < message.entryAmount; i++) {
 			String creatureName = message.creatureNames[i];
-			double completion = message.completions[i];
-			CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), creatureName, completion);
-			newKnowledgeList.put(creatureKnowledge.creatureName, creatureKnowledge);
+			int rank = message.ranks[i];
+			CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), creatureName, rank);
+			playerExt.getBeastiary().creatureKnowledgeList.put(creatureKnowledge.creatureName, creatureKnowledge);
 		}
-		playerExt.getBeastiary().newKnowledgeList(newKnowledgeList);
 		return null;
 	}
 	
@@ -81,10 +80,10 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
 		}
         if(this.entryAmount > 0) {
             this.creatureNames = new String[this.entryAmount];
-            this.completions = new double[this.entryAmount];
+            this.ranks = new int[this.entryAmount];
             for(int i = 0; i < this.entryAmount; i++) {
                 this.creatureNames[i] = packet.readString(32767);
-                this.completions[i] = packet.readDouble();
+                this.ranks[i] = packet.readInt();
             }
         }
 	}
@@ -103,7 +102,7 @@ public class MessageBeastiary implements IMessage, IMessageHandler<MessageBeasti
         if(this.entryAmount > 0) {
             for(int i = 0; i < this.entryAmount; i++) {
                 packet.writeString(this.creatureNames[i]);
-                packet.writeDouble(this.completions[i]);
+                packet.writeInt(this.ranks[i]);
             }
         }
 	}

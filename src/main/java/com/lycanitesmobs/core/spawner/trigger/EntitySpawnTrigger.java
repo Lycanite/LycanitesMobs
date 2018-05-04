@@ -89,7 +89,6 @@ public abstract class EntitySpawnTrigger extends SpawnTrigger {
 		// Check Entity Id:
 		if(!this.entityIds.isEmpty()) {
 			String entityId = EntityList.getKey(killedEntity).toString();
-			LycanitesMobs.printDebug("", "Entity ID is: " + entityId);
 			if (entityId == null) {
 				if ("whitelist".equalsIgnoreCase(this.entityIdsListType)) {
 					return false;

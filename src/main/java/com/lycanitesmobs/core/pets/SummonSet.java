@@ -3,7 +3,9 @@ package com.lycanitesmobs.core.pets;
 import com.lycanitesmobs.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.info.CreatureInfo;
+import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.info.Subspecies;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class SummonSet {
@@ -53,7 +55,7 @@ public class SummonSet {
     //                      Behaviour
     // ==================================================
 	public void setSummonType(String summonType) {
-		/*if(this.playerExt != null && this.summonableOnly && (!this.playerExt.beastiary.hasFullKnowledge(this.summonType) || !isSummonableCreature(this.summonType)))
+		/*if(this.playerExt != null && this.summonableOnly && (!this.playerExt.beastiary.getCreatureKnowledge(this.summonType) || !isSummonableCreature(this.summonType)))
 			this.summonType = "";
         else*/
 		if(summonType != null) {
@@ -134,8 +136,24 @@ public class SummonSet {
     // ==================================================
 	/** Returns true if this summon set has a valid mob to summon and can be used by staves, etc. **/
 	public boolean isUseable() {
-		if(this.summonType == null || "".equals(this.summonType) || CreatureManager.getInstance().getCreature(this.summonType) == null || !isSummonableCreature(this.summonType))
+		if(this.summonType == null || "".equals(this.summonType) || CreatureManager.getInstance().getCreature(this.summonType) == null || !isSummonableCreature(this.summonType)) {
 			return false;
+		}
+		if(this.playerExt != null) {
+			CreatureInfo creatureInfo = this.getCreatureInfo();
+			CreatureKnowledge creatureKnowledge = this.playerExt.getBeastiary().getCreatureKnowledge(creatureInfo.getName());
+			if(creatureKnowledge == null) {
+				return false;
+			}
+			Subspecies subspecies = creatureInfo.getSubspecies(this.subspecies);
+			if(subspecies == null) {
+				return true;
+			}
+			if(subspecies.skin != null) {
+				return this.playerExt.getBeastiary().hasKnowledgeRank(creatureInfo.getName(), 3);
+			}
+			return this.playerExt.getBeastiary().hasKnowledgeRank(creatureInfo.getName(), 2);
+		}
 		return true;
 	}
 	

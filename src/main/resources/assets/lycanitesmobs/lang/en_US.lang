@@ -231,11 +231,13 @@ gui.equipmentforge.error.name=You must name your new Equipment!
 #
 #
 # ========== Messages ==========
-# Soulgazer:
-message.soulgazer.new=You have gained knowledge of the %creature%! Check your Beastiary!
-message.soulgazer.summonable=You are now able to summon the %creature%! You will need a Summoning Item to summon it.
-message.soulgazer.known=You already have full knowledge of this creature.
-message.soulgazer.unknown=The Soulgazer finds nothing special about this creature.
+# Beastiary:
+message.beastiary.new=You have gained Knowledge Rank %rank% of the %creature%! Check your Beastiary!
+message.beastiary.summonable=You are now able to summon the %creature% as a temporary minion! You will need a Summoning Item to summon it.
+message.beastiary.summonable.colors=You can now summon subspecies color variations of the %creature%!
+message.beastiary.summonable.skins=You can now summon subspecies skin variations of the %creature%!
+message.beastiary.known=You have already have Knowledge Rank %rank% of the %creature%.
+message.beastiary.unknown=There is nothing to be learnt about this creature.
 #
 # Soulstone:
 message.soulstone.untamed=The Soulstone can only bind to a tamed creature.
@@ -285,6 +287,7 @@ lyc.command.beastiary.invalid=Invalid arguments, usage: /lycanitesmobs beastiary
 lyc.command.beastiary.complete=Added all creatures to the Beastiary.
 lyc.command.beastiary.add.invalid=Invalid arguments, usage: beastiary add <creature name> for example /lycanitesmobs beastiary add quillbeast
 lyc.command.beastiary.add.unknown=Unknown creature. Ensure that the name is all lower case and has no spaces.
+lyc.command.beastiary.clear=Cleared all creatures from the Beastiary.
 #
 # Mob Events:
 lyc.command.mobevent.invalid=Invalid arguments, usage: /lycanitesmobs mobevent [start <event name>, stop, list, enable, disable]> for example /lycanitesmobs mobevent start hellsfury
@@ -426,3 +429,4 @@ creature.stat.spirit=Summoning Spirit Cost
 creature.stat.focus=Summoning Focus Cost
 creature.stat.health=Health
 creature.stat.respawning=Respawning
+creature.stat.knowledge=Knowledge Rank

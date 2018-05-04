@@ -1380,11 +1380,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if(this.dataManager != null)
-            this.onSyncUpdate();
+        if(this.dataManager != null) {
+			this.onSyncUpdate();
+		}
 
-        if(!this.getEntityWorld().isRemote)
-            this.updateHitAreas();
+        if(!this.getEntityWorld().isRemote) {
+			this.updateHitAreas();
+		}
 
         if(this.despawnCheck()) {
             if(!this.isBoundPet())
@@ -1395,9 +1397,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
 
-        // Not Walking on Land:
-        if((!this.canWalk() && !this.isFlying() && !this.isInWater() && this.isMoving()) || !this.canMove())
-        	this.clearMovement();
+        // Not Walking On Land:
+        if((!this.canWalk() && !this.isCurrentlyFlying() && !this.isInWater() && this.isMoving()) || !this.canMove()) {
+			this.clearMovement();
+		}
 
         // Climbing/Flying:
         if(!this.getEntityWorld().isRemote || this.canPassengerSteer()) {
@@ -1409,19 +1412,31 @@ public abstract class EntityCreatureBase extends EntityLiving {
             this.leap(0, 0.4D);
         }
 
+		// Boss Health Update:
+		if(this.bossInfo != null) {
+			this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+		}
+
+		// Beastiary Discovery:
+		if(!this.getEntityWorld().isRemote && this.updateTick % 40 == 0) {
+        	for(EntityPlayer player : this.getEntityWorld().getPlayers(EntityPlayer.class, player -> player != null && this.getDistance(player) <= 5)) {
+				ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+				if(extendedPlayer != null) {
+					extendedPlayer.getBeastiary().discoverCreature(this, 1, false);
+				}
+			}
+		}
+
         // GUI Refresh Tick:
-        if(!this.getEntityWorld().isRemote && this.guiViewers.size() <= 0)
-        	this.guiRefreshTick = 0;
+        if(!this.getEntityWorld().isRemote && this.guiViewers.size() <= 0) {
+			this.guiRefreshTick = 0;
+		}
         if(!this.getEntityWorld().isRemote && this.guiRefreshTick > 0) {
         	if(--this.guiRefreshTick <= 0) {
         		this.refreshGUIViewers();
         		this.guiRefreshTick = 0;
         	}
         }
-
-        // Boss Health Update:
-        if(this.bossInfo != null)
-            this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
     }
 
     // ========== AI ==========
@@ -2732,12 +2747,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
                         player.addStat(ObjectManager.getStat(this.creatureInfo.getName() + ".kill"), 1);
                         if (this.isBoss() || this.getRNG().nextDouble() <= CreatureManager.getInstance().config.beastiaryAddOnDeathChance) {
                             ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-                            if (playerExt != null && !playerExt.getBeastiary().hasFullKnowledge(this.creatureInfo.getName())) {
-                                CreatureKnowledge creatureKnowledge = new CreatureKnowledge(playerExt.getBeastiary(), this.creatureInfo.getName(), 1);
-                                playerExt.getBeastiary().addToKnowledgeList(creatureKnowledge);
-                                playerExt.getBeastiary().sendNewToClient(creatureKnowledge);
-                                playerExt.getBeastiary().sendAddedMessage(this.creatureInfo);
-                            }
+                            playerExt.getBeastiary().discoverCreature(this, 2, false);
                         }
                     }
                     catch(Exception e) {}

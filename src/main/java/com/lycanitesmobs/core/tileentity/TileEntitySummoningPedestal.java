@@ -19,6 +19,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -100,11 +101,13 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
             this.loadMinionIDs = null;
         }
 
-        if(this.summonSet == null || this.summonSet.getCreatureInfo() == null)
+        if(this.summonSet == null || this.summonSet.getCreatureInfo() == null) {
             return;
+        }
 
-        if(this.summonSet.getFollowing())
+        if(this.summonSet.getFollowing()) {
             this.summonSet.following = false;
+        }
 
         // Summoning Portal:
         if(this.summoningPortal == null || this.summoningPortal.isDead) {
@@ -169,6 +172,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     }
 
     /** Returns the name of the owner of this pedestal. **/
+	@Nullable
     public UUID getOwnerUUID() {
         return this.ownerUUID;
     }
@@ -179,19 +183,28 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
     }
 
     /** Returns the player that this belongs to or null if owned by no player. **/
+	@Nullable
     public EntityPlayer getPlayer() {
-        if(this.ownerUUID == null)
-            return null;
+        if(this.ownerUUID == null) {
+			return null;
+		}
         return this.getWorld().getPlayerEntityByUUID(this.ownerUUID);
     }
 
     /** Returns the class that this is summoning. **/
+    @Nullable
     public Class getSummonClass() {
+    	if(this.summonSet == null) {
+    		return null;
+		}
         return this.summonSet.getCreatureClass();
     }
 
     /** Sets the Summon Set for this to use. **/
     public void setSummonSet(SummonSet summonSet) {
+    	if(this.getPlayer() != null && !summonSet.isUseable()) {
+    		return;
+		}
         this.summonSet = new SummonSet(null);
         this.summonSet.setSummonType(summonSet.summonType);
         this.summonSet.sitting = summonSet.getSitting();

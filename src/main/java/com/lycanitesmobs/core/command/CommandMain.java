@@ -220,10 +220,11 @@ public class CommandMain implements ICommand {
 				return;
 			}
 			EntityPlayer player = (EntityPlayer)commandSender;
-			ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-			Beastiary beastiary = playerExt.getBeastiary();
-			if(playerExt == null || beastiary == null)
+			ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+			Beastiary beastiary = extendedPlayer.getBeastiary();
+			if(extendedPlayer == null || beastiary == null) {
 				return;
+			}
 
 			// Add:
 			if("add".equalsIgnoreCase(args[1])) {
@@ -231,6 +232,11 @@ public class CommandMain implements ICommand {
 				if (args.length < 3) {
 					commandSender.sendMessage(new TextComponentString(reply));
 					return;
+				}
+
+				int rank = 3;
+				if(args.length >= 4) {
+					rank = NumberUtils.isCreatable(args[3]) ? Integer.parseInt(args[3]) : 3;
 				}
 
 				String creatureName = args[2].toLowerCase();
@@ -241,18 +247,38 @@ public class CommandMain implements ICommand {
 					return;
 				}
 
-				beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.getName(), 1));
-				beastiary.sendAddedMessage(creatureInfo);
+				CreatureKnowledge creatureKnowledge = new CreatureKnowledge(beastiary, creatureInfo.getName(), rank);
+				if(beastiary.addCreatureKnowledge(creatureKnowledge) > 0) {
+					beastiary.sendAddedMessage(creatureKnowledge);
+					beastiary.sendToClient(creatureKnowledge);
+				}
+				else {
+					beastiary.sendKnownMessage(creatureKnowledge);
+				}
 				return;
 			}
 
-			// Add:
+			// Complete:
 			if("complete".equalsIgnoreCase(args[1])) {
+				int rank = 3;
+				if(args.length >= 3) {
+					rank = NumberUtils.isCreatable(args[2]) ? Integer.parseInt(args[2]) : 3;
+				}
+
 				for(CreatureInfo creatureInfo : CreatureManager.getInstance().creatures.values()) {
-					beastiary.addToKnowledgeList(new CreatureKnowledge(beastiary, creatureInfo.getName(), 1));
+					beastiary.addCreatureKnowledge(new CreatureKnowledge(beastiary, creatureInfo.getName(), rank));
 				}
 				beastiary.sendAllToClient();
 				reply = I18n.translateToLocal("lyc.command.beastiary.complete");
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Clear:
+			if("clear".equalsIgnoreCase(args[1])) {
+				beastiary.creatureKnowledgeList.clear();
+				beastiary.sendAllToClient();
+				reply = I18n.translateToLocal("lyc.command.beastiary.clear");
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}

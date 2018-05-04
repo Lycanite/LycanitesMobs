@@ -4,6 +4,7 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.container.ContainerEquipmentForge;
 import com.lycanitesmobs.core.inventory.ContainerBase;
+import com.lycanitesmobs.core.inventory.SlotEquipment;
 import com.lycanitesmobs.core.network.MessageTileEntityButton;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import net.minecraft.client.gui.GuiButton;
@@ -98,6 +99,32 @@ public class GuiEquipmentForge extends GuiBaseContainer {
 			int slotX = backX + forgeSlot.xPos - 1;
 			int slotY = backY + forgeSlot.yPos - 1;
 			int slotV = slotVBase;
+
+			if(forgeSlot instanceof SlotEquipment) {
+				SlotEquipment slotEquipment =(SlotEquipment)forgeSlot;
+				if("base".equals(slotEquipment.type)) {
+					slotV += slotHeight;
+				}
+				else if("head".equals(slotEquipment.type)) {
+					slotV += slotHeight * 2;
+				}
+				else if("blade".equals(slotEquipment.type)) {
+					slotV += slotHeight * 3;
+				}
+				else if("axe".equals(slotEquipment.type)) {
+					slotV += slotHeight * 4;
+				}
+				else if("pike".equals(slotEquipment.type)) {
+					slotV += slotHeight * 5;
+				}
+				else if("jewel".equals(slotEquipment.type)) {
+					slotV += slotHeight * 6;
+				}
+				else if("aura".equals(slotEquipment.type)) {
+					slotV += slotHeight * 7;
+				}
+			}
+
 			this.drawTexturedModalRect(slotX, slotY, slotU, slotV, slotWidth, slotHeight);
 		}
 	}

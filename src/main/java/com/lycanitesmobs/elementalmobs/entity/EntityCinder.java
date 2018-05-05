@@ -262,6 +262,9 @@ public class EntityCinder extends EntityCreatureTameable implements IMob, IGroup
 		if(fusable instanceof EntityDjinn) {
 			return EntityZephyr.class;
 		}
+		if(fusable instanceof EntityAegis) {
+			return EntityWisp.class;
+		}
 		if(fusable instanceof EntityArgus) {
 			return EntityGrue.class;
 		}

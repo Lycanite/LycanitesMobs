@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Ball01",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "-0.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Ball02",
+    "parent": "Ball01",
+    "centerX": "0.0",
+    "centerY": "-0.0",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Ball03",
+    "parent": "Ball02",
+    "centerX": "0.0",
+    "centerY": "-0.0",
+    "centerZ": "-0.0"
+  }
+]

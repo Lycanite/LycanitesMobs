@@ -48,7 +48,7 @@ public class EntityBlizzard extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
         entityLiving.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, this.getEffectDuration(5), 0));
     	return true;
     }

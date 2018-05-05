@@ -45,11 +45,17 @@ public abstract class EntityAITarget extends EntityAIBase {
 
         this.targetSelector = entity -> {
             double d0 = EntityAITarget.this.getTargetDistance();
+            if(this.checkSight && !entity.isGlowing() && !this.host.canEntityBeSeen(entity)) {
+                return false;
+            }
             return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isEntityTargetable(entity, false);
         };
 
         this.allySelector = entity -> {
             double d0 = EntityAITarget.this.getTargetDistance();
+			if(this.checkSight && !entity.isGlowing() && !this.host.canEntityBeSeen(entity)) {
+				return false;
+			}
             return !((double) entity.getDistance(EntityAITarget.this.host) > d0) && EntityAITarget.this.isAllyTarget(entity);
         };
         this.nearestSorter = new TargetSorterNearest(setHost);

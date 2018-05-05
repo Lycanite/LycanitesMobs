@@ -34,6 +34,9 @@ public class ElementInfo {
 	/** A list of detrimental potion effects that this element can inflict as well as grant immunity to. **/
 	public List<String> debuffs = new ArrayList<>();
 
+	/** A list of potion effects that this element has immunity to. **/
+	public List<String> immunities = new ArrayList<>();
+
 	/** A multiplier applied to any buffs caused by this element. **/
 	public double buffDurationMultiplier = 1;
 
@@ -64,6 +67,9 @@ public class ElementInfo {
 
 		if(json.has("debuffs"))
 			this.debuffs = JSONHelper.getJsonStrings(json.get("debuffs").getAsJsonArray());
+
+		if(json.has("immunities"))
+			this.immunities = JSONHelper.getJsonStrings(json.get("immunities").getAsJsonArray());
 
 		if(json.has("buffDurationMultiplier"))
 			this.buffDurationMultiplier = json.get("buffDurationMultiplier").getAsDouble();
@@ -160,11 +166,14 @@ public class ElementInfo {
 		if(this.debuffs.contains(effect.getPotion().getRegistryName().toString())) {
 			return false;
 		}
-		for(ElementInfo element : this.components) {
+		if(this.immunities.contains(effect.getPotion().getRegistryName().toString())) {
+			return false;
+		}
+		/*for(ElementInfo element : this.components) {
 			if(!element.isEffectApplicable(effect)) {
 				return false;
 			}
-		}
+		}*/
 		return true;
 	}
 
@@ -177,11 +186,11 @@ public class ElementInfo {
 		if(!this.canBurn) {
 			return false;
 		}
-		for(ElementInfo element : this.components) {
+		/*for(ElementInfo element : this.components) {
 			if(!element.canBurn()) {
 				return false;
 			}
-		}
+		}*/
 		return true;
 	}
 
@@ -194,11 +203,11 @@ public class ElementInfo {
 		if(!this.canFreeze) {
 			return false;
 		}
-		for(ElementInfo element : this.components) {
+		/*for(ElementInfo element : this.components) {
 			if(!element.canFreeze()) {
 				return false;
 			}
-		}
+		}*/
 		return true;
 	}
 }

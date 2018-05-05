@@ -4,7 +4,6 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.GroupInfo;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -180,11 +179,15 @@ public class EntityProjectileBase extends EntityThrowable {
  			if(rayTraceResult.entityHit instanceof EntityLivingBase) {
  				doDamage = this.canDamage((EntityLivingBase)rayTraceResult.entityHit);
  			}
- 			if(doDamage) {
- 				this.entityCollision(rayTraceResult.entityHit);
+ 			if(!this.getEntityWorld().isRemote) {
+				if (this.getThrower() == null || rayTraceResult.entityHit != this.getThrower()) {
+					this.onEntityCollision(rayTraceResult.entityHit);
+				}
+			}
+			if(doDamage) {
  				if(rayTraceResult.entityHit instanceof EntityLivingBase) {
  					EntityLivingBase target = (EntityLivingBase)rayTraceResult.entityHit;
- 					if(this.entityLivingCollision(target)) {
+ 					if(this.onEntityLivingDamage(target)) {
  						//movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage((EntityLivingBase)movingObjectPosition.entityHit));
 
                         boolean attackSuccess = false;
@@ -371,10 +374,10 @@ public class EntityProjectileBase extends EntityThrowable {
      public void onDamage(EntityLivingBase target, float damage, boolean attackSuccess) {}
      
      //========== Entity Collision ==========
-     public void entityCollision(Entity entity) {}
+     public void onEntityCollision(Entity entity) {}
      
      //========== Entity Living Collision ==========
-     public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+     public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
     	 return true;
      }
      

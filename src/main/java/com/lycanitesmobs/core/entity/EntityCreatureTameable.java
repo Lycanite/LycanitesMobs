@@ -593,7 +593,7 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 	 * @return True if the entity is tamed, false on failure.
 	 */
     public boolean tame(EntityPlayer player) {
-    	if(!this.getEntityWorld().isRemote && this.getSubspeciesIndex() < 3) {
+    	if(!this.getEntityWorld().isRemote && !this.isRareSubspecies()) {
 			if (this.rand.nextInt(3) == 0) {
 				this.setPlayerOwner(player);
 				this.onTamedByPlayer();

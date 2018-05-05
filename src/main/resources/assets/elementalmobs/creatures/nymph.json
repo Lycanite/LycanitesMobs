@@ -32,7 +32,7 @@
 	"damage": 1,
 	"attackSpeed": 1,
 	"rangedSpeed": 0.25,
-	"effect": 10,
+	"effect": 20,
 	"amplifier": 0,
 	"pierce": 0,
 	"sight": 16,
@@ -56,7 +56,7 @@
 	"summonable": false,
 	"tameable": false,
 	"mountable": false,
-	"summonCost": 8,
+	"summonCost": 4,
 	"dungeonLevel": 1,
 	"drops": [
 		{

@@ -1,9 +1,11 @@
 package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
+import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.LayerEffect;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,5 +52,21 @@ public class ModelCinder extends ModelTemplateElemental {
     		return super.getBaseTextureOffset(partName, entity, trophy, loop);
 		}
 		return new Vector2f(loop, 0);
+	}
+
+
+	// ==================================================
+	//                   On Render
+	// ==================================================
+	@Override
+	public void onRenderStart(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		super.onRenderStart(layer, entity, renderAsTrophy);
+		GlStateManager.disableLighting();
+	}
+
+	@Override
+	public void onRenderFinish(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		super.onRenderFinish(layer, entity, renderAsTrophy);
+		GlStateManager.enableLighting();
 	}
 }

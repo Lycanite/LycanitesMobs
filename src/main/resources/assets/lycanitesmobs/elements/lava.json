@@ -1,6 +1,7 @@
 {
 	"name": "lava",
 	"loadDefault": true,
+	"canBurn": false,
 	"buffs": [
 		"lycanitesmobs:heataura"
 	],

@@ -1,0 +1,100 @@
+[
+  {
+    "name": "Body",
+    "parent": "",
+    "centerX": "0.0",
+    "centerY": "1.4",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "ArmRight",
+    "parent": "Body",
+    "centerX": "-0.22",
+    "centerY": "1.397",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Head",
+    "parent": "Body",
+    "centerX": "0.0",
+    "centerY": "1.49",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "FringeLeft02",
+    "parent": "Head",
+    "centerX": "-0.01",
+    "centerY": "1.79",
+    "centerZ": "0.03"
+  },
+  {
+    "name": "FringeRight02",
+    "parent": "Head",
+    "centerX": "0.01",
+    "centerY": "1.79",
+    "centerZ": "0.03"
+  },
+  {
+    "name": "FringeLeft01",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.79",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "HairRight",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.79",
+    "centerZ": "0.02"
+  },
+  {
+    "name": "HairLeft",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.79",
+    "centerZ": "0.02"
+  },
+  {
+    "name": "HairCenter",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.79",
+    "centerZ": "0.03"
+  },
+  {
+    "name": "FringeRight01",
+    "parent": "Head",
+    "centerX": "0.0",
+    "centerY": "1.79",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "ArmLeft",
+    "parent": "Body",
+    "centerX": "0.22",
+    "centerY": "1.4",
+    "centerZ": "-0.0"
+  },
+  {
+    "name": "Ball01",
+    "parent": "ArmLeft",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "0.4"
+  },
+  {
+    "name": "Ball02",
+    "parent": "Ball01",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "0.4"
+  },
+  {
+    "name": "Ball03",
+    "parent": "Ball02",
+    "centerX": "0.0",
+    "centerY": "1.0",
+    "centerZ": "0.4"
+  }
+]

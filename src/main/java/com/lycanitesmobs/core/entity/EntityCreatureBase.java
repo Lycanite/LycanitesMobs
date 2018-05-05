@@ -64,6 +64,7 @@ import net.minecraft.world.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class EntityCreatureBase extends EntityLiving {
@@ -805,7 +806,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     		return true;
     	if(!this.creatureInfo.creatureSpawn.despawnNatural)
     		return false;
-        if(this.creatureInfo.boss || this.getSubspeciesIndex() >= 3)
+        if(this.creatureInfo.boss || this.isRareSubspecies())
             return false;
     	if(this.isPersistant() || this.getLeashed() || (this.hasCustomName() && "".equals(this.spawnEventType)))
     		return false;
@@ -1194,11 +1195,13 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			this.experienceValue = Math.round(scaledExp);
 			if ("rare".equals(this.subspecies.rarity)) {
 				this.damageLimit = 40;
+				this.damageMax = 25;
 			}
 		}
 	}
 
 	/** Gets the subspecies of this mob, will return null if this is a base species mob. **/
+	@Nullable
 	public Subspecies getSubspecies() {
 		return this.subspecies;
 	}
@@ -1211,6 +1214,15 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	 * **/
 	public int getSubspeciesIndex() {
 		return this.getSubspecies() != null ? this.getSubspecies().index : 0;
+	}
+
+
+	/**
+	 * Returns true if this creature is a rare subspecies (and should act like a mini boss).
+	 * @return True if rare.
+	 */
+	public boolean isRareSubspecies() {
+		return this.getSubspecies() != null && "rare".equals(this.getSubspecies().rarity);
 	}
 
 
@@ -2389,7 +2401,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 					if(targetEntity instanceof IGroupBoss) {
 						return false;
 					}
-					if(targetCreature.getSubspeciesIndex() >= 3) {
+					if(this.isRareSubspecies()) {
 						return false;
 					}
 				}
@@ -2467,9 +2479,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         	// Element Effects:
 			if(target instanceof EntityLivingBase && this.creatureStats.getAmplifier() >= 0) {
-				for(ElementInfo element : this.creatureInfo.elements) {
-					element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
-				}
+				this.applyDebuffs((EntityLivingBase)target, 1, 1);
 			}
 
 			this.setJustAttacked();
@@ -2513,9 +2523,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
 		// Element Effects:
 		if(success && target instanceof EntityLivingBase && this.creatureStats.getAmplifier() >= 0) {
-			for(ElementInfo element : this.creatureInfo.elements) {
-				element.debuffEntity((EntityLivingBase) target, this.getEffectDuration(1), this.getEffectAmplifier(1));
-			}
+			this.applyDebuffs((EntityLivingBase)target, 1, 1);
 		}
 
 		return success;
@@ -2665,13 +2673,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Called when this entity has been attacked, uses a DamageSource and damage value. **/
     @Override
     public boolean attackEntityFrom(DamageSource damageSrc, float damage) {
-    	if(this.getEntityWorld().isRemote) return false;
-        if(this.isEntityInvulnerable(damageSrc)) return false;
-        if(!this.isDamageTypeApplicable(damageSrc.getDamageType(), damageSrc, damage)) return false;
-        if(!this.isDamageEntityApplicable(damageSrc.getTrueSource())) return false;
+    	if(this.getEntityWorld().isRemote)
+    		return false;
+        if(this.isEntityInvulnerable(damageSrc))
+        	return false;
+        if(!this.isDamageTypeApplicable(damageSrc.getDamageType(), damageSrc, damage))
+        	return false;
+        if(!this.isDamageEntityApplicable(damageSrc.getTrueSource()))
+        	return false;
         damage *= this.getDamageModifier(damageSrc);
         damage = this.getDamageAfterDefense(damage);
-        if(this.isBoss() || this.getSubspeciesIndex() >= 3) {
+        if(this.isBoss() || this.isRareSubspecies()) {
             if (!(damageSrc.getTrueSource() instanceof EntityPlayer))
                 damage *= 0.25F;
         }
@@ -3030,7 +3042,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this mob is currently flying. **/
     public boolean isCurrentlyFlying() { return this.isFlying(); }
     /** Can this entity by tempted (usually lured by an item) currently? **/
-    public boolean canBeTempted() { return this.getSubspeciesIndex() < 3; }
+    public boolean canBeTempted() { return !this.isRareSubspecies(); }
     
     /** Called when the creature has eaten. Some special AIs use this such as EntityAIEatBlock. **/
     public void onEat() {}
@@ -3235,6 +3247,34 @@ public abstract class EntityCreatureBase extends EntityLiving {
     // ========== Extra Animations ==========
     /** An additional animation boolean that is passed to all clients through the animation mask. **/
     public boolean extraAnimation01() { return this.extraAnimation01; }
+
+
+	/**
+	 * Applies all element debuffs to the target entity.
+	 * @param entity The entity to debuff.
+	 * @param duration The duration in seconders which is multiplied by this creature's stats.
+	 * @param amplifier The effect amplifier which is multiplied by this creature's stats.
+	 */
+	public void applyDebuffs(EntityLivingBase entity, int duration, int amplifier) {
+		for(ElementInfo element : this.creatureInfo.elements) {
+			element.debuffEntity(entity, this.getEffectDuration(duration), this.getEffectAmplifier(amplifier));
+		}
+	}
+
+
+	/**
+	 * Applies all element buffs to the target entity.
+	 * @param entity The entity to buff.
+	 * @param duration The duration in seconders which is multiplied by this creature's stats.
+	 * @param amplifier The effect amplifier which is multiplied by this creature's stats.
+	 */
+	public void applyBuffs(EntityLivingBase entity, int duration, int amplifier) {
+		if(this.creatureStats.getAmplifier() >= 0) {
+			for(ElementInfo element : this.creatureInfo.elements) {
+				element.buffEntity(entity, this.getEffectDuration(duration), this.getEffectAmplifier(amplifier));
+			}
+		}
+	}
     
     
     // ==================================================
@@ -3624,7 +3664,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns whether or not the given damage type is applicable, if not no damage will be taken. **/
     public boolean isDamageTypeApplicable(String type, DamageSource source, float damage) {
-        if(("inWall".equals(type) || "cactus".equals(type)) && (this.getSubspeciesIndex() >= 3 || this.isBoss()))
+        if(("inWall".equals(type) || "cactus".equals(type)) && (this.isRareSubspecies() || this.isBoss()))
             return false;
 		if("inWall".equals(type))
 			return !CreatureManager.getInstance().config.suffocationImmunity;
@@ -3635,7 +3675,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     /** Returns whether or not this entity can be harmed by the specified entity. **/
     public boolean isDamageEntityApplicable(Entity entity) {
-        if(this.isBoss()) {
+        if(this.isBoss() || this.isRareSubspecies()) {
             if(entity == null)
                 return false;
             return this.getDistance(entity) <= this.bossRange;
@@ -4133,7 +4173,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(this.forceBossHealthBar || (this.isBoss() && this.isBossAlways()))
             return true;
         // Rare subspecies health bar:
-        if(this.getSubspeciesIndex() >= 3)
+        if(this.isRareSubspecies())
             return Subspecies.rareHealthBars;
         return false;
     }
@@ -4161,7 +4201,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected float getSoundVolume() {
         if(this.isBoss())
             return 4.0F;
-        if(this.getSubspeciesIndex() >= 3)
+        if(this.isRareSubspecies())
             return 2.0F;
         return 1.0F;
     }

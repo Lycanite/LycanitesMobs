@@ -1,9 +1,12 @@
 package com.lycanitesmobs.elementalmobs.model;
 
 import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
+import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.LayerGlow;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -67,5 +70,21 @@ public class ModelVolcan extends ModelTemplateElemental {
 		if(partName.equals("effect02") || partName.equals("effect04")) {
 			this.rotate(0, loop * -8, 0);
 		}
+	}
+
+
+	// ==================================================
+	//                   On Render
+	// ==================================================
+	@Override
+	public void onRenderStart(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		super.onRenderStart(layer, entity, renderAsTrophy);
+		GlStateManager.disableLighting();
+	}
+
+	@Override
+	public void onRenderFinish(LayerBase layer, Entity entity, boolean renderAsTrophy) {
+		super.onRenderFinish(layer, entity, renderAsTrophy);
+		GlStateManager.enableLighting();
 	}
 }

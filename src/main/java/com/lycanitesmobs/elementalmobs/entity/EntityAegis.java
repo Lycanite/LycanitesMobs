@@ -209,6 +209,9 @@ public class EntityAegis extends EntityCreatureTameable implements IMob, IGroupR
 
 	@Override
 	public Class getFusionClass(IFusable fusable) {
+		if(fusable instanceof EntityCinder) {
+			return EntityWisp.class;
+		}
 		if(fusable instanceof EntityJengu) {
 			return EntityNymph.class;
 		}

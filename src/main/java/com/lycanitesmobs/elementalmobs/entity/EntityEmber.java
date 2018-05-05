@@ -44,7 +44,7 @@ public class EntityEmber extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
     	if(!entityLiving.isImmuneToFire())
     		entityLiving.setFire(this.getEffectDuration(5) / 20);
     	return true;

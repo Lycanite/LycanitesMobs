@@ -65,7 +65,7 @@ public class EntityFaeBolt extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
     	if(this.debuff) {
 			Potion lifeleak = ObjectManager.getPotionEffect("lifeleak");
 			if (lifeleak != null)

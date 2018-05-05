@@ -1,6 +1,6 @@
 package com.lycanitesmobs.elementalmobs.model;
 
-import com.lycanitesmobs.core.model.template.ModelTemplateElemental;
+import com.lycanitesmobs.core.model.ModelObj;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.vecmath.Vector4f;
 
 @SideOnly(Side.CLIENT)
-public class ModelCrystalShard extends ModelTemplateElemental {
+public class ModelCrystalShard extends ModelObj {
 
 	// ==================================================
   	//                    Constructors

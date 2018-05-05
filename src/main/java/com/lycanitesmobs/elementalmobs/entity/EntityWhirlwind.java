@@ -55,7 +55,7 @@ public class EntityWhirlwind extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
 		entityLiving.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, this.getEffectDuration(4), 2));
         return true;
     }

@@ -48,7 +48,7 @@ public class EntityAcidSplash extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
 		Potion penetration = ObjectManager.getPotionEffect("penetration");
 		if(penetration != null)
 			entityLiving.addPotionEffect(new PotionEffect(penetration, this.getEffectDuration(10), 1));

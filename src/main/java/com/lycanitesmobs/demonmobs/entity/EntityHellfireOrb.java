@@ -59,7 +59,7 @@ public class EntityHellfireOrb extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
     	if(!entityLiving.isImmuneToFire())
     		entityLiving.setFire(this.getEffectDuration(10) / 20);
     	return true;

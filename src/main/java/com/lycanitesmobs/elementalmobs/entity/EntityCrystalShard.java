@@ -73,7 +73,7 @@ public class EntityCrystalShard extends EntityProjectileModel {
  	// ==================================================
 	//========== Entity Living Collision ==========
 	@Override
-	public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+	public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
 		if(ObjectManager.getPotionEffect("aphagia") != null) {
 			entityLiving.addPotionEffect(new PotionEffect(ObjectManager.getPotionEffect("aphagia"), this.getEffectDuration(60), 0));
 		}

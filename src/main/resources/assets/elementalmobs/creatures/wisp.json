@@ -1,0 +1,77 @@
+{
+	"name": "wisp",
+	"class": "com.lycanitesmobs.elementalmobs.entity.EntityWisp",
+	"loadDefault": true,
+	"enabled": true,
+	"spawning": {
+		"enabled": true,
+		"spawners": [],
+		"disableSubspecies": false,
+		"dimensionIds": [-1, 1],
+		"dimensionListType": "blacklist",
+		"ignoreBiome": true,
+		"biomes": [],
+		"spawnWeight": 8,
+		"dungeonWeight": 0,
+		"spawnAreaLimit": 2,
+		"spawnGroupMin": 1,
+		"spawnGroupMax": 2,
+		"spawnsInLight": true,
+		"spawnsInDark": false,
+		"worldDayMin": -1,
+		"despawnNatural": true,
+		"despawnForced": false
+	},
+	"width": 0.8,
+	"height": 1.8,
+	"experience": 10,
+	"health": 25,
+	"defense": 0,
+	"armor": 0,
+	"speed": 30,
+	"damage": 4,
+	"attackSpeed": 1,
+	"rangedSpeed": 0.25,
+	"effect": 30,
+	"amplifier": 0,
+	"pierce": 0,
+	"sight": 16,
+	"knockbackResistance": 0,
+	"eggBackColor": "#f0eab6",
+	"eggForeColor": "#fefcef",
+	"subspecies": [
+		{
+			"index": 1,
+			"name": "azure",
+			"type": "uncommon"
+		},
+		{
+			"index": 2,
+			"name": "violet",
+			"type": "uncommon"
+		}
+	],
+	"element": "light",
+	"peaceful": true,
+	"summonable": false,
+	"tameable": false,
+	"mountable": false,
+	"summonCost": 4,
+	"dungeonLevel": 1,
+	"drops": [
+		{
+			"item": "minecraft:glowstone_dust",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 1
+		},
+		{
+			"item": "minecraft:gold_nugget",
+			"minAmount": 1,
+			"maxAmount": 3,
+			"chance": 0.5
+		}
+	],
+	"sizeScale": 1,
+	"hitboxScale": 1
+}

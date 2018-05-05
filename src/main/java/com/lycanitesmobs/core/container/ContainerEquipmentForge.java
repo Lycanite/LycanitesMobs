@@ -38,8 +38,8 @@ public class ContainerEquipmentForge extends ContainerBase {
 
 			// Tips:
 			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 3), y, "none"));
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 3), y + slotSize, "none"));
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 3), y - slotSize, "none"));
+			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y + slotSize, "none"));
+			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y - slotSize, "none"));
 
 			// Pommel:
 			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x, y, "none"));

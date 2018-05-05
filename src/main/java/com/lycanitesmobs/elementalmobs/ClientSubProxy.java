@@ -21,6 +21,7 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("xaphan", new ModelXaphan());
 		AssetManager.addModel("volcan", new ModelVolcan());
 		AssetManager.addModel("zephyr", new ModelZephyr());
+		AssetManager.addModel("wisp", new ModelWisp());
 		AssetManager.addModel("grue", new ModelGrue());
 		AssetManager.addModel("spriggan", new ModelSpriggan());
 		AssetManager.addModel("reiver", new ModelReiver());
@@ -33,6 +34,7 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("spectre", new ModelSpectre());
 
 		// Projectiles:
+		AssetManager.addModel("lightball", new ModelLightBall());
 		AssetManager.addModel("crystalshard", new ModelCrystalShard());
 
         // Register Renderers:

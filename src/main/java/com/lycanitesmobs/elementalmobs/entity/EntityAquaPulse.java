@@ -50,7 +50,7 @@ public class EntityAquaPulse extends EntityProjectileBase {
  	// ==================================================
     //========== Entity Living Collision ==========
     @Override
-    public boolean entityLivingCollision(EntityLivingBase entityLiving) {
+    public boolean onEntityLivingDamage(EntityLivingBase entityLiving) {
     	entityLiving.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, this.getEffectDuration(8), 2));
         return true;
     }

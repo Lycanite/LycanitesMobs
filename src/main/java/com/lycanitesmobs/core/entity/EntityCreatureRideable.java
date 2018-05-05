@@ -342,7 +342,7 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
         if(mountingAllowed && this.isFlying())
             mountingAllowed = CreatureManager.getInstance().config.mountingFlightEnabled;
     	if(this.canBeMounted(player) && !player.isSneaking() && !this.getEntityWorld().isRemote && mountingAllowed)
-    		commands.put(CMD_PRIOR.MAIN.id, "Mount");
+    		commands.put(COMMAND_PIORITIES.MAIN.id, "Mount");
     	
     	return commands;
     }

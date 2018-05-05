@@ -99,7 +99,7 @@ public class ModelRahovart extends ModelObjOld {
     		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * distance);
 				
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("armleft"))
 	    		rotate(-40.0F, 0.0F, 0.0F);
 		}

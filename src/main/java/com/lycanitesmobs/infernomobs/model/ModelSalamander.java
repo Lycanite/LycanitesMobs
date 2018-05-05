@@ -87,7 +87,7 @@ public class ModelSalamander extends ModelObjOld {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
             if(((EntityCreatureBase)entity).getAttackPhase() % 1 == 0 && partName.equals("legleftfront"))
                 rotX -= 20.0F;
             else if(((EntityCreatureBase)entity).getAttackPhase() % 2 == 0 && partName.equals("legrightfront"))

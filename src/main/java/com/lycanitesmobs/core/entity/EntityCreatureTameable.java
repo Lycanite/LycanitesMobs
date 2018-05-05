@@ -184,24 +184,24 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
 		
 		// Open GUI:
 		if(!this.getEntityWorld().isRemote && this.isTamed() && (itemStack == null || player.isSneaking()) && player.getName().equalsIgnoreCase(this.getOwnerName()))
-			commands.put(CMD_PRIOR.MAIN.id, "GUI");
+			commands.put(COMMAND_PIORITIES.MAIN.id, "GUI");
     	
     	// Server Item Commands:
     	if(!this.getEntityWorld().isRemote && itemStack != null && !player.isSneaking()) {
     		
     		// Taming:
     		if(!this.isTamed() && isTamingItem(itemStack) && CreatureManager.getInstance().config.tamingEnabled)
-    			commands.put(CMD_PRIOR.IMPORTANT.id, "Tame");
+    			commands.put(COMMAND_PIORITIES.IMPORTANT.id, "Tame");
     		
     		// Feeding:
     		if(this.isTamed() && this.isHealingItem(itemStack) && this.getHealth() < this.getMaxHealth())
-                commands.put(CMD_PRIOR.ITEM_USE.id, "Feed");
+                commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Feed");
     		
     		// Equipment:
     		if(this.isTamed() && !this.isChild() && this.canEquip() && player.getName().equalsIgnoreCase(this.getOwnerName())) {
 	    		String equipSlot = this.inventory.getSlotForEquipment(itemStack);
 	    		if(equipSlot != null && (this.inventory.getEquipmentStack(equipSlot) == null || this.inventory.getEquipmentStack(equipSlot).getItem() != itemStack.getItem()))
-	    			commands.put(CMD_PRIOR.EQUIPPING.id, "Equip Item");
+	    			commands.put(COMMAND_PIORITIES.EQUIPPING.id, "Equip Item");
     		}
     	}
 		
@@ -290,36 +290,36 @@ public class EntityCreatureTameable extends EntityCreatureAgeable implements IEn
     		return;
 
     	// Pet Commands:
-    	if(guiCommandID == PET_COMMAND.PVP.id) {
+    	if(guiCommandID == PET_COMMAND_ID.PVP.id) {
 			this.setPVP(!this.isPVP());
 		}
-		else if(guiCommandID == PET_COMMAND.PASSIVE.id) {
+		else if(guiCommandID == PET_COMMAND_ID.PASSIVE.id) {
 			this.setPassive(true);
 		}
-		else if(guiCommandID == PET_COMMAND.DEFENSIVE.id) {
+		else if(guiCommandID == PET_COMMAND_ID.DEFENSIVE.id) {
 			this.setPassive(false);
 			this.setAssist(false);
 			this.setAggressive(false);
 		}
-		else if(guiCommandID == PET_COMMAND.ASSIST.id) {
+		else if(guiCommandID == PET_COMMAND_ID.ASSIST.id) {
 			this.setPassive(false);
 			this.setAssist(true);
 			this.setAggressive(false);
 		}
-		else if(guiCommandID == PET_COMMAND.AGGRESSIVE.id) {
+		else if(guiCommandID == PET_COMMAND_ID.AGGRESSIVE.id) {
 			this.setPassive(false);
 			this.setAssist(true);
 			this.setAggressive(true);
 		}
-		else if(guiCommandID == PET_COMMAND.FOLLOW.id) {
+		else if(guiCommandID == PET_COMMAND_ID.FOLLOW.id) {
 			this.setSitting(false);
 			this.setFollowing(true);
 		}
-		else if(guiCommandID == PET_COMMAND.WANDER.id) {
+		else if(guiCommandID == PET_COMMAND_ID.WANDER.id) {
 			this.setSitting(false);
 			this.setFollowing(false);
 		}
-		else if(guiCommandID == PET_COMMAND.SIT.id) {
+		else if(guiCommandID == PET_COMMAND_ID.SIT.id) {
 			this.setSitting(true);
 			this.setFollowing(false);
 		}

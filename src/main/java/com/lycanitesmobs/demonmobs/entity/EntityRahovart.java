@@ -28,7 +28,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,7 +70,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.hasAttackSound = false;
-        this.justAttackedTime = 40;
+        this.setAttackCooldownMax(40);
         this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;
         this.setupMob();
@@ -507,7 +506,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
 
     // ========== Hellfire Wave ==========
     public void hellfireWaveAttack(double angle) {
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
         this.playAttackSound();
         EntityHellfireWave hellfireWave = new EntityHellfireWave(this.getEntityWorld(), this);
         hellfireWave.posY = this.posY;
@@ -518,14 +517,14 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     // ========== Hellfire Wall ==========
     public void hellfireWallAttack(double angle) {
         this.playAttackSound();
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
 
         this.hellfireWallTime = this.hellfireWallTimeMax;
         this.hellfireWallClockwise = this.getRNG().nextBoolean();
     }
 
     public void hellfireWallUpdate() {
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
 
         double hellfireWallNormal = (double)this.hellfireWallTime / this.hellfireWallTimeMax;
         double hellfireWallAngle = 360;
@@ -573,7 +572,7 @@ public class EntityRahovart extends EntityCreatureBase implements IMob, IGroupDe
     	if(this.hellfireBarriers.size() >= 10) {
     		return;
 		}
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
         this.playAttackSound();
 
         EntityHellfireBarrier hellfireBarrier = new EntityHellfireBarrier(this.getEntityWorld(), this);

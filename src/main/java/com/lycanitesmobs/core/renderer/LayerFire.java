@@ -23,7 +23,7 @@ public class LayerFire extends LayerBase {
     public boolean canRenderLayer(EntityCreatureBase entity, float scale) {
         if(!super.canRenderLayer(entity, scale))
             return false;
-        return entity.justAttacked();
+        return entity.isAttackOnCooldown();
     }
 
 

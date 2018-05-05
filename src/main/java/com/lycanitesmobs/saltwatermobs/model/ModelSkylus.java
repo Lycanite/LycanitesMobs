@@ -83,7 +83,7 @@ public class ModelSkylus extends ModelObjOld {
     	}
 				
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("tentaclem") || partName.equals("tentaclel2") || partName.equals("tentacler2"))
 	    		rotate(0.0F, -25.0F, 0.0F);
 	    	if(partName.equals("tentaclel1") || partName.equals("tentacler1"))

@@ -15,8 +15,6 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,7 +31,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.hasAttackSound = false;
-        this.justAttackedTime = 20;
+        this.setAttackCooldownMax(20);
         this.setupMob();
         this.stepHeight = 1.0F;
         this.hitAreaWidthScale = 1.5F;
@@ -244,7 +242,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
             EntityDemonicBlast projectile = new EntityDemonicBlast(this.getEntityWorld(), player);
             this.getEntityWorld().spawnEntity(projectile);
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-            this.setJustAttacked();
+            this.triggerAttackCooldown();
         }
 
         this.applyStaminaCost();
@@ -268,7 +266,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     // ==================================================
     @Override
     public float getBrightness() {
-        if(justAttacked())
+        if(isAttackOnCooldown())
             return 1.0F;
         else
             return super.getBrightness();
@@ -277,7 +275,7 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
     @Override
     @SideOnly(Side.CLIENT)
     public int getBrightnessForRender() {
-        if(justAttacked())
+        if(isAttackOnCooldown())
             return 15728880;
         else
             return super.getBrightnessForRender();

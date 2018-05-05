@@ -99,7 +99,7 @@ public class ModelYale extends ModelObjOld {
     	}
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("armleft") || partName.equals("armright"))
 	    		rotX += 20.0F;
 		}

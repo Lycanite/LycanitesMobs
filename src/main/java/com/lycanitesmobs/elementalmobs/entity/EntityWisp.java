@@ -1,5 +1,6 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.api.IGroupPlant;
 import com.lycanitesmobs.api.IGroupShadow;
 import com.lycanitesmobs.core.entity.EntityCreatureBase;
@@ -34,7 +35,7 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
         this.setupMob();
 
         this.stepHeight = 1.0F;
-		this.justAttackedTime = 80;
+		this.setAttackCooldownMax(this.getRangedCooldown());
     }
 
     // ========== Init AI ==========
@@ -45,7 +46,7 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
 		this.tasks.addTask(2, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(14.0F).setMinChaseDistance(10.0F));
 		this.tasks.addTask(3, this.aiSit);
         this.tasks.addTask(4, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
-        this.tasks.addTask(8, new EntityAIWander(this));
+        this.tasks.addTask(8, new EntityAIWander(this).setPauseRate(600));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
 
@@ -60,6 +61,14 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
     // ==================================================
     //                      Updates
     // ==================================================
+	@Override
+	public void onUpdate() {
+    	super.onUpdate();
+    	if(this.playPartner != null && !this.hasAttackTarget()) {
+			this.faceEntity(this.playPartner, 360, 360);
+		}
+	}
+
     // ========== Living Update ==========
     @Override
     public void onLivingUpdate() {
@@ -77,7 +86,12 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
 							continue;
 						}
 						if(target instanceof EntityWisp) {
-							playPartner = (EntityWisp)target;
+							if (this.playPartner == null) {
+								this.playPartner = (EntityWisp) target;
+								if (((EntityWisp) target).playPartner == null) {
+									((EntityWisp) target).playPartner = this;
+								}
+							}
 							continue;
 						}
 						this.applyBuffs(target, 1, 1);
@@ -97,12 +111,16 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
 
 			// Playing:
 			if(this.playPartner == null) {
+				this.setAttackCooldownMax(this.getRangedCooldown());
 				if (this.updateTick % 40 == 0) {
-					List aoeTargets = this.getNearbyEntities(EntityWisp.class, null, 10);
+					List aoeTargets = this.getNearbyEntities(EntityWisp.class, null, 30);
 					for (Object entityObj : aoeTargets) {
 						EntityWisp target = (EntityWisp)entityObj;
 						if(target != this && this.getAttackTarget() != target) {
 							this.playPartner = target;
+							if(target.playPartner == null) {
+								target.playPartner = this;
+							}
 							break;
 						}
 					}
@@ -112,13 +130,18 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
 				if(this.playPartner.isDead || this.getAttackTarget() == this.playPartner || this.getDistance(this.playPartner) >= 100) {
 					this.playPartner = null;
 				}
-				else {
-					if(this.hasAttackTarget() && this.getPlayerOwner() == this.playPartner.getPlayerOwner()) {
+				else if(this.hasAttackTarget()) {
+					this.setAttackCooldownMax(this.getRangedCooldown());
+					if(this.getPlayerOwner() == this.playPartner.getPlayerOwner()) {
 						this.playPartner.setAttackTarget(this.getAttackTarget());
 					}
-					if(!this.justAttacked() && !this.hasAttackTarget()) {
+				}
+				else {
+					if(!this.isAttackOnCooldown() && !this.hasAttackTarget()) {
 						if(this.updateTick % this.getRangedCooldown() == 0) {
-							this.playPartner.justAttackedTime = 240;
+							this.setAttackCooldownMax(160);
+							this.playPartner.setAttackCooldownMax(160);
+							this.playPartner.triggerAttackCooldown();
 							this.attackRanged(this.playPartner, this.getDistance(this.playPartner));
 						}
 					}
@@ -135,7 +158,7 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
     EntityLifeDrain projectile = null;
     @Override
     public void attackRanged(Entity target, float range) {
-		this.fireProjectile(EntityLightBall.class, target, range, 0, new Vec3d(0, 0, 0), 0.5f, 0.5f, 1F);
+		this.fireProjectile(EntityLightBall.class, target, range, 0, new Vec3d(0, 0, 0), 0.5f, 1f, 1F);
 		super.attackRanged(target, range);
     }
 

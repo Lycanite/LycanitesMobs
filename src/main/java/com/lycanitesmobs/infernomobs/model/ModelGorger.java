@@ -61,7 +61,7 @@ public class ModelGorger extends ModelObj {
             this.rotate((float)-Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F), 0.0F, 0.0F);
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
             if(partName.equals("mouthtop"))
                 rotX += -20.0F;
             if(partName.equals("mouthleft"))

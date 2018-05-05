@@ -84,7 +84,7 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
         this.targetTasks.addTask(4, new EntityAITargetOwnerThreats(this));
         this.targetTasks.addTask(5, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
+        this.targetTasks.addTask(6, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(7, new EntityAITargetAttack(this).setTargetClass(IGroupPrey.class));
         this.targetTasks.addTask(8, new EntityAITargetAttack(this).setTargetClass(IGroupAlpha.class).setPackHuntingScale(1, 1));
         if(CreatureManager.getInstance().config.predatorsAttackAnimals) {
@@ -184,7 +184,7 @@ public class EntitySalamander extends EntityCreatureRideable implements IMob, IG
             }
         }
         this.playAttackSound();
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
     }
 
 

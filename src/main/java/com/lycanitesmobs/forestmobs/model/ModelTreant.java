@@ -87,7 +87,7 @@ public class ModelTreant extends ModelObjOld {
             rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
 				
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("armlefttop") || partName.equals("armleftbottom") || partName.equals("armrightmiddle"))
 	    		rotate(0.0F, -25.0F, 0.0F);
 	    	if(partName.equals("armrighttop") || partName.equals("armrightbottom") || partName.equals("armleftmiddle"))

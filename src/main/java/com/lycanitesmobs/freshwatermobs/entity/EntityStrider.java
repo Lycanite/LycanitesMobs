@@ -71,7 +71,7 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
         this.targetTasks.addTask(1, new EntityAITargetRiderAttack(this));
         this.targetTasks.addTask(3, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class).setCheckSight(false));
-        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
+        this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
 	
@@ -164,7 +164,7 @@ public class EntityStrider extends EntityCreatureTameable implements IGroupHeavy
             }
         }
         this.playAttackSound();
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
 
         this.applyStaminaCost();
     }

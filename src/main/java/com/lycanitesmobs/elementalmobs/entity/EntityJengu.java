@@ -138,7 +138,7 @@ public class EntityJengu extends EntityCreatureTameable implements IMob, IGroupW
         if(itemStack != null) {
             // Water:
             if(itemStack.getItem() == Items.BUCKET && this.isTamed())
-                commands.put(CMD_PRIOR.ITEM_USE.id, "Water");
+                commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Water");
         }
 
         return commands;

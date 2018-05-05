@@ -96,7 +96,7 @@ public class ModelSerpix extends ModelObjOld {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
             if(partName.equals("mouthleft"))
                 rotY -= 15F;
             if(partName.equals("mouthright"))

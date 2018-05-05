@@ -131,6 +131,30 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/argus/tame", "stream": false}]
     },
+    "entity.wisp.say": {
+        "category": "neutral",
+        "sounds":
+        [
+            {"name": "elementalmobs:entity/wisp/say01", "stream": false},
+            {"name": "elementalmobs:entity/wisp/say02", "stream": false}
+        ]
+    },
+    "entity.wisp.hurt": {
+        "category": "neutral",
+        "sounds": [{"name": "elementalmobs:entity/wisp/hurt", "stream": false}]
+    },
+    "entity.wisp.death": {
+        "category": "neutral",
+        "sounds": [{"name": "elementalmobs:entity/wisp/death", "stream": false}]
+    },
+    "entity.wisp.beg": {
+        "category": "neutral",
+        "sounds": [{"name": "elementalmobs:entity/wisp/beg", "stream": false}]
+    },
+    "entity.wisp.tame": {
+        "category": "neutral",
+        "sounds": [{"name": "elementalmobs:entity/wisp/tame", "stream": false}]
+    },
     "entity.xaphan.say": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/xaphan/say", "stream": false}]
@@ -445,6 +469,10 @@
     "projectile.whirlwind": {
         "category": "ambient",
         "sounds": [{"name": "elementalmobs:projectile/whirlwind", "stream": false}]
+    },
+    "projectile.lightball": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/lightball", "stream": false}]
     },
     "projectile.acidsplash": {
         "category": "ambient",

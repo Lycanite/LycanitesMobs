@@ -81,7 +81,7 @@ public class ModelStrider extends ModelObjOld {
             rotX += Math.toDegrees(MathHelper.cos(time * 0.6662F) * walkSwing * distance);
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
             if(partName.equals("armleft"))
                 rotate(-25.0F, 0.0F, 0.0F);
             if(partName.equals("armright"))

@@ -104,7 +104,7 @@ public class ModelArix extends ModelObjOld {
     	}
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("mouth")) {
 	    		rotX += 20.0F;
 	    	}

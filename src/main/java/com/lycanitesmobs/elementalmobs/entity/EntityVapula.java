@@ -40,7 +40,7 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
 
         this.stepHeight = 1.0F;
         this.attackPhaseMax = 8;
-        this.justAttackedTime = 60;
+        this.setAttackCooldownMax(60);
     }
 
     // ========== Init AI ==========
@@ -48,7 +48,6 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
     protected void initEntityAI() {
         super.initEntityAI();
         this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
 		this.tasks.addTask(2, new EntityAIAttackMelee(this).setLongMemory(false).setMaxChaseDistance(3.0F));
 		this.tasks.addTask(3, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(18.0F).setMinChaseDistance(10.0F).setCheckSight(false));
         this.tasks.addTask(4, this.aiSit);
@@ -64,7 +63,6 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
-		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
 
     // ========== Set Size ==========
@@ -157,7 +155,7 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
 	// ========== Ranged Attack ==========
 	@Override
 	public void attackRanged(Entity target, float range) {
-		this.fireProjectile(EntityCrystalShard.class, target, range, 0, new Vec3d(0, 0, 0), 0.6f, 1f, 1F);
+		this.fireProjectile(EntityCrystalShard.class, target, range, 0, new Vec3d(0, 0, 0), 0.6f, 2f, 1F);
 		this.nextAttackPhase();
 		super.attackRanged(target, range);
 	}
@@ -226,7 +224,6 @@ public class EntityVapula extends EntityCreatureTameable implements IMob, IGroup
     
     @Override
     public boolean canBurn() {
-    	// Geonach can now burn in order to heat up and transform into Volcans.
-    	return true;
+    	return false;
     }
 }

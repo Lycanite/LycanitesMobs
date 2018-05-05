@@ -31,7 +31,7 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
 
         this.stepHeight = 1.0F;
 
-        this.justAttackedTime = 40;
+        this.setAttackCooldownMax(40);
     }
 
     // ========== Init AI ==========

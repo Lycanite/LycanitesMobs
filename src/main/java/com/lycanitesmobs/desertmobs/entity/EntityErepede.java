@@ -18,9 +18,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -133,7 +131,7 @@ public class EntityErepede extends EntityCreatureRideable implements IGroupPreda
 	    	EntityMudshot projectile = new EntityMudshot(this.getEntityWorld(), player);
 	    	this.getEntityWorld().spawnEntity(projectile);
 	    	this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-	    	this.setJustAttacked();
+	    	this.triggerAttackCooldown();
     	}
     	
     	this.applyStaminaCost();

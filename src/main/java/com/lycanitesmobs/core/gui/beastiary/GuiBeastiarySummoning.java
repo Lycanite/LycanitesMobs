@@ -88,39 +88,39 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 		buttonY = this.colRightY + this.colRightHeight - ((buttonHeight + buttonSpacing) * 3);
 
 		// Actions:
-		GuiButton button = new GuiButton(EntityCreatureBase.PET_COMMAND.PVP.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.pvp"));
+		GuiButton button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.PVP.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.pvp"));
 		this.buttonList.add(button);
 
 		// Stance:
 		buttonX = this.colRightX + buttonMarginX;
 		buttonY += buttonHeight + 2;
-		button = new GuiButton(EntityCreatureBase.PET_COMMAND.PASSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.passive"));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.PASSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.passive"));
 		this.buttonList.add(button);
 
 		buttonX += buttonWidth + buttonSpacing;
-		button = new GuiButton(EntityCreatureBase.PET_COMMAND.DEFENSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.defensive"));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.DEFENSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.defensive"));
 		this.buttonList.add(button);
 
 		buttonX += buttonWidth + buttonSpacing;
-		button = new GuiButton(EntityCreatureBase.PET_COMMAND.ASSIST.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.assist"));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.ASSIST.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.assist"));
 		this.buttonList.add(button);
 
 		buttonX += buttonWidth + buttonSpacing;
-		button = new GuiButton(EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.aggressive"));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.AGGRESSIVE.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.aggressive"));
 		this.buttonList.add(button);
 
 		// Movement:
 		buttonX = this.colRightX + buttonMarginX;
 		buttonY += buttonHeight + 2;
-		button = new GuiButton(EntityCreatureBase.PET_COMMAND.FOLLOW.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.follow"));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.FOLLOW.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.follow"));
 		this.buttonList.add(button);
 
 		buttonX += buttonWidth + buttonSpacing;
-		button = new GuiButton(EntityCreatureBase.PET_COMMAND.WANDER.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.wander"));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.WANDER.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.wander"));
 		this.buttonList.add(button);
 
 		buttonX += buttonWidth + buttonSpacing;
-		button = new GuiButton(EntityCreatureBase.PET_COMMAND.SIT.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.sit"));
+		button = new GuiButton(EntityCreatureBase.PET_COMMAND_ID.SIT.id + this.petCommandIdStart, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("gui.pet.sit"));
 		this.buttonList.add(button);
 	}
 
@@ -160,7 +160,7 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 					button.visible = true;
 
 					// Actions:
-					if (button.id == EntityCreatureBase.PET_COMMAND.PVP.id + this.petCommandIdStart) {
+					if (button.id == EntityCreatureBase.PET_COMMAND_ID.PVP.id + this.petCommandIdStart) {
 						if (this.playerExt.getSelectedSummonSet().getPVP()) {
 							button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + I18n.translateToLocal("common.yes");
 						}
@@ -170,27 +170,27 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 					}
 
 					// Stance:
-					else if (button.id == EntityCreatureBase.PET_COMMAND.PASSIVE.id + this.petCommandIdStart) {
+					else if (button.id == EntityCreatureBase.PET_COMMAND_ID.PASSIVE.id + this.petCommandIdStart) {
 						button.enabled = !this.playerExt.getSelectedSummonSet().passive;
 					}
-					else if (button.id == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id + this.petCommandIdStart) {
+					else if (button.id == EntityCreatureBase.PET_COMMAND_ID.DEFENSIVE.id + this.petCommandIdStart) {
 						button.enabled = !(!this.playerExt.getSelectedSummonSet().getPassive() && !this.playerExt.getSelectedSummonSet().getAssist() && !this.playerExt.getSelectedSummonSet().getAggressive());
 					}
-					else if (button.id == EntityCreatureBase.PET_COMMAND.ASSIST.id + this.petCommandIdStart) {
+					else if (button.id == EntityCreatureBase.PET_COMMAND_ID.ASSIST.id + this.petCommandIdStart) {
 						button.enabled = !(!this.playerExt.getSelectedSummonSet().getPassive() && this.playerExt.getSelectedSummonSet().getAssist() && !this.playerExt.getSelectedSummonSet().getAggressive());
 					}
-					else if (button.id == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id + this.petCommandIdStart) {
+					else if (button.id == EntityCreatureBase.PET_COMMAND_ID.AGGRESSIVE.id + this.petCommandIdStart) {
 						button.enabled = !(!this.playerExt.getSelectedSummonSet().getPassive() && this.playerExt.getSelectedSummonSet().getAggressive());
 					}
 
 					// Movement:
-					else if (button.id == EntityCreatureBase.PET_COMMAND.FOLLOW.id + this.petCommandIdStart) {
+					else if (button.id == EntityCreatureBase.PET_COMMAND_ID.FOLLOW.id + this.petCommandIdStart) {
 						button.enabled = !(!this.playerExt.getSelectedSummonSet().getSitting() && this.playerExt.getSelectedSummonSet().getFollowing());
 					}
-					else if (button.id == EntityCreatureBase.PET_COMMAND.WANDER.id + this.petCommandIdStart) {
+					else if (button.id == EntityCreatureBase.PET_COMMAND_ID.WANDER.id + this.petCommandIdStart) {
 						button.enabled = !(!this.playerExt.getSelectedSummonSet().getSitting() && !this.playerExt.getSelectedSummonSet().getFollowing());
 					}
-					else if (button.id == EntityCreatureBase.PET_COMMAND.SIT.id + this.petCommandIdStart) {
+					else if (button.id == EntityCreatureBase.PET_COMMAND_ID.SIT.id + this.petCommandIdStart) {
 						button.enabled = !(this.playerExt.getSelectedSummonSet().getSitting());
 					}
 				}
@@ -281,42 +281,42 @@ public class GuiBeastiarySummoning extends GuiBeastiary {
 				int petCommandId = button.id - this.petCommandIdStart;
 
 				// Actions:
-				if (petCommandId == EntityCreatureBase.PET_COMMAND.PVP.id) {
+				if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.PVP.id) {
 					summonSet.pvp = !summonSet.pvp;
 				}
 
 				// Stance:
-				else if (petCommandId == EntityCreatureBase.PET_COMMAND.PASSIVE.id) {
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.PASSIVE.id) {
 					summonSet.passive = true;
 					summonSet.assist = false;
 					summonSet.aggressive = false;
 				}
-				else if (petCommandId == EntityCreatureBase.PET_COMMAND.DEFENSIVE.id) {
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.DEFENSIVE.id) {
 					summonSet.passive = false;
 					summonSet.assist = false;
 					summonSet.aggressive = false;
 				}
-				else if (petCommandId == EntityCreatureBase.PET_COMMAND.ASSIST.id) {
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.ASSIST.id) {
 					summonSet.passive = false;
 					summonSet.assist = true;
 					summonSet.aggressive = false;
 				}
-				else if (petCommandId == EntityCreatureBase.PET_COMMAND.AGGRESSIVE.id) {
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.AGGRESSIVE.id) {
 					summonSet.passive = false;
 					summonSet.assist = true;
 					summonSet.aggressive = true;
 				}
 
 				// Movement:
-				else if (petCommandId == EntityCreatureBase.PET_COMMAND.FOLLOW.id) {
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.FOLLOW.id) {
 					summonSet.following = true;
 					summonSet.sitting = false;
 				}
-				else if (petCommandId == EntityCreatureBase.PET_COMMAND.WANDER.id) {
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.WANDER.id) {
 					summonSet.following = false;
 					summonSet.sitting = false;
 				}
-				else if (petCommandId == EntityCreatureBase.PET_COMMAND.SIT.id) {
+				else if (petCommandId == EntityCreatureBase.PET_COMMAND_ID.SIT.id) {
 					summonSet.following = false;
 					summonSet.sitting = true;
 				}

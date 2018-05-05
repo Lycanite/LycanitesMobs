@@ -87,7 +87,7 @@ public class EntityAsmodeus extends EntityCreatureBase implements IMob, IGroupDe
         // Setup:
         this.attribute = EnumCreatureAttribute.UNDEAD;
         this.hasAttackSound = false;
-        this.justAttackedTime = 30;
+        this.setAttackCooldownMax(30);
         this.hasJumpSound = true;
         this.solidCollision = true;
         this.entityCollisionReduction = 1.0F;

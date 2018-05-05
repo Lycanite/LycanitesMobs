@@ -124,7 +124,7 @@ public class ModelJoustAlpha extends ModelObjOld {
 		posY += bob;
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("mouth")) {
 	    		rotate(30.0F, 0.0F, 0.0F);
 	    	}

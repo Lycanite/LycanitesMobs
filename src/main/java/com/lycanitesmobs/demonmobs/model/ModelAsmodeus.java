@@ -166,7 +166,7 @@ public class ModelAsmodeus extends ModelObjOld {
         // Spinning Weapon:
         if(entity instanceof EntityAsmodeus && partName.contains("weapon")) {
             EntityAsmodeus entityAsmodeus = (EntityAsmodeus)entity;
-            if (entityAsmodeus.justAttacked()) {
+            if (entityAsmodeus.isAttackOnCooldown()) {
                 rotZ -= loop * 30;
             }
             else if (entityAsmodeus.aiRangedAttack != null && !entityAsmodeus.aiRangedAttack.attackOnCooldown) {

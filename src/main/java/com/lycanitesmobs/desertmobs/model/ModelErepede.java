@@ -102,7 +102,7 @@ public class ModelErepede extends ModelObjOld {
     	}
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("topmouth"))
 				rotX -= 20F;
 	    	if(partName.equals("leftmouth"))

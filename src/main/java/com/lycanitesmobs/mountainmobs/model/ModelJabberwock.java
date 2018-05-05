@@ -101,7 +101,7 @@ public class ModelJabberwock extends ModelObjOld {
     	}
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("leftarm") || partName.equals("rightarm"))
 	    		rotX += 20.0F;
 	    	if(partName.equals("mouth"))

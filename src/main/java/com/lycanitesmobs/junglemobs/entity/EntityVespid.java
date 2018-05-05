@@ -9,15 +9,12 @@ import com.lycanitesmobs.api.IGroupPredator;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
@@ -45,7 +42,7 @@ public class EntityVespid extends EntityCreatureAgeable implements IMob, IGroupP
         this.babySpawnChance = 0.1D;
 
         this.stepHeight = 1.0F;
-        this.justAttackedTime = (short)(10);
+        this.setAttackCooldownMax(10);
         
         this.vespidHiveBuilding = ConfigBase.getConfig(this.creatureInfo.group, "general").getBool("Features", "Vespid Hive Building", this.vespidHiveBuilding, "Set to false to stop Vespids from building hives all together.");
     }

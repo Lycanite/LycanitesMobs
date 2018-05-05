@@ -78,7 +78,7 @@ public class ModelAspid extends ModelObjOld {
     	}
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("armleft") || partName.equals("armright"))
 	    		rotY -= 15F;
 		}

@@ -267,7 +267,7 @@ public class ModelPinky extends ModelBipedCustom {
         if(!(entity instanceof EntityCreatureBase)) return;
         
         // Attack Target:
-        if(((EntityCreatureBase)entity).justAttacked()) {
+        if(((EntityCreatureBase)entity).isAttackOnCooldown()) {
         	bottomjaw.rotateAngleX -= (float)Math.toRadians(18);
         }
     }

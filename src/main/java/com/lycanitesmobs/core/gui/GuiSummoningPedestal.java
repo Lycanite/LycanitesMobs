@@ -126,36 +126,36 @@ public class GuiSummoningPedestal extends GUIBaseManager {
 
         // Sitting and Following:
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth * 2, buttonHeight, "..."));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.SITTING.id, buttonX, buttonY, buttonWidth * 2, buttonHeight, "..."));
 
         // Passive and Stance:
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.STANCE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
 
         // PVP:
         buttonY += buttonHeight + (buttonSpacing * 2);
-        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth * 2, buttonHeight, "..."));
+        this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.PVP.id, buttonX, buttonY, buttonWidth * 2, buttonHeight, "..."));
     }
 
     @Override
     public void updateButtons(GuiButton button) {
         // Behaviour Buttons:
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.SITTING.id)
             button.displayString = I18n.translateToLocal("gui.pet.sit") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.PASSIVE.id)
             button.displayString = I18n.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.STANCE.id)
             button.displayString = (this.summonSet.getAggressive() ? I18n.translateToLocal("gui.pet.aggressive") : I18n.translateToLocal("gui.pet.defensive"));
 
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.PVP.id)
             button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         // Hidden Mount Buttons:
         if("mount".equals(this.type)) {
-            if(button.id >= EntityCreatureBase.GUI_COMMAND_ID.SITTING.id && button.id <= EntityCreatureBase.GUI_COMMAND_ID.PVP.id) {
+            if(button.id >= EntityCreatureBase.GUI_COMMAND.SITTING.id && button.id <= EntityCreatureBase.GUI_COMMAND.PVP.id) {
                 button.enabled = false;
                 button.visible = false;
             }

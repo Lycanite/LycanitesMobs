@@ -9,6 +9,7 @@ import com.lycanitesmobs.core.info.Beastiary;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.item.equipment.EquipmentPartManager;
 import com.lycanitesmobs.core.mobevent.MobEvent;
 import com.lycanitesmobs.core.mobevent.MobEventListener;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
@@ -200,6 +201,23 @@ public class CommandMain implements ICommand {
 			if("reload".equalsIgnoreCase(args[1])) {
 				reply = I18n.translateToLocal("lyc.command.creatures.reload");
 				CreatureManager.getInstance().reload();
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+		}
+
+		// Equipment:
+		if("equipment".equalsIgnoreCase(args[0])) {
+			reply = I18n.translateToLocal("lyc.command.equipment.invalid");
+			if (args.length < 2) {
+				commandSender.sendMessage(new TextComponentString(reply));
+				return;
+			}
+
+			// Reload:
+			if("reload".equalsIgnoreCase(args[1])) {
+				reply = I18n.translateToLocal("lyc.command.equipment.reload");
+				EquipmentPartManager.getInstance().reload();
 				commandSender.sendMessage(new TextComponentString(reply));
 				return;
 			}

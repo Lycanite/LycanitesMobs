@@ -100,7 +100,7 @@ public class ModelCrusk extends ModelObjOld {
     	}
     	if(partName.equals("topleftmouth") || partName.equals("toprightmouth") || partName.equals("bottomleftmouth") || partName.equals("bottomrightmouth")) {
     		rotation += -Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.05F - 0.05F);
-    		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())
+    		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown())
     			rotation = -20;
     		if(entity instanceof EntityCreatureTameable && ((EntityCreatureTameable)entity).isSitting())
     			rotation += 20;

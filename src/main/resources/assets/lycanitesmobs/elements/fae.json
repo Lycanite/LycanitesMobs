@@ -7,6 +7,9 @@
 	"debuffs": [
 		"lycanitesmobs:lifeleak"
 	],
+	"immunities": [
+		"minecraft:glowing"
+	],
 	"components": [
 		"water",
 		"order"

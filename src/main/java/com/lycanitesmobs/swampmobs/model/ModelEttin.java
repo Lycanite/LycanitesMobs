@@ -82,7 +82,7 @@ public class ModelEttin extends ModelObjOld {
     	
     	// Attack:
     	if(entity instanceof EntityCreatureBase) {
-    		if(((EntityCreatureBase)entity).justAttacked()) {
+    		if(((EntityCreatureBase)entity).isAttackOnCooldown()) {
     			if(partName.equals("leftarm"))
     				if(((EntityCreatureBase)entity).getAttackPhase() == 0)
     					rotX += 30;

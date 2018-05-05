@@ -7,10 +7,7 @@ import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -29,7 +26,7 @@ public class EntityClink extends EntityCreatureTameable implements IMob {
         
         // Stats:
         this.attackPhaseMax = 3;
-        this.justAttackedTime = (short)(10);
+        this.setAttackCooldownMax(10);
     }
 
     // ========== Init AI ==========

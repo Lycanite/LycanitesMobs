@@ -8,7 +8,6 @@ import com.lycanitesmobs.core.renderer.LayerScrolling;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -97,7 +96,7 @@ public class ModelWisp extends ModelTemplateElemental {
 		else if(partName.equals("armright")) {
 			this.rotate(0, 0, -(float)Math.toDegrees(MathHelper.cos(loop * 0.09F) * 0.1F));
 		}
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 			if (partName.equals("armleft"))
 				rotate(0F, 25.0F, 25.0F);
 			if (partName.equals("armright"))
@@ -111,7 +110,7 @@ public class ModelWisp extends ModelTemplateElemental {
 	// ==================================================
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
-		if(partName.contains("ball") && entity instanceof EntityCreatureBase && ((EntityCreatureBase) entity).justAttacked()) {
+		if(partName.contains("ball") && entity instanceof EntityCreatureBase && ((EntityCreatureBase) entity).isAttackOnCooldown()) {
 			return false;
 		}
 		if(partName.equals("ball01")) {

@@ -118,7 +118,7 @@ public class EntityNymph extends EntityCreatureTameable implements IGroupPlant {
     EntityLifeDrain projectile = null;
     @Override
     public void attackRanged(Entity target, float range) {
-		this.fireProjectile(EntityFaeBolt.class, target, range, 0, new Vec3d(0, 0, 0), 0.5f, 1f, 1F);
+		this.fireProjectile(EntityFaeBolt.class, target, range, 0, new Vec3d(0, 0, 0), 0.75f, 1f, 1F);
 		super.attackRanged(target, range);
     }
 

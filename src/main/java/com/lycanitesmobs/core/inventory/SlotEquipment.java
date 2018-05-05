@@ -1,5 +1,6 @@
 package com.lycanitesmobs.core.inventory;
 
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.item.equipment.features.EquipmentFeature;
@@ -71,6 +72,7 @@ public class SlotEquipment extends SlotBase {
 			return;
 		}
 		this.childSlots.add(slot);
+		this.updateChildSlots();
 	}
 
 
@@ -95,37 +97,12 @@ public class SlotEquipment extends SlotBase {
 	 */
 	@Override
 	public void putStack(ItemStack itemStack) {
+		super.putStack(itemStack);
 		Item item = itemStack.getItem();
 
 		// Equipment Part:
 		if(item instanceof ItemEquipmentPart) {
-			ItemEquipmentPart itemEquipmentPart = (ItemEquipmentPart)item;
-			List<Integer> updatedChildSlots = new ArrayList<>();
-
-			// Update Child Slots:
-			int axeSlots = 0;
-			for(EquipmentFeature feature : itemEquipmentPart.features) {
-				if(feature instanceof SlotEquipmentFeature) {
-					SlotEquipmentFeature slotFeature = (SlotEquipmentFeature)feature;
-					int level = itemEquipmentPart.getLevel(itemStack);
-					if(slotFeature.isActive(itemStack, level)) {
-						int index = 0;
-						if(slotFeature.slotType.equals("axe")) {
-							index = ++axeSlots;
-						}
-						if(!updatedChildSlots.contains(index) && this.updateChildSlot(index, slotFeature.slotType)) {
-							updatedChildSlots.add(index);
-						}
-					}
-				}
-			}
-
-			// Set Unavailable Slots To None:
-			for(int index = 0; index < this.childSlots.size(); index++) {
-				if(!updatedChildSlots.contains(index)) {
-					this.updateChildSlot(index, "none");
-				}
-			}
+			this.updateChildSlots();
 		}
 
 		// Equipment Piece:
@@ -150,5 +127,43 @@ public class SlotEquipment extends SlotBase {
 			// TODO Clear all parts from the Equipment Container.
 		}
 		return super.onTake(player, itemStack);
+	}
+
+
+	/**
+	 * Updates the type of each child slot that is connected to this slot.
+	 */
+	public void updateChildSlots() {
+		Item item = this.getStack().getItem();
+
+		// Update Child Slots:
+		List<Integer> updatedChildSlots = new ArrayList<>();
+		if(item instanceof ItemEquipmentPart) {
+			ItemEquipmentPart itemEquipmentPart = (ItemEquipmentPart) item;
+
+			int axeSlots = 0;
+			for (EquipmentFeature feature : itemEquipmentPart.features) {
+				if (feature instanceof SlotEquipmentFeature) {
+					SlotEquipmentFeature slotFeature = (SlotEquipmentFeature) feature;
+					int level = itemEquipmentPart.getLevel(this.getStack());
+					if (slotFeature.isActive(this.getStack(), level)) {
+						int index = 0;
+						if (slotFeature.slotType.equals("axe")) {
+							index = ++axeSlots;
+						}
+						if (!updatedChildSlots.contains(index) && this.updateChildSlot(index, slotFeature.slotType)) {
+							updatedChildSlots.add(index);
+						}
+					}
+				}
+			}
+		}
+
+		// Set Unavailable Slots To None:
+		for(int index = 0; index < this.childSlots.size(); index++) {
+			if(!updatedChildSlots.contains(index)) {
+				this.updateChildSlot(index, "none");
+			}
+		}
 	}
 }

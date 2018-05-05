@@ -9,9 +9,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class ContainerEquipmentForge extends ContainerBase {
 	public TileEntityEquipmentForge equipmentForge;
 
-	// ========================================
-	//                Constructor
-	// ========================================
+	/**
+	 * Constructor
+	 * @param equipmentForge The Equipment Forge Tile Entity.
+	 * @param playerInventory The Invetory of the accessing player.
+	 */
 	public ContainerEquipmentForge(TileEntityEquipmentForge equipmentForge, InventoryPlayer playerInventory) {
 		super();
 		this.equipmentForge = equipmentForge;
@@ -28,35 +30,54 @@ public class ContainerEquipmentForge extends ContainerBase {
 			int y = 38;
 
 			// Crafted Piece:
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 6), y, "piece"));
+			SlotEquipment slotEquipmentPiece = new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 6), y, "piece");
+			this.addSlotToContainer(slotEquipmentPiece);
 
 			// Base:
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + slotSize, y, "base"));
+			SlotEquipment slotEquipmentBase = new SlotEquipment(this.equipmentForge, slots++, x + slotSize, y, "base");
+			this.addSlotToContainer(slotEquipmentBase);
 
 			// Head:
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y, "none"));
+			SlotEquipment slotEquipmentHead = new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y, "none");
+			this.addSlotToContainer(slotEquipmentHead);
+			slotEquipmentBase.addChildSlot(slotEquipmentHead);
 
 			// Tips:
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 3), y, "none"));
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y + slotSize, "none"));
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y - slotSize, "none"));
+			SlotEquipment slotEquipmentTipA = new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 3), y, "none");
+			this.addSlotToContainer(slotEquipmentTipA);
+			slotEquipmentHead.addChildSlot(slotEquipmentTipA);
+
+			SlotEquipment slotEquipmentTipB = new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y + slotSize, "none");
+			this.addSlotToContainer(slotEquipmentTipB);
+			slotEquipmentHead.addChildSlot(slotEquipmentTipB);
+
+			SlotEquipment slotEquipmentTipC = new SlotEquipment(this.equipmentForge, slots++, x + (slotSize * 2), y - slotSize, "none");
+			this.addSlotToContainer(slotEquipmentTipC);
+			slotEquipmentHead.addChildSlot(slotEquipmentTipC);
 
 			// Pommel:
-			this.addSlotToContainer(new SlotEquipment(this.equipmentForge, slots++, x, y, "none"));
+			SlotEquipment slotEquipmentPommel = new SlotEquipment(this.equipmentForge, slots++, x, y, "none");
+			this.addSlotToContainer(slotEquipmentPommel);
+			slotEquipmentBase.addChildSlot(slotEquipmentPommel);
 		}
 		this.inventoryFinish = this.inventoryStart + slots;
 		//this.inventoryFinish = this.inventorySlots.size() - 1;
 	}
 
 
-	// ========================================
-	//                  Interact
-	// ========================================
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		if(this.equipmentForge == null) {
 			return false;
 		}
 		return true;
+	}
+
+
+	/**
+	 * Updates the child to parent relationships with each slot. Must be called on both the client and server.
+	 */
+	public void updateSlotConnections() {
+
 	}
 }

@@ -8,10 +8,8 @@ import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.modelloader.obj.ObjObject;
 import com.lycanitesmobs.core.modelloader.obj.TessellatorModel;
 import com.lycanitesmobs.core.renderer.LayerBase;
-import com.lycanitesmobs.elementalmobs.entity.EntityBanshee;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.JsonUtils;
@@ -19,7 +17,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.IOUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -431,7 +428,7 @@ public class ModelObj extends ModelCustom {
                 }
             }
         }
-        else if(entityCreature.justAttacked()) {
+        else if(entityCreature.isAttackOnCooldown()) {
             this.currentModelState.attackAnimationPlaying = true;
             this.currentModelState.attackAnimationIncreasing = true;
             this.currentModelState.attackAnimationProgress = 0;

@@ -70,6 +70,12 @@
 			"minAmount": 1,
 			"maxAmount": 3,
 			"chance": 0.5
+		},
+		{
+			"item": "elementalmobs:lightball",
+			"minAmount": 1,
+			"maxAmount": 1,
+			"chance": 0.25
 		}
 	],
 	"sizeScale": 1,

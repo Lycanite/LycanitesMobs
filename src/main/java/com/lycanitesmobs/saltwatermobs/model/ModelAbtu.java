@@ -86,7 +86,7 @@ public class ModelAbtu extends ModelObjOld {
     	}
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("mouth")) {
 	    		this.rotate(30.0F, 0.0F, 0.0F);
 	    	}

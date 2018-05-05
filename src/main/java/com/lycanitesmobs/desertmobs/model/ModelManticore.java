@@ -83,7 +83,7 @@ public class ModelManticore extends ModelObjOld {
     		rotX += Math.toDegrees(MathHelper.cos(time * walkSwing) * 1.4F * distance);
     	
     	// Attacking:
-    	if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())
+    	if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown())
 	    	if(partName.equals("leftleg") || partName.equals("rightleg"))
 	    		rotX -= 20;
 		

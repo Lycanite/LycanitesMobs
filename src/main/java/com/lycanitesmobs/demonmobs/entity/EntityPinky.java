@@ -189,7 +189,7 @@ public class EntityPinky extends EntityCreatureRideable implements IAnimals, IGr
             }
         }
         this.playAttackSound();
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
     }
     
     

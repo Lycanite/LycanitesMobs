@@ -146,7 +146,7 @@ item.wintergiftlarge.bad=Aaaahhhhh Haaa Haaa Haaa Ha Ha Ha! Bwahahahah! Happy Ho
 item.horsearmormetal.name=Iron Pet Armor
 item.horsearmorgold.name=Golden Pet Armor
 item.horsearmordiamond.name=Diamond Pet Armor
-item.equipmentpart.description=This item can be used to create powerful equipment or can be crafted down into a useful resource. COMING SOON! >:D
+item.equipmentpart.description=Coming Soon! Development 70% Complete! This item can be used to create powerful equipment or can be crafted down into a useful resource.
 #
 #
 #
@@ -271,6 +271,10 @@ lyc.command.debug.set=Updated %debug%.
 lyc.command.spawners.invalid=Invalid arguments, usage: /lycanitesmobs spawners [reload]
 lyc.command.spawners.reload=JSON Spawners have been reloaded.
 lyc.command.spawners.creative=Toggled Mob Spawn Triggers for Creative Mode players to %value%.
+#
+# Equipment:
+lyc.command.equipment.invalid=Invalid arguments, usage: /lycanitesmobs equipment [reload]
+lyc.command.equipment.reload=Equipment Parts have been reloaded.
 #
 # Dungeons:
 lyc.command.dungeon.invalid=Invalid arguments, usage: /lycanitesmobs spawners [reload]

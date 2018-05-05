@@ -145,7 +145,7 @@ public class ModelBeholder extends ModelObjOld {
     	}
     	
 		// Attack:
-    	if((entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())) {
+    	if((entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown())) {
 			if(partName.equals("mouth"))
 				rotX += 20F;
 			if(partName.contains("tentacleleft"))

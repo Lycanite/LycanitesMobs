@@ -100,7 +100,7 @@ public class ModelConcapedeHead extends ModelObjOld {
     	}
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("leftmouth") || partName.equals("rightmouth")) {
 	    		rotX += 20.0F;
 	    	}

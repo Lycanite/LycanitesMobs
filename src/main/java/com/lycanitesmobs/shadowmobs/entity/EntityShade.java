@@ -170,7 +170,7 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
             }
         }
         this.playAttackSound();
-        this.setJustAttacked();
+        this.triggerAttackCooldown();
     }
     
     

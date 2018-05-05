@@ -72,6 +72,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public static final IAttribute DEFENSE = (new RangedAttribute(null, "generic.defense", 4.0D, 0.0D, 1024.0D)).setShouldWatch(true);
 	public static final IAttribute RANGED_SPEED = (new RangedAttribute(null, "generic.rangedSpeed", 4.0D, 0.0D, 1024.0D)).setShouldWatch(true);
 
+
 	// Core:
 	/** The Creature Info used by this creature. **/
 	public CreatureInfo creatureInfo;
@@ -83,6 +84,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public EnumCreatureAttribute attribute = EnumCreatureAttribute.UNDEAD;
 	/** A class that opens up extra stats and behaviours for NBT based customization.**/
 	public ExtraMobBehaviour extraMobBehaviour;
+
 
 	// Info:
 	/** The name of the event that spawned this mob if any, an empty string ("") if none. **/
@@ -97,7 +99,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean forceBossHealthBar = false;
     /** The living update tick. **/
     public long updateTick = 0;
-	
+
+
 	// Size:
     /** The width of this mob. XZ axis. **/
 	public float setWidth;
@@ -117,7 +120,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public int attackTime = 20;
     /** A bounding box used for rendering, usually null as the base bounding box is used unless overridden. **/
     //public AxisAlignedBB renderBoundingBox = null;
-	
+
+
 	// Stats:
 	/** The level of this mob, higher levels increase the stat multipliers by a small amount. **/
 	protected int level = 1;
@@ -138,6 +142,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** The gorwing age of this mob. **/
     protected int growingAge;
 
+
 	// Boss Health:
 	/** How much damage this creature has taken over the latest second. **/
 	public float damageTakenThisSec = 0;
@@ -145,7 +150,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public float healthLastTick = -1;
 	/** If above 0, no more than this much health can be lost per second. **/
 	public float damageLimit = 0;
-	
+
+
 	// Abilities:
     /** The battle range of this boss mob, anything out of this range cannot harm the boss. This will also affect other things related to the boss. **/
     public int bossRange = 60;
@@ -163,7 +169,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public EntityLivingBase pickupEntity;
     /** If true, this entity will have a solid collision box allowing other entities to stand on top of it as well as blocking player movement based on mass more effectively. **/
     public boolean solidCollision = false;
-	
+
+
 	// Positions:
     /** A location used for mobs that stick around a certain home spot. **/
     protected BlockPos homePosition = new BlockPos(0, 0, 0);
@@ -171,7 +178,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     protected float homeDistanceMax = -1.0F;
     /** A central point set by arenas or events that spawn mobs. Bosses use this to setup arena-based movement. **/
     protected BlockPos arenaCenter = null;
-    
+
+
     // Spawning:
     /** Use the onFirstSpawn() method and not this variable. True if this creature has spawned for the first time (naturally or via spawn egg, etc, not reloaded from a saved chunk). **/
     public boolean firstSpawn = true;
@@ -197,7 +205,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public boolean spawnedRare = false;
     /** Set to true when this mob is spawned as a boss, this is used to make non-boss mobs behave like bosses. **/
 	public boolean spawnedAsBoss = false;
-    
+
+
     // Movement:
     /** Whether the mob should use it's leash AI or not. **/
     private boolean leashAIActive = false;
@@ -205,7 +214,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     private EntityAIBase leashMoveTowardsRestrictionAI = new EntityAIMoveRestriction(this);
     /** The flight navigator class, a makeshift class that handles flight and free swimming movement, replaces the pathfinder. **/
     public DirectNavigator directNavigator;
-    
+
+
     // Targets:
     /** A target used for alpha creatures or connected mobs such as following concapede segements. **/
     private EntityLivingBase masterTarget;
@@ -225,10 +235,10 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	public int guiRefreshTick = 0;
 	/** The amount of ticks to wait before a GUI refresh. **/
 	public int guiRefreshTime = 2;
-    /** Used for attack animations, the server uses this more as a boolean, the client uses it as a timer. **/
-	public short justAttacked = 0;
-    /** The duration of attack animations, used by the server as a boolean (true when greater than 0 then instantly set to 0), the client uses it as the animation time (counts down per tick). **/
-	public short justAttackedTime = 5;
+    /** The cooldown between basic attacks in ticks. Set server side based on AI with an initial value. Used client side to perform attack animations and for cooldown states, etc. **/
+	private int attackCooldownMax = 5;
+	/** The current cooldown time remaining until the next basic attack is ready. Used client side for attack animations. **/
+	private int attackCooldown = 0;
     /** True if this mob should play a sound when attacking. Ranged mobs usually don't use this as their projectiles makes an attack sound instead. **/
 	public boolean hasAttackSound = false;
     /** True if this mob should play a sound when walking. Usually footsteps. **/
@@ -243,72 +253,95 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public BossInfoServer bossInfo;
     /** If positive, this creature entity is only being used for rendering in a GUI, etc and should play animation based off of this instead. **/
     public float onlyRenderTicks = -1;
-	
+
+
 	// Data Manager:
+	/** If true, this entity has been initialized and the Data Manager is ready for use. **/
+	public boolean initialized = false;
+
+	/** Used to sync what targets this creature has. **/
     protected static final DataParameter<Byte> TARGET = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Byte> ANIMATION = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Byte> ATTACK_PHASE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+    /** Used to sync which attack phase this creature is in. **/
+	protected static final DataParameter<Byte> ATTACK_PHASE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+	/** Used to sync what animation states this creature is in. **/
+	protected static final DataParameter<Byte> ANIMATION_STATE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+	/** Used to sync the current attack cooldown animation, useful for when creature attack cooldowns change dynamically. **/
+	protected static final DataParameter<Integer> ANIMATION_ATTACK_COOLDOWN_MAX = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.VARINT);
 
-    protected static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Float> STEALTH = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+	/** Used to sync if this creature is climbing or not. TODO Perhaps move this into ANIMATION_STATE_BITS. **/
+	protected static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+	/** Used to sync the stealth percentage of this creature. Where 0.0 is unstealthed and 1.0 is fully stealthed, see burrowing Crusks for an example. **/
+	protected static final DataParameter<Float> STEALTH = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
 
-    protected static final DataParameter<Boolean> BABY = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BOOLEAN);
-    protected static final DataParameter<Byte> COLOR = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
-    protected static final DataParameter<Float> SIZE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+	/** Used to sync the baby status of this creature. **/
+	protected static final DataParameter<Boolean> BABY = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BOOLEAN);
+	/** Used to sync the dyed coloring of this creature. This will go towards colorable pet collars or saddles, etc in the future. **/
+	protected static final DataParameter<Byte> COLOR = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+	/** Used to sync the size scale of this creature. **/
+	protected static final DataParameter<Float> SIZE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.FLOAT);
+	/** Used to sync the stat level of this creature. **/
 	protected static final DataParameter<Integer> LEVEL = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.VARINT);
-    protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
+	/** Used to sync the subspecies ID used by this creature. **/
+	protected static final DataParameter<Byte> SUBSPECIES = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.BYTE);
 
-    public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_CHEST = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_LEGS = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_FEET = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_BAG = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
-    public static final DataParameter<ItemStack> EQUIPMENT_SADDLE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+	/** Used to sync the central arena position that this creature is using if any. See Asmodeus jumping for an example. **/
+	protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
 
-    protected static final DataParameter<Optional<BlockPos>> ARENA = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	/** Used to sync the Head Equipment slot of this creature. Currently unused. **/
+	public static final DataParameter<ItemStack> EQUIPMENT_HEAD = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+	/** Used to sync the Chest Equipment slot of this creature. Used by Pet (Horse) Armor. **/
+	public static final DataParameter<ItemStack> EQUIPMENT_CHEST = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+	/** Used to sync the Legs Equipment slot of this creature. Currently unused. **/
+	public static final DataParameter<ItemStack> EQUIPMENT_LEGS = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+	/** Used to sync the Feet Equipment slot of this creature. Currently unused. **/
+	public static final DataParameter<ItemStack> EQUIPMENT_FEET = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+	/** Used to sync the Bag Equipment slot of this creature. **/
+	public static final DataParameter<ItemStack> EQUIPMENT_BAG = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
+	/** Used to sync the Saddle Equipment slot of this creature. **/
+	public static final DataParameter<ItemStack> EQUIPMENT_SADDLE = EntityDataManager.createKey(EntityCreatureBase.class, DataSerializers.ITEM_STACK);
 
     /** Used for the TARGET watcher bitmap, bitmaps save on many packets and make network performance better! **/
-	public enum TARGET_ID {
+	public enum TARGET_BITS {
 		ATTACK((byte)1), MASTER((byte)2), PARENT((byte)4), AVOID((byte)8), RIDER((byte)16), PICKUP((byte)32);
 		public final byte id;
-	    private TARGET_ID(byte value) { this.id = value; }
+	    TARGET_BITS(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
 	}
-    /** Used for the ANIM_ID watcher bitmap, bitmaps save on many packets and make network performance better! **/
-	public enum ANIM_ID {
+    /** Used for the ANIMATION_STATE watcher bitmap, bitmaps save on many packets and make network performance better! **/
+	public enum ANIMATION_STATE_BITS {
 		ATTACKED((byte)1), GROUNDED((byte)2), IN_WATER((byte)4), BLOCKING((byte)8), MINION((byte)16), EXTRA01((byte)32);
 		public final byte id;
-	    private ANIM_ID(byte value) { this.id = value; }
+	    ANIMATION_STATE_BITS(byte value) { this.id = value; }
 	    public byte getValue() { return id; }
 	}
-	/** If true, this object has initiated and it is safe to use the datawatcher. **/
-	public boolean initiated = false;
-	
+
+
 	// Interact:
-	/** Used for the tidier interact code, these are commonly used right click item command priorities. **/
-	public enum CMD_PRIOR {
+	/** Used for the tidier interact code, these are used for right click commands to determine which one is more important. The lower the priority number the higher the priority is. **/
+	public enum COMMAND_PIORITIES {
 		OVERRIDE(0), IMPORTANT(1), EQUIPPING(2), ITEM_USE(3), EMPTY_HAND(4), MAIN(5);
 		public final int id;
-	    CMD_PRIOR(int value) { this.id = value; }
+	    COMMAND_PIORITIES(int value) { this.id = value; }
 	    public int getValue() { return id; }
 	}
 	
 	// GUI Commands:
 	/** A list of GUI command IDs to be used by pet or creature GUIs via a network packet. **/
-	public enum GUI_COMMAND_ID {
+	public enum GUI_COMMAND {
 		CLOSE((byte)0), SITTING((byte)1), FOLLOWING((byte)2), PASSIVE((byte)3), STANCE((byte)4), PVP((byte)5), TELEPORT((byte)6), SPAWNING((byte)7), RELEASE((byte)8);
 		public byte id;
-		GUI_COMMAND_ID(byte i) { id = i; }
+		GUI_COMMAND(byte i) { id = i; }
 	}
 
 	// GUI Commands:
 	/** A list of pet command IDs to be used by pet or creature GUIs via a network packet. **/
-	public enum PET_COMMAND {
+	public enum PET_COMMAND_ID {
 		ACTIVE((byte)0), TELEPORT((byte)1), PVP((byte)2), RELEASE((byte)3), PASSIVE((byte)4), DEFENSIVE((byte)5), ASSIST((byte)6), AGGRESSIVE((byte)7), FOLLOW((byte)8), WANDER((byte)9), SIT((byte)10), FLEE((byte)11);
 		public byte id;
-		PET_COMMAND(byte i) { id = i; }
+		PET_COMMAND_ID(byte i) { id = i; }
 	}
-	
+
+
 	// Items:
     /** The inventory object of the creature, this is used for managing and using the creature's inventory. **/
 	public InventoryCreature inventory;
@@ -316,7 +349,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public List<ItemDrop> drops = new ArrayList<>();
 	/** A collection of drops to be stored in NBT data. **/
 	public List<ItemDrop> savedDrops = new ArrayList<>();
-    
+
+
     // Override AI:
     public EntityAITargetAttack aiTargetPlayer = new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class);
     public EntityAITargetRevenge aiDefendAnimals = new EntityAITargetRevenge(this).setHelpClasses(IAnimals.class);
@@ -464,16 +498,20 @@ public abstract class EntityCreatureBase extends EntityLiving {
         super.entityInit();
         this.dataManager.register(TARGET, (byte) 0);
         this.dataManager.register(ATTACK_PHASE, (byte) 0);
-        this.dataManager.register(ANIMATION, (byte) 0);
-        this.dataManager.register(CLIMBING, (byte) 0);
+        this.dataManager.register(ANIMATION_STATE, (byte) 0);
+		this.dataManager.register(ANIMATION_ATTACK_COOLDOWN_MAX, 0);
+
+		this.dataManager.register(CLIMBING, (byte) 0);
         this.dataManager.register(STEALTH, 0.0F);
+
         this.dataManager.register(COLOR, (byte) 0);
         this.dataManager.register(SIZE, (float) 1D);
 		this.dataManager.register(LEVEL, 1);
         this.dataManager.register(SUBSPECIES, (byte) 0);
+
         this.dataManager.register(ARENA, Optional.absent());
         InventoryCreature.registerDataParameters(this.dataManager);
-        this.initiated = true;
+        this.initialized = true;
     }
     
     // ========== Name ==========
@@ -1392,7 +1430,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if(this.dataManager != null) {
+        if(this.getDataManager() != null) {
 			this.onSyncUpdate();
 		}
 
@@ -1478,8 +1516,23 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
         super.onLivingUpdate();
 
+		// Attack Updates:
+		if(this.attackCooldown > 0) {
+			this.attackCooldown--;
+			if(this.attackCooldown > this.getAttackCooldownMax()) {
+				this.triggerAttackCooldown();
+			}
+		}
         this.updateBattlePhase();
         this.updateArmSwingProgress();
+
+		// Blocking Updates:
+		if(this.currentBlockingTime > 0) {
+			this.currentBlockingTime--;
+		}
+		if(this.currentBlockingTime < 0) {
+			this.currentBlockingTime = 0;
+		}
 
         // First Spawn:
         if(!this.getEntityWorld().isRemote && this.firstSpawn) {
@@ -1571,10 +1624,14 @@ public abstract class EntityCreatureBase extends EntityLiving {
 	        }
         }
 
-        // Time Out Quicker In Light:
+        // Natural Despawn Light Scaling:
         float light = this.getBrightness();
-        if(!this.creatureInfo.creatureSpawn.spawnsInLight && light > 0.5F)
-            this.idleTime += 2;
+        if(!this.creatureInfo.creatureSpawn.spawnsInLight && light > 0.5F) {
+			this.idleTime += 2;
+		}
+		else if(!this.creatureInfo.creatureSpawn.spawnsInDark && light <= 0.5F) {
+			this.idleTime += 2;
+		}
 
 	    // Stealth Invisibility:
     	if(!this.getEntityWorld().isRemote) {
@@ -1592,13 +1649,6 @@ public abstract class EntityCreatureBase extends EntityLiving {
             this.setInvisible(false);
         }
         this.stealthPrev = this.isStealthed();
-
-        // Blocking:
-        if(this.currentBlockingTime > 0) {
-        	this.currentBlockingTime--;
-        }
-        if(this.currentBlockingTime < 0)
-        	this.currentBlockingTime = 0;
 
         // Pickup Items:
         if(this.ticksExisted % 20 == 0 && !this.getEntityWorld().isRemote && this.isEntityAlive() && this.canPickupItems())
@@ -1630,17 +1680,17 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote) {
     		byte targets = 0;
     		if(this.getAttackTarget() != null)
-    			targets += TARGET_ID.ATTACK.id;
+    			targets += TARGET_BITS.ATTACK.id;
     		if(this.getMasterTarget() != null)
-    			targets += TARGET_ID.MASTER.id;
+    			targets += TARGET_BITS.MASTER.id;
     		if(this.getParentTarget() != null)
-    			targets += TARGET_ID.PARENT.id;
+    			targets += TARGET_BITS.PARENT.id;
     		if(this.getAvoidTarget() != null)
-    			targets += TARGET_ID.AVOID.id;
+    			targets += TARGET_BITS.AVOID.id;
     		if(this.getControllingPassenger() != null)
-    			targets += TARGET_ID.RIDER.id;
+    			targets += TARGET_BITS.RIDER.id;
 			if(this.getPickupEntity() != null)
-				targets += TARGET_ID.PICKUP.id;
+				targets += TARGET_BITS.PICKUP.id;
     		this.dataManager.set(TARGET, targets);
     	}
 
@@ -1652,51 +1702,53 @@ public abstract class EntityCreatureBase extends EntityLiving {
         if(!this.getEntityWorld().isRemote) {
         	byte animations = 0;
 
-        	// Atttacked Animation and Sound:
-        	if(this.justAttacked == this.justAttackedTime) {
-        		animations += ANIM_ID.ATTACKED.id;
-        		this.justAttacked = 0;
-        		this.playAttackSound();
+        	// Attack Cooldown:
+        	if(this.isAttackOnCooldown()) {
+        		animations += ANIMATION_STATE_BITS.ATTACKED.id;
         	}
 
         	// Airborne Animation:
         	if(this.onGround)
-        		animations += ANIM_ID.GROUNDED.id;
+        		animations += ANIMATION_STATE_BITS.GROUNDED.id;
 
             // Swimming Animation:
             if(this.inWater)
-                animations += ANIM_ID.IN_WATER.id;
+                animations += ANIMATION_STATE_BITS.IN_WATER.id;
 
         	// Blocking Animation:
         	if(this.isBlocking())
-        		animations += ANIM_ID.BLOCKING.id;
+        		animations += ANIMATION_STATE_BITS.BLOCKING.id;
 
         	// Blocking Animation:
         	if(this.isMinion())
-        		animations += ANIM_ID.MINION.id;
+        		animations += ANIMATION_STATE_BITS.MINION.id;
 
         	// Extra Animation 01:
         	if(this.extraAnimation01())
-        		animations += ANIM_ID.EXTRA01.id;
+        		animations += ANIMATION_STATE_BITS.EXTRA01.id;
 
-        	this.dataManager.set(ANIMATION, animations);
+        	this.dataManager.set(ANIMATION_STATE, animations);
         }
 
         // Animations Client:
         else if(this.getEntityWorld().isRemote) {
-        	byte animations = this.getByteFromDataManager(ANIMATION);
-        	if(this.justAttacked > 0)
-        		this.justAttacked--;
-        	else if((animations & ANIM_ID.ATTACKED.id) > 0)
-        		this.setJustAttacked();
-        	this.onGround = (animations & ANIM_ID.GROUNDED.id) > 0;
-            this.inWater = (animations & ANIM_ID.IN_WATER.id) > 0;
-        	this.extraAnimation01 = (animations & ANIM_ID.EXTRA01.id) > 0;
+        	byte animationState = this.getByteFromDataManager(ANIMATION_STATE);
+        	if((animationState & ANIMATION_STATE_BITS.ATTACKED.id) > 0) {
+        		if(!this.isAttackOnCooldown()) {
+					this.triggerAttackCooldown();
+				}
+			}
+			else {
+        		this.resetAttackCooldown();
+			}
+        	this.onGround = (animationState & ANIMATION_STATE_BITS.GROUNDED.id) > 0;
+            this.inWater = (animationState & ANIMATION_STATE_BITS.IN_WATER.id) > 0;
+        	this.extraAnimation01 = (animationState & ANIMATION_STATE_BITS.EXTRA01.id) > 0;
         }
 
         // Is Minion:
         if(this.getEntityWorld().isRemote) {
-    		this.isMinion = (this.getByteFromDataManager(ANIMATION) & ANIM_ID.MINION.id) > 0;
+    		this.isMinion = (this.getByteFromDataManager(ANIMATION_STATE) & ANIMATION_STATE_BITS.MINION.id) > 0;
         }
 
         // Subspecies:
@@ -2482,7 +2534,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 				this.applyDebuffs((EntityLivingBase)target, 1, 1);
 			}
 
-			this.setJustAttacked();
+			this.triggerAttackCooldown();
+			this.playAttackSound();
 			return true;
     	}
 
@@ -2496,7 +2549,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
 			return;
 		}
 
-		this.setJustAttacked();
+		this.triggerAttackCooldown();
+		this.playAttackSound();
     }
 
 	/**
@@ -2790,7 +2844,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getAttackTarget() != null;
     	else
-    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.ATTACK.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_BITS.ATTACK.id) > 0;
     }
 
     /** Returns this entity's Master Target. **/
@@ -2802,7 +2856,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getMasterTarget() != null;
     	else
-    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.MASTER.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_BITS.MASTER.id) > 0;
     }
 
     /** Returns this entity's Parent Target. **/
@@ -2814,7 +2868,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getParentTarget() != null;
     	else
-    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.PARENT.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_BITS.PARENT.id) > 0;
     }
 
     /** Returns this entity's Avoid Target. **/
@@ -2829,7 +2883,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getAvoidTarget() != null;
     	else
-    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.AVOID.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_BITS.AVOID.id) > 0;
     }
 
 	/** Gets the fixate target of this entity. **/
@@ -2873,7 +2927,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(!this.getEntityWorld().isRemote)
     		return this.getControllingPassenger() != null;
     	else
-    		return (this.getByteFromDataManager(TARGET) & TARGET_ID.RIDER.id) > 0;
+    		return (this.getByteFromDataManager(TARGET) & TARGET_BITS.RIDER.id) > 0;
     }
 
     @Override
@@ -3145,7 +3199,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
     /** Returns true if this mob is blocking. **/
     public boolean isBlocking() {
     	if(this.getEntityWorld().isRemote)
-    		return (this.getByteFromDataManager(ANIMATION) & ANIM_ID.BLOCKING.id) > 0;
+    		return (this.getByteFromDataManager(ANIMATION_STATE) & ANIMATION_STATE_BITS.BLOCKING.id) > 0;
     	return this.currentBlockingTime > 0;
     }
 
@@ -3192,7 +3246,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		if(!this.getEntityWorld().isRemote)
 			return this.getPickupEntity() != null;
 		else
-			return (this.getByteFromDataManager(TARGET) & TARGET_ID.PICKUP.id) > 0;
+			return (this.getByteFromDataManager(TARGET) & TARGET_BITS.PICKUP.id) > 0;
     }
     
     public void dropPickupEntity() {
@@ -3437,19 +3491,19 @@ public abstract class EntityCreatureBase extends EntityLiving {
     	if(itemStack != null) {
     		// Leash:
     		if(itemStack.getItem() == Items.LEAD && this.canBeLeashedTo(player))
-    			commands.put(CMD_PRIOR.ITEM_USE.id, "Leash");
+    			commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Leash");
     		
     		// Name Tag:
     		if(itemStack.getItem() == Items.NAME_TAG) {
     			if(this.canNameTag(player))
     				return new HashMap<>(); // Cancels all commands so that vanilla can take care of name tagging.
     			else
-    				commands.put(CMD_PRIOR.ITEM_USE.id, "Name Tag"); // Calls nothing and therefore cancels name tagging.
+    				commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Name Tag"); // Calls nothing and therefore cancels name tagging.
     		}
     		
     		// Coloring:
     		if(this.canBeColored(player) && itemStack.getItem() == Items.DYE)
-    			commands.put(CMD_PRIOR.ITEM_USE.id, "Color");
+    			commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Color");
     				
     	}
     	
@@ -4084,14 +4138,44 @@ public abstract class EntityCreatureBase extends EntityLiving {
   	//                       Client
   	// ==================================================
     // ========== Just Attacked Animation ==========
-    /** Returns true if this creature should play it's attack animation. **/
-    public boolean justAttacked() {
-    	return this.justAttacked > 0;
+    /** Returns the current basic attack cooldown. **/
+    public int getAttackCooldown() {
+    	return this.attackCooldown;
     }
-    /** Called when this mob has just attacked, triggers the attack animation. **/
-    public void setJustAttacked() {
-    	this.justAttacked = this.justAttackedTime;
+
+	/** Returns true if this creature should play it's attack animation. **/
+	public boolean isAttackOnCooldown() {
+		return this.getAttackCooldown() > 0;
+	}
+
+    /** Usually called when this mob has just attacked but can be called from other things, puts the attack cooldown to the max where it will start counting down. Clients use this for animation. **/
+    public void triggerAttackCooldown() {
+    	this.attackCooldown = this.getAttackCooldownMax();
     }
+
+	/** Resets the attack cooldown. **/
+	public void resetAttackCooldown() {
+		this.attackCooldown = 0;
+		this.setAttackCooldownMax(this.getAttackCooldownMax());
+	}
+
+    /** Returns the current maximum attack cooldown. **/
+    public int getAttackCooldownMax() {
+    	if(!this.getEntityWorld().isRemote) {
+			return this.attackCooldownMax;
+		}
+		else {
+    		return this.getIntFromDataManager(ANIMATION_ATTACK_COOLDOWN_MAX);
+		}
+	}
+
+	/** Sets the current maximum attack cooldown. This will send a messag from server to client to keep the client in sync. **/
+	public void setAttackCooldownMax(int cooldownMax) {
+    	this.attackCooldownMax = cooldownMax;
+    	if(!this.getEntityWorld().isRemote) {
+    		this.getDataManager().set(ANIMATION_ATTACK_COOLDOWN_MAX, this.attackCooldownMax);
+		}
+	}
     
     
     // ==================================================
@@ -4154,8 +4238,7 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * @return A color ID that is used by the static RenderCreature.colorTable array.
      */
     public int getColor() {
-		if(this.getDataManager() == null) return 0;
-        return Integer.valueOf(this.getDataManager().get(COLOR)) & 15;
+        return this.getByteFromDataManager(COLOR) & 15;
     }
     
     /**
@@ -4163,8 +4246,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
      * @param color The color ID to use (see the static RenderCreature.colorTable array).
      */
     public void setColor(int color) {
-    	if(this.getEntityWorld() != null && !this.getEntityWorld().isRemote)
-    		this.dataManager.set(COLOR, Byte.valueOf((byte)(color & 15)));
+    	if(!this.getEntityWorld().isRemote) {
+			this.dataManager.set(COLOR, Byte.valueOf((byte) (color & 15)));
+		}
     }
 
 

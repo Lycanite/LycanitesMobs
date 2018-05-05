@@ -69,7 +69,7 @@ public class ModelPhantom extends ModelObjOld {
 		posY += bob;
 				
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("armleft"))
 	    		rotate(0.0F, -25.0F, 0.0F);
 	    	if(partName.equals("armright"))

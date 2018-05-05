@@ -40,7 +40,7 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 
         this.stepHeight = 1.0F;
         this.attackPhaseMax = 3;
-        this.justAttackedTime = (short)(10);
+        this.setAttackCooldownMax(10);
     }
 
     // ========== Init AI ==========

@@ -10,9 +10,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -165,7 +163,7 @@ public class EntityDjinn extends EntityCreatureTameable implements IMob, IFusabl
         if(itemStack != null) {
             // Water:
             if(itemStack.getItem() == Items.BUCKET && this.isTamed())
-                commands.put(CMD_PRIOR.ITEM_USE.id, "Water");
+                commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Water");
         }
 
         return commands;

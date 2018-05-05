@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,7 +34,7 @@ public class EntityBeholder extends EntityCreatureRideable {
         this.attribute = EnumCreatureAttribute.UNDEFINED;
         this.hasAttackSound = false;
         
-        this.justAttackedTime = 20;
+        this.setAttackCooldownMax(20);
         this.solidCollision = true;
         this.setupMob();
 
@@ -205,7 +204,7 @@ public class EntityBeholder extends EntityCreatureRideable {
             EntityArcaneLaserStorm projectile = new EntityArcaneLaserStorm(this.getEntityWorld(), player);
             this.getEntityWorld().spawnEntity(projectile);
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-            this.setJustAttacked();
+            this.triggerAttackCooldown();
         }
 
         this.applyStaminaCost();
@@ -229,7 +228,7 @@ public class EntityBeholder extends EntityCreatureRideable {
     // ==================================================
     @Override
     public float getBrightness() {
-        if(justAttacked())
+        if(isAttackOnCooldown())
         	return 1.0F;
         else
         	return super.getBrightness();
@@ -238,7 +237,7 @@ public class EntityBeholder extends EntityCreatureRideable {
     @SideOnly(Side.CLIENT)
     @Override
     public int getBrightnessForRender() {
-        if(justAttacked())
+        if(isAttackOnCooldown())
         	return 15728880;
         else
         	return super.getBrightnessForRender();

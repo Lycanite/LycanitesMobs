@@ -11,7 +11,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class ModelArgus extends ModelTemplateElemental {
@@ -51,7 +50,7 @@ public class ModelArgus extends ModelTemplateElemental {
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
 		if(layer instanceof LayerEffect && entity instanceof EntityCreatureBase) {
-			return ((EntityCreatureBase)entity).justAttacked(); // TODO Fix blending!
+			return ((EntityCreatureBase)entity).isAttackOnCooldown(); // TODO Fix blending!
 		}
 		return true;
 	}

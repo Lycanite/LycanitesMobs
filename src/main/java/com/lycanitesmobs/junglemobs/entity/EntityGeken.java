@@ -3,14 +3,10 @@ package com.lycanitesmobs.junglemobs.entity;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import com.lycanitesmobs.core.entity.EntityCreatureAgeable;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class EntityGeken extends EntityCreatureTameable implements IMob {
@@ -33,7 +29,7 @@ public class EntityGeken extends EntityCreatureTameable implements IMob {
         
         // Stats:
         this.attackPhaseMax = 3;
-        this.justAttackedTime = 10;
+        this.setAttackCooldownMax(10);
     }
 
     // ========== Init AI ==========

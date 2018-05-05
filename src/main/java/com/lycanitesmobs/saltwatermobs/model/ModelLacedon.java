@@ -85,7 +85,7 @@ public class ModelLacedon extends ModelObjOld {
     	}
 				
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("leftarm"))
 	    		rotate(0.0F, -25.0F, 0.0F);
 	    	if(partName.equals("rightarm"))

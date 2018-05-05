@@ -78,7 +78,7 @@ public class ModelCacodemon extends ModelObjOld {
 		}
     	
 		// Attack:
-    	if((entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked())
+    	if((entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown())
     			|| (entity instanceof EntityCreatureAgeable && ((EntityCreatureAgeable)entity).isInLove())) {
 			if(partName.equals("topmouth"))
 				rotate(-25F, rotY, rotZ);

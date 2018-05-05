@@ -158,7 +158,7 @@ public class EntityYeti extends EntityCreatureAgeable implements IAnimals, IGrou
     	if(itemStack != null) {
     		// Milk:
     		if(itemStack.getItem() == Items.BUCKET)
-    			commands.put(CMD_PRIOR.ITEM_USE.id, "Milk");
+    			commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Milk");
     	}
     	
     	return commands;

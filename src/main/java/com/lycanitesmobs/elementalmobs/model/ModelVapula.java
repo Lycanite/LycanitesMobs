@@ -6,7 +6,6 @@ import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.LayerEffect;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.MathHelper;
@@ -93,7 +92,7 @@ public class ModelVapula extends ModelTemplateElemental {
 			if(partName.contains("effect")) {
 				if(entity instanceof EntityCreatureBase) {
 					int attackPhase = ((EntityCreatureBase) entity).getAttackPhase();
-					if (((EntityCreatureBase) entity).justAttacked() && attackPhase == 0) {
+					if (((EntityCreatureBase) entity).isAttackOnCooldown() && attackPhase == 0) {
 						return false;
 					}
 					if ("effect01".equals(partName)) {

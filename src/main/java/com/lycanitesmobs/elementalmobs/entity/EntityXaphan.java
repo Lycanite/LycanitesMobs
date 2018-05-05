@@ -1,6 +1,5 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
-import com.lycanitesmobs.api.IGroupFire;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.entity.Entity;
@@ -148,7 +147,7 @@ public class EntityXaphan extends EntityCreatureTameable implements IMob {
         if(itemStack != null) {
             // Water:
             if(itemStack.getItem() == Items.BUCKET && this.isTamed())
-                commands.put(CMD_PRIOR.ITEM_USE.id, "Water");
+                commands.put(COMMAND_PIORITIES.ITEM_USE.id, "Water");
         }
 
         return commands;

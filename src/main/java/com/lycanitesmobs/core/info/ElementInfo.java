@@ -160,7 +160,7 @@ public class ElementInfo {
 	 * @return True if the effect can be applied.
 	 */
 	public boolean isEffectApplicable(PotionEffect effect) {
-		if(effect == null || effect.getPotion().getRegistryName() == null) {
+		if(effect == null || effect.getPotion() == null || effect.getPotion().getRegistryName() == null) {
 			return false;
 		}
 		if(this.debuffs.contains(effect.getPotion().getRegistryName().toString())) {

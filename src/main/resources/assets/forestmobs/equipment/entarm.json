@@ -8,6 +8,10 @@
 	"levelMax": 3,
 	"features": [
 		{
+			"featureType": "slot",
+			"slotType": "head"
+		},
+		{
 			"featureType": "damage",
 			"levelMin": 3,
 			"damageAmount": 1,

@@ -1,7 +1,6 @@
 package com.lycanitesmobs.elementalmobs.entity;
 
 import com.lycanitesmobs.AssetManager;
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.EntityProjectileModel;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
 import net.minecraft.entity.Entity;
@@ -84,7 +83,7 @@ public class EntityLightBall extends EntityProjectileModel {
 	@Override
 	public void onEntityCollision(Entity entity) {
 		if(entity instanceof EntityWisp) {
-			((EntityWisp)entity).justAttacked = 0;
+			((EntityWisp)entity).resetAttackCooldown();
 		}
 	}
 

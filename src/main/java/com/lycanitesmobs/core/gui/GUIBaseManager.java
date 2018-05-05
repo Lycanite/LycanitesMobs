@@ -246,23 +246,23 @@ public class GUIBaseManager extends GuiBaseScreen {
 		buttonY = this.windowY + 39 + buttonSpacing;
 
 		// Spawning and Teleport:
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.SPAWNING.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.TELEPORT.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
 
 		// Sitting and Following:
 		buttonY += buttonHeight + (buttonSpacing * 2);
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.SITTING.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.FOLLOWING.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
 
 		// Passive and Stance:
 		buttonY += buttonHeight + (buttonSpacing * 2);
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.STANCE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.PASSIVE.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.STANCE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
 
 		// PVP:
 		buttonY += buttonHeight + (buttonSpacing * 2);
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.PVP.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
-		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.PVP.id, buttonX, buttonY, buttonWidth, buttonHeight, "..."));
+		this.buttonList.add(new GuiButton(EntityCreatureBase.GUI_COMMAND.RELEASE.id, buttonXRight, buttonY, buttonWidth, buttonHeight, "..."));
 
 		// Removal Confirmation:
 		this.buttonList.add(new GuiButton(101, buttonX, buttonY, buttonWidth, buttonHeight, I18n.translateToLocal("common.yes")));
@@ -295,30 +295,30 @@ public class GUIBaseManager extends GuiBaseScreen {
 
     public void updateButtons(GuiButton button) {
         // Action Buttons:
-        if(button.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
+        if(button.id == EntityCreatureBase.GUI_COMMAND.SPAWNING.id)
             button.displayString = I18n.translateToLocal("gui.pet.active") + ": " + (this.selectedPet.spawningActive ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
-        if(button.id == EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id)
+        if(button.id == EntityCreatureBase.GUI_COMMAND.TELEPORT.id)
             button.displayString = I18n.translateToLocal("gui.pet.teleport");
 
         // Behaviour Buttons:
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.SITTING.id)
             button.displayString = I18n.translateToLocal("gui.pet.sit") + ": " + (this.summonSet.getSitting() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.FOLLOWING.id)
             button.displayString = (this.summonSet.getFollowing() ? I18n.translateToLocal("gui.pet.follow") : I18n.translateToLocal("gui.pet.wander"));
 
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.PASSIVE.id)
             button.displayString = I18n.translateToLocal("gui.pet.passive") + ": " + (this.summonSet.getPassive() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.STANCE.id)
             button.displayString = (this.summonSet.getAggressive() ? I18n.translateToLocal("gui.pet.aggressive") : I18n.translateToLocal("gui.pet.defensive"));
 
-        if (button.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
+        if (button.id == EntityCreatureBase.GUI_COMMAND.PVP.id)
             button.displayString = I18n.translateToLocal("gui.pet.pvp") + ": " + (this.summonSet.getPVP() ? I18n.translateToLocal("common.yes") : I18n.translateToLocal("common.no"));
 
         // Remove:
-        if(button.id == EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id)
+        if(button.id == EntityCreatureBase.GUI_COMMAND.RELEASE.id)
             button.displayString = I18n.translateToLocal("gui.pet.release");
 
         // Removal Confirmation:
@@ -345,7 +345,7 @@ public class GUIBaseManager extends GuiBaseScreen {
 
         // Hidden Mount Buttons:
         if("mount".equals(this.type)) {
-            if(button.id >= EntityCreatureBase.GUI_COMMAND_ID.SITTING.id && button.id <= EntityCreatureBase.GUI_COMMAND_ID.PVP.id) {
+            if(button.id >= EntityCreatureBase.GUI_COMMAND.SITTING.id && button.id <= EntityCreatureBase.GUI_COMMAND.PVP.id) {
                 button.enabled = false;
                 button.visible = false;
             }
@@ -365,25 +365,25 @@ public class GUIBaseManager extends GuiBaseScreen {
 		}
 
 		// Behaviour Button:
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.SITTING.id)
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.SITTING.id)
 			this.summonSet.sitting = !this.summonSet.sitting;
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.FOLLOWING.id)
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.FOLLOWING.id)
 			this.summonSet.following = !this.summonSet.following;
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.PASSIVE.id)
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.PASSIVE.id)
 			this.summonSet.passive = !this.summonSet.passive;
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.STANCE.id)
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.STANCE.id)
 			this.summonSet.aggressive = !this.summonSet.aggressive;
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.PVP.id)
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.PVP.id)
 			this.summonSet.pvp = !this.summonSet.pvp;
 
 		// Action Button:
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.TELEPORT.id)
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.TELEPORT.id)
 			this.selectedPet.teleportEntity = true;
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.SPAWNING.id)
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.SPAWNING.id)
 			this.selectedPet.spawningActive = !this.selectedPet.spawningActive;
 
 		// Release and Confirmation:
-		if(guiButton.id == EntityCreatureBase.GUI_COMMAND_ID.RELEASE.id) {
+		if(guiButton.id == EntityCreatureBase.GUI_COMMAND.RELEASE.id) {
 			if(!this.selectedPet.releaseEntity)
 				this.selectedPet.releaseEntity = true;
 		}

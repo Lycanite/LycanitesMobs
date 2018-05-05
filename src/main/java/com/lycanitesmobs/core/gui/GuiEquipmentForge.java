@@ -44,7 +44,7 @@ public class GuiEquipmentForge extends GuiBaseContainer {
         this.ySize = 166;
         int backX = (this.width - this.xSize) / 2;
         int backY = (this.height - this.ySize) / 2;
-		this.initControls(backX, backY);
+		//this.initControls(backX, backY);
 	}
 
 

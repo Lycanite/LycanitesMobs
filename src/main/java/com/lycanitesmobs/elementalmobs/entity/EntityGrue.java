@@ -178,7 +178,7 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     				targetLiving.removePotionEffect(goodEffects.get(this.getRNG().nextInt(goodEffects.size())));
     			else
     				targetLiving.removePotionEffect(goodEffects.get(0));
-		    	float leeching = this.getAttackDamage(damageScale);
+				float leeching = Math.max(1, this.getAttackDamage(damageScale) / 2);
 		    	this.heal(leeching);
     		}
     	}

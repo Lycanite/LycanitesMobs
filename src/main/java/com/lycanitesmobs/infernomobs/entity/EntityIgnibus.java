@@ -47,7 +47,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
         this.flySoundSpeed = 20;
         this.hasAttackSound = false;
         
-        this.justAttackedTime = 20;
+        this.setAttackCooldownMax(20);
         this.setupMob();
 
         this.stepHeight = 1.0F;
@@ -406,7 +406,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
                 this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
                 this.getEntityWorld().spawnEntity(projectile);
             }
-            this.setJustAttacked();
+            this.triggerAttackCooldown();
         }
 
         this.applyStaminaCost();
@@ -430,7 +430,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
     // ==================================================
     @Override
     public float getBrightness() {
-        if(justAttacked())
+        if(isAttackOnCooldown())
             return 1.0F;
         else
             return super.getBrightness();
@@ -439,7 +439,7 @@ public class EntityIgnibus extends EntityCreatureRideable implements IGroupFire,
     @Override
     @SideOnly(Side.CLIENT)
     public int getBrightnessForRender() {
-        if(justAttacked())
+        if(isAttackOnCooldown())
             return 15728880;
         else
             return super.getBrightnessForRender();

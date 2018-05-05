@@ -2,6 +2,7 @@ package com.lycanitesmobs.demonmobs.block;
 
 import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.PotionBase;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.demonmobs.DemonMobs;
@@ -65,10 +66,14 @@ public class BlockHellfire extends BlockFireBase {
         super.onEntityCollidedWithBlock(world, pos, state, entity);
 
         if(entity instanceof EntityLivingBase) {
-            PotionEffect effect = new PotionEffect(ObjectManager.getPotionEffect("decay"), 5 * 20, 0);
-            EntityLivingBase entityLiving = (EntityLivingBase)entity;
-            if(entityLiving.isPotionApplicable(effect))
-                entityLiving.addPotionEffect(effect);
+			PotionBase decay = ObjectManager.getPotionEffect("decay");
+			if(decay != null) {
+				PotionEffect effect = new PotionEffect(decay, 5 * 20, 0);
+				EntityLivingBase entityLiving = (EntityLivingBase) entity;
+				if (entityLiving.isPotionApplicable(effect)) {
+					entityLiving.addPotionEffect(effect);
+				}
+			}
         }
 
         if(entity instanceof EntityItem && ((EntityItem)entity).getItem() != null)

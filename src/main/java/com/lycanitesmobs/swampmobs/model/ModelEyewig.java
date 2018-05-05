@@ -87,7 +87,7 @@ public class ModelEyewig extends ModelObjOld {
 		//posY += bob;
 		
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("leftmouth"))
 	    		rotY -= 15F;
 	    	if(partName.equals("rightmouth"))

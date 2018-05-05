@@ -55,7 +55,7 @@ public class EntityCryptZombie extends EntityCreatureAgeable implements IMob {
         this.targetTasks.addTask(0, new EntityAITargetRevenge(this).setHelpCall(true));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class).setCheckSight(false));
-        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityHusk.class).setCheckSight(false));
+        this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(EntityHusk.class));
     }
     
     

@@ -58,7 +58,7 @@ public class ModelTemplateElemental extends ModelObj {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
             EntityCreatureBase entityCreatureBase = (EntityCreatureBase)entity;
             if(entityCreatureBase.attackPhaseMax > 0) {
 				if (partName.equals("armleft") && entityCreatureBase.getAttackPhase() == 2)

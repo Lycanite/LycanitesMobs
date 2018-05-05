@@ -90,7 +90,7 @@ public class ModelTarantula extends ModelObjOld {
     	}
     	
 		// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 	    	if(partName.equals("innerleftmouth") || partName.equals("innerrightmouth")) {
 	    		rotX += 20.0F;
 	    	}

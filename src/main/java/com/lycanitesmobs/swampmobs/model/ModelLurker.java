@@ -104,7 +104,7 @@ public class ModelLurker extends ModelObjOld {
 		posY += bob;
     	
     	// Attack:
-		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+		if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
 			if(partName.equals("topmiddlemouth") || partName.equals("topleftmouth") || partName.equals("toprightmouth"))
 				rotX -= 30F;
 			if(partName.equals("leftmouth"))

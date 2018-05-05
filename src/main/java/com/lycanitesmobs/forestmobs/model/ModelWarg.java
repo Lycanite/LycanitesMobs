@@ -98,7 +98,7 @@ public class ModelWarg extends ModelObjOld {
         }
 
         // Attack:
-        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).justAttacked()) {
+        if(entity instanceof EntityCreatureBase && ((EntityCreatureBase)entity).isAttackOnCooldown()) {
             if(partName.equals("mouth")) {
                 rotX -= 15.0F;
             }

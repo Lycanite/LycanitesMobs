@@ -6,7 +6,9 @@ import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.info.GroupInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EquipmentPartManager extends JSONLoader {
@@ -14,6 +16,9 @@ public class EquipmentPartManager extends JSONLoader {
 	public static EquipmentPartManager INSTANCE;
 
 	public Map<String, ItemEquipmentPart> equipmentParts = new HashMap<>();
+
+	/** A list of mod groups that have loaded with this Equipment Part Manager. **/
+	public List<GroupInfo> loadedGroups = new ArrayList<>();
 
 
 	/** Returns the main EquipmentPartManager INSTANCE or creates it and returns it. **/
@@ -27,8 +32,10 @@ public class EquipmentPartManager extends JSONLoader {
 
 	/** Loads all JSON Equipment Parts. Should only be done on pre-init. **/
 	public void loadAllFromJSON(GroupInfo groupInfo) {
+		if(!this.loadedGroups.contains(groupInfo)) {
+			this.loadedGroups.add(groupInfo);
+		}
 		try {
-			this.equipmentParts.clear();
 			this.loadAllJson(groupInfo, "Equipment", "equipment", "itemName", false);
 			LycanitesMobs.printDebug("Equipment", "Complete! " + this.equipmentParts.size() + " JSON Equipment Parts Loaded In Total.");
 		}
@@ -52,5 +59,16 @@ public class EquipmentPartManager extends JSONLoader {
 		}
 		this.equipmentParts.put(equipmentPart.itemName, equipmentPart);
 		ObjectManager.addItem(equipmentPart.itemName, equipmentPart);
+	}
+
+
+	/**
+	 * Reloads all Equipment part JSON.
+	 */
+	public void reload() {
+		this.equipmentParts.clear();
+		for(GroupInfo group : this.loadedGroups) {
+			this.loadAllFromJSON(group);
+		}
 	}
 }

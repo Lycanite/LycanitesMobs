@@ -164,7 +164,7 @@ public class EntityEyewig extends EntityCreatureRideable {
   	// ==================================================
     @Override
     public boolean isAggressive() {
-    	if(this.getEntityWorld().isDaytime())
+    	if(this.getEntityWorld() != null && this.getEntityWorld().isDaytime())
     		return this.testLightLevel() < 2;
     	else
     		return super.isAggressive();

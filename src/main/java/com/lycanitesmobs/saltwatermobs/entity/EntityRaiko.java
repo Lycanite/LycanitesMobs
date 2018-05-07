@@ -219,7 +219,7 @@ public class EntityRaiko extends EntityCreatureRideable implements IMob, IGroupH
     // ==================================================
     @Override
     public boolean isAggressive() {
-        if(this.getEntityWorld().isDaytime())
+        if(this.getEntityWorld() != null && this.getEntityWorld().isDaytime())
             return this.testLightLevel() < 2;
         else
             return super.isAggressive();

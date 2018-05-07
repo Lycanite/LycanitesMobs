@@ -168,7 +168,7 @@ public class EntityConcapedeHead extends EntityCreatureAgeable implements IAnima
     public boolean isAggressive() {
     	if(this.isInLove())
     		return false;
-    	if(this.getEntityWorld().isDaytime())
+    	if(this.getEntityWorld() != null && this.getEntityWorld().isDaytime())
     		return this.testLightLevel() < 2;
     	else
     		return super.isAggressive();

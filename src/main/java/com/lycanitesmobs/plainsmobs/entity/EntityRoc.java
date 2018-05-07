@@ -216,7 +216,7 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     // ==================================================
     @Override
     public boolean isAggressive() {
-        if(this.getEntityWorld().isDaytime())
+        if(this.getEntityWorld() != null && this.getEntityWorld().isDaytime())
             return this.testLightLevel() < 2;
         else
             return super.isAggressive();

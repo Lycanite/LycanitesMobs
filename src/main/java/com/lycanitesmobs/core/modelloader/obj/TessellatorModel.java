@@ -1,19 +1,32 @@
 package com.lycanitesmobs.core.modelloader.obj;
 
+import com.lycanitesmobs.LycanitesMobs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.renderer.vertex.VertexFormatElement;
+import net.minecraft.client.shader.Shader;
+import net.minecraft.client.shader.ShaderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector4f;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.*;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -54,6 +67,7 @@ public class TessellatorModel extends ObjModel
         }
     }
 
+
     @Override
     public void renderImpl()
     {
@@ -69,6 +83,7 @@ public class TessellatorModel extends ObjModel
         }
     }
 
+
     @Override
     public void renderGroupsImpl(String group)
     {
@@ -81,13 +96,17 @@ public class TessellatorModel extends ObjModel
         }
     }
 
+
     @Override
     public void renderGroupImpl(ObjObject obj, Vector4f color, Vector2f textureOffset) {
         Tessellator tess = Tessellator.getInstance();
-        BufferBuilder vertexBuffer = tess.getBuffer();
+        BufferBuilder bufferBuilder = tess.getBuffer();
         if(obj.mesh == null) {
             return;
         }
+		int[] indices = obj.mesh.indices;
+
+        // Colors From OBJ:
         //Vector4f color = new Vector4f(1, 1, 1, 1);
         /*if(obj.material != null) {
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, obj.material.diffuseTexture);
@@ -97,53 +116,49 @@ public class TessellatorModel extends ObjModel
                     obj.material.diffuseColor.z * obj.material.ambientColor.z);
             alpha = obj.material.transparency;
         }*/
-        int[] indices = obj.mesh.indices;
-        Vertex[] vertices = obj.mesh.vertices;
 
-        // Get/Create Normals:
-        if(obj.mesh.normals == null) {
-            obj.mesh.normals = new javax.vecmath.Vector3f[indices.length];
-        }
-        vertexBuffer.begin(GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
-
+		// Build Buffer:
+        bufferBuilder.begin(GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         for(int i = 0; i < indices.length; i += 3) {
-            javax.vecmath.Vector3f normal = obj.mesh.normals[i];
-            if(normal == null) {
-                normal = this.getNormal(vertices[indices[i]].getPos(), vertices[indices[i + 1]].getPos(), vertices[indices[i + 2]].getPos());
-                obj.mesh.normals[i] = normal;
-            }
             for(int iv = 0; iv < 3; iv++) {
-                Vertex v = vertices[indices[i + iv]];
-                vertexBuffer
+                Vertex v = obj.mesh.vertices[indices[i + iv]];
+                bufferBuilder
                         .pos(v.getPos().x, v.getPos().y, v.getPos().z)
                         .tex(v.getTexCoords().x + (textureOffset.getX() * 0.01f), 1f - (v.getTexCoords().y + (textureOffset.getY() * 0.01f)))
                         .color(color.x, color.y, color.z, color.w)
-                        .normal(normal.x, normal.y, normal.z)
-                        //.normal(v.getFaceNormal().x, v.getFaceNormal().y, v.getFaceNormal().z)
-                        //.normal(v.getNormal().x, v.getNormal().y, v.getNormal().z)
+                        .normal(v.getNormal().x, v.getNormal().y, v.getNormal().z)
                         .endVertex();
             }
         }
-        tess.draw();
+
+        // Draw Buffer:
+        //tess.draw();
+		bufferBuilder.finishDrawing();
+		if (bufferBuilder.getVertexCount() > 0) {
+			VertexFormat vertexformat = bufferBuilder.getVertexFormat();
+			int i = vertexformat.getNextOffset();
+			ByteBuffer bytebuffer = bufferBuilder.getByteBuffer();
+			List<VertexFormatElement> list = vertexformat.getElements();
+
+			for (int j = 0; j < list.size(); ++j) {
+				VertexFormatElement vertexformatelement = list.get(j);
+				bytebuffer.position(vertexformat.getOffset(j));
+				vertexformatelement.getUsage().preDraw(vertexformat, j, i, bytebuffer);
+			}
+
+			GlStateManager.glDrawArrays(bufferBuilder.getDrawMode(), 0, bufferBuilder.getVertexCount());
+			int i1 = 0;
+
+			for (int j1 = list.size(); i1 < j1; ++i1) {
+				VertexFormatElement vertexformatelement1 = list.get(i1);
+				vertexformatelement1.getUsage().postDraw(vertexformat, i1, i, bytebuffer);
+			}
+		}
+		bufferBuilder.reset();
 
 		GL11.glDisable(GL11.GL_BLEND);
     }
 
-    public javax.vecmath.Vector3f getNormal(javax.vecmath.Vector3f p1, javax.vecmath.Vector3f p2, javax.vecmath.Vector3f p3) {
-        javax.vecmath.Vector3f output = new javax.vecmath.Vector3f();
-
-        // Calculate Edges:
-        javax.vecmath.Vector3f calU = new javax.vecmath.Vector3f(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
-        javax.vecmath.Vector3f calV = new javax.vecmath.Vector3f(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
-
-        // Cross Edges
-        output.x = calU.y * calV.z - calU.z * calV.y;
-        output.y = calU.z * calV.x - calU.x * calV.z;
-        output.z = calU.x * calV.y - calU.y * calV.x;
-
-        output.normalize();
-        return output;
-    }
 
     @Override
     public boolean fireEvent(ObjEvent event)

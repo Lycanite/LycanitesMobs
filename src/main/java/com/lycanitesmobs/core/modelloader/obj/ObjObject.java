@@ -3,8 +3,7 @@ package com.lycanitesmobs.core.modelloader.obj;
 import org.lwjgl.util.vector.Vector3f;
 
 
-public class ObjObject
-{
+public class ObjObject {
 
     private String name;
     public Mesh mesh;

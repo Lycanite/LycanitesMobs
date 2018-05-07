@@ -15,12 +15,12 @@ public class IndexedModel {
     private ArrayList<OBJLoader.OBJIndex> objindices;
 
 	public IndexedModel() {
-		vertices = new ArrayList<Vector3f>();
-		texCoords = new ArrayList<Vector2f>();
-		normals = new ArrayList<Vector3f>();
-		tangents = new ArrayList<Vector3f>();
-		indices = new ArrayList<Integer>();
-		objindices = new ArrayList<OBJLoader.OBJIndex>();
+		vertices = new ArrayList<>();
+		texCoords = new ArrayList<>();
+		normals = new ArrayList<>();
+		tangents = new ArrayList<>();
+		indices = new ArrayList<>();
+		objindices = new ArrayList<>();
 	}
 
 	public ArrayList<Vector3f> getPositions() {
@@ -44,7 +44,7 @@ public class IndexedModel {
 	}
 
 	public void toMesh(Mesh mesh) {
-		ArrayList<Vertex> verticesList = new ArrayList<Vertex>();
+		ArrayList<Vertex> verticesList = new ArrayList<>();
 		int n = Math.min(vertices.size(), Math.min(texCoords.size(), normals.size()));
 		for(int i = 0; i < n; i++ ) {
 			Vertex vertex = new Vertex(

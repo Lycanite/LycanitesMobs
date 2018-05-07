@@ -2,10 +2,9 @@ package com.lycanitesmobs.core.modelloader.obj;
 
 import javax.vecmath.Vector2f;
 import javax.vecmath.Vector3f;
+import javax.vecmath.Vector4f;
 
-public class Vertex
-{
-
+public class Vertex {
     private Vector3f pos;
     private Vector2f texCoords;
     private Vector3f normal;
@@ -19,20 +18,19 @@ public class Vertex
     }
     
     public Vector3f getPos() {
-        return pos;
+        return this.pos;
     }
     
     public Vector2f getTexCoords() {
-        return texCoords;
+        return this.texCoords;
     }
 
     /** Returns per vertex normal for smoother shading. **/
     public Vector3f getNormal() {
-        return normal;
+        return this.normal;
     }
     
     public Vector3f getTangent() {
         return tangent;
     }
-
 }

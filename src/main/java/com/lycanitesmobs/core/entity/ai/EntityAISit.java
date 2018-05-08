@@ -52,7 +52,7 @@ public class EntityAISit extends EntityAIBase {
             return false;
         if(this.host.isInWater() && !this.host.canBreatheUnderwater())
             return false;
-        if(!this.host.onGround && !this.host.useDirectNavigator())
+        if(!this.host.onGround && !this.host.isCurrentlyFlying())
             return false;
 
         if (!(this.host.getOwner() instanceof EntityLivingBase))

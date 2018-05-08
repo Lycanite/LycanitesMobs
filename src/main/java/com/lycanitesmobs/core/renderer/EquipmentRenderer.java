@@ -3,6 +3,8 @@ package com.lycanitesmobs.core.renderer;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import com.lycanitesmobs.core.model.ModelEquipment;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -21,8 +23,15 @@ public class EquipmentRenderer extends TileEntitySpecialRenderer<TileEntityEquip
 
 		EnumHand hand = null;
 
+		// Position:
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(0.5F, 0.2F, 0.6F);
+		GlStateManager.rotate(90, 1, 0, 0);
+		GlStateManager.rotate(-90, 0, 0, 1);
+		GlStateManager.translate(0F, -1.5F, 0F);
 		ModelEquipment modelEquipment = new ModelEquipment();
 		modelEquipment.render(itemStack, hand, this);
+		GlStateManager.popMatrix();
 
 		if(te != null) {
 			super.render(te, x, y, z, partialTicks, destroyStage, alpha);

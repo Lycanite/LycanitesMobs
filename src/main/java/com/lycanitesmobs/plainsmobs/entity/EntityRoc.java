@@ -1,6 +1,7 @@
 package com.lycanitesmobs.plainsmobs.entity;
 
 import com.lycanitesmobs.ExtendedEntity;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.api.IGroupHunter;
 import com.lycanitesmobs.api.IGroupPrey;
@@ -216,6 +217,9 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
     // ==================================================
     @Override
     public boolean isAggressive() {
+        if(this.isTamed()) {
+            return super.isAggressive();
+        }
         if(this.getEntityWorld() != null && this.getEntityWorld().isDaytime())
             return this.testLightLevel() < 2;
         else
@@ -330,9 +334,10 @@ public class EntityRoc extends EntityCreatureRideable implements IMob, IGroupHun
         if(this.getStamina() < this.getStaminaCost())
             return;
 
-        EntityLivingBase nearestTarget = this.getNearestEntity(EntityLivingBase.class, null, 4, true);
-        if(this.canPickupEntity(nearestTarget))
+        EntityLivingBase nearestTarget = this.getNearestEntity(EntityLivingBase.class, null, 4, false);
+        if(this.canPickupEntity(nearestTarget)) {
             this.pickupEntity(nearestTarget);
+        }
 
         this.applyStaminaCost();
     }

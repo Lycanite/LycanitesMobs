@@ -35,6 +35,10 @@ public class ItemEquipment extends ItemBase {
 	 */
 	public ItemEquipment() {
 		super();
+		this.itemName = "equipment";
+		this.group = LycanitesMobs.group;
+		this.setRegistryName(this.group.filename, this.itemName);
+		this.setUnlocalizedName(this.itemName);
 		this.setMaxStackSize(1);
 	}
 
@@ -129,18 +133,19 @@ public class ItemEquipment extends ItemBase {
 
 	/**
 	 * Adds an Equipment Part ItemStack to the provided Equipment ItemStack.
-	 * @param itemStackEquipment The Equipment ItemStack to add a part to.
-	 * @param itemStackEquipmentPart The Equipment Part ItemStack to add.
+	 * @param equipmentStack The Equipment ItemStack to add a part to.
+	 * @param equipmentPartStack The Equipment Part ItemStack to add.
 	 * @param slotIndex The slot index to connect the part to.
 	 */
-	public void addEquipmentPart(ItemStack itemStackEquipment, ItemStack itemStackEquipmentPart, int slotIndex) {
+	public void addEquipmentPart(ItemStack equipmentStack, ItemStack equipmentPartStack, int slotIndex) {
 		if(slotIndex >= PART_LIMIT) {
 			return;
 		}
-		NonNullList<ItemStack> itemStacks = this.getEquipmentPartStacks(itemStackEquipment);
-		itemStacks.add(slotIndex, itemStackEquipmentPart);
-		NBTTagCompound nbt = this.getTagCompound(itemStackEquipment);
+		NonNullList<ItemStack> itemStacks = this.getEquipmentPartStacks(equipmentStack);
+		itemStacks.set(slotIndex, equipmentPartStack);
+		NBTTagCompound nbt = this.getTagCompound(equipmentStack);
 		ItemStackHelper.saveAllItems(nbt, itemStacks);
+		equipmentStack.setTagCompound(nbt);
 	}
 
 

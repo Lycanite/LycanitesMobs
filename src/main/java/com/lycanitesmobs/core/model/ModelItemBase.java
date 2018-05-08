@@ -134,8 +134,9 @@ public abstract class ModelItemBase {
 	 * @param itemStack The itemstack to render.
 	 * @param hand The hand that is holding the item or null if in the inventory instead.
 	 * @param renderer The renderer that is rendering this model, needed for texture binding.
+	 * @param offsetObjPart A ModelObjPart, if not null this model is offset by it, used by assembled equipment pieces to create a full model.
 	 */
-	public void render(ItemStack itemStack, EnumHand hand, IItemModelRenderer renderer) {
+	public void render(ItemStack itemStack, EnumHand hand, IItemModelRenderer renderer, ModelObjPart offsetObjPart) {
 		if(itemStack == null) {
 			return;
 		}
@@ -153,18 +154,11 @@ public abstract class ModelItemBase {
 
 			// Animate:
 			this.animatePart(partName, itemStack, loop);
-
-			// Positioning:
-			if("base".equals(partName)) {
-				this.translate(0.9f, 1f, -0.5f);
-				this.rotate(90, -90, 0);
-				this.scale(0.9f, 0.9f, 0.9f);
-			}
 		}
 
 		// Render Parts:
-		GlStateManager.enableBlend();
-		GlStateManager.enableAlpha();
+		//GlStateManager.enableBlend();
+		//GlStateManager.enableAlpha();
 		for(ObjObject part : this.wavefrontParts) {
 			String partName = part.getName().toLowerCase();
 			if(!this.canRenderPart(partName, itemStack))
@@ -178,6 +172,11 @@ public abstract class ModelItemBase {
 			this.doAngle(modelXRotOffset, 1F, 0F, 0F);
 			this.doTranslate(0F, modelYPosOffset, 0F);
 
+			// Offset By Equipment Piece Slot:
+			if(offsetObjPart != null) {
+				this.doTranslate(offsetObjPart.centerX, offsetObjPart.centerY, offsetObjPart.centerZ);
+			}
+
 			// Apply Animation Frames:
 			this.currentAnimationPart.applyAnimationFrames(this.animator);
 
@@ -185,8 +184,8 @@ public abstract class ModelItemBase {
 			this.wavefrontObject.renderGroup(part, this.getPartColor(partName, itemStack), new Vector2f(0, 0));
 			GlStateManager.popMatrix();
 		}
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
+		//GlStateManager.disableBlend();
+		//GlStateManager.disableAlpha();
 
 		// Clear Animation Frames:
 		for(ModelObjPart animationPart : this.animationParts.values()) {

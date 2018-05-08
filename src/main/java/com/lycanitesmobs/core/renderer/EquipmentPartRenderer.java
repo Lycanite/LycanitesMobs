@@ -4,6 +4,8 @@ import com.lycanitesmobs.AssetManager;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.model.ModelItemBase;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentPart;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -24,7 +26,13 @@ public class EquipmentPartRenderer extends TileEntitySpecialRenderer<TileEntityE
 
 		ItemEquipmentPart itemEquipmentPart = (ItemEquipmentPart)itemStack.getItem();
 		ModelItemBase modelItemBase = AssetManager.getItemModel(itemEquipmentPart.itemName);
-		modelItemBase.render(itemStack, hand, this);
+
+		GlStateManager.translate(0.9F, -0.5F, -0.5F);
+		GlStateManager.pushMatrix();
+		GlStateManager.rotate(90, 0, 1, 0);
+		GlStateManager.rotate(45, 0, 0, 1);
+		modelItemBase.render(itemStack, hand, this, null);
+		GlStateManager.popMatrix();
 
 		if(te != null) {
 			super.render(te, x, y, z, partialTicks, destroyStage, alpha);

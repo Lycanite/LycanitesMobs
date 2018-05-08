@@ -14,7 +14,8 @@
       "item": "minecraft:bone"
     },
     "T": {
-      "item": "minecraft:cooked_fish"
+      "item": "minecraft:cooked_fish",
+      "data": 0
     }
   }
 }

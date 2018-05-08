@@ -1,7 +1,5 @@
 package com.lycanitesmobs.core.model;
 
-import net.minecraft.client.renderer.GlStateManager;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +24,15 @@ public class ModelObjPart {
     /** A list of animation frames to apply to this part on the next render frame. **/
     public List<ModelObjAnimationFrame> animationFrames = new ArrayList<>();
 
-    // ==================================================
-    //                    Constructor
-    // ==================================================
+
+    /**
+     * Constructor
+     * @param partName The name of this part.
+     * @param parentName The name of the parent of this part.
+     * @param centerX The x center of this part.
+     * @param centerY The y center of this part
+     * @param centerZ The z center of this part
+     */
     public ModelObjPart(String partName, String parentName, float centerX, float centerY, float centerZ) {
         this.name = partName;
         this.parentName = parentName;
@@ -38,10 +42,11 @@ public class ModelObjPart {
     }
 
 
-    // ==================================================
-    //                     Children
-    // ==================================================
-    public void addChildren(ModelObjPart[] parts) {
+	/**
+	 * Adds child parts to this part.
+	 * @param parts An array of child parts to add.
+	 */
+	public void addChildren(ModelObjPart[] parts) {
         for(ModelObjPart part : parts) {
             if(part == null || part == this || part.parentName == null)
                 continue;
@@ -55,20 +60,20 @@ public class ModelObjPart {
     }
 
 
-    // ==================================================
-    //                Add Animation Frame
-    // ==================================================
-    /** Adds a new animation frame to apply during the next render frame. **/
-    public void addAnimationFrame(ModelObjAnimationFrame frame) {
+	/**
+	 * Adds a new animation frame to apply during the next render frame.
+	 * @param frame The animation frame to add.
+	 */
+	public void addAnimationFrame(ModelObjAnimationFrame frame) {
         this.animationFrames.add(frame);
     }
 
 
-    // ==================================================
-    //               Apply Animation Frames
-    // ==================================================
-    /** Applies all animation frames to this part and will then go through any parents and apply theirs also. **/
-    public void applyAnimationFrames(Animator animator) {
+	/**
+	 * Applies all animation frames to this part and will then go through any parents and apply theirs also.
+	 * @param animator The animator instance to use.
+	 */
+	public void applyAnimationFrames(Animator animator) {
         // Apply Parent Frames:
         if(this.parent != null) {
             this.parent.applyAnimationFrames(animator);
@@ -85,4 +90,15 @@ public class ModelObjPart {
         // Uncenter Part:
         animator.doTranslate(-this.centerX, -this.centerY, -this.centerZ);
     }
+
+
+	/**
+	 * Creates a new ModelObjPart that has the combined offsets of this part and the provided part.
+	 * @param combinedWithPart The part to create the combined part with.
+	 * @return A new instance of a combined ModelObjPart.
+	 */
+	public ModelObjPart createdCombinedPart(ModelObjPart combinedWithPart) {
+		ModelObjPart combinedPart = new ModelObjPart(this.name + "-" + combinedWithPart.name, "", this.centerX + combinedWithPart.centerX, this.centerY + combinedWithPart.centerY, this.centerZ + combinedWithPart.centerZ);
+		return combinedPart;
+	}
 }

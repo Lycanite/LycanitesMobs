@@ -324,7 +324,7 @@ public class EntityQuetzodracl extends EntityCreatureRideable implements IMob, I
         if(this.getStamina() < this.getStaminaCost())
             return;
 
-        EntityLivingBase nearestTarget = this.getNearestEntity(EntityLivingBase.class, null, 4, true);
+        EntityLivingBase nearestTarget = this.getNearestEntity(EntityLivingBase.class, null, 4, false);
         if(this.canPickupEntity(nearestTarget))
             this.pickupEntity(nearestTarget);
 

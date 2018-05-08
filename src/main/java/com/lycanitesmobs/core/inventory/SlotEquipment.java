@@ -1,13 +1,11 @@
 package com.lycanitesmobs.core.inventory;
 
-import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.container.ContainerEquipmentForge;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.item.equipment.features.EquipmentFeature;
 import com.lycanitesmobs.core.item.equipment.features.SlotEquipmentFeature;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -16,18 +14,20 @@ import java.util.List;
 
 public class SlotEquipment extends SlotBase {
 	public String type;
+	public ContainerEquipmentForge containerForge;
 	public List<SlotEquipment> childSlots = new ArrayList<>();
 
 	/**
 	 * Constructor
-	 * @param inventory The invetory using this slot.
+	 * @param containerForge The Equipment Forge Container using this slot.
 	 * @param slotIndex THe index of this slot.
 	 * @param x The x display position.
 	 * @param y The y display position.
 	 * @param type The Equipment item type for this slot. Can be any part slot type or "piece" for an assembled piece of equipment or "none" when unavailable.
 	 */
-	public SlotEquipment(IInventory inventory, int slotIndex, int x, int y, String type) {
-		super(inventory, slotIndex, x, y);
+	public SlotEquipment(ContainerEquipmentForge containerForge, int slotIndex, int x, int y, String type) {
+		super(containerForge.equipmentForge, slotIndex, x, y);
+		this.containerForge = containerForge;
 		this.type = type;
 	}
 
@@ -109,15 +109,8 @@ public class SlotEquipment extends SlotBase {
 		else if(item instanceof ItemEquipment) {
 			// TODO Edit existing Equipment Piece.
 		}
-	}
 
-
-	@Override
-	public boolean canTakeStack(EntityPlayer player) {
-		if("piece".equals(this.type)) {
-			return super.canTakeStack(player);
-		}
-		return false;
+		this.containerForge.onEquipmentSlotChanged(this);
 	}
 
 
@@ -126,7 +119,20 @@ public class SlotEquipment extends SlotBase {
 		if("piece".equals(this.type)) {
 			// TODO Clear all parts from the Equipment Container.
 		}
+		else {
+			this.updateChildSlots();
+		}
 		return super.onTake(player, itemStack);
+	}
+
+
+	@Override
+	public boolean canTakeStack(EntityPlayer player) {
+		/*if("piece".equals(this.type)) {
+			return super.canTakeStack(player);
+		}
+		return false;*/
+		return true;
 	}
 
 

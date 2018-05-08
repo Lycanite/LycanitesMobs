@@ -184,6 +184,7 @@ gui.beastiary.pets.empty.info=You have no soulbound pets yet. You can soulbind a
 #
 # Summoning:
 gui.beastiary.summoning=Summoning
+gui.beastiary.pets.select=Select a minion to summon.
 gui.beastiary.summoning.empty.title=No Summonable Creatures Descovered
 gui.beastiary.summoning.empty.info=You haven't added any creatures that can be summoned to your Beastiary yet. Keep searching, not every creature can be summoned.
 #

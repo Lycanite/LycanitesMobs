@@ -3958,8 +3958,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
         T nearestEntity = null;
         for(Object entityObj : aoeTargets) {
             T targetEntity = (T)entityObj;
-            if(canAttack && (!(targetEntity instanceof EntityLivingBase) || !this.canAttackEntity((EntityLivingBase)targetEntity)))
+            if(targetEntity == this)
+            	continue;
+            if(!(targetEntity instanceof EntityLivingBase))
                 continue;
+			if(canAttack && !this.canAttackEntity((EntityLivingBase)targetEntity))
+				continue;
             if(targetEntity == this.getControllingPassenger())
                 continue;
             double distance = this.getDistance(targetEntity);

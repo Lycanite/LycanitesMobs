@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockShadowfire extends BlockFireBase {
+    public boolean blindness;
 	
 	// ==================================================
 	//                   Constructor
@@ -43,6 +44,7 @@ public class BlockShadowfire extends BlockFireBase {
         this.spreadChance = 0;
         this.removeOnTick = !ConfigBase.getConfig(this.group, "general").getBool("Features", "Enable Shadowfire", true);
         this.removeOnNoFireTick = ConfigBase.getConfig(this.group, "general").getBool("Features", "Remove Shadowfire on No Fire Tick", false);
+		this.blindness = !ConfigBase.getConfig(this.group, "general").getBool("Features", "Shadowfire Blindness", true);
 	}
 
 
@@ -95,7 +97,9 @@ public class BlockShadowfire extends BlockFireBase {
             EntityLivingBase entityLiving = (EntityLivingBase)entity;
             if(!entityLiving.isPotionApplicable(effectBlindness) || (effectDecay != null && !entityLiving.isPotionApplicable(effectDecay)))
                 return;
-            entityLiving.addPotionEffect(effectBlindness);
+            if(this.blindness) {
+				entityLiving.addPotionEffect(effectBlindness);
+			}
             if(effectDecay != null)
                 entityLiving.addPotionEffect(effectDecay);
         }

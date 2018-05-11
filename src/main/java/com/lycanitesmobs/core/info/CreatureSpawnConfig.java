@@ -18,7 +18,7 @@ public class CreatureSpawnConfig {
 	public double spawnWeightScale = 1.0D;
 	public double dungeonSpawnerWeightScale = 1.0D;
 	public boolean ignoreWorldGenSpawning = false;
-	public boolean controlVanillaSpawns = true;
+	public boolean controlVanillaSpawns = false;
 
 	/** A global list of dimension ids that overrides every other spawn setting in both the configs and json spawners. **/
 	public int[] dimensionList;

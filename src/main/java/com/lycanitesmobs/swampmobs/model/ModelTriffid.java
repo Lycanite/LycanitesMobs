@@ -107,15 +107,15 @@ public class ModelTriffid extends ModelObj {
 
         // Attack:
         if(partName.contains("body"))
-            rotX += 25F * this.getAttackProgress();
+            rotX += 50F * this.getAttackProgress();
         else if(partName.contains("head"))
-            rotX -= 25F * this.getAttackProgress();
+            rotX -= 50F * this.getAttackProgress();
         else if(partName.equals("mouthtop"))
-            rotX -= 10F * this.getAttackProgress();
+            rotX -= 20F * this.getAttackProgress();
         else if(partName.equals("mouthbottom"))
-            rotX += 10F * this.getAttackProgress();
+            rotX += 20F * this.getAttackProgress();
         else
-            rotX -= 25F * this.getAttackProgress();
+            rotX -= 50F * this.getAttackProgress();
 
         // Apply Animations:
         this.angle(rotation, angleX, angleY, angleZ);

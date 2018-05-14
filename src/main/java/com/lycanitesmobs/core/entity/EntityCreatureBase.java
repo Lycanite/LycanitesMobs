@@ -469,6 +469,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
         
         // Fire Immunity:
         this.isImmuneToFire = !this.canBurn();
+
+		// Attack Animation Cooldown:
+		this.setAttackCooldownMax(this.attackCooldownMax);
     }
     
     // ========== Item Drops ==========

@@ -417,12 +417,12 @@ public class ModelObj extends ModelCustom {
 
         if(this.currentModelState.attackAnimationPlaying) {
             if (this.currentModelState.attackAnimationIncreasing) {
-                this.currentModelState.attackAnimationProgress = Math.min(this.currentModelState.attackAnimationProgress + this.currentModelState.attackAnimationSpeed / 4, 1F);
+                this.currentModelState.attackAnimationProgress = Math.min(this.currentModelState.attackAnimationProgress + this.currentModelState.attackAnimationSpeed, 1F);
                 if (this.currentModelState.attackAnimationProgress >= 1)
                     this.currentModelState.attackAnimationIncreasing = false;
             }
             else {
-                this.currentModelState.attackAnimationProgress = Math.max(this.currentModelState.attackAnimationProgress - this.currentModelState.attackAnimationSpeed / 4, 0F);
+                this.currentModelState.attackAnimationProgress = Math.max(this.currentModelState.attackAnimationProgress - this.currentModelState.attackAnimationSpeed, 0F);
                 if (this.currentModelState.attackAnimationProgress <= 0) {
                     this.currentModelState.attackAnimationPlaying = false;
                 }

@@ -30,12 +30,14 @@ public class ClientSubProxy extends CommonSubProxy {
 		AssetManager.addModel("vapula", new ModelVapula());
 		AssetManager.addModel("tremor", new ModelTremor());
 		AssetManager.addModel("banshee", new ModelBanshee());
+		AssetManager.addModel("sylph", new ModelSylph());
 		AssetManager.addModel("wraith", new ModelWraith());
 		AssetManager.addModel("spectre", new ModelSpectre());
 
 		// Projectiles:
 		AssetManager.addModel("lightball", new ModelLightBall());
 		AssetManager.addModel("crystalshard", new ModelCrystalShard());
+		AssetManager.addModel("aetherwave", new ModelAetherwave());
 
         // Register Renderers:
         RenderRegister renderRegister = new RenderRegister(groupInfo);

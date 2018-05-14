@@ -101,6 +101,8 @@ public class ElementalMobs extends Submod {
 
 		ObjectManager.addItem("faeboltcharge", new ItemFaeboltCharge());
 
+		ObjectManager.addItem("aetherwavecharge", new ItemAetherwaveCharge());
+
 		ObjectManager.addItem("wraithsigil", new ItemWraithSigil());
 	}
 
@@ -132,6 +134,8 @@ public class ElementalMobs extends Submod {
 		ObjectManager.addProjectile("frostbolt", EntityFrostbolt.class, ObjectManager.getItem("frostboltcharge"), new DispenserBehaviorFrostbolt());
 
 		ObjectManager.addProjectile("faebolt", EntityFaeBolt.class, ObjectManager.getItem("faeboltcharge"), new DispenserBehaviorFaebolt());
+
+		ObjectManager.addProjectile("aetherwave", EntityAetherwave.class, ObjectManager.getItem("aetherwavecharge"), new DispenserBehaviorAetherwave());
 	}
 
 	@Override

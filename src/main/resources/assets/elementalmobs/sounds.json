@@ -418,6 +418,26 @@
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/tremor/tame", "stream": false}]
     },
+    "entity.sylph.say": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/sylph/say", "stream": false}]
+    },
+    "entity.sylph.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/sylph/hurt", "stream": false}]
+    },
+    "entity.sylph.death": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/sylph/death", "stream": false}]
+    },
+    "entity.sylph.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/sylph/beg", "stream": false}]
+    },
+    "entity.sylph.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/sylph/tame", "stream": false}]
+    },
     "entity.wraith.say": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/wraith/say", "stream": false}]
@@ -433,6 +453,14 @@
     "entity.wraith.attack": {
         "category": "hostile",
         "sounds": [{"name": "elementalmobs:entity/wraith/attack", "stream": false}]
+    },
+    "entity.wraith.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/wraith/beg", "stream": false}]
+    },
+    "entity.wraith.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "elementalmobs:entity/wraith/tame", "stream": false}]
     },
     "entity.spectre.say": {
         "category": "hostile",
@@ -497,5 +525,9 @@
     "projectile.frostbolt": {
         "category": "ambient",
         "sounds": [{"name": "elementalmobs:projectile/frostbolt", "stream": false}]
+    },
+    "projectile.aetherwave": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/aetherwave", "stream": false}]
     }
 }

@@ -2,16 +2,14 @@
 {
   "modid" : "lycanitesmobs",
   "name" : "Lycanites Mobs",
-  "version" : "1.20.X.X",
+  "version" : "${version}",
+  "mcversion" : "${mcversion}",
   "url" : "http://lycanitesmobs.com",
   "credits" : "Lycanite (Richard Nicholson)",
   "authors": [
     "Lycanite (Richard Nicholson)"
   ],
-  "description": "Lycanites Mobs is a project that adds a wide range of new mobs to Minecraft. The mod adds a group of mobs to each specific biome type as well as other locations such as from Fire or Lava.",
-  "logoFile" : "/logo.png",
-  "parent" : "",
-  "screenshots": [
-  ]
+  "description": "Lycanites Mobs adds many new mobs to specific biomes, dimensions and more. These mobs range from peaceful Makas, farmable mammal-like reptiles with massive sails (watch out for the alphas) to horrific Grues that are made of the very shadows themselves! Expect to see angry elementals such as Cinders spawning from large fires or Spriggans from tall grass and crops! You can find a list of creatures here: http://lycanitesmobs.com/creature",
+  "logoFile" : "/logo.png"
 }
 ]

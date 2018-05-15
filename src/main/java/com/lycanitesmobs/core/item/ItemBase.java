@@ -2,6 +2,7 @@ package com.lycanitesmobs.core.item;
 
 import com.google.common.collect.Multimap;
 import com.lycanitesmobs.LycanitesMobs;
+import com.lycanitesmobs.core.compatibility.Thaumcraft;
 import com.lycanitesmobs.core.info.GroupInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,13 +20,16 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thaumcraft.api.research.IScanThing;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBase extends Item {
+@Optional.Interface(iface=Thaumcraft.interfaceScanThing, modid=Thaumcraft.modid, striprefs=true)
+public class ItemBase extends Item implements IScanThing {
 	public static int descriptionWidth = 200;
 	
 	public String itemName = "Item";
@@ -185,4 +189,20 @@ public class ItemBase extends Item {
     public int getColorFromItemstack(ItemStack itemStack, int tintIndex) {
         return 16777215;
     }
+
+
+	// ==================================================
+	//                   Thaumcraft
+	// ==================================================
+	@Optional.Method(modid=Thaumcraft.modid)
+	@Override
+	public boolean checkThing(EntityPlayer player, Object obj) {
+		return false;
+	}
+
+	@Optional.Method(modid=Thaumcraft.modid)
+	@Override
+	public String getResearchKey(EntityPlayer player, Object object) {
+		return null;
+	}
 }

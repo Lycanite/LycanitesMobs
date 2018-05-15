@@ -57,7 +57,12 @@ public class OreBlockSpawnTrigger extends BlockSpawnTrigger {
 			int blockNamePartLength = blockNamePart.length();
 			if(blockNamePartLength >= 3) {
 				// Check if start or end of block name part is "ore".
-				if(blockNamePart.substring(0, 3).equalsIgnoreCase("ore") || blockNamePart.substring(blockNamePartLength - 3, blockNamePartLength).equalsIgnoreCase("ore")) {
+				if(
+						blockNamePart.substring(0, 3).equalsIgnoreCase("ore")
+						|| blockNamePart.substring(blockNamePartLength - 3, blockNamePartLength).equalsIgnoreCase("ore")
+						|| blockNamePart.substring(0, 3).equalsIgnoreCase("crystal")
+						|| blockNamePart.substring(blockNamePartLength - 3, blockNamePartLength).equalsIgnoreCase("crystal")
+				) {
 					if(this.ores && this.gems) {
 						return true;
 					}

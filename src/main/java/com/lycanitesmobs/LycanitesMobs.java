@@ -48,7 +48,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = LycanitesMobs.modid, name = LycanitesMobs.name, version = LycanitesMobs.version, useMetadata = false, acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions)
+@Mod(
+		modid = LycanitesMobs.modid,
+		name = LycanitesMobs.name,
+		version = LycanitesMobs.version,
+		useMetadata = false,
+		acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions
+)
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";

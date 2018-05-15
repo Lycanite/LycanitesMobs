@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.info.GroupInfo;
 import com.lycanitesmobs.core.modelloader.obj.ObjObject;
 import com.lycanitesmobs.core.modelloader.obj.TessellatorModel;
 import com.lycanitesmobs.core.renderer.IItemModelRenderer;
+import com.lycanitesmobs.core.renderer.LayerBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
@@ -157,8 +158,6 @@ public abstract class ModelItemBase {
 		}
 
 		// Render Parts:
-		//GlStateManager.enableBlend();
-		//GlStateManager.enableAlpha();
 		for(ObjObject part : this.wavefrontParts) {
 			String partName = part.getName().toLowerCase();
 			if(!this.canRenderPart(partName, itemStack))
@@ -181,16 +180,27 @@ public abstract class ModelItemBase {
 			this.currentAnimationPart.applyAnimationFrames(this.animator);
 
 			// Render Part:
+			this.onRenderStart(null, itemStack);
 			this.wavefrontObject.renderGroup(part, this.getPartColor(partName, itemStack), new Vector2f(0, 0));
+			this.onRenderFinish(null, itemStack);
 			GlStateManager.popMatrix();
 		}
-		//GlStateManager.disableBlend();
-		//GlStateManager.disableAlpha();
 
 		// Clear Animation Frames:
 		for(ModelObjPart animationPart : this.animationParts.values()) {
 			animationPart.animationFrames.clear();
 		}
+	}
+
+	/** Called just before a layer is rendered. **/
+	public void onRenderStart(LayerBase layer, ItemStack itemStack) {
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+	}
+
+	/** Called just after a layer is rendered. **/
+	public void onRenderFinish(LayerBase layer, ItemStack itemStack) {
+		GlStateManager.disableBlend();
 	}
 
 

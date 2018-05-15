@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityWraith extends EntityCreatureTameable implements IMob {
+public class EntityWraith extends EntityCreatureTameable implements IMob, IGroupDemon {
 
     protected int detonateTimer = -1;
     

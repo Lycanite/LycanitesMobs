@@ -106,6 +106,9 @@ public class ItemCustomFood extends ItemFood {
 
     public ItemCustomFood setPotionEffect(Potion potion, int duration, int amplifier, float chance) {
         PotionEffect potionEffect = new PotionEffect(potion, duration * 20, amplifier, false, false);
+        if(potion == MobEffects.INSTANT_HEALTH) {
+			potionEffect = new PotionEffect(potion, 1, amplifier);
+		}
         this.effect = potionEffect;
         this.setPotionEffect(potionEffect, chance);
         return this;

@@ -46,7 +46,7 @@ public class ModelEquipment {
 			// Base:
 			if(slotId == 0) {
 				modelPartBase = this.renderPart(partStack, hand, renderer, null);
-				if(modelPartBase.animationParts.containsKey("head")) {
+				if(modelPartBase != null && modelPartBase.animationParts.containsKey("head")) {
 					headOffset = modelPartBase.animationParts.get("head");
 				}
 			}

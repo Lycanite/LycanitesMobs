@@ -40,7 +40,7 @@ public class VillageSpawnLocation extends RandomSpawnLocation {
 		// Too Far:
 		double villageDistance = Math.sqrt(village.getCenter().distanceSq(triggerPos));
 		if(villageDistance > this.villageRange) {
-			LycanitesMobs.printDebug("JSONSpawner", "No Village within range, nearest was: " + villageDistance);
+			LycanitesMobs.printDebug("JSONSpawner", "No Village within range, nearest was: " + villageDistance + " at: " + village.getCenter());
 			return new ArrayList<>();
 		}
 

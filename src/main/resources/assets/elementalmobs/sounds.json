@@ -420,7 +420,11 @@
     },
     "entity.sylph.say": {
         "category": "hostile",
-        "sounds": [{"name": "elementalmobs:entity/sylph/say", "stream": false}]
+        "sounds":
+        [
+            {"name": "elementalmobs:entity/sylph/say01", "stream": false},
+            {"name": "elementalmobs:entity/sylph/say02", "stream": false}
+        ]
     },
     "entity.sylph.hurt": {
         "category": "hostile",

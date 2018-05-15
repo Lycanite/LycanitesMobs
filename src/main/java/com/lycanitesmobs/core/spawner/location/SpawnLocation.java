@@ -53,6 +53,9 @@ public class SpawnLocation {
 		else if("village".equalsIgnoreCase(type)) {
 			spawnLocation = new VillageSpawnLocation();
 		}
+		else if("structure".equalsIgnoreCase(type)) {
+			spawnLocation = new StructureSpawnLocation();
+		}
 
 		spawnLocation.loadFromJSON(json);
 		return spawnLocation;

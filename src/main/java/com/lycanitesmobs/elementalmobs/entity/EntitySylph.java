@@ -48,7 +48,6 @@ public class EntitySylph extends EntityCreatureTameable implements IMob {
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupDemon.class));
         this.targetTasks.addTask(2, new EntityAITargetAttack(this).setTargetClass(IGroupShadow.class));
         this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityPlayer.class));
-        this.targetTasks.addTask(4, new EntityAITargetAttack(this).setTargetClass(EntityVillager.class));
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
 	

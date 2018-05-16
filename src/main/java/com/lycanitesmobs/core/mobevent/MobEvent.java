@@ -43,7 +43,7 @@ public class MobEvent {
 	public String channel = "world";
 
 	/** How long (in ticks) this mob event will be in the spawning phase for. After this the event is considered over but spawned mobs may linger. **/
-	protected int duration = 60 * 20;
+	public int duration = 60 * 20;
 
 	/** Determines how many Conditions must be met. If 0 or less all are required. **/
 	protected int conditionsRequired = 0;

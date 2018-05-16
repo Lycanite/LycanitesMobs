@@ -184,6 +184,7 @@ gui.beastiary.pets.empty.info=一些宠物可以被驯服为宠物或者坐骑�
 #
 # Summoning:
 gui.beastiary.summoning=眷属
+gui.beastiary.pets.select=选择一只生物以进行召唤
 gui.beastiary.summoning.empty.title=没有可以召唤的生物
 gui.beastiary.summoning.empty.info=你的生物图鉴没有任何可以召唤的生物。请继续探索，并不是每一个生物都可以被召唤。
 #
@@ -231,10 +232,17 @@ gui.equipmentforge.error.name=你必须为你的设备命名！
 #
 #
 # ========== Messages ==========
+# Beastiary:
+message.beastiary.new=你获得了%rank%点%creature%的知识点数！请查看生物图鉴！
+message.beastiary.summonable=你现在能够召唤%creature%了！不过，再次之前你还需要准备好召唤的物品。
+message.beastiary.summonable.colors=你现在可以召唤%creature%的亚种（颜色变化）了！
+message.beastiary.summonable.skins=你现在可以召唤%creature%的亚种（皮肤变化）了！
+message.beastiary.known=你已经拥有了%rank%点%creature%的知识点数。
+message.beastiary.unknown=你已习得这种生物的全部知识。
 # Soulgazer:
 message.soulgazer.new=你获得了%creature%的知识！通过你的生物图鉴可以查看！
 message.soulgazer.summonable=你现在能够召唤%creature%了！你还需要一把召唤之杖。
-message.soulgazer.known=你已经有了这种生物的全部知识。
+message.soulgazer.known=你已习得这种生物的全部知识。
 message.soulgazer.unknown=灵魂凝视没有发现这种生物有什么特殊之处。
 #
 # Soulstone:
@@ -375,7 +383,7 @@ element.light=光
 element.shadow=锐利
 element.armbour=植物
 element.frost=凛冰
-element.fae=Fae
+element.fae=仙灵
 element.poison=剧毒
 element.phase=相位
 element.crystal=水晶
@@ -412,7 +420,7 @@ equipment.feature.effect.strength=强度：
 equipment.feature.harvest=Harvest:
 equipment.feature.harvest.shape=形态：
 equipment.feature.harvest.range=范围：
-equipment.feature.summon=Summons:
+equipment.feature.summon=召唤：
 equipment.feature.summon.chance=概率：
 equipment.feature.summon.count=Amount:
 #
@@ -426,3 +434,4 @@ creature.stat.spirit=召唤灵魂消耗
 creature.stat.focus=召唤指数消耗
 creature.stat.health=生命
 creature.stat.respawning=重生
+creature.stat.knowledge=知识点数

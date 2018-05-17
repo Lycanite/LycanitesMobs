@@ -1103,7 +1103,9 @@ public abstract class EntityCreatureBase extends EntityLiving {
 
     // ========== Get Random Size ==========
     public void getRandomSize() {
-    	this.setSizeScale(1.0D + (0.35D * (0.5D - this.getRNG().nextDouble())));
+		double range = CreatureManager.getInstance().config.randomSizeMax - CreatureManager.getInstance().config.randomSizeMin;
+    	double randomScale = range * this.getRNG().nextDouble();
+    	this.setSizeScale(CreatureManager.getInstance().config.randomSizeMin + randomScale);
     }
 
     /**

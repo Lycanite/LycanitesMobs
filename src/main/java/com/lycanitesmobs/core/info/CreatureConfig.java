@@ -93,6 +93,12 @@ public class CreatureConfig {
 	/** If true, mobs will vary in sizes when spawned. **/
 	public boolean randomSizes = true;
 
+	/** The minimum size scale mobs can randomly spawn at. **/
+	public double randomSizeMin = 0.85D;
+
+	/** The maximum size scale mobs can randomly spawn at. **/
+	public double randomSizeMax = 1.15D;
+
 
 	// Drops:
 	/** A string of global drops to add to every mob. **/
@@ -151,6 +157,8 @@ public class CreatureConfig {
 		config.setCategoryComment("Mob Variations", "Settings for how mobs randomly vary such as subspecies. Subspecies are uncommon and rare variants of regular mobs, uncommon subspecies tend to be a bit tougher and rare subspecies are quite powerful and can be considered as mini bosses..");
 		this.subspeciesSpawn = config.getBool("Mob Variations", "Subspecies Can Spawn", this.subspeciesSpawn, "Set to false to prevent subspecies from spawning, this will not affect mobs that have already spawned as subspecies.");
 		this.randomSizes = config.getBool("Mob Variations", "Random Sizes", this.randomSizes, "Set to false to prevent mobs from having a random size variation when spawning, this will not affect mobs that have already spawned.");
+		this.randomSizeMin = config.getDouble("Mob Variations", "Random Size Min", this.randomSizeMin, "The minimum size scale mobs can randomly spawn at.");
+		this.randomSizeMax = config.getDouble("Mob Variations", "Random Size Max", this.randomSizeMax, "The maximum size scale mobs can randomly spawn at.");
 		Subspecies.loadGlobalSettings(config);
 
 		// Drops:

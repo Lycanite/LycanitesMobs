@@ -8,6 +8,7 @@ import com.lycanitesmobs.core.capabilities.ExtendedPlayerStorage;
 import com.lycanitesmobs.core.capabilities.IExtendedEntity;
 import com.lycanitesmobs.core.capabilities.IExtendedPlayer;
 import com.lycanitesmobs.core.command.CommandMain;
+import com.lycanitesmobs.core.compatibility.Thaumcraft;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.entity.EntityFear;
@@ -53,13 +54,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 		name = LycanitesMobs.name,
 		version = LycanitesMobs.version,
 		useMetadata = false,
-		acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions
+		acceptedMinecraftVersions = LycanitesMobs.acceptedMinecraftVersions,
+		dependencies="after:" + Thaumcraft.modid
 )
 public class LycanitesMobs {
 	
 	public static final String modid = "lycanitesmobs";
 	public static final String name = "Lycanites Mobs";
-	public static final String versionNumber = "1.20.2.2";
+	public static final String versionNumber = "1.20.2.3";
 	public static final String versionMC = "1.12.2";
 	public static final String version = versionNumber + " - MC " + versionMC;
 	public static final String website = "http://lycanitesmobs.com";

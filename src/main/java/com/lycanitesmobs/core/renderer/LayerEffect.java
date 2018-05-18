@@ -63,7 +63,7 @@ public class LayerEffect extends LayerBase {
 		// Glow In Dark:
 		int i = entity.getBrightnessForRender();
 		if(this.glow) {
-			//GlStateManager.disableLighting();
+			GlStateManager.disableLighting();
 			i = 0xf000f0;
 		}
 		int j = i % 65536;
@@ -81,6 +81,8 @@ public class LayerEffect extends LayerBase {
 
 	@Override
 	public void onRenderFinish(Entity entity, boolean trophy) {
-		//GlStateManager.enableLighting();
+    	if(this.glow) {
+			GlStateManager.enableLighting();
+		}
 	}
 }

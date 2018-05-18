@@ -7,6 +7,7 @@ import com.lycanitesmobs.core.modelloader.obj.ObjObject;
 import com.lycanitesmobs.core.modelloader.obj.TessellatorModel;
 import com.lycanitesmobs.core.renderer.LayerBase;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
@@ -205,6 +206,7 @@ public class ModelObjOld extends ModelCustom {
 	public void onRenderStart(LayerBase layer, Entity entity, boolean renderAsTrophy) {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+
 		if(layer != null) {
 			layer.onRenderStart(entity, renderAsTrophy);
 		}

@@ -105,6 +105,7 @@ public class TessellatorModel extends ObjModel
             return;
         }
 		int[] indices = obj.mesh.indices;
+		Vertex[] vertices = obj.mesh.vertices;
 
         // Colors From OBJ:
         //Vector4f color = new Vector4f(1, 1, 1, 1);
@@ -117,16 +118,30 @@ public class TessellatorModel extends ObjModel
             alpha = obj.material.transparency;
         }*/
 
+		// Get/Create Normals:
+		if(obj.mesh.normals == null) {
+			obj.mesh.normals = new javax.vecmath.Vector3f[indices.length];
+		}
+
 		// Build Buffer:
         bufferBuilder.begin(GL_TRIANGLES, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
         for(int i = 0; i < indices.length; i += 3) {
+
+        	// Normal:
+			javax.vecmath.Vector3f normal = obj.mesh.normals[i];
+			if(normal == null) {
+				normal = this.getNormal(vertices[indices[i]].getPos(), vertices[indices[i + 1]].getPos(), vertices[indices[i + 2]].getPos());
+				obj.mesh.normals[i] = normal;
+			}
+
             for(int iv = 0; iv < 3; iv++) {
                 Vertex v = obj.mesh.vertices[indices[i + iv]];
                 bufferBuilder
                         .pos(v.getPos().x, v.getPos().y, v.getPos().z)
                         .tex(v.getTexCoords().x + (textureOffset.getX() * 0.01f), 1f - (v.getTexCoords().y + (textureOffset.getY() * 0.01f)))
                         .color(color.x, color.y, color.z, color.w)
-                        .normal(v.getNormal().x, v.getNormal().y, v.getNormal().z)
+                        //.normal(v.getNormal().x, v.getNormal().y, v.getNormal().z)
+						.normal(normal.x, normal.y, normal.z)
                         .endVertex();
             }
         }
@@ -155,8 +170,6 @@ public class TessellatorModel extends ObjModel
 			}
 		}
 		bufferBuilder.reset();
-
-		GL11.glDisable(GL11.GL_BLEND);
     }
 
 
@@ -184,4 +197,20 @@ public class TessellatorModel extends ObjModel
             return !MODEL_RENDERING_BUS.post(evt);
         return true;
     }
+
+	public javax.vecmath.Vector3f getNormal(javax.vecmath.Vector3f p1, javax.vecmath.Vector3f p2, javax.vecmath.Vector3f p3) {
+		javax.vecmath.Vector3f output = new javax.vecmath.Vector3f();
+
+		// Calculate Edges:
+		javax.vecmath.Vector3f calU = new javax.vecmath.Vector3f(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+		javax.vecmath.Vector3f calV = new javax.vecmath.Vector3f(p3.x - p1.x, p3.y - p1.y, p3.z - p1.z);
+
+		// Cross Edges
+		output.x = calU.y * calV.z - calU.z * calV.y;
+		output.y = calU.z * calV.x - calU.x * calV.z;
+		output.z = calU.x * calV.y - calU.y * calV.x;
+
+		output.normalize();
+		return output;
+	}
 }

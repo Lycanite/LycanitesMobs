@@ -5,6 +5,7 @@ import com.lycanitesmobs.core.renderer.LayerBase;
 import com.lycanitesmobs.core.renderer.LayerEffect;
 import com.lycanitesmobs.core.renderer.RenderCreature;
 import com.lycanitesmobs.elementalmobs.ElementalMobs;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -104,10 +105,7 @@ public class ModelNymph extends ModelTemplateElemental {
 		super.onRenderStart(layer, entity, renderAsTrophy);
 		if(layer != null)
 			return;
-		int i = 15728880;
-		int j = i % 65536;
-		int k = i / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+		GlStateManager.disableLighting();
 	}
 
 	@Override
@@ -115,9 +113,6 @@ public class ModelNymph extends ModelTemplateElemental {
 		super.onRenderFinish(layer, entity, renderAsTrophy);
 		if(layer != null)
 			return;
-		int i = entity.getBrightnessForRender();
-		int j = i % 65536;
-		int k = i / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+		GlStateManager.enableLighting();
 	}
 }

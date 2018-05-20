@@ -39,7 +39,11 @@ public class StructureSpawnLocation extends RandomSpawnLocation {
 			return new ArrayList<>();
 		}
 
-		BlockPos structurePos = ((WorldServer)world).getChunkProvider().getNearestStructurePos(world, this.structureType, triggerPos, false);
+		BlockPos structurePos = null;
+		try {
+			structurePos = ((WorldServer) world).getChunkProvider().getNearestStructurePos(world, this.structureType, triggerPos, false);
+		}
+		catch (Exception e) {}
 
 		// No Structure:
 		if(structurePos == null) {

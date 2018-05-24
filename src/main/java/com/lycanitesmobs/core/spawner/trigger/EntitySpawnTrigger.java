@@ -9,6 +9,7 @@ import com.lycanitesmobs.core.spawner.Spawner;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,7 +89,11 @@ public abstract class EntitySpawnTrigger extends SpawnTrigger {
 
 		// Check Entity Id:
 		if(!this.entityIds.isEmpty()) {
-			String entityId = EntityList.getKey(killedEntity).toString();
+			ResourceLocation entityResourceLocation = EntityList.getKey(killedEntity);
+			if(entityResourceLocation == null) {
+				return false;
+			}
+			String entityId = entityResourceLocation.toString();
 			if (entityId == null) {
 				if ("whitelist".equalsIgnoreCase(this.entityIdsListType)) {
 					return false;

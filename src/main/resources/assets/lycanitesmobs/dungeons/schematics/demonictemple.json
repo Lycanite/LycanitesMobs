@@ -119,6 +119,7 @@
 			"mobId": "demonmobs:cacodemon",
 			"weight": 1,
 			"subspecies": 3,
+			"mobSizeScale": 1.5,
 			"mobNameTag": "Pain Elemental",
 			"naturalDespawn": "false",
 			"spawnAsBoss": true,

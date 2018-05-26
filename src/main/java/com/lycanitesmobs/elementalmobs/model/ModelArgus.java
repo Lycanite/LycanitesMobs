@@ -50,7 +50,7 @@ public class ModelArgus extends ModelTemplateElemental {
 	@Override
 	public boolean canRenderPart(String partName, Entity entity, LayerBase layer, boolean trophy) {
 		if(layer instanceof LayerEffect && entity instanceof EntityCreatureBase) {
-			return ((EntityCreatureBase)entity).isAttackOnCooldown(); // TODO Fix blending!
+			return ((EntityCreatureBase)entity).isAttackOnCooldown();
 		}
 		return true;
 	}
@@ -86,6 +86,11 @@ public class ModelArgus extends ModelTemplateElemental {
 					(MathHelper.sin(loop * 0.2F) * tailSwipeY) - (tailSwipeY * 90),
 					0
 			);
+		}
+
+		// Attack:
+		if(partName.equals("mouth")) {
+			this.rotate(45 * this.getAttackProgress(), 0, 0);
 		}
 	}
 }

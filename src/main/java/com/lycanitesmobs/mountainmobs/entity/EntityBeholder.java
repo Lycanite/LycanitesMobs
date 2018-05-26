@@ -168,6 +168,11 @@ public class EntityBeholder extends EntityCreatureRideable {
         return (double)this.height * 0.9D;
     }
 
+	@Override
+	public double getMountedZOffset() {
+		return (double)this.width * -0.2D;
+	}
+
 
     // ==================================================
     //                       Taming

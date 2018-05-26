@@ -1082,8 +1082,8 @@ public abstract class EntityCreatureBase extends EntityLiving {
             return;
         if(CreatureManager.getInstance().config.subspeciesSpawn && !this.creatureInfo.creatureSpawn.disableSubspecies)
     	    this.getRandomSubspecies();
-        if(CreatureManager.getInstance().config.randomSizes)
-    	    this.getRandomSize();
+		if(CreatureManager.getInstance().config.randomSizes)
+			this.getRandomSize();
     }
 
     // ========== Get Random Subspecies ==========
@@ -2187,6 +2187,12 @@ public abstract class EntityCreatureBase extends EntityLiving {
 		if(distance > 2.0F && distance <= range) {
 			double xDist = targetPos.getX() - this.getPosition().getX();
 			double zDist = targetPos.getZ() - this.getPosition().getZ();
+			if(xDist == 0) {
+				xDist = 0.05D;
+			}
+			if(zDist == 0) {
+				zDist = 0.05D;
+			}
 			double xzDist = MathHelper.sqrt(xDist * xDist + zDist * zDist);
             /*this.motionX = xDist / xzDist * 0.5D * 0.8D + this.motionX * 0.2D;
             this.motionZ = zDist / xzDist * 0.5D * 0.8D + this.motionZ * 0.2D;
@@ -3937,11 +3943,21 @@ public abstract class EntityCreatureBase extends EntityLiving {
     public EnumCreatureAttribute getCreatureAttribute() { return this.attribute; }
 
     // ========== Mounted Y Offset ==========
-    /** A Y Offset used to position the mob that is riding this mob. **/
-   	@Override
-    public double getMountedYOffset() {
-        return super.getMountedYOffset() - 0.5D;
+    /** An X Offset used to position the mob that is riding this mob. **/
+    public double getMountedXOffset() {
+        return 0;
     }
+
+	/** A Y Offset used to position the mob that is riding this mob. **/
+	@Override
+	public double getMountedYOffset() {
+		return super.getMountedYOffset() - 0.5D;
+	}
+
+	/** A Z Offset used to position the mob that is riding this mob. **/
+	public double getMountedZOffset() {
+		return 0;
+	}
     
    	// ========== Get Nearby Entities ==========
     /** Get entities that are near this entity. **/

@@ -68,20 +68,12 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
 
     // ========== Set Size ==========
     @Override
-    public void setSize(float width, float height) {
-        if(this.getSubspeciesIndex() == 3) {
-            super.setSize(width * 2, height * 2);
+    public void setSizeScale(double scale) {
+        if(this.isRareSubspecies()) {
+            super.setSizeScale(scale * 1.5D);
             return;
         }
-        super.setSize(width, height);
-    }
-
-    @Override
-    public double getRenderScale() {
-        if(this.getSubspeciesIndex() == 3) {
-            return this.sizeScale * 2;
-        }
-        return this.sizeScale;
+        super.setSizeScale(scale);
     }
 	
 	
@@ -213,7 +205,9 @@ public class EntityGrue extends EntityCreatureTameable implements IMob, IGroupSh
     }
     
     /** Returns true if this mob should be damaged by the sun. **/
-    public boolean daylightBurns() { return !this.isTamed() && this.getSubspeciesIndex() < 3; }
+    public boolean daylightBurns() {
+    	return false;
+    }
 
     @Override
     public boolean canBreatheUnderwater() {

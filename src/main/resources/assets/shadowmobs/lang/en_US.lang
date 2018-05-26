@@ -47,6 +47,14 @@ achievement.darkling.learn=Worse Than Lice!
 achievement.darkling.learn.desc=Add a Darkling to your Beastiary.
 achievement.darkling.summon=Feed My Children!
 achievement.darkling.summon.desc=Summon a Darkling.
+entity.shadowmobs.wraamon.name=Wraamon
+entity.shadowmobs.wraamon.description=Deadly rodents loaded with chaotic energy, they emit this through the spines on their back in order to attack their prey. Very few creatures dare attack these dangerous rodents.
+achievement.wraamon.kill=Foul Burst
+achievement.wraamon.kill.desc=Slay a Wraamon.
+achievement.wraamon.learn=Chaos Rats!
+achievement.wraamon.learn.desc=Add a Wraamon to your Beastiary.
+achievement.wraamon.summon=Chaos Unleashed!
+achievement.wraamon.summon.desc=Summon a Wraamon.
 #
 # Items
 item.shadowspawn.name=Spawn

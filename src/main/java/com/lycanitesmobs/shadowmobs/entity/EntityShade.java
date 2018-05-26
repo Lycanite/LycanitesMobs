@@ -118,6 +118,11 @@ public class EntityShade extends EntityCreatureRideable implements IGroupPredato
     public double getMountedYOffset() {
         return (double)this.height * 0.85D;
     }
+
+    @Override
+    public double getMountedZOffset() {
+        return (double)this.width * 0.25D;
+    }
 	
 	
 	// ==================================================

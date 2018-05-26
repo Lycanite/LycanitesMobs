@@ -14,6 +14,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -147,7 +148,8 @@ public class EntityCreatureRideable extends EntityCreatureTameable {
     @Override
     public void updatePassenger(Entity passenger) {
         if(this.isPassenger(passenger)) {
-            this.getControllingPassenger().setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ);
+			Vec3d mountOffset = this.getFacingPositionDouble(0, 0, 0, this.getMountedZOffset(), this.rotationYaw);
+            this.getControllingPassenger().setPosition(this.posX + mountOffset.x, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + mountOffset.z);
         }
     }
 

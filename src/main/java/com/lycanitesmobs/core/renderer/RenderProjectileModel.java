@@ -47,7 +47,7 @@ public class RenderProjectileModel extends Render {
 			if (!this.bindEntityTexture(entity)) {
 				return;
 			}
-			GlStateManager.translate((float)x, (float)y - 1, (float)z);
+			GlStateManager.translate((float)x, (float)y - 0.25F, (float)z);
 			GlStateManager.scale(0.5F, 0.5F, 0.5F);
 			GlStateManager.rotate(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
 			this.mainModel.render(entity, 0, 0, partialTicks, 0, 0, 1);

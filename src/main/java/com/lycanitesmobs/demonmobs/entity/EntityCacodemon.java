@@ -64,22 +64,14 @@ public class EntityCacodemon extends EntityCreatureRideable implements IGroupDem
         this.targetTasks.addTask(5, new EntityAITargetAttack(this).setTargetClass(EntityGhast.class));
     }
 
-    // ========== Size ==========
+    // ========== Set Size ==========
     @Override
-    public void setSize(float width, float height) {
-        if(this.getSubspeciesIndex() == 3) {
-            super.setSize(width * 2, height * 2);
+    public void setSizeScale(double scale) {
+        if(this.isRareSubspecies()) {
+            super.setSizeScale(scale * 1.5D);
             return;
         }
-        super.setSize(width, height);
-    }
-
-    @Override
-    public double getRenderScale() {
-        if(this.getSubspeciesIndex() == 3) {
-            return this.sizeScale * 2;
-        }
-        return this.sizeScale;
+        super.setSizeScale(scale);
     }
 
 

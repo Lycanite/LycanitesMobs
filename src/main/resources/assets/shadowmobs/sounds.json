@@ -155,6 +155,34 @@
         "category": "hostile",
         "sounds": [{"name": "shadowmobs:entity/darkling/tame", "stream": false}]
     },
+    "entity.wraamon.say": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/wraamon/say", "stream": false}]
+    },
+    "entity.wraamon.hurt": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/wraamon/hurt", "stream": false}]
+    },
+    "entity.wraamon.death": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/wraamon/death", "stream": false}]
+    },
+    "entity.wraamon.attack": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/wraamon/attack", "stream": false}]
+    },
+    "entity.wraamon.step": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/wraamon/step", "stream": false}]
+    },
+    "entity.wraamon.beg": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/wraamon/beg", "stream": false}]
+    },
+    "entity.wraamon.tame": {
+        "category": "hostile",
+        "sounds": [{"name": "shadowmobs:entity/wraamon/tame", "stream": false}]
+    },
     "projectile.spectralbolt": {
         "category": "ambient",
         "sounds": [{"name": "shadowmobs:projectile/spectralbolt", "stream": false}]

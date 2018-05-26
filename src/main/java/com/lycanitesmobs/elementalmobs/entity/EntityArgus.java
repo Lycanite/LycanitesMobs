@@ -4,6 +4,7 @@ import com.lycanitesmobs.api.IFusable;
 import com.lycanitesmobs.core.entity.EntityCreatureTameable;
 import com.lycanitesmobs.core.entity.ai.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityVillager;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityArgus extends EntityCreatureTameable implements IMob, IFusable {
@@ -40,9 +42,10 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
         super.initEntityAI();
 		this.tasks.addTask(1, new EntityAIFollowFuse(this).setLostDistance(16));
         this.tasks.addTask(2, new EntityAIStealth(this).setStealthTime(20).setStealthAttack(true).setStealthMove(true));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(true));
-        this.tasks.addTask(4, this.aiSit);
-        this.tasks.addTask(5, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this).setLongMemory(true).setMaxChaseDistance(5.0F));
+		this.tasks.addTask(4, new EntityAIAttackRanged(this).setSpeed(0.75D).setRange(16.0F).setMinChaseDistance(14.0F));
+        this.tasks.addTask(5, this.aiSit);
+        this.tasks.addTask(6, new EntityAIFollowOwner(this).setStrayDistance(16).setLostDistance(32));
         this.tasks.addTask(8, new EntityAIWander(this));
         this.tasks.addTask(10, new EntityAIWatchClosest(this).setTargetClass(EntityPlayer.class));
         this.tasks.addTask(11, new EntityAILookIdle(this));
@@ -83,7 +86,7 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
     public void onLivingUpdate() {
         super.onLivingUpdate();
         
-        // Random Target Teleporting:
+        /*/ Random Target Teleporting:
 		if(!this.getEntityWorld().isRemote && this.hasAttackTarget()) {
 			if(this.teleportTime-- <= 0) {
 				this.teleportTime = 20 + this.getRNG().nextInt(20);
@@ -93,7 +96,7 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
 					this.setPosition(teleportPosition.getX(), teleportPosition.getY(), teleportPosition.getZ());
 				}
 			}
-		}
+		}*/
         
         // Particles:
         if(this.getEntityWorld().isRemote)
@@ -114,6 +117,22 @@ public class EntityArgus extends EntityCreatureTameable implements IMob, IFusabl
 				return false;
 		}
 		return true;
+	}
+
+
+	// ==================================================
+	//                      Attacks
+	// ==================================================
+	// ========== Ranged Attack ==========
+	@Override
+	public void attackRanged(Entity target, float range) {
+		this.fireProjectile(EntityChaosOrb.class, target, range, 0, new Vec3d(0, 0, 0), 0.6f, 1f, 1F);
+		super.attackRanged(target, range);
+	}
+
+	@Override
+	public float getEyeHeight() {
+		return this.height * 0.5F;
 	}
     
     

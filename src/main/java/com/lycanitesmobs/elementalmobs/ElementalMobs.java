@@ -87,6 +87,8 @@ public class ElementalMobs extends Submod {
 
 		ObjectManager.addItem("whirlwindcharge", new ItemWhirlwindCharge());
 
+		ObjectManager.addItem("chaosorbcharge", new ItemChaosOrbCharge());
+
 		ObjectManager.addItem("acidsplashcharge", new ItemAcidSplashCharge());
 
 		ObjectManager.addItem("lightball", new ItemLightBall());
@@ -121,6 +123,8 @@ public class ElementalMobs extends Submod {
 		ObjectManager.addProjectile("aquapulse", EntityAquaPulse.class, ObjectManager.getItem("aquapulsecharge"), new DispenserBehaviorAquaPulse());
 
 		ObjectManager.addProjectile("whirlwind", EntityWhirlwind.class, ObjectManager.getItem("whirlwindcharge"), new DispenserBehaviorWhirlwind());
+
+		ObjectManager.addProjectile("chaosorb", EntityChaosOrb.class, ObjectManager.getItem("chaosorbcharge"), new DispenserBehaviorAetherwave(), true);
 
 		ObjectManager.addProjectile("acidsplash", EntityAcidSplash.class, ObjectManager.getItem("acidsplashcharge"), new DispenserBehaviorAcidSplash(), true);
 

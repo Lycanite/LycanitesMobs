@@ -66,23 +66,15 @@ public class EntityGeonach extends EntityCreatureTameable implements IMob, IGrou
 		this.targetTasks.addTask(7, new EntityAITargetFuse(this));
     }
 
-    // ========== Set Size ==========
-    @Override
-    public void setSize(float width, float height) {
-        if(this.getSubspeciesIndex() == 3) {
-            super.setSize(width * 2, height * 2);
-            return;
-        }
-        super.setSize(width, height);
-    }
-
-    @Override
-    public double getRenderScale() {
-        if(this.getSubspeciesIndex() == 3) {
-            return this.sizeScale * 2;
-        }
-        return this.sizeScale;
-    }
+	// ========== Set Size ==========
+	@Override
+	public void setSizeScale(double scale) {
+		if(this.isRareSubspecies()) {
+			super.setSizeScale(scale * 1.5D);
+			return;
+		}
+		super.setSizeScale(scale);
+	}
 	
 	
     // ==================================================

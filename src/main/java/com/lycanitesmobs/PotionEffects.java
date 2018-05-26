@@ -1,6 +1,7 @@
 package com.lycanitesmobs;
 
 import com.google.common.base.Predicate;
+import com.lycanitesmobs.api.IGroupBoss;
 import com.lycanitesmobs.core.entity.EntityFear;
 import com.lycanitesmobs.core.network.MessageEntityVelocity;
 import net.minecraft.entity.Entity;
@@ -107,7 +108,7 @@ public class PotionEffects {
 
 		// Instability
 		PotionBase instability = ObjectManager.getPotionEffect("instability");
-		if(instability != null && !entity.getEntityWorld().isRemote) {
+		if(instability != null && !entity.getEntityWorld().isRemote && !(entity instanceof IGroupBoss)) {
 			if(!invulnerable && entity.isPotionActive(instability)) {
 				if(entity.getEntityWorld().rand.nextDouble() <= 0.1) {
 					double strength = 1 + entity.getActivePotionEffect(instability).getAmplifier();

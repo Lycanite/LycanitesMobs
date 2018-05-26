@@ -20,6 +20,7 @@ public class ModelObjState {
     public float attackAnimationSpeed = 1F / 10;
 
     /** Additional state data. **/
+    protected Map<String, Boolean> additionalBooleans = new HashMap<>();
     protected Map<String, Float> additionalFloats = new HashMap<>();
 
     // ==================================================
@@ -33,6 +34,17 @@ public class ModelObjState {
     // ==================================================
     //                  Additional Data
     // ==================================================
+    public void setBoolean(String key,  boolean value) {
+        this.additionalBooleans.put(key, value);
+    }
+
+    public boolean getBoolean(String key) {
+        if(this.additionalBooleans.containsKey(key))
+            return this.additionalBooleans.get(key);
+        return false;
+    }
+
+
     public void setFloat(String key,  float value) {
         this.additionalFloats.put(key, value);
     }

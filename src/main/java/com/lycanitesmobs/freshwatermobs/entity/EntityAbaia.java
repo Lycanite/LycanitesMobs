@@ -72,23 +72,15 @@ public class EntityAbaia extends EntityCreatureTameable implements IMob, IGroupP
         this.targetTasks.addTask(6, new EntityAITargetOwnerThreats(this));
     }
 
-    // ========== Size ==========
-    @Override
-    public void setSize(float width, float height) {
-        if(this.getSubspeciesIndex() == 3) {
-            super.setSize(width * 8, height * 8);
-            return;
-        }
-        super.setSize(width, height);
-    }
-
-    @Override
-    public double getRenderScale() {
-        if(this.getSubspeciesIndex() == 3) {
-            return this.sizeScale * 8;
-        }
-        return this.sizeScale;
-    }
+	// ========== Set Size ==========
+	@Override
+	public void setSizeScale(double scale) {
+		if(this.isRareSubspecies()) {
+			super.setSizeScale(scale * 3);
+			return;
+		}
+		super.setSizeScale(scale);
+	}
 
 
     // ==================================================

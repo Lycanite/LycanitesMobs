@@ -147,11 +147,18 @@ public class EntityArcaneLaserStorm extends EntityProjectileBase {
  	// ==================================================
     //========== On Impact Splash/Ricochet ==========
     @Override
-    public void onImpact() {
+	public void onEntityCollision(Entity entity) {
+		if(this.getThrower() != null && this.getThrower().getRidingEntity() == entity) {
+			return;
+		}
 		if(this.getEntityWorld().getGameRules().getBoolean("mobGriefing")) {
 			int explosionRadius = 2;
 			if (this.getThrower() != null && this.getThrower() instanceof EntityCreatureBase) {
 				EntityCreatureBase entityCreatureBase = (EntityCreatureBase) this.getThrower();
+				if(entityCreatureBase.getOwner() == entity || entityCreatureBase.getControllingPassenger() == entity) {
+					super.onImpact();
+					return;
+				}
 				if (entityCreatureBase.getSubspeciesIndex() > 0) {
 					explosionRadius += 2;
 				}

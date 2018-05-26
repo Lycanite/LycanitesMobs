@@ -18,8 +18,8 @@
 	"locations": [
 		{
 			"type": "random",
-			"rangeMin": [42, 0, 42],
-			"rangeMax": [32, 48, 32],
+			"rangeMin": [32, 0, 32],
+			"rangeMax": [42, 48, 42],
 			"sorting": "random",
 			"limit": 32,
 			"solidGround": true,

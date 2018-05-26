@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
+public class EntityWisp extends EntityCreatureTameable implements IMob {
 	EntityWisp playPartner = null;
 
     // ==================================================
@@ -171,6 +172,11 @@ public class EntityWisp extends EntityCreatureTameable implements IGroupPlant {
     		return false;
 		}
     	return super.canAttackEntity(targetEntity);
+	}
+
+	@Override
+	public float getEyeHeight() {
+    	return this.height * 0.5F;
 	}
 
 

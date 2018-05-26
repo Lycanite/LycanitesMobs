@@ -34,7 +34,6 @@ public class ModelAetherwave extends ModelObj {
 	@Override
 	public void animatePart(String partName, EntityLiving entity, float time, float distance, float loop, float lookY, float lookX, float scale) {
 		super.animatePart(partName, entity, time, distance, loop, lookY, lookX, scale);
-		this.rotate(0, 0, loop * 8);
 	}
 
 

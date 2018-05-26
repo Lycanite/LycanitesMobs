@@ -1,6 +1,5 @@
 package com.lycanitesmobs.saltwatermobs.model;
 
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.model.template.ModelTemplateArachnid;
 import com.lycanitesmobs.saltwatermobs.SaltwaterMobs;
 import net.minecraft.entity.EntityLiving;

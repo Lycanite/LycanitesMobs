@@ -533,5 +533,13 @@
     "projectile.aetherwave": {
         "category": "ambient",
         "sounds": [{"name": "elementalmobs:projectile/aetherwave", "stream": false}]
+    },
+    "projectile.chaosorb": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/chaosorb", "stream": false}]
+    },
+    "projectile.chaosorb.impact": {
+        "category": "ambient",
+        "sounds": [{"name": "elementalmobs:projectile/chaosorb_impact", "stream": false}]
     }
 }

@@ -157,7 +157,12 @@
     },
     "entity.wraamon.say": {
         "category": "hostile",
-        "sounds": [{"name": "shadowmobs:entity/wraamon/say", "stream": false}]
+        "sounds":
+        [
+            {"name": "shadowmobs:entity/wraamon/say01", "stream": false},
+            {"name": "shadowmobs:entity/wraamon/say02", "stream": false},
+            {"name": "shadowmobs:entity/wraamon/say03", "stream": false}
+        ]
     },
     "entity.wraamon.hurt": {
         "category": "hostile",
@@ -190,6 +195,10 @@
     "projectile.bloodleech": {
         "category": "ambient",
         "sounds": [{"name": "shadowmobs:projectile/bloodleech", "stream": false}]
+    },
+    "projectile.foulburst": {
+        "category": "ambient",
+        "sounds": [{"name": "shadowmobs:projectile/foulburst", "stream": false}]
     },
     "block.shadowfire": {
         "category": "block",

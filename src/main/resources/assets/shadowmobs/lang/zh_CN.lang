@@ -15,7 +15,7 @@ entity.shadowmobs.epion.name=厄匹恩
 entity.shadowmobs.epion.description=巨大的阴影吸血蝙蝠！厄匹恩会向它的猎物吐出吸血蚂蟥，攻击时吸血。当被太阳照到时，厄匹恩会掉到地上并爆炸！
 achievement.epion.kill=阴影的吸血鬼！
 achievement.epion.kill.desc=杀死一只厄匹恩。
-achievement.epion.learn=在太阳之下爆破！
+achievement.epion.learn=阳光烈焰！
 achievement.epion.learn.desc=将厄匹恩添加到你的生物图鉴中。
 entity.shadowmobs.geist.name=感知
 entity.shadowmobs.geist.description=感知是一种狡猾的生物它们畸形且占据其他生物成为不死生物但它们的宿主也是可以杀死的。当它们的宿主死亡时, 感知就会跳出来发动奇袭！
@@ -47,6 +47,14 @@ achievement.darkling.learn=堪比虱子
 achievement.darkling.learn.desc=将嗜血虱虫添加到你的生物图鉴中。
 achievement.darkling.summon=喂养我的孩子！
 achievement.darkling.summon.desc=召唤嗜血虱虫。
+entity.shadowmobs.wraamon.name=Wraamon
+entity.shadowmobs.wraamon.description=Wraamon一种蕴含着混沌能量的啮齿动物，它们通过背脊上的刺散发这种能量进行狩猎。因此，它们很少有天敌。
+achievement.wraamon.kill=冲破规则
+achievement.wraamon.kill.desc=杀死一只Wraamon。
+achievement.wraamon.learn=混沌老鼠！
+achievement.wraamon.learn.desc=将Wraamon添加到你的生物图鉴中。
+achievement.wraamon.summon=制造混乱！
+achievement.wraamon.summon.desc=召唤Wraamon。
 #
 # Items
 item.shadowspawn.name=生成

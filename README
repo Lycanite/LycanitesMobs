@@ -1,3 +1,6 @@
+Lycanites Mobs has moved to GitLab: https://gitlab.com/Lycanite/LycanitesMobs
+This repo will no longer be updated, issues and pull requests can no longer be accepted from here so please use the new GitLab address.
+
 A popular mod for the Java based game Minecraft which adds many new entities (animated AI creatures) to the game.
 
 This mods makes use of LWJGL using basic GL11 methods to render and animate basic 3D models created in Blender (saved in obj format).
